@@ -23,9 +23,13 @@
   "dependencies": {
     "@nestjs/common": "^7.5.1",
     "@nestjs/core": "^7.5.1",
+    "@nestjs/graphql": "^7.10.3",
     "@nestjs/mongoose": "^7.2.0",
     "@nestjs/platform-express": "^7.5.1",
     "@nestjs/schedule": "^0.4.1",
+    "apollo-server-express": "^2.22.2",
+    "compression": "^1.7.4",
+    "graphql": "^15.5.0",
     "jest-extended": "^0.11.5",
     "mongoose": "^5.11.9",
     "progress": "^2.0.3",
@@ -61,14 +65,23 @@
     "typescript": "^4.0.5"
   },
   "jest": {
-    "setupFilesAfterEnv": ["jest-extended"],
+    "globals": {
+      "ts-jest": {
+        "astTransformers": {
+          "before": [
+            "test/gql-plugin.e2e.js"
+          ]
+        },
+        "tsconfig": "tsconfig.build.json"
+      }
+    },
     "moduleFileExtensions": [
       "js",
       "json",
       "ts"
     ],
     "rootDir": "src",
-    "testRegex": ".*\\.spec\\.ts$",
+    "testRegex": ".*spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },

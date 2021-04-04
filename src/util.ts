@@ -7,8 +7,8 @@ export const removeSearchIrrelevantTerms: (query: string) => string = r.replace(
   '',
 );
 
-export const queryStringFromSong: (song: Track | TangoTrack) => string = r.pipe(
-  r.pick(['orchestra', 'singer', 'genre', 'year', 'title']),
+export const queryStringFromSong: (song: Track) => string = r.pipe(
+  r.pick(['orchestra', 'singer', 'year', 'title']),
   Object.values,
   r.flatten,
   r.join(' '),

@@ -1,13 +1,27 @@
 import { Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { TracksService } from './tracks.service';
+import { IndexService } from '../index/index.service';
 
 @Controller('track')
 export class TracksController {
-  constructor(private readonly tracksService: TracksService) {}
+  constructor(
+    private readonly indexService: IndexService,
+    readonly tracksService: TracksService,
+  ) {}
+
+  @Get('index')
+  getTrackIndex() {
+    return this.indexService.getIndex();
+  }
+
+  @Get('/:trackId/links')
+  getTrackLinks(@Param('trackId') trackId: string) {
+    return this.tracksService.linksForTrack(trackId);
+  }
 
   @Get('db')
   getDbTracks() {
-    return this.tracksService.dbTracks();
+    return this.tracksService.sampleTracks();
   }
 
   @Post('/:trackId/link/:videoId/upvote')

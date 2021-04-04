@@ -1,7 +1,8 @@
 import { queryStringFromSong, removeSearchIrrelevantTerms } from './util';
 import { TangoTrack } from './types';
+import { Track } from './schemas/Track';
 
-it('removeSearchIrrelevantTerms should remove any occurences of Unknown Male or Unknown Female', () => {
+it('removeSearchIrrelevantTerms should remove any occurences of "Unknown Male" or "Unknown Female"', () => {
   const term = 'juan darienzo unknown female pensalo bien unknown male';
 
   const res = removeSearchIrrelevantTerms(term);
@@ -10,22 +11,28 @@ it('removeSearchIrrelevantTerms should remove any occurences of Unknown Male or 
 });
 
 describe('queryFromString should flatten object to an appropriate youtube search string', () => {
-  const song: TangoTrack = {
+  const song: Track = {
     title: 'Besos de miel',
     genre: 'fox trot',
     orchestra: ['Francisco Canaro'],
     singer: ['Ada Falcón', 'Charlo'],
-    date: 1931,
-    duration: 196,
+    year: 1931,
+    secondsLong: 196,
+    youtube: {
+      scrapedAt: new Date(),
+      links: [],
+    },
   };
 
   const res = queryStringFromSong(song);
+
+  console.log(res);
   it('should contain all expected fields', () => {
     const expectToBePresent = [
       '1931',
       'besos de miel',
       'francisco canaro',
-      'ada falcon',
+      'ada falcón',
       'charlo',
     ];
 
@@ -34,12 +41,8 @@ describe('queryFromString should flatten object to an appropriate youtube search
     }
   });
 
-  it('should remove diacritics', () => {
-    expect(res.match(/falcon/i)).toBeTruthy();
-  });
-
-  it('should lowercasify all', () => {
-    expect(res.match(/A-Z/)).toBeFalsy();
+  it('should maintain diacritics', () => {
+    expect(res.match(/Falcón/i)).toBeTruthy();
   });
 
   it('should omit duration and genre', () => {

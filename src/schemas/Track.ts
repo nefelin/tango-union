@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, ObjectId } from 'mongoose';
+import * as mongoose from 'mongoose';
 
 export class RatedYoutube {
   @Prop({ required: true })
@@ -30,28 +31,43 @@ export class RatedYoutube {
   authorUrl: string;
 }
 
-@Schema()
-export class Track {
+export class YoutubeLinks {
   @Prop({ required: true })
-  genre: string;
+  scrapedAt: Date;
+
+  @Prop({ required: true })
+  links: RatedYoutube[];
+}
+
+@Schema({ timestamps: true })
+export class Track {
+  _id?: string;
+
+  trackId: number;
 
   @Prop({ required: false })
-  lengthInSecs: string;
+  genre?: string;
+
+  @Prop({ required: false })
+  secondsLong?: number;
 
   @Prop({ required: true })
   title: string;
 
-  @Prop({ type: [String], required: true })
-  orchestra: string[];
+  @Prop({ type: [String], required: false })
+  orchestra?: string[];
 
-  @Prop({ type: [String], required: true })
-  singer: string[];
+  @Prop({ type: [String], required: false })
+  singer?: string[];
 
   @Prop({ required: false })
-  year: number;
+  year?: number;
 
-  @Prop({ type: [RatedYoutube], required: false })
-  links: RatedYoutube[];
+  @Prop({ required: false })
+  youtube?: YoutubeLinks;
+
+  @Prop({ required: false })
+  updatedAt?: Date;
 }
 
 export type TrackDocument = Track & Document;

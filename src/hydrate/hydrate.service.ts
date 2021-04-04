@@ -18,13 +18,11 @@ export class HydrateService {
   constructor(
     @InjectModel(Track.name) private trackModel: Model<TrackDocument>,
     private readonly youtubeSearchService: YoutubeSearchService,
-  ) {
-    this.startHydrating();
-  }
+  ) {}
 
   private hydratedCount(): Promise<number> {
     return this.trackModel
-      .find({ links: { $exists: true } })
+      .find({ youtube: { $exists: true } })
       .count()
       .exec();
   }
@@ -43,7 +41,7 @@ export class HydrateService {
   }
 
   async startHydrating() {
-    await this.resetCounters();
+    console.log('Beginning hydration...');
     const hydratedCount = await this.hydratedCount();
     const total = await this.trackModel.find().count().exec();
     this.bar = new ProgressBar(`  hydrating [:bar] :current/:total :percent`, {
@@ -53,6 +51,7 @@ export class HydrateService {
       width: 100,
       total,
     });
+    await this.resetCounters();
     this.isHydrating = true;
   }
 
@@ -75,15 +74,19 @@ export class HydrateService {
     await track
       .update({
         $set: {
-          links: res,
+          youtube: {
+            scrapedAt: new Date(),
+            links: res,
+          },
         },
       })
       .exec();
+    this.handleHydrationSuccess();
   }
 
   private async hydrateNext() {
     const next = await this.trackModel
-      .findOne({ links: { $exists: false } })
+      .findOne({ youtube: { $exists: false } })
       .exec();
     if (!next) {
       return this.stopHydrating();
@@ -92,7 +95,7 @@ export class HydrateService {
   }
 
   stopHydrating() {
-    console.log('stopping hydration');
+    console.log('Stopping hydration...');
     this.isHydrating = false;
   }
 
@@ -102,7 +105,7 @@ export class HydrateService {
     }, remaining unhydrated: ${this.unhydratedCount()}`;
   }
 
-  private handleHydrationSuccess() {
+  handleHydrationSuccess() {
     this.bar.tick(1);
     this.hydrationTick++;
     this.updateRate();
@@ -114,7 +117,7 @@ export class HydrateService {
     if (!this.isHydrating || flip) return;
 
     try {
-      await this.hydrateNext().then(this.handleHydrationSuccess);
+      await this.hydrateNext();
     } catch (e) {
       console.log(e);
       process.exit(1);

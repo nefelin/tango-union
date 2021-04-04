@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
 import { Track, TrackDocument } from '../schemas/Track';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Schema } from 'mongoose';
 import { YoutubeSearchService } from '../youtube-search/youtube-search.service';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const ObjectId = require('mongoose').Types.ObjectId;
 
 @Injectable()
 export class TracksService {
@@ -30,7 +32,28 @@ export class TracksService {
       .exec();
   }
 
-  dbTracks(): Promise<Track[]> {
+  allTracks(): Promise<TrackDocument[]> {
     return this.trackModel.find().exec();
   }
+
+  sampleTracks(): Promise<TrackDocument[]> {
+    return this.trackModel.find().limit(10).exec();
+  }
+
+  async linksForTrack(id: string): Promise<Track['youtube']['links']> {
+    const thisSong = await this.trackModel.findById(id).exec();
+    if (!thisSong) {
+      throw BadRequestException;
+    }
+
+    if (!thisSong.youtube) {
+      throw new Error(`No links scraped for track ${id}`);
+    }
+    return thisSong.youtube.links;
+  }
 }
+
+const makeOptions = (
+  key: string,
+  values: string[],
+): Array<Record<string, string>> => values.map((value) => ({ [key]: value }));
