@@ -3,13 +3,13 @@ import { Field, InputType } from '@nestjs/graphql';
 @InputType()
 export class CompoundQueryInput {
   @Field(() => String, { nullable: true })
-  orchestra: string;
+  orchestra?: string;
   @Field(() => String, { nullable: true })
-  singer: string;
+  singer?: string;
   @Field(() => String, { nullable: true })
-  year: string;
+  year?: string;
   @Field(() => String, { nullable: true })
-  title: string;
+  title?: string;
   @Field(() => String, { nullable: true })
-  genre: string;
+  genre?: string;
 }

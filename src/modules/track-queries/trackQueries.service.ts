@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Track, TrackDocument } from '../../schemas/Track';
 import { Model } from 'mongoose';
 import { CompoundQueryInput } from './dto/compoundQuery.input';
+import { reduceToIntersection } from './util';
 
 @Injectable()
 export class TrackQueriesService {
@@ -11,39 +12,59 @@ export class TrackQueriesService {
   ) {}
 
   async compoundQuery({ orchestra, title, genre, singer }: CompoundQueryInput) {
-    let results: any;
+    // fixme missing year
 
-    results = await this.trackModel.find(
-      {
-        ...(orchestra ? { orchestra } : {}),
-        ...(title ? { title } : {}),
-        ...(singer ? { singer } : {}),
-        ...(genre ? { genre } : {}),
-      },
-      { trackId: 1 },
-    );
+    const searchesOmitting: Record<
+      string,
+      Record<string, string | string[] | number>
+    > = {};
+    const resultsOmitting: Record<string, Set<number>> = {};
 
-    results = await this.trackModel.find(
-      {
-        ...(orchestra ? { orchestra } : {}),
-        ...(title ? { title } : {}),
-        ...(singer ? { singer } : {}),
-        ...(genre ? { genre } : {}),
-      },
-      { trackId: 1 },
-    );
+    // get results for each combination (omitting one field so we can hydrate those song counts)
+    searchesOmitting['orchestra'] = {
+      ...(title ? { title } : {}),
+      ...(singer ? { singer } : {}),
+      ...(genre ? { genre } : {}),
+    };
 
-    results = await this.trackModel.find(
-      {
-        ...(orchestra ? { orchestra } : {}),
-        ...(title ? { title } : {}),
-        ...(singer ? { singer } : {}),
-        ...(genre ? { genre } : {}),
-      },
-      { trackId: 1 },
-    );
+    searchesOmitting['title'] = {
+      ...(orchestra ? { orchestra } : {}),
+      ...(singer ? { singer } : {}),
+      ...(genre ? { genre } : {}),
+    };
 
-    const ids = results.map((track) => track.toObject().trackId);
-    console.log(ids);
+    searchesOmitting['genre'] = {
+      ...(title ? { title } : {}),
+      ...(singer ? { singer } : {}),
+      ...(orchestra ? { orchestra } : {}),
+    };
+
+    searchesOmitting['singer'] = {
+      ...(title ? { title } : {}),
+      ...(genre ? { genre } : {}),
+      ...(orchestra ? { orchestra } : {}),
+    };
+
+    // run searches
+    for (const [key, value] of Object.entries(searchesOmitting)) {
+      if (value !== {}) {
+        resultsOmitting[key] = new Set(
+          (
+            await this.trackModel.find(value, {
+              trackId: 1,
+              _id: 0,
+            })
+          ).map((track) => track.toObject().trackId),
+        );
+      }
+    }
+
+    // compare indexed song counts with results to get updated counts, room for optimization here
+
+    // intersect all results for actual result set
+    const finalResults = reduceToIntersection(Object.values(resultsOmitting));
+
+    console.log(finalResults);
+    return [];
   }
 }
