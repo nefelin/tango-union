@@ -8,17 +8,22 @@ interface SlopMeta {
 const NULL_LABELS = {
   SINGER: 'Instrumental',
   ORCHESTRA: 'Unknown',
+  YEAR: 'Unknown',
 };
 
-const indexedCategories = ['singer', 'orchestra', 'genre'] as const;
+const indexedCategories = ['singer', 'orchestra', 'genre', 'year'] as const;
 
-type IndexedCategory = typeof indexedCategories[number];
+export type IndexedCategory = typeof indexedCategories[number];
 
-type CategoryMember = string;
+type TrackId = SimpleTrack['trackId'];
 
-type MemberToTracks = Record<CategoryMember, SimpleTrack['_id'][]>;
+type CategoryMember = string; // in case we want to type more tightly at some point
+
+type MemberToTracks = Record<CategoryMember, TrackId[]>;
+type MemberToTrackCount = Record<CategoryMember, number>;
 
 type SelectIndex = Record<IndexedCategory, MemberToTracks>;
+type SelectIndexCount = Record<IndexedCategory, MemberToTrackCount>;
 
 type SloppedSong = SimpleTrack & SlopMeta;
 
@@ -34,6 +39,11 @@ export interface IndexedSongData {
   selectIndex: SelectIndex;
 }
 
+export interface ResultsIndex {
+  songs: TrackId[];
+  selectIndexCounts: SelectIndexCount;
+}
+
 // slop stuff
 const flattenSingersAndOrchestras = ({
   orchestra,
@@ -47,7 +57,7 @@ const flattenSingersAndOrchestras = ({
 const valuesForSlop = (song: SimpleTrack) =>
   r.pipe(
     flattenSingersAndOrchestras,
-    r.omit(['secondsLong', '_id', 'year']),
+    r.omit(['secondsLong', '_id', 'trackId', 'year']),
     Object.values,
     r.reject(r.isEmpty),
     r.join(' '),
@@ -64,6 +74,7 @@ const makeSelectIndex = (allSongs: SimpleTrack[]): SelectIndex => {
     orchestra: {},
     genre: {},
     singer: {},
+    year: {},
   };
 
   const genreNames = {
@@ -85,12 +96,12 @@ const makeSelectIndex = (allSongs: SimpleTrack[]): SelectIndex => {
     return genreNames.other;
   };
 
-  for (const { _id, singer, orchestra, genre } of allSongs) {
+  for (const { trackId, singer, year, orchestra, genre } of allSongs) {
     if (singer?.length) {
       for (const thisSinger of singer) {
         options.singer = {
           ...options.singer,
-          [thisSinger]: [...(options.singer[thisSinger] || []), _id],
+          [thisSinger]: [...(options.singer[thisSinger] || []), trackId],
         };
       }
     } else {
@@ -98,7 +109,7 @@ const makeSelectIndex = (allSongs: SimpleTrack[]): SelectIndex => {
         ...options.singer,
         [NULL_LABELS.SINGER]: [
           ...(options.singer[NULL_LABELS.SINGER] || []),
-          _id,
+          trackId,
         ],
       };
     }
@@ -107,7 +118,10 @@ const makeSelectIndex = (allSongs: SimpleTrack[]): SelectIndex => {
       for (const thisOrchestra of orchestra) {
         options.orchestra = {
           ...options.orchestra,
-          [thisOrchestra]: [...(options.orchestra[thisOrchestra] || []), _id],
+          [thisOrchestra]: [
+            ...(options.orchestra[thisOrchestra] || []),
+            trackId,
+          ],
         };
       }
     } else {
@@ -115,7 +129,22 @@ const makeSelectIndex = (allSongs: SimpleTrack[]): SelectIndex => {
         ...options.orchestra,
         [NULL_LABELS.ORCHESTRA]: [
           ...(options.orchestra[NULL_LABELS.ORCHESTRA] || []),
-          _id,
+          trackId,
+        ],
+      };
+    }
+
+    if (!r.isNil(year)) {
+      options.year = {
+        ...options.year,
+        [year]: [...(options.year[year] || []), trackId],
+      };
+    } else {
+      options.year = {
+        ...options.year,
+        [NULL_LABELS.YEAR]: [
+          ...(options.year[NULL_LABELS.YEAR] || []),
+          trackId,
         ],
       };
     }
@@ -123,7 +152,7 @@ const makeSelectIndex = (allSongs: SimpleTrack[]): SelectIndex => {
     const indexGenre = getIndexGenre(genre);
     options.genre = {
       ...options.genre,
-      [indexGenre]: [...(options.genre[indexGenre] || []), _id],
+      [indexGenre]: [...(options.genre[indexGenre] || []), trackId],
     };
   }
 

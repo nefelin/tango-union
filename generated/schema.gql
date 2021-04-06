@@ -1,0 +1,17 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Query {
+  testQuery(query: CompoundQueryInput!): [Float!]!
+  songIndex: String!
+  songIndexTest: String!
+}
+
+input CompoundQueryInput {
+  orchestra: [String!]
+  singer: [String!]
+  year: [String!]
+  title: [String!]
+  genre: [String!]
+}

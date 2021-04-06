@@ -1,5 +1,5 @@
 import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
-import { Track, TrackDocument } from '../schemas/Track';
+import { Track, TrackDocument } from '../../schemas/Track';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Schema } from 'mongoose';
 import { YoutubeSearchService } from '../youtube-search/youtube-search.service';
@@ -33,11 +33,11 @@ export class TracksService {
   }
 
   allTracks(): Promise<TrackDocument[]> {
-    return this.trackModel.find().exec();
+    return this.trackModel.find().exec(); //fixme remove limit;
   }
 
   sampleTracks(): Promise<TrackDocument[]> {
-    return this.trackModel.find().limit(10).exec();
+    return this.trackModel.find().limit(500).exec();
   }
 
   async linksForTrack(id: string): Promise<Track['youtube']['links']> {

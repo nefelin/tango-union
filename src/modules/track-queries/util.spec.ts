@@ -1,4 +1,4 @@
-import { reduceToIntersection, shorterFirstSorter } from './util';
+import { intersect, shorterFirstSorter } from './util';
 
 test('shorterFirstSorter sort in order of shortest to longest list', () => {
   const lists = [
@@ -30,6 +30,22 @@ test('intersector should only leave items present in all lists', () => {
   ];
   const expectIntersected = new Set([1, 2, 5]);
 
-  const intersected = reduceToIntersection(lists);
+  const intersected = intersect(lists);
   expect(intersected).toEqual(expectIntersected);
+});
+
+test('intersector should work with single item list', () => {
+  const lists = [new Set([39, 189, 273, 400, 426, 427, 428, 429])];
+  const expectIntersected = new Set([39, 189, 273, 400, 426, 427, 428, 429]);
+
+  const intersected = intersect(lists);
+  expect(intersected).toEqual(expectIntersected);
+});
+
+test('intersector should ignore nulls', () => {
+  const sets = [null, null, new Set([39, 189, 273, 400, 426, 427, 428, 429])];
+  const expectSet = new Set([39, 189, 273, 400, 426, 427, 428, 429]);
+
+  const intersected = intersect(sets);
+  expect(intersected).toEqual(expectSet);
 });

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { HydrateController } from './hydrate.controller';
 import { YoutubeSearchService } from '../youtube-search/youtube-search.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Track, TrackSchema } from '../schemas/Track';
+import { Track, TrackSchema } from '../../schemas/Track';
 import { HydrateService } from './hydrate.service';
 
 @Module({

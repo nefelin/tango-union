@@ -7,6 +7,6 @@ export class TrackQueriesResolver {
   constructor(private readonly trackQueriesService: TrackQueriesService) {}
   @Query(() => [Number])
   testQuery(@Args('query') query: CompoundQueryInput) {
-    return this.trackQueriesService.compoundQuery(query);
+    return this.trackQueriesService.compoundSearch(query).songs;
   }
 }

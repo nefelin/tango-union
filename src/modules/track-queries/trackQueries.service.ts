@@ -1,70 +1,75 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Track, TrackDocument } from '../../schemas/Track';
-import { Model } from 'mongoose';
+import { IndexService } from '../index/index.service';
 import { CompoundQueryInput } from './dto/compoundQuery.input';
-import { reduceToIntersection } from './util';
+import { intersect } from './util';
+import { IndexedCategory, ResultsIndex } from '../index/util/songProcessor';
+import { Maybe } from '../../types';
 
 @Injectable()
 export class TrackQueriesService {
-  constructor(
-    @InjectModel(Track.name) private trackModel: Model<TrackDocument>,
-  ) {}
+  constructor(private readonly indexService: IndexService) {}
 
-  async compoundQuery({ orchestra, title, genre, singer }: CompoundQueryInput) {
-    // fixme missing year
+  private songsByCategory(
+    category: IndexedCategory,
+    terms: Array<string | number>,
+  ): Maybe<Set<number>> {
+    if (!terms) return null;
+    const { selectIndex } = this.indexService.getIndex();
+    const resultSet = new Set<number>();
+    for (const term of terms) {
+      if (!selectIndex[category][term]) continue;
+      selectIndex[category][term].forEach((id) => resultSet.add(id));
+    }
 
-    const searchesOmitting: Record<
-      string,
-      Record<string, string | string[] | number>
-    > = {};
-    const resultsOmitting: Record<string, Set<number>> = {};
+    return resultSet;
+  }
 
-    // get results for each combination (omitting one field so we can hydrate those song counts)
-    searchesOmitting['orchestra'] = {
-      ...(title ? { title } : {}),
-      ...(singer ? { singer } : {}),
-      ...(genre ? { genre } : {}),
+  compoundSearch(query: CompoundQueryInput): ResultsIndex {
+    const { orchestra, genre, singer, year } = query;
+
+    const results: Record<IndexedCategory, Maybe<Set<number>>> = {
+      orchestra: this.songsByCategory('orchestra', orchestra),
+      singer: this.songsByCategory('singer', singer),
+      genre: this.songsByCategory('genre', genre),
+      year: this.songsByCategory('year', year),
     };
 
-    searchesOmitting['title'] = {
-      ...(orchestra ? { orchestra } : {}),
-      ...(singer ? { singer } : {}),
-      ...(genre ? { genre } : {}),
+    const resultsWithout: Record<IndexedCategory, Maybe<Set<number>>> = {
+      orchestra: null,
+      singer: null,
+      genre: null,
+      year: null,
     };
 
-    searchesOmitting['genre'] = {
-      ...(title ? { title } : {}),
-      ...(singer ? { singer } : {}),
-      ...(orchestra ? { orchestra } : {}),
-    };
+    const songs = [...intersect(Object.values(results))];
 
-    searchesOmitting['singer'] = {
-      ...(title ? { title } : {}),
-      ...(genre ? { genre } : {}),
-      ...(orchestra ? { orchestra } : {}),
-    };
-
-    // run searches
-    for (const [key, value] of Object.entries(searchesOmitting)) {
-      if (value !== {}) {
-        resultsOmitting[key] = new Set(
-          (
-            await this.trackModel.find(value, {
-              trackId: 1,
-              _id: 0,
-            })
-          ).map((track) => track.toObject().trackId),
-        );
+    const allCategories = Object.keys(results);
+    for (const category of allCategories) {
+      if (query[category]?.length) {
+        const otherCategories = allCategories
+          .filter((thisCat) => thisCat !== category)
+          .map((thisCat) => results[thisCat]);
+        resultsWithout[category] = intersect(otherCategories);
+      } else {
+        // we know that if theres no terms for a category, results without its terms will just be the end intersection
+        resultsWithout[category] = songs;
       }
     }
 
-    // compare indexed song counts with results to get updated counts, room for optimization here
+    console.log({ results, resultsWithout });
 
-    // intersect all results for actual result set
-    const finalResults = reduceToIntersection(Object.values(resultsOmitting));
+    // figure out counts here --- we need the results for the text search here too!
 
-    console.log(finalResults);
-    return [];
+    // intersect the partially intersect (slightly faster?) to get our final results
+
+    return {
+      songs,
+      selectIndexCounts: {
+        year: {},
+        genre: {},
+        singer: {},
+        orchestra: {},
+      },
+    };
   }
 }

@@ -1,15 +1,14 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { YoutubeSearchService } from './youtube-search/youtube-search.service';
-import { logger } from './logging.middleware';
+import { Module } from '@nestjs/common';
+import { YoutubeSearchService } from './modules/youtube-search/youtube-search.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { TracksModule } from './tracks/tracks.module';
-import { HydrateModule } from './hydrate/hydrate.module';
+import { TracksModule } from './modules/tracks/tracks.module';
+import { HydrateModule } from './modules/hydrate/hydrate.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TrackQueriesModule } from './modules/track-queries/trackQueries.module';
 import * as path from 'path';
+import { IndexModule } from './modules/index/index.module';
+import { SongIndexModule } from './modules/song-index/songIndex.module';
 
 @Module({
   imports: [
@@ -21,12 +20,10 @@ import * as path from 'path';
     TracksModule,
     HydrateModule,
     TrackQueriesModule,
+    IndexModule,
+    SongIndexModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, YoutubeSearchService],
+  controllers: [],
+  providers: [YoutubeSearchService],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(logger).forRoutes(AppController);
-  }
-}
+export class AppModule {}
