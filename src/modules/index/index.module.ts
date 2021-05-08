@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Track, TrackSchema } from '../../schemas/Track';
+import { Track, TrackSchema } from '../../schemas/tracks.entity';
 import { IndexResolver } from './index.resolver';
 import { IndexService } from './index.service';
 import { TracksModule } from '../tracks/tracks.module';

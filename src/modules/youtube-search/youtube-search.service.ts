@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import yts, { VideoSearchResult } from 'yt-search';
-import { RatedYoutube } from '../../schemas/Track';
+import { RatedYoutube } from '../../schemas/tracks.entity';
 
 @Injectable()
 export class YoutubeSearchService {

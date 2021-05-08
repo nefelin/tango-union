@@ -1,10 +1,8 @@
-import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
-import { Track, TrackDocument } from '../../schemas/Track';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { Track, TrackDocument } from '../../schemas/tracks.entity';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Schema } from 'mongoose';
+import { Model } from 'mongoose';
 import { YoutubeSearchService } from '../youtube-search/youtube-search.service';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const ObjectId = require('mongoose').Types.ObjectId;
 
 @Injectable()
 export class TracksService {
@@ -40,7 +38,7 @@ export class TracksService {
     return this.trackModel.find().limit(500).exec();
   }
 
-  async linksForTrack(id: string): Promise<Track['youtube']['links']> {
+  async linksForTrack(id: number): Promise<Track['youtube']['links']> {
     const thisSong = await this.trackModel.findById(id).exec();
     if (!thisSong) {
       throw BadRequestException;

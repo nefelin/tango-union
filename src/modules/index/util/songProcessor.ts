@@ -1,9 +1,14 @@
 import * as r from 'ramda';
-import { SimpleTrack, stripYoutubeAndTimeStamp } from '../index.service';
-
-interface SlopMeta {
-  slop: string;
-}
+import { stripYoutubeAndTimeStamp } from '../index.service';
+import { SimpleTrack } from '../../tracks/dto/simpletrack.entity';
+import {
+  IndexedCategory,
+  IndexedSongData,
+  MemberToTracks,
+  SelectIndex,
+  SelectIndexCount,
+  TrackId,
+} from './types.entity';
 
 const NULL_LABELS = {
   SINGER: 'Instrumental',
@@ -11,33 +16,12 @@ const NULL_LABELS = {
   YEAR: 'Unknown',
 };
 
-const indexedCategories = ['singer', 'orchestra', 'genre', 'year'] as const;
-
-export type IndexedCategory = typeof indexedCategories[number];
-
-type TrackId = SimpleTrack['trackId'];
-
-type CategoryMember = string; // in case we want to type more tightly at some point
-
-type MemberToTracks = Record<CategoryMember, TrackId[]>;
-type MemberToTrackCount = Record<CategoryMember, number>;
-
-type SelectIndex = Record<IndexedCategory, MemberToTracks>;
-type SelectIndexCount = Record<IndexedCategory, MemberToTrackCount>;
-
-type SloppedSong = SimpleTrack & SlopMeta;
-
 const foldDiacritics = (s: string) =>
   s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
 const stripNonAlpha = r.replace(/[^A-zÀ-ú\d\s]/g, '');
 
 const cleanSlop = r.pipe(r.toLower, foldDiacritics, stripNonAlpha, r.trim);
-
-export interface IndexedSongData {
-  songs: SloppedSong[];
-  selectIndex: SelectIndex;
-}
 
 export interface ResultsIndex {
   songs: TrackId[];

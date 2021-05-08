@@ -28,7 +28,7 @@ test('intersector should only leave items present in all lists', () => {
     new Set([1, 2, 3, 4, 6]),
     new Set([1, 2, 3, 5]),
   ];
-  const expectIntersected = new Set([1, 2, 5]);
+  const expectIntersected = new Set([1, 2]);
 
   const intersected = intersect(lists);
   expect(intersected).toEqual(expectIntersected);
@@ -48,4 +48,18 @@ test('intersector should ignore nulls', () => {
 
   const intersected = intersect(sets);
   expect(intersected).toEqual(expectSet);
+});
+
+test('intersctor should not keep values from smallest list if they arent in larger lists', () => {
+  const lists = [
+    new Set([20, 5, 2]),
+    new Set([1, 2, 5, 6]),
+    new Set([1, 2, 3, 4, 5, 6]),
+    new Set([1, 2, 5, 7, 50]),
+    new Set([1, 2, 3, 4, 5, 6]),
+    new Set([1, 2, 3, 5]),
+  ];
+  const expectIntersected = new Set([5, 2]);
+  const intersected = intersect(lists);
+  expect(intersected).toEqual(expectIntersected);
 });

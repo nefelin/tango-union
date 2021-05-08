@@ -1,6 +1,6 @@
 import { queryStringFromSong, removeSearchIrrelevantTerms } from './util';
 import { TangoTrack } from './types';
-import { Track } from './schemas/Track';
+import { Track } from './schemas/tracks.entity';
 
 it('removeSearchIrrelevantTerms should remove any occurences of "Unknown Male" or "Unknown Female"', () => {
   const term = 'juan darienzo unknown female pensalo bien unknown male';

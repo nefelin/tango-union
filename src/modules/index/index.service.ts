@@ -1,11 +1,13 @@
 import * as r from 'ramda';
 import { Injectable } from '@nestjs/common';
 import { TracksService } from '../tracks/tracks.service';
-import { Track, TrackDocument } from '../../schemas/Track';
-import { IndexedSongData, indexSongs } from './util/songProcessor';
+import { Track, TrackDocument } from '../../schemas/tracks.entity';
 import { Maybe } from '../../types';
 import * as fs from 'fs';
 import * as path from 'path';
+import { SimpleTrack } from '../tracks/dto/simpletrack.entity';
+import { IndexedSongData } from './util/types.entity';
+import { indexSongs } from './util/songProcessor';
 
 const fileName = 'songIndex.json';
 const filePath = path.join(process.cwd(), `generated/${fileName}`);
@@ -29,12 +31,12 @@ export class IndexService {
     const newIndex = indexSongs(simpleTracks);
     this.memoryIndex = newIndex;
     this.writeIndex(newIndex);
-    console.log('Song index built.');
+    console.log('Song index built and saved to disk.');
   }
 
   async loadIndex() {
     this.memoryIndex = await JSON.parse(fs.readFileSync(filePath).toString());
-    console.log('Song index loaded.');
+    console.log('Song index loaded from disk.');
   }
 
   private writeIndex(newIndex: IndexedSongData) {
@@ -50,10 +52,8 @@ export class IndexService {
   }
 }
 
-export type SimpleTrack = Omit<Track, 'youtube'>;
-
 export const stripYoutubeAndTimeStamp = (track: Track): SimpleTrack =>
-  r.omit(['youtube', 'updatedAt'], track);
+  r.omit(['youtube', 'updatedAt', '_id'], track);
 
 export const simpleTracksFromTrackDocuments: (
   trackDocs: TrackDocument[],

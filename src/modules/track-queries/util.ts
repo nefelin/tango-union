@@ -1,8 +1,10 @@
 import { Maybe } from '../../types';
 import * as r from 'ramda';
 
-const intersectionReducer = (acc: Set<number>, curr: Set<number>) =>
-  new Set([...acc, ...[...curr].filter((num) => acc.has(num))]);
+const intersectionReducer = (acc: Set<number>, curr: Set<number>) => {
+  acc.forEach((item) => curr.has(item) || acc.delete(item));
+  return acc;
+};
 
 export const shorterFirstSorter = (a: Set<any>, b: Set<any>) => a.size - b.size;
 

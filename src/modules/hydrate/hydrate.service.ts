@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Track, TrackDocument } from '../../schemas/Track';
+import { Track, TrackDocument } from '../../schemas/tracks.entity';
 import { Model } from 'mongoose';
 import { YoutubeSearchService } from '../youtube-search/youtube-search.service';
 import { queryStringFromSong } from '../../util';

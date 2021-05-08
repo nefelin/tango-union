@@ -1,7 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, ObjectId } from 'mongoose';
 import * as mongoose from 'mongoose';
+import { ObjectType, OmitType, PickType } from '@nestjs/graphql';
 
+@ObjectType()
 export class RatedYoutube {
   @Prop({ required: true })
   videoId: string;
@@ -31,6 +33,7 @@ export class RatedYoutube {
   authorUrl: string;
 }
 
+@ObjectType()
 export class YoutubeLinks {
   @Prop({ required: true })
   scrapedAt: Date;
@@ -38,6 +41,7 @@ export class YoutubeLinks {
   @Prop({ required: true })
   links: RatedYoutube[];
 }
+
 
 @Schema({ timestamps: true })
 export class Track {

@@ -1,4 +1,4 @@
-import { Track } from '../../../schemas/Track';
+import { Track } from '../../../schemas/tracks.entity';
 
 export const testTracks: Track[] = [
   {

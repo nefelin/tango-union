@@ -2,8 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { IndexService } from '../index/index.service';
 import { CompoundQueryInput } from './dto/compoundQuery.input';
 import { intersect } from './util';
-import { IndexedCategory, ResultsIndex } from '../index/util/songProcessor';
 import { Maybe } from '../../types';
+import { IndexedCategory } from '../index/util/types.entity';
+import { ResultsIndex } from '../index/util/songProcessor';
 
 @Injectable()
 export class TrackQueriesService {
