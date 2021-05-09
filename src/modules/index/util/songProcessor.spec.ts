@@ -1,5 +1,4 @@
 import { indexSongs } from './songProcessor';
-import { simpleTracksFromTrackDocuments } from '../index.service';
 import * as r from 'ramda';
 import { testTracks } from './mongoTestTracksSampleTwenty';
 
