@@ -1,6 +1,6 @@
 import { TracksService } from './tracks.service';
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { RatedYoutube,} from '../../schemas/tracks.entity';
+import { RatedYoutube } from '../../schemas/tracks.entity';
 import { SimpleTrack } from './dto/simpletrack.entity';
 
 @Resolver('track')
@@ -10,6 +10,11 @@ export class TracksResolver {
   @Query(() => [RatedYoutube], { name: 'trackSource' })
   getTrackLinks(@Args('trackId') trackId: number) {
     return this.tracksService.linksForTrack(trackId);
+  }
+
+  @Query(() => [SimpleTrack], { name: 'tracksByIds' })
+  tracksByIds(@Args('trackIds', { type: () => [Number] }) trackIds: number[]) {
+    return this.tracksService.specificTracks(trackIds);
   }
 
   @Query(() => [SimpleTrack], { name: 'allTracks' })

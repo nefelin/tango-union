@@ -2,13 +2,15 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { Track, TrackDocument } from '../../schemas/tracks.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { YoutubeSearchService } from '../youtube-search/youtube-search.service';
+import { TrackId } from '../index/util/types.entity';
+import { SimpleTrack } from './dto/simpletrack.entity';
 
 @Injectable()
 export class TracksService {
+  simpleSongCache: Record<number, SimpleTrack> = {};
+
   constructor(
     @InjectModel(Track.name) private trackModel: Model<TrackDocument>,
-    private readonly youtubeSearchService: YoutubeSearchService,
   ) {}
 
   rateLink(
@@ -31,11 +33,20 @@ export class TracksService {
   }
 
   allTracks(): Promise<TrackDocument[]> {
-    return this.trackModel.find().exec(); //fixme remove limit;
+    return this.trackModel.find().exec();
   }
 
   sampleTracks(): Promise<TrackDocument[]> {
     return this.trackModel.find().limit(500).exec();
+  }
+
+  specificTracks(trackIds: TrackId[]): SimpleTrack[] {
+    return trackIds.map((trackId) => this.simpleSongCache[trackId]);
+  }
+
+  hydrateSongCache(tracks: SimpleTrack[]) {
+    tracks.forEach((track) => (this.simpleSongCache[track.trackId] = track));
+    console.log('Track cache is hydrated.');
   }
 
   async linksForTrack(id: number): Promise<Track['youtube']['links']> {

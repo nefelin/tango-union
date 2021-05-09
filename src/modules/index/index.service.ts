@@ -6,7 +6,7 @@ import { Maybe } from '../../types';
 import * as fs from 'fs';
 import * as path from 'path';
 import { SimpleTrack } from '../tracks/dto/simpletrack.entity';
-import { IndexedSongData } from './util/types.entity';
+import { IndexedSongData, SloppedSong } from './util/types.entity';
 import { indexSongs } from './util/songProcessor';
 
 const fileName = 'songIndex.json';
@@ -21,25 +21,26 @@ export class IndexService {
       console.log('No song index found, building...');
       this.rebuildIndex();
     } else {
-      this.loadIndex();
+      this._loadIndex();
     }
   }
 
   async rebuildIndex() {
     const trackDocs = await this.tracksService.sampleTracks();
-    const simpleTracks = simpleTracksFromTrackDocuments(trackDocs);
+    const simpleTracks = r.map(simpleTrackFromTrackDocument)(trackDocs);
     const newIndex = indexSongs(simpleTracks);
-    this.memoryIndex = newIndex;
-    this.writeIndex(newIndex);
+    this._writeIndex(newIndex);
+    this._loadIndex();
     console.log('Song index built and saved to disk.');
   }
 
-  async loadIndex() {
+  private async _loadIndex() {
     this.memoryIndex = await JSON.parse(fs.readFileSync(filePath).toString());
+    this.tracksService.hydrateSongCache(this.memoryIndex.songs);
     console.log('Song index loaded from disk.');
   }
 
-  private writeIndex(newIndex: IndexedSongData) {
+  private _writeIndex(newIndex: IndexedSongData) {
     const newData = JSON.stringify(newIndex);
     return fs.writeFileSync(filePath, newData);
   }
@@ -55,8 +56,6 @@ export class IndexService {
 export const stripYoutubeAndTimeStamp = (track: Track): SimpleTrack =>
   r.omit(['youtube', 'updatedAt', '_id'], track);
 
-export const simpleTracksFromTrackDocuments: (
-  trackDocs: TrackDocument[],
-) => SimpleTrack[] = r.map(
-  r.pipe((t) => t.toObject(), stripYoutubeAndTimeStamp),
-);
+export const simpleTrackFromTrackDocument: (
+  track: TrackDocument,
+) => SimpleTrack = r.pipe((t) => t.toObject(), stripYoutubeAndTimeStamp);

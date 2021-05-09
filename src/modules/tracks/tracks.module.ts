@@ -9,7 +9,11 @@ import { TracksResolver } from './tracks.resolver';
   imports: [
     MongooseModule.forFeature([{ name: Track.name, schema: TrackSchema }]),
   ],
-  providers: [TracksResolver, TracksService, YoutubeSearchService],
+  providers: [
+    TracksResolver,
+    TracksService,
+    YoutubeSearchService,
+  ],
   exports: [TracksService],
 })
 export class TracksModule {}
