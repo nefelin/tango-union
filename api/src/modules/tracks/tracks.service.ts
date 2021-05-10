@@ -17,10 +17,10 @@ export class TracksService {
     trackId: number,
     videoId: string,
     ratingChange: number,
-  ): Promise<Track[]> {
+  ): Promise<Track> {
     // this should check if user has already voted on this link
     return this.trackModel
-      .updateOne(
+      .findByIdAndUpdate(
         {
           trackId: { $eq: trackId },
           'links.videoId': { $eq: videoId },

@@ -1,5 +1,4 @@
 import { Track } from './schemas/tracks.entity';
-import { TangoTrack } from './types';
 import * as r from 'ramda';
 
 export const removeSearchIrrelevantTerms: (query: string) => string = r.replace(
