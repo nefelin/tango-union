@@ -6,5 +6,16 @@
   "repository": "https://nefelin@github.com/nefelin/nestTangoUnionRewrite.git",
   "author": "nefelin <nephilim.eric@gmail.com>",
   "license": "MIT",
-  "workspaces": ["api", "spa", "union_index"]
+  "scripts": {
+    "api": "yarn workspace api",
+    "spa": "yarn workspace spa",
+    "union_index": "yarn workspace union_index",
+    "typecheck": "concurrently --kill-others-on-fail \"yarn api typecheck\" \"yarn spa typecheck\" \"yarn union_index typecheck\""
+  },
+  "workspaces": [
+    "./projects/*"
+  ],
+  "devDependencies": {
+    "concurrently": "^6.1.0"
+  }
 }
