@@ -21,7 +21,12 @@ const PageOne = () => <div>One!</div>;
 
 const PageTwo = () => <div>Two!</div>;
 
-const NotFound = () => <div>Not Found!</div>;
+const NotFound = () => {
+  const thing: string = 'typecript!!';
+  console.log(thing);
+
+  return <div>Not Found!</div>;
+};
 
 const Loading = () => <div>Loading...</div>;
 
