@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
+    "target": "ES6",
     "module": "ESNext",
     "lib": [
       "ESNext",
       "DOM"
     ],
-    "sourceMap": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
     "downlevelIteration": true,
     "strict": true,
     "strictNullChecks": true,
@@ -18,5 +19,5 @@
     "forceConsistentCasingInFileNames": true,
     "jsx": "react"
   },
-  "include": ["src", "index.d.ts"]
+  "include": ["../../src", "./index.d.ts"]
 }

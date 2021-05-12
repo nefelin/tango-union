@@ -1,15 +1,13 @@
 {
   "compilerOptions": {
-    "incremental": true,
     "target": "ES6",
     "module": "ESNext",
     "lib": [
       "ESNext",
       "DOM"
     ],
+    "moduleResolution": "node",
     "resolveJsonModule": true,
-    "sourceMap": true,
-    "tsBuildInfoFile": "./",
     "downlevelIteration": true,
     "strict": true,
     "strictNullChecks": true,
@@ -19,7 +17,10 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "jsx": "react"
+    "jsx": "react",
+    "tsBuildInfoFile": "./",
+    "incremental": true,
+    "sourceMap": true
   },
-  "include": ["src", "index.d.ts"]
+  "include": ["../../src", "./index.d.ts"]
 }

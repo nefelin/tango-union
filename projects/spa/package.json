@@ -4,10 +4,10 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "webpack",
-    "start": "webpack serve",
+    "build": "webpack --config config/webpack/webpack.dev.config.js",
+    "start": "webpack --config config/webpack/webpack.dev.config.js serve",
     "test": "jest --config=./config/jest.config.js",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit --project config/tsconfig.prod.json"
   },
   "devDependencies": {
     "@babel/core": "^7.14.0",
