@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack",
     "start": "webpack serve",
-    "test": "jest",
+    "test": "jest --config=./config/jest.config.js",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
