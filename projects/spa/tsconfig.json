@@ -1,25 +1,24 @@
 {
   "compilerOptions": {
-    /* Basic Options */
-    "incremental": true /* Enable incremental compilation */,
-    "target": "ESNext" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ES2020', or 'ESNEXT'. */,
-    "module": "ESNext" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'es2020', or 'ESNext'. */,
+    "incremental": true,
+    "target": "ES6",
+    "module": "ESNext",
     "lib": [
       "ESNext",
       "DOM"
-    ] /* Specify library files to be included in the compilation. */,
-//    "noEmit": true,
-    "sourceMap": true /* Generates corresponding '.map' file. */,
-    "tsBuildInfoFile": "./" /* Specify file to store incremental compilation information */,
-    "downlevelIteration": true /* Provide full support for iterables in 'for-of', spread, and destructuring when targeting 'ES5' or 'ES3'. */,
-    "strict": true /* Enable all strict type-checking options. */,
-    "strictNullChecks": true /* Enable strict null checks. */,
-    "noImplicitReturns": true /* Report error when not all code paths in function return a value. */,
-    "noUncheckedIndexedAccess": true /* Include 'undefined' in index signature results */,
-    "noPropertyAccessFromIndexSignature": true /* Require undeclared properties from index signatures to use element accesses. */,
-    "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
-    "skipLibCheck": true /* Skip type checking of declaration files. */,
-    "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
+    ],
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "tsBuildInfoFile": "./",
+    "downlevelIteration": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "noImplicitReturns": true,
+    "noUncheckedIndexedAccess": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "jsx": "react"
   },
   "include": ["src", "index.d.ts"]

@@ -1,9 +1,12 @@
 import * as React from 'react';
 import { Route } from 'react-router';
 import { BrowserRouter, Switch } from 'react-router-dom';
+import Alert from './alert.svg';
+
 const LazyTest = React.lazy(
   () => import(/* webpackChunkName: "TestRoute" */ './components/Test/Test'),
 );
+
 const App = () => (
   <BrowserRouter>
     <React.Suspense fallback={Loading}>
@@ -17,7 +20,14 @@ const App = () => (
   </BrowserRouter>
 );
 
-const PageOne = () => <div>One!</div>;
+const PageOne = () => {
+  return (
+    <div>
+      Svg Test
+      <Alert/>
+    </div>
+  );
+};
 
 const PageTwo = () => <div>Two!</div>;
 
