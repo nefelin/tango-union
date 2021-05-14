@@ -16,12 +16,12 @@ module.exports = (mode) => ({
           { loader: 'babel-loader', options: babelOptions(mode) },
           {
             loader: 'ts-loader',
-            // options: {
-            //   configFile: path.resolve(
-            //     __dirname,
-            //     `../typescript/tsconfig.${mode==='production' ? 'prod' : 'dev'}.json`,
-            //   ),
-            // },
+            options: {
+              configFile: path.resolve(
+                __dirname,
+                `../typescript/tsconfig${mode==='production' ? '.build' : ''}.json`,
+              ),
+            },
           },
         ],
         exclude: /node_modules/,

@@ -5,6 +5,7 @@ module.exports = (mode) => ({
       { useBuiltIns: 'usage', corejs: 3, targets: '> 0.25%'},
     ],
     '@babel/preset-react',
+    '@babel/preset-typescript'
   ],
   plugins: [
     [

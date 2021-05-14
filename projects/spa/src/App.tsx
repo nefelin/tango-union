@@ -1,43 +1,19 @@
 import * as React from 'react';
 import { Route } from 'react-router';
 import { BrowserRouter, Switch } from 'react-router-dom';
-import Alert from './alert.svg';
-
-const LazyTest = React.lazy(
-  () => import(/* webpackChunkName: "TestRoute" */ './components/Test/Test'),
-);
 
 const App = () => (
   <BrowserRouter>
     <React.Suspense fallback={Loading}>
       <Switch>
-        <Route exact path="/" component={PageOne} />
-        <Route exact path="/two" component={PageTwo} />
-        <Route exact path="/test" render={() => <LazyTest />} />
-        <Route path="*" component={NotFound} />
+        <Route exact path="/" component={Home} />
       </Switch>
     </React.Suspense>
   </BrowserRouter>
 );
 
-const PageOne = () => {
-  return (
-    <div>
-      Svg Test
-      <Alert/>
-    </div>
-  );
-};
-
-const PageTwo = () => <div>Two!</div>;
-
-const NotFound = () => {
-  const thing: string = 'typecript!!';
-  console.log(thing);
-
-  return <div>Not Found!</div>;
-};
-
-const Loading = () => <div>Loading...</div>;
+const Home = () => <div>Home</div>;
+const Loading = () => <div>Loading</div>;
+// const test: string = 2
 
 export default App;
