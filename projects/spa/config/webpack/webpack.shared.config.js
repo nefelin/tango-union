@@ -4,7 +4,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const babelOptions = require('./babelrc');
 const postcssOptions = require('./postcss.config');
 
-module.exports = {
+module.exports = (mode) => ({
   entry: {
     main: path.resolve(__dirname, '../../src/index.tsx'),
   },
@@ -13,15 +13,15 @@ module.exports = {
       {
         test: /\.tsx?$/,
         use: [
-          { loader: 'babel-loader', options: babelOptions },
+          { loader: 'babel-loader', options: babelOptions(mode) },
           {
             loader: 'ts-loader',
-            options: {
-              configFile: path.resolve(
-                __dirname,
-                '../typescript/tsconfig.dev.json',
-              ),
-            },
+            // options: {
+            //   configFile: path.resolve(
+            //     __dirname,
+            //     `../typescript/tsconfig.${mode==='production' ? 'prod' : 'dev'}.json`,
+            //   ),
+            // },
           },
         ],
         exclude: /node_modules/,
@@ -62,4 +62,4 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
   ],
-};
+});
