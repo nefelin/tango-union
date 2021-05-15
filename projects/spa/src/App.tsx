@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { Route } from 'react-router';
 import { BrowserRouter, Switch } from 'react-router-dom';
+import { Route } from 'react-router';
 
 const App = () => (
   <BrowserRouter>
     <React.Suspense fallback={Loading}>
       <Switch>
-        <Route exact path="/" component={Home} />
+        <Route exact path='/' component={Home} />
       </Switch>
     </React.Suspense>
   </BrowserRouter>

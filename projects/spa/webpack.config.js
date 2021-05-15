@@ -5,12 +5,17 @@ const devConfig = require('./webpack.dev.config');
 const prodConfig = require('./webpack.prod.config');
 
 module.exports = (_, options) => {
-const {mode} = options;
-  switch(mode) {
-    case "production":
-      return merge(sharedConfig(mode), prodConfig(mode));
+  const { mode, env } = options;
+
+  const shared = sharedConfig(mode, env);
+  const prod = prodConfig(mode);
+  const dev = devConfig(mode);
+
+  switch (mode) {
+    case 'production':
+      return merge(shared, prod);
     case 'develop':
     default:
-      return merge(sharedConfig(mode), devConfig(mode));
+      return merge(shared, dev);
   }
-}
+};

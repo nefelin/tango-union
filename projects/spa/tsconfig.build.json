@@ -18,10 +18,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "jsx": "preserve",
-    "tsBuildInfoFile": "./tsBuildInfo",
-    "incremental": true,
-    "sourceMap": true
+    "jsx": "preserve"
   },
-  "include": ["../../src", "index.d.ts"]
+  "include": ["./src", "./index.d.ts"]
 }

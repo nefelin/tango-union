@@ -4,12 +4,15 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "webpack --mode production --progress --config $npm_package_config_webpackRootConfig",
-    "start": "webpack serve --progress --mode development --config $npm_package_config_webpackRootConfig",
+    "build": "webpack --mode production --progress",
+    "start": "webpack serve --progress --mode development",
+    "start:lintCache": "webpack serve --progress --mode development --env=ESLINT_CACHE",
     "build:analyze": "yarn build --json ./dist/bundleStats.json && webpack-bundle-analyzer ./dist/bundleStats.json",
-    "dev:analyze": "webpack --config $npm_package_config_webpackRootConfig --json ./dist/bundleStats.json && webpack-bundle-analyzer ./dist/bundleStats.json",
-    "test": "jest --config=./config/jest/jest.config.js",
-    "typecheck": "tsc --noEmit"
+    "dev:analyze": "webpack --json ./dist/bundleStats.json && webpack-bundle-analyzer ./dist/bundleStats.json",
+    "test": "jest --config=./jest.config.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src",
+    "lint:fix": "eslint --fix src"
   },
   "config": {
     "webpackRootConfig": "config/webpack/webpack.config.js"
@@ -32,6 +35,7 @@
     "babel-plugin-formatjs": "^10.2.12",
     "babel-plugin-styled-components": "^1.12.0",
     "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "colors": "^1.4.0",
     "css-loader": "^5.2.4",
     "eslint": "^7.26.0",
     "eslint-config-airbnb": "^18.2.1",

@@ -1,11 +1,10 @@
-const webpackConfig = require('./config/webpack/webpack.shared.config');
-
 module.exports = {
   env: {
     browser: true,
     es2021: true,
     jest: true,
   },
+  root: true,
   extends: [
     'airbnb',
     'plugin:react/recommended',
@@ -22,8 +21,6 @@ module.exports = {
     },
     ecmaVersion: 12,
     sourceType: 'module',
-    project: ['tsconfig.json', webpackConfig()],
-    tsconfigRootDir: './config/typescript/'
   },
   plugins: ['react', '@typescript-eslint', 'formatjs', 'prettier'],
   rules: {
@@ -89,7 +86,6 @@ module.exports = {
     ],
   },
   settings: {
-    'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],
+    'import/extensions': ['.ts', '.tsx'],
   },
-  files: ['src']
 };

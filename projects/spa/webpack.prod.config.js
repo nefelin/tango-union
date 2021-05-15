@@ -1,5 +1,3 @@
-const path = require('path');
-
 module.exports = () => ({
     mode: 'production',
     devtool: 'hidden-source-map',
