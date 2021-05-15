@@ -1,5 +1,5 @@
 module.exports = {
   preset: 'ts-jest',
   rootDir: './',
-  transform: { '\\.[jt]sx?$': './config/jest/jest.preprocess.js' }
+  transform: { '\\.[jt]sx?$': './jest.preprocess.js' }
 };
