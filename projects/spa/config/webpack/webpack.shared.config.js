@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const babelOptions = require('./babelrc');
 const postcssOptions = require('./postcss.config');
+const ESLintWebpackPlugin = require('eslint-webpack-plugin');
 
 module.exports = (mode) => ({
   entry: {
@@ -61,5 +62,6 @@ module.exports = (mode) => ({
       template: path.resolve(__dirname, '../../src/template.html'),
     }),
     new CleanWebpackPlugin(),
+    new ESLintWebpackPlugin()
   ],
 });
