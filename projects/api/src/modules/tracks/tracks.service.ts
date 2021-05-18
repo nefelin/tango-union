@@ -2,8 +2,8 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { Track, TrackDocument } from '../../schemas/tracks.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { TrackId } from '../index/util/types.entity';
 import { SimpleTrack } from './dto/simpletrack.entity';
+import { TrackId } from 'tango-index';
 
 @Injectable()
 export class TracksService {

@@ -8,7 +8,6 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TrackQueriesModule } from './modules/track-queries/trackQueries.module';
 import * as path from 'path';
 import { IndexModule } from './modules/index/index.module';
-import { SongIndexModule } from './modules/song-index/songIndex.module';
 
 @Module({
   imports: [
@@ -21,7 +20,6 @@ import { SongIndexModule } from './modules/song-index/songIndex.module';
     HydrateModule,
     TrackQueriesModule,
     IndexModule,
-    SongIndexModule,
   ],
   controllers: [],
   providers: [YoutubeSearchService],

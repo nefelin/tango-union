@@ -6,8 +6,7 @@ import { Maybe } from '../../types';
 import * as fs from 'fs';
 import * as path from 'path';
 import { SimpleTrack } from '../tracks/dto/simpletrack.entity';
-import { IndexedSongData, SloppedSong } from './util/types.entity';
-import { indexSongs } from './util/songProcessor';
+import { IndexedSongData, indexSongs } from 'tango-index';
 
 const fileName = 'songIndex.json';
 const filePath = path.join(process.cwd(), `generated/${fileName}`);
@@ -53,9 +52,9 @@ export class IndexService {
   }
 }
 
-export const stripYoutubeAndTimeStamp = (track: Track): SimpleTrack =>
+export const SimpleTrackFromTrackDoc = (track: Track): SimpleTrack =>
   r.omit(['youtube', 'updatedAt', '_id'], track);
 
 export const simpleTrackFromTrackDocument: (
   track: TrackDocument,
-) => SimpleTrack = r.pipe((t) => t.toObject(), stripYoutubeAndTimeStamp);
+) => SimpleTrack = r.pipe((t) => t.toObject(), SimpleTrackFromTrackDoc);

@@ -1,4 +1,3 @@
-
 export interface IndexedSongData {
   songs: SloppedSong[];
   selectIndex: SelectIndex;

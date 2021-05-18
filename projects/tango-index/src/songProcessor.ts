@@ -4,8 +4,7 @@ import {
   IndexedSongData,
   MemberToTracks,
   SelectIndex,
-  SelectIndexCount, SimpleTrack,
-  TrackId,
+  SimpleTrack,
 } from './types.entity';
 
 const NULL_LABELS = {
@@ -20,11 +19,6 @@ const foldDiacritics = (s: string) =>
 const stripNonAlpha = r.replace(/[^A-zÀ-ú\d\s]/g, '');
 
 const cleanSlop = r.pipe(r.toLower, foldDiacritics, stripNonAlpha, r.trim);
-
-export interface ResultsIndex {
-  songs: TrackId[];
-  selectIndexCounts: SelectIndexCount;
-}
 
 // slop stuff
 const flattenSingersAndOrchestras = ({

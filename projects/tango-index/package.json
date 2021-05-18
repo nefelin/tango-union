@@ -1,14 +1,16 @@
 {
-  "name": "union_index",
+  "name": "tango-index",
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
+    "clean": "rimraf dist && rimraf generated",
+    "build": "yarn clean && tsc",
     "typecheck": "tsc --noEmit",
     "test": "jest src"
   },
   "devDependencies": {
     "@types/node": "^15.0.2",
+    "rimraf": "^3.0.2",
     "ts-jest": "^26.5.6",
     "typescript": "^4.2.4"
   },

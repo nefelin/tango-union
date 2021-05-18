@@ -1,3 +1,3 @@
-export const testFn = (random: string) => {
-console.log('sample function', random);
-}
+export { indexSongs } from './songProcessor';
+export * from './types.entity';
+

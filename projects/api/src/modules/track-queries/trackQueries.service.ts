@@ -3,8 +3,7 @@ import { IndexService } from '../index/index.service';
 import { CompoundQueryInput } from './dto/compoundQuery.input';
 import { intersect } from './util';
 import { Maybe } from '../../types';
-import { IndexedCategory } from '../index/util/types.entity';
-import { ResultsIndex } from '../index/util/songProcessor';
+import { IndexedCategory, SelectIndexCount, TrackId } from 'tango-index';
 
 @Injectable()
 export class TrackQueriesService {
@@ -73,4 +72,9 @@ export class TrackQueriesService {
       },
     };
   }
+}
+
+interface ResultsIndex {
+  songs: TrackId[];
+  selectIndexCounts: SelectIndexCount;
 }
