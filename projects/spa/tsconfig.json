@@ -19,7 +19,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "preserve",
-    "tsBuildInfoFile": "./internal/tsBuildInfo",
+    "tsBuildInfoFile": "./.internal/tsBuildInfo",
     "incremental": true,
     "sourceMap": true
   },

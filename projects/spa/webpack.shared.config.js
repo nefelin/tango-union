@@ -5,6 +5,7 @@ const babelOptions = require('./babelrc');
 const postcssOptions = require('./postcss.config');
 const ESLintWebpackPlugin = require('eslint-webpack-plugin');
 const colors = require('colors/safe');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 module.exports = (mode, env) => {
   const isProduction = mode === 'production';
@@ -12,7 +13,8 @@ module.exports = (mode, env) => {
 
   if (cacheEslint)
     console.info(
-      'Caching eslint results -- linting only changed files and ' + colors.bold.red('SKIPPING LINT ON START'),
+      'Caching eslint results -- linting only changed files and ' +
+        colors.bold.red('SKIPPING LINT ON START'),
     );
   return {
     entry: {
@@ -24,15 +26,6 @@ module.exports = (mode, env) => {
           test: /\.tsx?$/,
           use: [
             { loader: 'babel-loader', options: babelOptions(mode) },
-            {
-              loader: 'ts-loader',
-              options: {
-                configFile: path.resolve(
-                  __dirname,
-                  `./tsconfig${isProduction ? '.build' : ''}.json`,
-                ),
-              },
-            },
           ],
           exclude: /node_modules/,
         },
@@ -79,6 +72,7 @@ module.exports = (mode, env) => {
         lintDirtyModulesOnly: cacheEslint,
         failOnError: isProduction,
       }),
+      // new ForkTsCheckerWebpackPlugin(),
     ],
   };
 };

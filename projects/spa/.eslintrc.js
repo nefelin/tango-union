@@ -26,7 +26,7 @@ module.exports = {
   rules: {
     'no-console': [2, { allow: ['error'] }],
     'object-curly-newline': 0,
-    'jsx-quotes': [2, 'prefer-single'],
+    'quotes': [2, "single", "avoid-escape"],
     'comma-dangle': 0,
     'no-underscore-dangle': [1, { allow: ['__typename'] }],
     'no-use-before-define': 0,

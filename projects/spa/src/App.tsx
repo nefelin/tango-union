@@ -14,6 +14,6 @@ const App = () => (
 
 const Home = () => <div>Home</div>;
 const Loading = () => <div>Loading</div>;
-// const test: string = 2
+const test: string = "fdasfffs";
 
 export default App;
