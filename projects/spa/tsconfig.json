@@ -6,6 +6,7 @@
       "ESNext",
       "DOM"
     ],
+    "noEmit": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "downlevelIteration": true,

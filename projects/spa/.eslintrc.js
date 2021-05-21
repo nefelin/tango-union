@@ -22,17 +22,19 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module',
   },
-  plugins: ['react', '@typescript-eslint', 'formatjs', 'prettier'],
+  plugins: ['react', '@typescript-eslint/eslint-plugin', 'formatjs', 'prettier'],
   rules: {
-    'no-console': [2, { allow: ['error'] }],
+    'no-console': [2, { allow: ['error', 'warn'] }],
     'object-curly-newline': 0,
-    'quotes': [2, "single", "avoid-escape"],
+    'quotes': [2, "single", {"avoidEscape": true, "allowTemplateLiterals": true}],
+    'jsx-quotes': [2, 'prefer-single'],
     'comma-dangle': 0,
     'no-underscore-dangle': [1, { allow: ['__typename'] }],
     'no-use-before-define': 0,
     'no-shadow': 0, // replaced with @typescript-eslint version of same rule
     'max-len': 0,
     'no-multiple-empty-lines': 1,
+    'dot-notation':0,
 
     // For integrating with prettier without conflicts! More info: https://github.com/prettier/eslint-config-prettier#special-rules
     'prefer-arrow-callback': 0,

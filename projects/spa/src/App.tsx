@@ -1,19 +1,27 @@
-import * as React from 'react';
-import { BrowserRouter, Switch } from 'react-router-dom';
-import { Route } from 'react-router';
+import React from 'react';
+import styled from 'styled-components';
+import { SearchDash } from './components/SearchDash/SearchDash';
+import { StateProvider } from './context/reducer';
 
-const App = () => (
-  <BrowserRouter>
-    <React.Suspense fallback={Loading}>
-      <Switch>
-        <Route exact path='/' component={Home} />
-      </Switch>
-    </React.Suspense>
-  </BrowserRouter>
-);
+function App() {
+  return (
+    <StateProvider>
+      <div className="App">
+        <StyledHeader>
+          <img alt="Tango Union Logo" height={45} src={'./TangoUnionTemp.png'} />
+        </StyledHeader>
+        <SearchDash />
+      </div>
+    </StateProvider>
+  );
+}
 
-const Home = () => <div>Home</div>;
-const Loading = () => <div>Loading</div>;
-const test: string = "fdasfffs";
+const StyledHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 95%;
+  margin-bottom: 20px;
+  padding: 10px;
+`;
 
 export default App;

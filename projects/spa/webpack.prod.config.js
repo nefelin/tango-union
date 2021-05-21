@@ -1,16 +1,36 @@
+const TerserPlugin = require('terser-webpack-plugin');
+
 module.exports = () => ({
-    mode: 'production',
-    devtool: 'hidden-source-map',
-    optimization: {
-      splitChunks: {
-        cacheGroups: {
-          vendor: {
-            name: 'node_vendors',
-            test: /[\\/]node_modules[\\/]/,
-            chunks: 'all',
+  mode: 'production',
+  devtool: 'inline-source-map',
+  performance: {
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000,
+  },
+  optimization: {
+    minimizer: [
+      new TerserPlugin({
+        extractComments: false,
+      }),
+    ],
+    splitChunks: {
+      chunks: 'all',
+      maxInitialRequests: Infinity,
+      minSize: 0,
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name(module) {
+            // get the name. E.g. node_modules/packageName/not/this/part.js
+            // or node_modules/packageName
+            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+
+            // npm package names are URL-safe, but some servers don't like @ symbols
+            return `npm.${packageName.replace('@', '')}`;
           },
         },
       },
     },
-  });
-
+  },
+});
