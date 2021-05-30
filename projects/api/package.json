@@ -2,7 +2,7 @@
   "name": "api",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "Eric Lindgren",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -20,7 +20,10 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "generate": "yarn clean && yarn generate:schema && yarn generate:codegen",
+    "generate:schema": "NODE_ENV=local nest start -- generateOnly",
+    "generate:codegen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "@nestjs/common": "^7.5.1",
@@ -58,6 +61,7 @@
     "@types/yt-search": "^2.3.0",
     "@typescript-eslint/eslint-plugin": "^4.6.1",
     "@typescript-eslint/parser": "^4.6.1",
+    "apollo-playground-maker": "^0.2.6",
     "eslint": "^7.12.1",
     "eslint-config-prettier": "7.1.0",
     "eslint-plugin-prettier": "^3.1.4",

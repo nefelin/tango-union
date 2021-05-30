@@ -1,0 +1,3 @@
+query TestCompoundQuery($criteria: CompoundQueryInput!) {
+    testQuery(query: $criteria)
+}

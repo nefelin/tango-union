@@ -2687,6 +2687,13 @@ apollo-link@^1.2.14:
     tslib "^1.9.3"
     zen-observable-ts "^0.8.21"
 
+apollo-playground-maker@^0.2.6:
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/apollo-playground-maker/-/apollo-playground-maker-0.2.6.tgz#5038ff521c52241782e52698b8ed265db9aec7eb"
+  integrity sha512-cEa6U3++rBH5abvIpR1dlYArFYb98yHEK2b+eIFxBbCY3PbxgAPPERaeZwNdRUPxWTCi0hgrApMqmR4U4WY0qQ==
+  dependencies:
+    colors "^1.4.0"
+
 apollo-reporting-protobuf@^0.6.0, apollo-reporting-protobuf@^0.6.2:
   version "0.6.2"
   resolved "https://registry.yarnpkg.com/apollo-reporting-protobuf/-/apollo-reporting-protobuf-0.6.2.tgz#5572866be9b77f133916532b10e15fbaa4158304"
@@ -3774,7 +3781,7 @@ colorette@^1.2.2:
   resolved "https://registry.yarnpkg.com/colorette/-/colorette-1.2.2.tgz#cbcc79d5e99caea2dbf10eb3a26fd8b3e6acfa94"
   integrity sha512-MKGMzyfeuutC/ZJ1cba9NqcNpfeqMUcYmyF1ZFY6/Cn7CNSAKx6a+s48sqLqyAiZuaP2TcqMhoo+dlwFnVxT9w==
 
-colors@^1.1.2:
+colors@^1.1.2, colors@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/colors/-/colors-1.4.0.tgz#c50491479d4c1bdaed2c9ced32cf7c7dc2360f78"
   integrity sha512-a+UqTh4kgZg/SlGvfbzDHpgRu7AAQOmmqRHJnxhRZICKFUT91brVhNNt58CMWU9PsBbv3PDCZUHbVxuDiH2mtA==

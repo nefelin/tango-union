@@ -1,0 +1,33 @@
+overwrite: true
+schema: "generated/schema.gql"
+documents: "src/modules/**/*.gql"
+generates:
+  generated/tabs.json:
+    documents: "src/modules/**/*.gql"
+    plugins:
+      - "apollo-playground-maker"
+    config:
+      varFilename: "queryVars.ts"
+      docSortType: "content"
+      varWarningDetail: 'high'
+      varWarningReport: 'all'
+  generated/graphql.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+    config:
+      namingConvention:
+        enumValues: keep
+      scalars:
+        DateString: string
+#  ../front/src/api/generated/graphql.ts:
+#    plugins:
+#      - "typescript"
+#      - "typescript-operations"
+#      - "typescript-react-apollo"
+#    config:
+#      namingConvention:
+#        enumValues: keep
+#      scalars:
+#        DateString: string

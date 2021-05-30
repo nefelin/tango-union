@@ -8,11 +8,21 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TrackQueriesModule } from './modules/track-queries/trackQueries.module';
 import * as path from 'path';
 import { IndexModule } from './modules/index/index.module';
+import tabs from '../generated/tabs.json';
 
 @Module({
   imports: [
-    GraphQLModule.forRoot({
-      autoSchemaFile: path.join(process.cwd(), 'generated/schema.gql'),
+    GraphQLModule.forRootAsync({
+      useFactory: async () => {
+        const endpoint = 'http://localhost:4000/graphql';
+        return {
+          playground: {
+            endpoint,
+            tabs,
+          },
+          autoSchemaFile: path.join(process.cwd(), 'generated/schema.gql'),
+        };
+      },
     }),
     ScheduleModule.forRoot(),
     MongooseModule.forRoot('mongodb://localhost/raw_tracks'),
