@@ -1,4 +1,4 @@
-import { SimpleTrack } from './types.entity';
+import { SimpleTrack } from '../types';
 
 export const testTracks: SimpleTrack[] = [
   {
@@ -25,13 +25,6 @@ export const testTracks: SimpleTrack[] = [
     // orchestra: ['Francisco Canaro'], corrupting cause I need to test handling of indexing no orchestra
     secondsLong: 162,
     year: 1926,
-  },
-  {
-    title: 'Kiti - kiti',
-    genre: 'shimmy',
-    trackId: 3,
-    orchestra: ['Roberto Firpo'],
-    year: 1922,
   },
   {
     title: 'Knock-out de amor',

@@ -4,7 +4,6 @@ export interface IndexedSongData {
 }
 
 export type SloppedSong = SimpleTrack & SlopMeta;
-export type SelectIndex = Record<IndexedCategory, MemberToTracks>;
 export type SelectIndexCount = Record<IndexedCategory, MemberToTrackCount>;
 
 const indexedCategories = ['singer', 'orchestra', 'genre', 'year'] as const;
@@ -17,6 +16,14 @@ export type CategoryMember = string; // in case we want to type differently at s
 
 export type MemberToTracks = Record<CategoryMember, TrackId[]>;
 export type MemberToTrackCount = Record<CategoryMember, number>;
+
+// Index types
+export type SelectIndex = Record<IndexedCategory, MemberToTracks>;
+export type ReverseSelectIndex = Record<TrackId, Record<IndexedCategory, Array<CategoryMember>>>;
+export interface SelectIndexPair {
+  index: SelectIndex;
+  reverseIndex: ReverseSelectIndex;
+}
 
 interface SlopMeta {
   slop: string;

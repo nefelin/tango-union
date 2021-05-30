@@ -1,3 +1,3 @@
-export { indexSongs } from './songProcessor';
-export * from './types.entity';
+export { tangoIndex } from './index';
+export * from './types';
 

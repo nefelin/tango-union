@@ -2687,10 +2687,10 @@ apollo-link@^1.2.14:
     tslib "^1.9.3"
     zen-observable-ts "^0.8.21"
 
-apollo-playground-maker@^0.2.6:
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/apollo-playground-maker/-/apollo-playground-maker-0.2.6.tgz#5038ff521c52241782e52698b8ed265db9aec7eb"
-  integrity sha512-cEa6U3++rBH5abvIpR1dlYArFYb98yHEK2b+eIFxBbCY3PbxgAPPERaeZwNdRUPxWTCi0hgrApMqmR4U4WY0qQ==
+apollo-playground-maker@^0.2.8:
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/apollo-playground-maker/-/apollo-playground-maker-0.2.8.tgz#aa1ca2e2cecdf1896d06711335f612d090d6c99f"
+  integrity sha512-vQVBmEg/lH1nqUA5criK7htIaL5dZUThU+9kMltf0Y4KXAgf0t2+IUoXhiJwdBWEYq32y1w0OlQ7TI9xlaw19w==
   dependencies:
     colors "^1.4.0"
 

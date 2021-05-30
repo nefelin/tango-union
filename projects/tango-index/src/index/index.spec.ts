@@ -1,10 +1,12 @@
-import { indexSongs } from './songProcessor';
+import { tangoIndex } from './index';
 import * as r from 'ramda';
-import { testTracks } from './mongoTestTracksSampleTwenty';
-import { IndexedCategory, SelectIndexCount } from './types.entity';
+import { testTracks } from '../testData/mongoTestTracksSampleTwenty';
+import { IndexedCategory, SelectIndexCount } from '../types';
 
-const index = indexSongs(testTracks);
-describe('Song slop should contain simplified aggregation of object keys optimized for text search', () => {
+const index = tangoIndex(testTracks);
+
+// fixme slop should be tested as part of a specific text search index, separate from category indexing
+/*describe('Song slop should contain simplified aggregation of object keys optimized for text search', () => {
   const allSlop = index.songs.map(r.prop('slop')).join(' ');
 
   it('should add slop to every song', () => {
@@ -28,13 +30,14 @@ describe('Song slop should contain simplified aggregation of object keys optimiz
   it('should remove any non alpha-numeric, including punctuation', () => {
     expect(allSlop.match(/[^a-z0-9\s]/)).toBeFalsy();
   });
-});
+});*/
+
 
 it('should generate the select index for each relevant category', () => {
   const categories = ['orchestra', 'genre', 'singer'];
 
   for (const cat of categories) {
-    expect(r.has(cat, index.selectIndex)).toBeTruthy();
+    expect(r.has(cat, index.index)).toBeTruthy();
   }
 });
 
@@ -43,14 +46,14 @@ it('should index blank orchestras under the Unknown option', () => {
     .map(r.propOr(null, 'orchestra'))
     .filter(r.isNil).length;
 
-  expect(index.selectIndex.orchestra['Unknown']).toHaveLength(noOrchestraCount);
+  expect(index.index.orchestra['Unknown']).toHaveLength(noOrchestraCount);
 });
 
 it('should index blank singers under the Instrumental option', () => {
   const noSingerCount = testTracks.map(r.propOr(null, 'singer')).filter(r.isNil)
     .length;
 
-  expect(index.selectIndex.singer['Instrumental']).toHaveLength(noSingerCount);
+  expect(index.index.singer['Instrumental']).toHaveLength(noSingerCount);
 });
 
 it('should place the correct number of songs for a given category', () => {
@@ -58,7 +61,7 @@ it('should place the correct number of songs for a given category', () => {
     year: {},
     orchestra: {
       Unknown: 3,
-      'Roberto Firpo': 2,
+      'Roberto Firpo': 1,
       'Ángel Domingo Riverol': 1,
       'Guillermo Barbieri': 1,
       'José María Aguilar': 1,
@@ -75,13 +78,13 @@ it('should place the correct number of songs for a given category', () => {
       'Ubaldo Aquiles De Lio': 1,
       'Carlos Di Sarli': 2,
     },
-    genre: { tango: 15, other: 5 },
-    singer: { Instrumental: 18, 'Carlos Gardel': 1, 'Jaime Moreno': 1 },
+    genre: { tango: 15, other: 4 },
+    singer: { Instrumental: 17, 'Carlos Gardel': 1, 'Jaime Moreno': 1 },
   };
 
   for (const cat of Object.keys(lengthExpectations) as IndexedCategory[]) {
     for (const val of Object.keys(lengthExpectations[cat])) {
-      expect(index.selectIndex[cat][val].length).toEqual(
+      expect(index.index[cat][val].length).toEqual(
         lengthExpectations[cat][val],
       );
     }
