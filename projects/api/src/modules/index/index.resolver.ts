@@ -7,6 +7,6 @@ export class IndexResolver {
 
   @Query(() => String)
   songIndex() {
-    return JSON.stringify(this.indexService.getIndex().selectIndex, null, 1);
+    return JSON.stringify(this.indexService.getIndex().selectIndex);
   }
 }
