@@ -51,6 +51,8 @@ export class SelectIndexer {
   };
 
   countsFromTracks(tracks: Array<TrackId>): SelectIndexCount {
+    // fixme maybe we want this to only return for one category, ie orchestra, since we'll need to run with different
+    // track ids for each category in practice
     const count = emptySelectIndexCount();
     tracks.forEach(id => {
       const reverse = this.reverseIndex[id];
