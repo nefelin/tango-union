@@ -1,10 +1,14 @@
 import {
   CategoryMember,
-  emptySelectIndex, emptySelectIndexCount,
+  emptySelectIndex,
+  emptySelectIndexCount,
   IndexedCategory,
   ReverseSelectIndex,
-  SelectIndex, SelectIndexCount,
-  SimpleTrack, TrackId,
+  SelectIndex,
+  SelectIndexCount,
+  SelectIndexPair,
+  SimpleTrack,
+  TrackId,
 } from '../types/types';
 import * as r from 'ramda';
 import { getIndexGenre } from './util';
@@ -13,10 +17,15 @@ export class SelectIndexer {
   index: SelectIndex = emptySelectIndex();
   reverseIndex: ReverseSelectIndex = {};
 
-  constructor(tracks?: Array<SimpleTrack>){
+  constructor(tracks?: Array<SimpleTrack>) {
     if (tracks) {
-      tracks.forEach(track => this.indexTrack(track))
+      tracks.forEach((track) => this.indexTrack(track));
     }
+  }
+
+  loadIndexes({ index, reverseIndex }: SelectIndexPair) {
+    this.index = index;
+    this.reverseIndex = reverseIndex;
   }
 
   private indexCategory(
@@ -28,16 +37,19 @@ export class SelectIndexer {
       ...this.index[category],
       [entry]: [...(this.index[category][entry] || []), trackId],
     };
-  };
+  }
 
-  private reverseIndexCategory (
+  private reverseIndexCategory(
     category: IndexedCategory,
     entry: CategoryMember,
     trackId: TrackId,
   ) {
     this.reverseIndex[trackId] = {
       ...this.reverseIndex[trackId],
-      [category]: [...((this.reverseIndex[trackId] || {})[category] || []), entry],
+      [category]: [
+        ...((this.reverseIndex[trackId] || {})[category] || []),
+        entry,
+      ],
     };
   }
 
@@ -48,27 +60,52 @@ export class SelectIndexer {
   ) {
     this.indexCategory(category, entry, trackId);
     this.reverseIndexCategory(category, entry, trackId);
-  };
+  }
 
   countsFromTracks(tracks: Array<TrackId>): SelectIndexCount {
     // fixme maybe we want this to only return for one category, ie orchestra, since we'll need to run with different
     // track ids for each category in practice
     const count = emptySelectIndexCount();
-    tracks.forEach(id => {
+    tracks.forEach((id) => {
       const reverse = this.reverseIndex[id];
       if (reverse) {
-        for (let [key, value] of Object.entries(reverse) as Array<[IndexedCategory, Array<CategoryMember>]>) {
+        for (let [key, value] of Object.entries(reverse) as Array<
+          [IndexedCategory, Array<CategoryMember>]
+        >) {
           for (let member of value) {
-            count[key][member] = count[key][member] ? count[key][member] + 1 : 1
+            count[key][member] = count[key][member]
+              ? count[key][member] + 1
+              : 1;
           }
         }
       }
     });
 
-   return count;
+    return count;
   }
 
-  indexTrack(track: SimpleTrack){
+  countsFromTracksSingleCat(
+    tracks: Array<TrackId>,
+    cat: IndexedCategory,
+  ): SelectIndexCount {
+    // fixme maybe we want this to only return for one category, ie orchestra, since we'll need to run with different
+    // track ids for each category in practice
+    const count = emptySelectIndexCount();
+    tracks.forEach((id) => {
+      const reverse = this.reverseIndex[id];
+      if (reverse) {
+        const value = reverse[cat];
+        const key = cat;
+        for (let member of value) {
+          count[key][member] = count[key][member] ? count[key][member] + 1 : 1;
+        }
+      }
+    });
+
+    return count;
+  }
+
+  indexTrack(track: SimpleTrack) {
     const { trackId, singer, year, orchestra, genre } = track;
     if (singer?.length) {
       singer.forEach((thisSinger) =>
