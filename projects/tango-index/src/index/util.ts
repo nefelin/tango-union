@@ -1,12 +1,7 @@
 import * as r from 'ramda';
 import {
-  CategoryMember,
-  IndexedCategory,
-  ReverseSelectIndex,
-  SelectIndex,
   SimpleTrack,
-  TrackId,
-} from '../types';
+} from '../types/types';
 
 export const foldDiacritics = (s: string) =>
   s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -58,33 +53,7 @@ export const valuesForSlop = (song: SimpleTrack) =>
     r.join(' '),
   )(song);
 
-export const slopFromSong = r.pipe(valuesForSlop, cleanSlop);
-
-export const songWithSlop = (song: SimpleTrack) => ({
-  ...song,
-  slop: slopFromSong(song),
-});
-
-export const addTrackToIndex = (
-  index: SelectIndex,
-  category: IndexedCategory,
-  entry: CategoryMember,
-  trackId: TrackId,
-) => {
-  index[category] = {
-    ...index[category],
-    [entry]: [...(index[category][entry] || []), trackId],
-  };
-};
-
-export const addTrackToReverseIndex = (
-  reverseIndex: ReverseSelectIndex,
-  category: IndexedCategory,
-  entry: CategoryMember,
-  trackId: TrackId,
-) => {
-  reverseIndex[trackId] = {
-    ...reverseIndex[trackId],
-    [category]: [...((reverseIndex[trackId] || {})[category] || []), entry],
-  };
+export const intersectionReducer = (acc: Set<number>, curr: Set<number>) => {
+  acc.forEach((item) => curr.has(item) || acc.delete(item));
+  return acc;
 };

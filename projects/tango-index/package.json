@@ -19,5 +19,8 @@
   "types": "dist/main.d.ts",
   "files": [
     "dist"
-  ]
+  ],
+  "dependencies": {
+    "fuse.js": "^6.4.6"
+  }
 }

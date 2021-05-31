@@ -1,37 +1,9 @@
-import { tangoIndex } from './index';
 import * as r from 'ramda';
 import { testTracks } from '../testData/mongoTestTracksSampleTwenty';
-import { IndexedCategory, SelectIndexCount } from '../types';
+import { IndexedCategory, SelectIndexCount } from '../types/types';
+import { SelectIndexer } from './selectIndexer';
 
-const index = tangoIndex(testTracks);
-
-// fixme slop should be tested as part of a specific text search index, separate from category indexing
-/*describe('Song slop should contain simplified aggregation of object keys optimized for text search', () => {
-  const allSlop = index.songs.map(r.prop('slop')).join(' ');
-
-  it('should add slop to every song', () => {
-    expect(r.all(r.has('slop'), index.songs));
-  });
-
-  it('should not contain secondsLong, year, or _id', () => {
-    expect(allSlop.match(/\d\d\d\d/)).toBeFalsy();
-    expect(allSlop.match(/\d\d\d/)).toBeFalsy();
-    expect(allSlop.match(/\d\d\d/)).toBeFalsy();
-  });
-
-  it('should flatten diacritics', () => {
-    expect(allSlop.match(/[áéíóú]/i)).toBeFalsy();
-  });
-
-  it('should lowercasify all', () => {
-    expect(allSlop.match(/[A-Z]/)).toBeFalsy();
-  });
-
-  it('should remove any non alpha-numeric, including punctuation', () => {
-    expect(allSlop.match(/[^a-z0-9\s]/)).toBeFalsy();
-  });
-});*/
-
+const index = new SelectIndexer(testTracks);
 
 it('should generate the select index for each relevant category', () => {
   const categories = ['orchestra', 'genre', 'singer'];

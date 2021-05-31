@@ -38,3 +38,17 @@ export interface SimpleTrack {
   secondsLong?: number;
   year?: number;
 }
+
+export const emptySelectIndex = (): SelectIndex => ({
+  orchestra: {},
+  genre: {},
+  singer: {},
+  year: {},
+});
+
+export const emptySelectIndexCount = (): SelectIndexCount => ({
+  orchestra: {},
+  genre: {},
+  singer: {},
+  year: {},
+});

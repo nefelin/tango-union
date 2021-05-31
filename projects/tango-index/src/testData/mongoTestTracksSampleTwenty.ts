@@ -1,4 +1,4 @@
-import { SimpleTrack } from '../types';
+import { SimpleTrack } from '../types/types';
 
 export const testTracks: SimpleTrack[] = [
   {
