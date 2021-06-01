@@ -62,9 +62,11 @@ export class SelectIndexer {
     this.reverseIndexCategory(category, entry, trackId);
   }
 
-  countsFromTracks(tracks: Array<TrackId>): SelectIndexCount {
-    // fixme maybe we want this to only return for one category, ie orchestra, since we'll need to run with different
-    // track ids for each category in practice
+  countsFromTracks(tracks: Array<TrackId>, category?: IndexedCategory): SelectIndexCount {
+    if (category) {
+      return this.countsFromTracksSingleCat(tracks, category);
+    }
+
     const count = emptySelectIndexCount();
     tracks.forEach((id) => {
       const reverse = this.reverseIndex[id];
@@ -84,12 +86,10 @@ export class SelectIndexer {
     return count;
   }
 
-  countsFromTracksSingleCat(
+  private countsFromTracksSingleCat(
     tracks: Array<TrackId>,
     cat: IndexedCategory,
   ): SelectIndexCount {
-    // fixme maybe we want this to only return for one category, ie orchestra, since we'll need to run with different
-    // track ids for each category in practice
     const count = emptySelectIndexCount();
     tracks.forEach((id) => {
       const reverse = this.reverseIndex[id];

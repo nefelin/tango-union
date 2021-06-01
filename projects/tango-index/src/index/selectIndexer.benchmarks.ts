@@ -9,7 +9,7 @@ const suite = new Benchmark.Suite();
 const real20 = testTracks.slice(0, 9);
 const fake20 = bigTracks.slice(0, 9);
 
-const fakeIndex = new SelectIndexer(testTracks);
+const fakeIndex = new SelectIndexer(bigTracks);
 const fakeIds = testTracks.map(({ trackId }) => trackId);
 
 let selectIndexer = new SelectIndexer();
@@ -24,7 +24,7 @@ suite
     fakeIndex.countsFromTracks(fakeIds);
   })
   .add('single category track count', () => {
-    fakeIndex.countsFromTracksSingleCat(fakeIds, 'orchestra');
+    fakeIndex.countsFromTracks(fakeIds, 'orchestra');
   })
   .on('cycle', (e: any) => {
     console.log(String(e.target));

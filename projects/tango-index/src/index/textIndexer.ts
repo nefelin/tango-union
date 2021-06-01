@@ -4,10 +4,15 @@ import { TangoTrie } from '../types/tangoTrie';
 
 export class TextIndexer {
   root = new TangoTrie();
+
   constructor(tracks?: Array<SimpleTrack>) {
     if (tracks) {
       tracks.forEach((track) => this.indexTrack(track));
     }
+  }
+
+  loadTrie(trie: TangoTrie) {
+    this.root = trie;
   }
 
   private insertTerm(term: string, location: number) {
