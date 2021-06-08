@@ -16,6 +16,4 @@ export class TangoIndex {
     this.selectIndexer.indexTrack(track);
     this.textIndexer.indexTrack(track);
   }
-
-
 }
