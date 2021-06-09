@@ -4,11 +4,13 @@ export interface IndexedSongData {
 }
 
 export type SloppedSong = SimpleTrack & SlopMeta;
-export type SelectIndexCount = Record<IndexedCategory, MemberToTrackCount>;
+export type SelectIndexCount = Record<DropdownCategory, MemberToTrackCount>;
 
 const indexedCategories = ['singer', 'orchestra', 'genre', 'year'] as const;
+const dropdownCategories = ['singer', 'orchestra', 'genre'] as const;
 
 export type IndexedCategory = typeof indexedCategories[number];
+export type DropdownCategory = typeof dropdownCategories[number];
 
 export type TrackId = SimpleTrack['trackId'];
 
@@ -50,5 +52,4 @@ export const emptySelectIndexCount = (): SelectIndexCount => ({
   orchestra: {},
   genre: {},
   singer: {},
-  year: {},
 });

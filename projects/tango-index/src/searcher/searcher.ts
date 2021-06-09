@@ -2,7 +2,6 @@ import * as r from 'ramda';
 import { CompoundIndex } from '../index/compoundIndex';
 import {
   CategoryMember,
-  emptySelectIndex,
   emptySelectIndexCount,
   IndexedCategory,
   SelectIndexCount,
@@ -43,10 +42,9 @@ export class Searcher {
       );
     }
 
-    const allIds = (Object.values(categoryFinds) as Array<Set<TrackId>>).reduce(
+    return (Object.values(categoryFinds) as Array<Set<TrackId>>).reduce(
       intersectionReducer,
     );
-    return allIds;
   }
 
   byCompoundSearch(criteria: CompoundInput): CompoundResults {
@@ -55,21 +53,32 @@ export class Searcher {
       ? this.consumeYearTerms(criteria.text)
       : [undefined, null];
     // perform text search
-    const textIds = searchTerm ? this.byText(searchTerm) : null
+    const textIds = searchTerm ? this.byText(searchTerm) : null;
 
     // pass years in to category search
-    const categoryIds = this.byCategoriesMembers({...criteria.categories, year: searchYears})
+    const categoryIds = this.byCategoriesMembers({
+      ...criteria.categories,
+      year: searchYears,
+    });
 
     // intersect text results with category results
-    const allIds = textIds ? [textIds, categoryIds].reduce(intersectionReducer) : categoryIds;
+    const allIds = Array.from(
+      textIds
+        ? [textIds, categoryIds].reduce(intersectionReducer)
+        : categoryIds,
+    );
 
     // generate member counts for each category
-    // fixme
+    const counts = r.mapObjIndexed(
+      (val, key, ob) =>
+        this.index.selectIndexer.countsFromTracksSingleCat(allIds, key),
+      emptySelectIndexCount(),
+    );
 
     // return counts and trackIds
     return {
-      trackIds: [],
-      counts: emptySelectIndexCount()
+      trackIds: allIds,
+      counts,
     };
   }
 

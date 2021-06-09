@@ -62,23 +62,38 @@ export class SelectIndexer {
     this.reverseIndexCategory(category, entry, trackId);
   }
 
-  countsFromTracks(tracks: Array<TrackId>, category?: IndexedCategory): SelectIndexCount {
-    if (category) {
-      return this.countsFromTracksSingleCat(tracks, category);
-    }
+  // countsFromTracks(tracks: Array<TrackId>): SelectIndexCount {
+  //   const count = emptySelectIndexCount();
+  //   tracks.forEach((id) => {
+  //     const reverse = this.reverseIndex[id];
+  //     if (reverse) {
+  //       for (let [key, value] of Object.entries(reverse) as Array<
+  //         [IndexedCategory, Array<CategoryMember>]
+  //       >) {
+  //         for (let member of value) {
+  //           count[key][member] = count[key][member]
+  //             ? count[key][member] + 1
+  //             : 1;
+  //         }
+  //       }
+  //     }
+  //   });
+  //
+  //   return count;
+  // }
 
-    const count = emptySelectIndexCount();
+  countsFromTracksSingleCat(
+    tracks: Array<TrackId>,
+    cat: IndexedCategory,
+  ): Record<CategoryMember, number> {
+    const count: Record<CategoryMember, number> = {}
+
     tracks.forEach((id) => {
       const reverse = this.reverseIndex[id];
       if (reverse) {
-        for (let [key, value] of Object.entries(reverse) as Array<
-          [IndexedCategory, Array<CategoryMember>]
-        >) {
-          for (let member of value) {
-            count[key][member] = count[key][member]
-              ? count[key][member] + 1
-              : 1;
-          }
+        const value = reverse[cat];
+        for (let member of value) {
+          count[member] = count[member] ? count[member] + 1 : 1;
         }
       }
     });
@@ -94,25 +109,6 @@ export class SelectIndexer {
     }
 
     return r.uniq(ids);
-  }
-
-  private countsFromTracksSingleCat(
-    tracks: Array<TrackId>,
-    cat: IndexedCategory,
-  ): SelectIndexCount {
-    const count = emptySelectIndexCount();
-    tracks.forEach((id) => {
-      const reverse = this.reverseIndex[id];
-      if (reverse) {
-        const value = reverse[cat];
-        const key = cat;
-        for (let member of value) {
-          count[key][member] = count[key][member] ? count[key][member] + 1 : 1;
-        }
-      }
-    });
-
-    return count;
   }
 
   indexTrack(track: SimpleTrack) {
