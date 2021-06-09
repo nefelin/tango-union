@@ -12,7 +12,7 @@ import { intersectionReducer } from '../index/util';
 type CategoryInput = Partial<Record<IndexedCategory, Array<CategoryMember>>>;
 interface CompoundInput {
   text?: string;
-  categories: CategoryInput;
+  categories?: CategoryInput;
 }
 
 interface CompoundResults {
@@ -48,25 +48,26 @@ export class Searcher {
   }
 
   byCompoundSearch(criteria: CompoundInput): CompoundResults {
+    const {text, categories} = criteria;
     // parse years out
-    const [searchYears, searchTerm] = criteria.text
-      ? this.consumeYearTerms(criteria.text)
+    const [searchYears, searchTerm] = text
+      ? this.consumeYearTerms(text)
       : [undefined, null];
+
     // perform text search
     const textIds = searchTerm ? this.byText(searchTerm) : null;
 
     // pass years in to category search
-    const categoryIds = this.byCategoriesMembers({
-      ...criteria.categories,
+    const categoryIds = categories ? this.byCategoriesMembers({
+      ...categories,
       year: searchYears,
-    });
+    }) : null;
 
     // intersect text results with category results
-    const allIds = Array.from(
-      textIds
-        ? [textIds, categoryIds].reduce(intersectionReducer)
-        : categoryIds,
-    );
+    const onlyIds = r.reject(r.isNil, [textIds, categoryIds]) as Array<Set<TrackId>>;
+    const allIds: Array<TrackId> = onlyIds.length ? Array.from(
+       onlyIds.reduce(intersectionReducer)
+    ): [];
 
     // generate member counts for each category
     const counts = r.mapObjIndexed(
@@ -82,9 +83,9 @@ export class Searcher {
     };
   }
 
-  private consumeYearTerms(term: string): [Array<string>, string] {
+  private consumeYearTerms(term: string): [Array<string> | undefined, string | null] {
     // takes a search term, extracts the year-related search terms, converts them to array of years
     // and returns the year array with the cleaned search term
-    return [[], ''];
+    return [undefined, term];
   }
 }

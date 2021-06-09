@@ -10,7 +10,7 @@ it('should support text search', () => {
   expect(trackIds).toBeTruthy();
 });
 
-describe('Compound Search', () => {
+describe('byCategoryMembers', () => {
   it('should treat criteria in the same category as OR searches', () => {
     const expected = [3, 4, 17, 12];
     const res = searcher.byCategoriesMembers({
@@ -35,4 +35,14 @@ describe('Compound Search', () => {
     });
     expect(res).toEqual(expected);
   });
+});
+
+describe('byCompoundSearch', () => {
+  const res = searcher.byCompoundSearch({
+    text: 'bah'
+  })
+
+  // const res = searcher.byText('bah')
+
+  console.log(res);
 });
