@@ -14,8 +14,8 @@ import * as r from 'ramda';
 import { getIndexGenre } from './util';
 
 export class SelectIndexer {
-  index: SelectIndex = emptySelectIndex();
-  reverseIndex: ReverseSelectIndex = {};
+  private index: SelectIndex = emptySelectIndex();
+  private reverseIndex: ReverseSelectIndex = {};
 
   constructor(tracks?: Array<SimpleTrack>) {
     if (tracks) {
@@ -84,6 +84,16 @@ export class SelectIndexer {
     });
 
     return count;
+  }
+
+  tracksByCategoryMembers(category: IndexedCategory, members: Array<CategoryMember>): Array<TrackId> {
+    const ids: Array<TrackId> = [];
+
+    for (let member of members) {
+      ids.push(...this.index[category][member])
+    }
+
+    return r.uniq(ids);
   }
 
   private countsFromTracksSingleCat(

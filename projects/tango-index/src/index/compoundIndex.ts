@@ -2,7 +2,7 @@ import { SelectIndexer } from './selectIndexer';
 import { TextIndexer } from './textIndexer';
 import { SimpleTrack } from '../types/types';
 
-export class TangoIndex {
+export class CompoundIndex {
   selectIndexer: SelectIndexer = new SelectIndexer();
   textIndexer: TextIndexer = new TextIndexer();
 

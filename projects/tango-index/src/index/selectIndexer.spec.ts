@@ -5,27 +5,19 @@ import { SelectIndexer } from './selectIndexer';
 
 const index = new SelectIndexer(testTracks);
 
-it('should generate the select index for each relevant category', () => {
-  const categories = ['orchestra', 'genre', 'singer'];
-
-  for (const cat of categories) {
-    expect(r.has(cat, index.index)).toBeTruthy();
-  }
-});
-
 it('should index blank orchestras under the Unknown option', () => {
   const noOrchestraCount = testTracks
     .map(r.propOr(null, 'orchestra'))
     .filter(r.isNil).length;
 
-  expect(index.index.orchestra['Unknown']).toHaveLength(noOrchestraCount);
+  expect(index.tracksByCategoryMembers('orchestra', ['Unknown'])).toHaveLength(noOrchestraCount);
 });
 
 it('should index blank singers under the Instrumental option', () => {
   const noSingerCount = testTracks.map(r.propOr(null, 'singer')).filter(r.isNil)
     .length;
 
-  expect(index.index.singer['Instrumental']).toHaveLength(noSingerCount);
+  expect(index.tracksByCategoryMembers('singer', ['Instrumental'])).toHaveLength(noSingerCount);
 });
 
 it('should place the correct number of songs for a given category', () => {
@@ -56,7 +48,7 @@ it('should place the correct number of songs for a given category', () => {
 
   for (const cat of Object.keys(lengthExpectations) as IndexedCategory[]) {
     for (const val of Object.keys(lengthExpectations[cat])) {
-      expect(index.index[cat][val].length).toEqual(
+      expect(index.tracksByCategoryMembers(cat, [val]).length).toEqual(
         lengthExpectations[cat][val],
       );
     }

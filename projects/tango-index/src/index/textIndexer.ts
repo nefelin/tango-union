@@ -3,7 +3,7 @@ import { cleanSlop, intersectionReducer } from './util';
 import { TangoTrie } from '../types/tangoTrie';
 
 export class TextIndexer {
-  root = new TangoTrie();
+  private root = new TangoTrie();
 
   constructor(tracks?: Array<SimpleTrack>) {
     if (tracks) {
@@ -38,8 +38,8 @@ export class TextIndexer {
     });
   }
 
-  search(term: string): Array<TrackId> {
+  search(term: string): Set<TrackId> {
     const hits = term.split(' ').map((term) => this.root.lookup(term));
-    return Array.from(hits.reduce(intersectionReducer));
+    return hits.reduce(intersectionReducer);
   }
 }

@@ -1,3 +1,3 @@
 export { tangoIndex } from './index';
-export * from './types';
+export * from './types/types';
 
