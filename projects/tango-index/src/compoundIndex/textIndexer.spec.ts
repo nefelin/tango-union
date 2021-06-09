@@ -7,7 +7,7 @@ it('should stringify and import stringified indices correctly', () => {
   const expected = new Set([3, 15, 18])
   const s = JSON.stringify(index);
   const n = new TextIndexer();
-  n.loadIndex(s);
+  n.fromJSON(s);
 
   const res = n.search('carlos');
   expect(res).toEqual(expected)

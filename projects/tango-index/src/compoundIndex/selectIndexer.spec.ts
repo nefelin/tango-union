@@ -11,7 +11,7 @@ const index = new SelectIndexer(testTracks);
 it('should stringify and import stringified indices correctly', () => {
   const s = JSON.stringify(index);
   const n = new SelectIndexer();
-  n.loadIndexes(s);
+  n.fromJSON(s);
 
   const res = n.tracksByCategoryMembers('orchestra', ['Carlos Di Sarli']);
   expect(res).toEqual([15, 18]);

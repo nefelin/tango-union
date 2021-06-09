@@ -1,6 +1,6 @@
 import { TrackId } from './types';
 
-type JSONTrieNodeData = {
+export interface JSONTrieNodeData {
   children: Record<string, JSONTrieNodeData>;
   locations: Array<number>;
   complete: boolean;
@@ -23,15 +23,6 @@ export class TangoTrie {
       complete: this.complete,
       locations: Array.from(this.locations),
     };
-  }
-
-  fromJSON(json: string) {
-    try {
-      const data = JSON.parse(json);
-      this.fromObject(data);
-    } catch (e) {
-      throw new Error(`malformed index: ${e}`);
-    }
   }
 
   fromObject({ children, complete, locations }: JSONTrieNodeData): TangoTrie {

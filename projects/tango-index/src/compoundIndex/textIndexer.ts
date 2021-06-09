@@ -1,6 +1,6 @@
 import { SimpleTrack, TrackId } from '../types/types';
 import { cleanSlop, intersectionReducer } from './util';
-import { TangoTrie } from '../types/tangoTrie';
+import { JSONTrieNodeData, TangoTrie } from '../types/tangoTrie';
 
 export class TextIndexer {
   private root = new TangoTrie();
@@ -15,9 +15,14 @@ export class TextIndexer {
     return this.root;
   }
 
-  loadIndex(json: string) {
+  fromJSON(json: string) {
     this.root = new TangoTrie();
-    this.root.fromJSON(json);
+    const data = JSON.parse(json);
+    this.fromObject(data);
+  }
+
+  fromObject(root: JSONTrieNodeData) {
+    this.root.fromObject(root)
   }
 
   private insertTerm(term: string, location: number) {

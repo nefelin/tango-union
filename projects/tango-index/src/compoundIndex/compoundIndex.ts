@@ -6,15 +6,29 @@ export class CompoundIndex {
   selectIndexer: SelectIndexer = new SelectIndexer();
   textIndexer: TextIndexer = new TextIndexer();
 
-  constructor(tracks?: Array<SimpleTrack>){
+  constructor(tracks?: Array<SimpleTrack>) {
     if (tracks) {
-      this.loadTracks(tracks)
+      this.resetWithTracks(tracks);
     }
   }
 
-  loadTracks(tracks: Array<SimpleTrack>) {
-   this.resetIndexes();
-    tracks.forEach(track => this.addTrack(track))
+  toJSON() {
+    return {
+      selectIndexer: this.selectIndexer,
+      textIndexer: this.textIndexer,
+    };
+  }
+
+  fromJSON(json: string) {
+    const { selectIndexer, textIndexer } = JSON.parse(json);
+    this.resetIndexes();
+    this.selectIndexer.fromObject(selectIndexer);
+    this.textIndexer.fromObject(textIndexer);
+  }
+
+  resetWithTracks(tracks: Array<SimpleTrack>) {
+    this.resetIndexes();
+    tracks.forEach((track) => this.addTrack(track));
   }
 
   addTrack(track: SimpleTrack) {

@@ -29,14 +29,18 @@ export class SelectIndexer {
     };
   }
 
-  loadIndexes(stringifiedIndexes: string) {
+  fromJSON(json: string) {
     try {
-      const data = JSON.parse(stringifiedIndexes);
-      this.index = data.index;
-      this.reverseIndex = data.reverseIndex;
+      const data = JSON.parse(json);
+      this.fromObject(data);
     } catch (e) {
       throw new Error(`malformed indexes: ${e}`);
     }
+  }
+
+  fromObject({ index, reverseIndex }: SelectIndexPair) {
+    this.index = index;
+    this.reverseIndex = reverseIndex;
   }
 
   private indexCategory(
