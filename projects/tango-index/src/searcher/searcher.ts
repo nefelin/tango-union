@@ -1,24 +1,14 @@
 import * as r from 'ramda';
-import { CompoundIndex } from '../index/compoundIndex';
+import { CompoundIndex } from '../compoundIndex/compoundIndex';
 import {
   CategoryMember,
   emptySelectIndexCount,
   IndexedCategory,
-  SelectIndexCount,
   TrackId,
 } from '../types/types';
-import { intersectionReducer } from '../index/util';
-
-type CategoryInput = Partial<Record<IndexedCategory, Array<CategoryMember>>>;
-interface CompoundInput {
-  text?: string;
-  categories?: CategoryInput;
-}
-
-interface CompoundResults {
-  trackIds: Array<TrackId>;
-  counts: SelectIndexCount;
-}
+import { intersectionReducer } from '../compoundIndex/util';
+import { YearParser } from './years/yearParser';
+import { CategoryInput, CompoundInput, CompoundResults, NULL_LABELS } from './types';
 
 export class Searcher {
   index: CompoundIndex;
@@ -27,11 +17,11 @@ export class Searcher {
     this.index = compoundIndex;
   }
 
-  byText(term: string): Set<TrackId> {
+  private byText(term: string): Set<TrackId> {
     return this.index.textIndexer.search(term);
   }
 
-  byCategoriesMembers(criteria: CategoryInput): Set<TrackId> {
+  private byCategoriesMembers(criteria: CategoryInput): Set<TrackId> {
     const categoryFinds: Partial<Record<IndexedCategory, Set<TrackId>>> = {};
 
     for (let [category, members] of Object.entries(criteria) as Array<
@@ -48,20 +38,23 @@ export class Searcher {
   }
 
   byCompoundSearch(criteria: CompoundInput): CompoundResults {
-    const {text, categories} = criteria;
+    const {text = '', categories} = criteria;
+
     // parse years out
-    const [searchYears, searchTerm] = text
-      ? this.consumeYearTerms(text)
-      : [undefined, null];
+    const thisparser = new YearParser(NULL_LABELS.YEAR);
+    const searchYears = thisparser.yearsFromSearch(text);
+    const searchTerm = thisparser.stripYearTerms(text);
 
     // perform text search
-    const textIds = searchTerm ? this.byText(searchTerm) : null;
+    const textIds = searchTerm.length ? this.byText(searchTerm) : null;
 
     // pass years in to category search
-    const categoryIds = categories ? this.byCategoriesMembers({
-      ...categories,
-      year: searchYears,
-    }) : null;
+    const categoriesWithYears = {
+      ...categories ? categories : {},
+      ...searchYears ? {year: searchYears} : {},
+    }
+    const categoryIds = r.isEmpty(categoriesWithYears) ? null : this.byCategoriesMembers(categoriesWithYears
+    );
 
     // intersect text results with category results
     const onlyIds = r.reject(r.isNil, [textIds, categoryIds]) as Array<Set<TrackId>>;
@@ -71,7 +64,7 @@ export class Searcher {
 
     // generate member counts for each category
     const counts = r.mapObjIndexed(
-      (val, key, ob) =>
+      (val, key) =>
         this.index.selectIndexer.countsFromTracksSingleCat(allIds, key),
       emptySelectIndexCount(),
     );
@@ -81,11 +74,5 @@ export class Searcher {
       trackIds: allIds,
       counts,
     };
-  }
-
-  private consumeYearTerms(term: string): [Array<string> | undefined, string | null] {
-    // takes a search term, extracts the year-related search terms, converts them to array of years
-    // and returns the year array with the cleaned search term
-    return [undefined, term];
   }
 }

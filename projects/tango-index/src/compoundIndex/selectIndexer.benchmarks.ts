@@ -20,12 +20,6 @@ suite
   // .add('index fake tracks', () => {
   //   fake20.forEach(track => selectIndexer.indexTrack(track))
   // })
-  .add('track count', () => {
-    fakeIndex.countsFromTracks(fakeIds);
-  })
-  .add('single category track count', () => {
-    fakeIndex.countsFromTracks(fakeIds, 'orchestra');
-  })
   .on('cycle', (e: any) => {
     console.log(String(e.target));
   })

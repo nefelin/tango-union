@@ -1,48 +1,54 @@
 import { testTracks } from '../testData/mongoTestTracksSampleTwenty';
-import { CompoundIndex } from '../index/compoundIndex';
+import { CompoundIndex } from '../compoundIndex/compoundIndex';
 import { Searcher } from './searcher';
 
 const searcher = new Searcher(new CompoundIndex(testTracks));
 
-it('should support text search', () => {
-  // just ensuring search is supported, no any actual details
-  const trackIds = searcher.byText('bac');
-  expect(trackIds).toBeTruthy();
-});
-
-describe('byCategoryMembers', () => {
+describe('Category search', () => {
   it('should treat criteria in the same category as OR searches', () => {
     const expected = [3, 4, 17, 12];
-    const res = searcher.byCategoriesMembers({
-      orchestra: [
-        'Guillermo Barbieri',
-        'Selección Nacional',
-        'Florindo Sassone',
-      ],
+    const res = searcher.byCompoundSearch({
+      categories: {
+        orchestra: [
+          'Guillermo Barbieri',
+          'Selección Nacional',
+          'Florindo Sassone',
+        ],
+      },
     });
-    expect(res).toEqual(expected);
+    expect(res.trackIds).toEqual(expected);
   });
 
   it("should treat criteria in the different category as AND'ed with other categories searches", () => {
     const expected = [4, 17];
-    const res = searcher.byCategoriesMembers({
-      orchestra: [
-        'Guillermo Barbieri',
-        'Selección Nacional',
-        'Florindo Sassone',
-      ],
-      year: ['2005']
+    const res = searcher.byCompoundSearch({
+      categories: {
+        orchestra: [
+          'Guillermo Barbieri',
+          'Selección Nacional',
+          'Florindo Sassone',
+        ],
+        year: ['2005'],
+      },
     });
-    expect(res).toEqual(expected);
+    expect(res.trackIds).toEqual(expected);
   });
 });
 
-describe('byCompoundSearch', () => {
+it("should treat year terms and other text and AND'ed terms", () => {
+  const expected = [15, 18];
   const res = searcher.byCompoundSearch({
-    text: 'bah'
-  })
+    text: '50s sarli',
+  });
 
-  // const res = searcher.byText('bah')
+  expect(res.trackIds).toEqual(expected);
+});
 
-  console.log(res);
+it("should treat non year terms as AND'ed terms", () => {
+  const expected = [16];
+  const res = searcher.byCompoundSearch({
+    text: 'bahia fres',
+  });
+
+  expect(res.trackIds).toEqual(expected);
 });

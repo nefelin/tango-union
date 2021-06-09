@@ -1,17 +1,16 @@
 import {
   CategoryMember,
   emptySelectIndex,
-  emptySelectIndexCount,
   IndexedCategory,
   ReverseSelectIndex,
   SelectIndex,
-  SelectIndexCount,
   SelectIndexPair,
   SimpleTrack,
   TrackId,
 } from '../types/types';
 import * as r from 'ramda';
 import { getIndexGenre } from './util';
+import { NULL_LABELS } from '../searcher/types';
 
 export class SelectIndexer {
   private index: SelectIndex = emptySelectIndex();
@@ -105,7 +104,10 @@ export class SelectIndexer {
     const ids: Array<TrackId> = [];
 
     for (let member of members) {
-      ids.push(...this.index[category][member])
+      const found = this.index[category][member];
+      if (found) {
+        ids.push(...found)
+      }
     }
 
     return r.uniq(ids);
@@ -137,8 +139,3 @@ export class SelectIndexer {
   }
 }
 
-const NULL_LABELS = {
-  SINGER: 'Instrumental',
-  ORCHESTRA: 'Unknown',
-  YEAR: 'Unknown',
-};
