@@ -8,12 +8,22 @@ export class CompoundIndex {
 
   constructor(tracks?: Array<SimpleTrack>){
     if (tracks) {
-      tracks.forEach(track => this.addTrack(track))
+      this.loadTracks(tracks)
     }
+  }
+
+  loadTracks(tracks: Array<SimpleTrack>) {
+   this.resetIndexes();
+    tracks.forEach(track => this.addTrack(track))
   }
 
   addTrack(track: SimpleTrack) {
     this.selectIndexer.indexTrack(track);
     this.textIndexer.indexTrack(track);
+  }
+
+  private resetIndexes() {
+    this.selectIndexer = new SelectIndexer();
+    this.textIndexer = new TextIndexer();
   }
 }

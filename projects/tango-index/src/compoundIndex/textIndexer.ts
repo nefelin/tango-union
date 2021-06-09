@@ -11,8 +11,13 @@ export class TextIndexer {
     }
   }
 
-  loadTrie(trie: TangoTrie) {
-    this.root = trie;
+  toJSON(): TangoTrie {
+    return this.root;
+  }
+
+  loadIndex(json: string) {
+    this.root = new TangoTrie();
+    this.root.fromJSON(json);
   }
 
   private insertTerm(term: string, location: number) {

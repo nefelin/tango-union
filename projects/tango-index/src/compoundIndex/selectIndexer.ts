@@ -22,9 +22,21 @@ export class SelectIndexer {
     }
   }
 
-  loadIndexes({ index, reverseIndex }: SelectIndexPair) {
-    this.index = index;
-    this.reverseIndex = reverseIndex;
+  toJSON() {
+    return {
+      index: this.index,
+      reverseIndex: this.reverseIndex,
+    };
+  }
+
+  loadIndexes(stringifiedIndexes: string) {
+    try {
+      const data = JSON.parse(stringifiedIndexes);
+      this.index = data.index;
+      this.reverseIndex = data.reverseIndex;
+    } catch (e) {
+      throw new Error(`malformed indexes: ${e}`);
+    }
   }
 
   private indexCategory(
@@ -85,7 +97,7 @@ export class SelectIndexer {
     tracks: Array<TrackId>,
     cat: IndexedCategory,
   ): Record<CategoryMember, number> {
-    const count: Record<CategoryMember, number> = {}
+    const count: Record<CategoryMember, number> = {};
 
     tracks.forEach((id) => {
       const reverse = this.reverseIndex[id];
@@ -100,13 +112,16 @@ export class SelectIndexer {
     return count;
   }
 
-  tracksByCategoryMembers(category: IndexedCategory, members: Array<CategoryMember>): Array<TrackId> {
+  tracksByCategoryMembers(
+    category: IndexedCategory,
+    members: Array<CategoryMember>,
+  ): Array<TrackId> {
     const ids: Array<TrackId> = [];
 
     for (let member of members) {
       const found = this.index[category][member];
       if (found) {
-        ids.push(...found)
+        ids.push(...found);
       }
     }
 
@@ -138,4 +153,3 @@ export class SelectIndexer {
     this.addToIndices('genre', indexGenre, trackId);
   }
 }
-

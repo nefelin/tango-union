@@ -1,5 +1,11 @@
 import { TrackId } from './types';
 
+type JSONTrieNodeData = {
+  children: Record<string, JSONTrieNodeData>;
+  locations: Array<number>;
+  complete: boolean;
+};
+
 export class TangoTrie {
   children: Record<string, TangoTrie> = {};
   complete: boolean = false;
@@ -9,6 +15,33 @@ export class TangoTrie {
     if (location) {
       this.locations = new Set([location]);
     }
+  }
+
+  toJSON() {
+    return {
+      children: this.children,
+      complete: this.complete,
+      locations: Array.from(this.locations),
+    };
+  }
+
+  fromJSON(json: string) {
+    try {
+      const data = JSON.parse(json);
+      this.fromObject(data);
+    } catch (e) {
+      throw new Error(`malformed index: ${e}`);
+    }
+  }
+
+  fromObject({ children, complete, locations }: JSONTrieNodeData): TangoTrie {
+    this.complete = complete;
+    this.locations = locations.length ? new Set(locations) : new Set();
+    for (let [key, child] of Object.entries(children)) {
+      const newChild = new TangoTrie();
+      this.children[key] = newChild.fromObject(child);
+    }
+    return this;
   }
 
   addLocation(location: TrackId) {
@@ -38,7 +71,7 @@ export class TangoTrie {
     for (let char of chars) {
       node = node.children[char];
       if (node === undefined) {
-        break
+        break;
       }
     }
 

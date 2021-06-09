@@ -1,23 +1,40 @@
 import * as r from 'ramda';
 import { testTracks } from '../testData/mongoTestTracksSampleTwenty';
-import { DropdownCategory, IndexedCategory, SelectIndexCount } from '../types/types';
+import {
+  DropdownCategory,
+  IndexedCategory,
+  SelectIndexCount,
+} from '../types/types';
 import { SelectIndexer } from './selectIndexer';
 
 const index = new SelectIndexer(testTracks);
+it('should stringify and import stringified indices correctly', () => {
+  const s = JSON.stringify(index);
+  const n = new SelectIndexer();
+  n.loadIndexes(s);
+
+  const res = n.tracksByCategoryMembers('orchestra', ['Carlos Di Sarli']);
+  expect(res).toEqual([15, 18]);
+});
 
 it('should index blank orchestras under the Unknown option', () => {
   const noOrchestraCount = testTracks
     .map(r.propOr(null, 'orchestra'))
     .filter(r.isNil).length;
 
-  expect(index.tracksByCategoryMembers('orchestra', ['Unknown'])).toHaveLength(noOrchestraCount);
+  expect(index.tracksByCategoryMembers('orchestra', ['Unknown'])).toHaveLength(
+    noOrchestraCount,
+  );
 });
 
 it('should index blank singers under the Instrumental option', () => {
-  const noSingerCount = testTracks.map(r.propOr(null, 'singer')).filter(r.isNil)
-    .length;
+  const noSingerCount = testTracks
+    .map(r.propOr(null, 'singer'))
+    .filter(r.isNil).length;
 
-  expect(index.tracksByCategoryMembers('singer', ['Instrumental'])).toHaveLength(noSingerCount);
+  expect(
+    index.tracksByCategoryMembers('singer', ['Instrumental']),
+  ).toHaveLength(noSingerCount);
 });
 
 it('should place the correct number of songs for a given category', () => {
@@ -45,7 +62,9 @@ it('should place the correct number of songs for a given category', () => {
     singer: { Instrumental: 17, 'Carlos Gardel': 1, 'Jaime Moreno': 1 },
   };
 
-  for (const cat of Object.keys(lengthExpectations) as Array<DropdownCategory>) {
+  for (const cat of Object.keys(
+    lengthExpectations,
+  ) as Array<DropdownCategory>) {
     for (const val of Object.keys(lengthExpectations[cat])) {
       expect(index.tracksByCategoryMembers(cat, [val]).length).toEqual(
         lengthExpectations[cat][val],
