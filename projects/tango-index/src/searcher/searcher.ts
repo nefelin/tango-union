@@ -1,14 +1,9 @@
 import * as r from 'ramda';
 import { CompoundIndex } from '../compoundIndex/compoundIndex';
-import {
-  CategoryMember,
-  emptySelectIndexCount,
-  IndexedCategory,
-  TrackId,
-} from '../types/types';
+import { CategoryMember, emptySelectIndexCount, IndexedCategory, TrackId } from '../types/types';
 import { intersectionReducer } from '../compoundIndex/util';
 import { YearParser } from './years/yearParser';
-import { CategoryInput, CompoundInput, CompoundResults, NULL_LABELS } from './types';
+import { CategoryInput, CompoundInput, CompoundResults, NULL_LABELS, SortDirection } from './types';
 
 export class Searcher {
   index: CompoundIndex;
@@ -37,7 +32,7 @@ export class Searcher {
     );
   }
 
-  byCompoundSearch(criteria: CompoundInput): CompoundResults {
+  byCompoundSearch(criteria: CompoundInput, sortBy?: IndexedCategory, sortDirection?: SortDirection): CompoundResults {
     const {text = '', categories} = criteria;
 
     // parse years out
@@ -69,10 +64,31 @@ export class Searcher {
       emptySelectIndexCount(),
     );
 
+    // sort
+    if (sortBy) {
+      this.sortTracks(allIds, sortBy)
+      if (sortDirection === 'DESC') {
+        allIds.reverse();
+      }
+    }
+
     // return counts and trackIds
     return {
       trackIds: allIds,
       counts,
     };
+  }
+
+  private sortTracks(ids: Array<TrackId>, category: IndexedCategory){
+    // fixme this work is duplicate count accumulation, we should be able to combine
+    const score = (id: TrackId) => {
+      const value = this.index.selectIndexer.catMembersFromTrack(id, category)
+      value.sort();
+      return value.join().toLowerCase();
+    }
+
+    const sortFn = (id1: TrackId, id2: TrackId) => score(id1).localeCompare(score(id2))
+
+    ids.sort(sortFn)
   }
 }

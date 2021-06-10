@@ -54,7 +54,7 @@ export class SelectIndexer {
     };
   }
 
-  private reverseIndexCategory(
+  reverseIndexCategory(
     category: IndexedCategory,
     entry: CategoryMember,
     trackId: TrackId,
@@ -77,26 +77,6 @@ export class SelectIndexer {
     this.reverseIndexCategory(category, entry, trackId);
   }
 
-  // countsFromTracks(tracks: Array<TrackId>): SelectIndexCount {
-  //   const count = emptySelectIndexCount();
-  //   tracks.forEach((id) => {
-  //     const reverse = this.reverseIndex[id];
-  //     if (reverse) {
-  //       for (let [key, value] of Object.entries(reverse) as Array<
-  //         [IndexedCategory, Array<CategoryMember>]
-  //       >) {
-  //         for (let member of value) {
-  //           count[key][member] = count[key][member]
-  //             ? count[key][member] + 1
-  //             : 1;
-  //         }
-  //       }
-  //     }
-  //   });
-  //
-  //   return count;
-  // }
-
   countsFromTracksSingleCat(
     tracks: Array<TrackId>,
     cat: IndexedCategory,
@@ -114,6 +94,13 @@ export class SelectIndexer {
     });
 
     return count;
+  }
+
+  catMembersFromTrack(
+    id: TrackId,
+    category: IndexedCategory
+  ) {
+    return this.reverseIndex[id][category];
   }
 
   tracksByCategoryMembers(

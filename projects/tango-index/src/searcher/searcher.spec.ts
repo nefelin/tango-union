@@ -35,6 +35,7 @@ describe('Category search', () => {
   });
 });
 
+
 it("should treat year terms and other text and AND'ed terms", () => {
   const expected = [15, 18];
   const res = searcher.byCompoundSearch({
@@ -51,4 +52,13 @@ it("should treat non year terms as AND'ed terms", () => {
   });
 
   expect(res.trackIds).toEqual(expected);
+});
+
+it('should sort results', () => {
+  // fixme, should be working, write this test
+  const res = searcher.byCompoundSearch({
+    text: '01-99'
+  }, 'year', 'DESC');
+
+  console.log(res.trackIds.map(id => testTracks[id]));
 });

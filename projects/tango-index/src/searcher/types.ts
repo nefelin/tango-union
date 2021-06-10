@@ -16,3 +16,5 @@ export interface CompoundResults {
   trackIds: Array<TrackId>;
   counts: SelectIndexCount;
 }
+
+export type SortDirection = 'ASC' | 'DESC';
