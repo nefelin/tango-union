@@ -7,7 +7,10 @@ import { SimpleTrack } from './dto/simpletrack.entity';
 import { TrackId } from 'tango-index';
 import { CompoundQueryInput } from './dto/compoundQuery.input';
 import { CompoundResults } from './dto/compoundResult.entity';
-import { andifyMongoTextSearch } from './util';
+import {
+  andifyMongoTextSearch,
+  compoundResultsFromFacetedResults,
+} from './util';
 import { YearParser } from 'tango-index/dist/searcher/years/yearParser';
 import { EntityCount, FacetedResults } from './types';
 
@@ -19,7 +22,11 @@ export class TracksService {
     @InjectModel(Track.name) private trackModel: Model<TrackDocument>, // @Inject('DATABASE_CONNECTION') // private db: Db,
   ) {}
 
-  rateLink(trackId: number, videoId: string, ratingChange: number): Promise<Track> {
+  rateLink(
+    trackId: number,
+    videoId: string,
+    ratingChange: number,
+  ): Promise<Track> {
     // this should check if user has already voted on this link
     return this.trackModel
       .findByIdAndUpdate(
@@ -73,15 +80,36 @@ export class TracksService {
           $or: orchestras.map((name) => ({ orchestra: name })),
         }
       : null;
-    const singerMatch = singers?.length ? { $or: singers.map((name) => ({ singer: name })) } : null;
-    const genreMatch = genres?.length ? { $or: genres.map((name) => ({ genre: name })) } : null;
+    const singerMatch = singers?.length
+      ? { $or: singers.map((name) => ({ singer: name })) }
+      : null;
+    const genreMatch = genres?.length
+      ? { $or: genres.map((name) => ({ genre: name })) }
+      : null;
 
     const stripNil = r.reject(r.isNil);
 
-    const singerCountMatches = stripNil([orchestraMatch, genreMatch, yearMatch]);
-    const orchestraCountMatches = stripNil([singerMatch, genreMatch, yearMatch]);
-    const genreCountMatches = stripNil([orchestraMatch, singerMatch, yearMatch]);
-    const allMatches = stripNil([orchestraMatch, singerMatch, genreMatch, yearMatch]);
+    const singerCountMatches = stripNil([
+      orchestraMatch,
+      genreMatch,
+      yearMatch,
+    ]);
+    const orchestraCountMatches = stripNil([
+      singerMatch,
+      genreMatch,
+      yearMatch,
+    ]);
+    const genreCountMatches = stripNil([
+      orchestraMatch,
+      singerMatch,
+      yearMatch,
+    ]);
+    const allMatches = stripNil([
+      orchestraMatch,
+      singerMatch,
+      genreMatch,
+      yearMatch,
+    ]);
 
     const pipeline = [
       textMatch,
@@ -89,21 +117,27 @@ export class TracksService {
         $facet: {
           singerCount: [
             {
-              $match: singerCountMatches.length ? { $and: singerCountMatches } : {},
+              $match: singerCountMatches.length
+                ? { $and: singerCountMatches }
+                : {},
             },
             { $unwind: '$singer' },
             { $sortByCount: '$singer' },
           ],
           orchestraCount: [
             {
-              $match: orchestraCountMatches.length ? { $and: orchestraCountMatches } : {},
+              $match: orchestraCountMatches.length
+                ? { $and: orchestraCountMatches }
+                : {},
             },
             { $unwind: '$orchestra' },
             { $sortByCount: '$orchestra' },
           ],
           genreCount: [
             {
-              $match: genreCountMatches.length ? { $and: genreCountMatches } : {},
+              $match: genreCountMatches.length
+                ? { $and: genreCountMatches }
+                : {},
             },
             { $unwind: '$genre' },
             { $sortByCount: '$genre' },
@@ -140,22 +174,3 @@ export class TracksService {
     return thisSong.youtube.links;
   }
 }
-
-const compoundResultsFromFacetedResults = (res: FacetedResults): CompoundResults => {
-  const pairsFromCounts = ({ _id: name, count }: EntityCount) => ({
-    name,
-    count,
-  });
-
-  return {
-    trackIds: res.tracks.map(({ trackId }) => trackId),
-    counts: {
-      ...(res.singerCount?.length ? { singer: res.singerCount.map(pairsFromCounts) } : {}),
-      ...(res.orchestraCount?.length ? { orchestra: res.orchestraCount.map(pairsFromCounts) } : {}),
-      ...(res.genreCount?.length ? { genre: res.genreCount.map(pairsFromCounts) } : {}),
-    },
-  };
-};
-
-const makeOptions = (key: string, values: string[]): Array<Record<string, string>> =>
-  values.map((value) => ({ [key]: value }));
