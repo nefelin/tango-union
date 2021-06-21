@@ -18,14 +18,14 @@ export class IndexResolver {
     this.indexService.rebuildIndex();
     return 'Index rebuild begun...';
   }
-
-  @Query(() => CompoundResults)
-  compoundQuery(@Args('query') query: CompoundQueryInput) {
-    return this.indexService.compoundSearch(query);
-  }
-
-  @Query(() => [SimpleTrack])
-  hydratedQuery(@Args('query') query: CompoundQueryInput) {
-    return this.indexService.hydratedResults(query);
-  }
+  //
+  // @Query(() => CompoundResults)
+  // compoundQuery(@Args('query') query: CompoundQueryInput) {
+  //   return this.indexService.compoundSearch(query);
+  // }
+  //
+  // @Query(() => [SimpleTrack])
+  // hydratedQuery(@Args('query') query: CompoundQueryInput) {
+  //   return this.indexService.hydratedResults(query);
+  // }
 }

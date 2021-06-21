@@ -5,12 +5,11 @@ import { Model } from 'mongoose';
 import { YoutubeSearchService } from '../youtube-search/youtube-search.service';
 import { queryStringFromSong } from '../../util';
 import { Interval } from '@nestjs/schedule';
-import ProgressBar from 'progress';
 
 @Injectable()
 export class HydrateService {
   initialUnhydratedCount: number;
-  bar: any;
+  // bar: any;
   isHydrating = false;
   startTime = Date.now();
   hydrationTick = 0;
@@ -22,8 +21,7 @@ export class HydrateService {
 
   private hydratedCount(): Promise<number> {
     return this.trackModel
-      .find({ youtube: { $exists: true } })
-      .count()
+      .countDocuments({ youtube: { $exists: true } })
       .exec();
   }
 
@@ -33,8 +31,7 @@ export class HydrateService {
 
   private async resetCounters() {
     this.initialUnhydratedCount = await this.trackModel
-      .find({ links: { $exists: false } })
-      .count()
+      .countDocuments({ youtube: { $exists: false } })
       .exec();
     this.hydrationTick = 0;
     this.startTime = Date.now();
@@ -42,15 +39,18 @@ export class HydrateService {
 
   async startHydrating() {
     console.log('Beginning hydration...');
-    const hydratedCount = await this.hydratedCount();
-    const total = await this.trackModel.find().count().exec();
-    this.bar = new ProgressBar(`  hydrating [:bar] :current/:total :percent`, {
-      curr: hydratedCount,
-      complete: '=',
-      incomplete: ' ',
-      width: 100,
-      total,
-    });
+    // const hydratedCount = await this.hydratedCount();
+    // const total = await this.trackModel
+    //   .find()
+    //   .count()
+    //   .exec();
+    // this.bar = new ProgressBar(`  hydrating [:bar] :current/:total :percent`, {
+    //   curr: hydratedCount,
+    //   complete: '=',
+    //   incomplete: ' ',
+    //   width: 100,
+    //   total,
+    // });
     await this.resetCounters();
     this.isHydrating = true;
   }
@@ -72,7 +72,7 @@ export class HydrateService {
     const res = await this.youtubeSearchService.keylessSearch(query);
 
     await track
-      .update({
+      .updateOne({
         $set: {
           youtube: {
             scrapedAt: new Date(),
@@ -106,9 +106,9 @@ export class HydrateService {
   }
 
   handleHydrationSuccess() {
-    this.bar.tick(1);
+    // this.bar.tick(1);
     this.hydrationTick++;
-    this.updateRate();
+    // this.updateRate();
   }
 
   @Interval(1000)

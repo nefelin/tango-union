@@ -43,7 +43,7 @@ interface IndexedSongData {
 // slop stuff
 const valuesForSlop = (song: RawSong) =>
   r.pipe(
-    r.omit(['length', 'trackId', 'year']),
+    r.omit(['length', 'trackId', 'year', 'youtube']),
     Object.values,
     r.reject(r.isEmpty),
     r.join(' ')

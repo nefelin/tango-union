@@ -1,10 +1,5 @@
-import type {
-  FunctionComponent} from 'react';
-import React, {
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import type { FunctionComponent } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   SearchOutlined,
   FormatListBulletedOutlined,
@@ -42,7 +37,7 @@ interface State {
 const maybeSorted = (
   key: string | number,
   order: Maybe<SortOrder>,
-  songs: Array<RawSong>
+  songs: Array<RawSong>,
 ) => {
   if (!order) {
     return songs;
@@ -52,7 +47,7 @@ const maybeSorted = (
 
   return r.pipe<Array<RawSong>, Array<RawSong>, Array<RawSong>>(
     r.sortBy(r.prop(key as keyof RawSong)),
-    maybeReverse
+    maybeReverse,
   )(songs);
 };
 
@@ -76,9 +71,9 @@ export const BaseSong = () => {
     // TODO warning is mishmosh of prev state and current state a problem here?
     const { sortState, sortedSongs } = state;
 
-    const newSortState = (sortState[key] === 'desc'
-      ? 'asc'
-      : order) as SortOrder;
+    const newSortState = (
+      sortState[key] === 'desc' ? 'asc' : order
+    ) as SortOrder;
     setState((prevState) => ({
       // clear the sort state if the previous order is desc
       sortState: {
@@ -124,8 +119,7 @@ const StyledFakeButton = styled.div`
 const PlayCell = ({ song }: SongProps) => {
   const { playing, nowPlayingId, dispatch } = useContext(store);
 
-  const isPlaying =
-    playing === 'playing' && nowPlayingId === song._id;
+  const isPlaying = playing === 'playing' && nowPlayingId === song._id;
 
   const action: Action = isPlaying
     ? { type: 'pause' }
@@ -165,7 +159,7 @@ const ActionCell: SongRenderer = ({ song }: SongProps) => {
 };
 
 const cellRenderComponent: (
-  Comp: SongRenderer
+  Comp: SongRenderer,
 ) => ColumnShape<RawSong>['cellRenderer'] = (Comp: SongRenderer) => (data) => {
   return <Comp song={data.rowData} />;
 };

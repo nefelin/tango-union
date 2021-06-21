@@ -1,9 +1,0 @@
-query HydratedQuery($criteria: CompoundQueryInput!) {
-    hydratedQuery(query: $criteria) {
-        title
-        genre
-        singer
-        orchestra
-        year
-    }
-}

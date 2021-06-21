@@ -2,7 +2,7 @@ import { Maybe } from '../../types/utilTypes';
 type InternalYear = number;
 
 export type YearFilter<UnknownYearType = null, YearType = InternalYear> = Set<YearType | UnknownYearType>;
-export type ParseResult<UnknownYearType> = Maybe<Array<string | UnknownYearType>>;
+export type ParseResult<UnknownYearType> = Maybe<Array<number | UnknownYearType>>;
 
 export interface YearToken {
   kind: 'YEAR';

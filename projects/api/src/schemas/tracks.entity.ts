@@ -42,7 +42,6 @@ export class YoutubeLinks {
   links: RatedYoutube[];
 }
 
-
 @Schema({ timestamps: true })
 export class Track {
   _id?: string;
@@ -72,6 +71,12 @@ export class Track {
 
   @Prop({ required: false })
   updatedAt?: Date;
+
+  @Prop({ required: false })
+  textSlop?: string;
+
+  @Prop({ required: false })
+  searchGrams?: string;
 }
 
 export type TrackDocument = Track & Document;

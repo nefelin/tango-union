@@ -24,8 +24,8 @@ export class YearParser<T> {
     }
     const tokens = this.tokenize(yearTerms);
     const expanded = this.expandTokens(tokens);
-    const stringified: Array<string | T> | null = expanded ? Array.from(expanded).map((year) => typeof year === 'number' ? year.toString() : year) : null;
-    return stringified;
+    // const stringified: Array<string | T> | null = expanded ? Array.from(expanded).map((year) => typeof year === 'number' ? year.toString() : year) : null; // transforms years to strings
+    return expanded ? Array.from(expanded) : null;
   }
 
   stripYearTerms(term: string): string {

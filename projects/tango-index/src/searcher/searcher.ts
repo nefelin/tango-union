@@ -64,7 +64,7 @@ export class Searcher {
       emptySelectIndexCount(),
     );
 
-    // sort
+    // sort fixme this is double the count work above, can we combine cleanly?
     if (sortBy) {
       this.sortTracks(allIds, sortBy)
       if (sortDirection === 'DESC') {
