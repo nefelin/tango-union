@@ -22,9 +22,9 @@ export const compoundResultsFromFacetedResults = (res: FacetedResults): Compound
   return {
     trackIds: res.tracks.map(({ trackId }) => trackId),
     counts: {
-      ...(res.singerCount?.length ? { singer: res.singerCount.map(pairsFromCounts) } : {}),
-      ...(res.orchestraCount?.length ? { orchestra: res.orchestraCount.map(pairsFromCounts) } : {}),
-      ...(res.genreCount?.length ? { genre: res.genreCount.map(pairsFromCounts) } : {}),
+      singer: res.singerCount.map(pairsFromCounts),
+      orchestra: res.orchestraCount.map(pairsFromCounts),
+      genre: res.genreCount.map(pairsFromCounts),
     },
   };
 };

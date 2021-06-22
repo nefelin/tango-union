@@ -15,7 +15,7 @@ export class CountTuple {
 
 @ObjectType()
 export class SelectIndexCount {
-  singer?: Array<CountTuple>;
-  orchestra?: Array<CountTuple>;
-  genre?: Array<CountTuple>;
+  singer: Array<CountTuple>;
+  orchestra: Array<CountTuple>;
+  genre: Array<CountTuple>;
 }

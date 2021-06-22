@@ -5,6 +5,7 @@ import { Route } from 'react-router';
 import { BrowserRouter, Switch } from 'react-router-dom';
 
 import LandingPage from './features/LandingPage';
+import MusicDash from './features/MusicDash';
 
 const apolloClient = new ApolloClient({
   cache: new InMemoryCache(),
@@ -17,7 +18,7 @@ const App = () => (
     <BrowserRouter>
       <React.Suspense fallback={Loading}>
         <Switch>
-          <Route exact path="/" component={LandingPage} />
+          <Route exact path="/" component={MusicDash} />
         </Switch>
       </React.Suspense>
     </BrowserRouter>

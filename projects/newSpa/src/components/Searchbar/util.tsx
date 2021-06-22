@@ -1,0 +1,68 @@
+import * as r from 'ramda';
+import * as React from 'react';
+import type { FormatOptionLabelMeta } from 'react-select';
+import type { Option } from 'react-select/src/filters';
+import { cleanSlop } from 'tango-index/dist/compoundIndex/util';
+
+import type { CompoundQueryInput } from '../../../generated/graphql';
+import type { SearchbarState } from './types';
+import { StyledCount, StyledMenuOption } from './styles';
+
+export const customSearch = (option: Option, searchString: string) =>
+  cleanSlop(option.value).indexOf(cleanSlop(searchString)) !== -1;
+
+export type MemberCountList = Array<{name: string, count: number}>;
+
+export const optionsFromSelectOptions = (
+  op: MemberCountList,
+  value: Array<Option>,
+) =>
+  r.pipe<
+    MemberCountList,
+    Array<[string, number]>,
+    Array<[string, number]>,
+    Array<Option>,
+    Array<Option>,
+    Array<Option>
+  >(
+    r.map(tupleObject => [tupleObject.name, tupleObject.count]),
+    r.reject(([_, count]) => count === 0),
+    r.map(([name, count]) => ({
+      label: name, // `${name} ${value.length === 0 ? `(+${count})` : ""}`,
+      value: name,
+      data: count,
+    })),
+    r.sortBy(r.prop('data')),
+    r.reverse,
+  )(op);
+
+export const formatOptionLabel = (
+  { label, data }: Option,
+  { context }: FormatOptionLabelMeta<Option, true>,
+) => {
+  return context === 'value' ? (
+    <div>{label}</div>
+  ) : (
+    <StyledMenuOption>
+      <div>{label}</div>
+      <StyledCount>{data} results</StyledCount>
+    </StyledMenuOption>
+  );
+};
+
+export const compoundSearchOptsFromSearchbarState = (
+  state: SearchbarState,
+): CompoundQueryInput => {
+  return {
+    orchestras: state.orchestra?.length
+      ? state.orchestra.map(({ value }) => value)
+      : undefined,
+    singers: state.singer?.length
+      ? state.singer.map(({ value }) => value)
+      : undefined,
+    genres: state.genre?.length
+      ? state.genre.map(({ value }) => value)
+      : undefined,
+    text: state.search.length ? state.search : undefined,
+  };
+};
