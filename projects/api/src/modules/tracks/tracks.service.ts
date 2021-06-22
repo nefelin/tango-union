@@ -6,27 +6,17 @@ import { Model } from 'mongoose';
 import { SimpleTrack } from './dto/simpletrack.entity';
 import { TrackId } from 'tango-index';
 import { CompoundQueryInput } from './dto/compoundQuery.input';
-import { CompoundResults } from './dto/compoundResult.entity';
-import {
-  andifyMongoTextSearch,
-  compoundResultsFromFacetedResults,
-} from './util';
+import { andifyMongoTextSearch, compoundResultsFromFacetedResults } from './util';
 import { YearParser } from 'tango-index/dist/searcher/years/yearParser';
-import { EntityCount, FacetedResults } from './types';
+import { FacetedResults } from './types';
 
 @Injectable()
 export class TracksService {
   // simpleSongCache: Record<number, SimpleTrack> = {};
 
-  constructor(
-    @InjectModel(Track.name) private trackModel: Model<TrackDocument>, // @Inject('DATABASE_CONNECTION') // private db: Db,
-  ) {}
+  constructor(@InjectModel(Track.name) private trackModel: Model<TrackDocument>) {}
 
-  rateLink(
-    trackId: number,
-    videoId: string,
-    ratingChange: number,
-  ): Promise<Track> {
+  rateLink(trackId: number, videoId: string, ratingChange: number): Promise<Track> {
     // this should check if user has already voted on this link
     return this.trackModel
       .findByIdAndUpdate(
@@ -80,36 +70,17 @@ export class TracksService {
           $or: orchestras.map((name) => ({ orchestra: name })),
         }
       : null;
-    const singerMatch = singers?.length
-      ? { $or: singers.map((name) => ({ singer: name })) }
-      : null;
-    const genreMatch = genres?.length
-      ? { $or: genres.map((name) => ({ genre: name })) }
-      : null;
+    const singerMatch = singers?.length ? { $or: singers.map((name) => ({ singer: name })) } : null;
+    const genreMatch = genres?.length ? { $or: genres.map((name) => ({ genre: name })) } : null;
 
     const stripNil = r.reject(r.isNil);
 
-    const singerCountMatches = stripNil([
-      orchestraMatch,
-      genreMatch,
-      yearMatch,
-    ]);
-    const orchestraCountMatches = stripNil([
-      singerMatch,
-      genreMatch,
-      yearMatch,
-    ]);
-    const genreCountMatches = stripNil([
-      orchestraMatch,
-      singerMatch,
-      yearMatch,
-    ]);
-    const allMatches = stripNil([
-      orchestraMatch,
-      singerMatch,
-      genreMatch,
-      yearMatch,
-    ]);
+    const singerCountMatches = stripNil([orchestraMatch, genreMatch, yearMatch]);
+    const orchestraCountMatches = stripNil([singerMatch, genreMatch, yearMatch]);
+    const genreCountMatches = stripNil([orchestraMatch, singerMatch, yearMatch]);
+    const allMatches = stripNil([orchestraMatch, singerMatch, genreMatch, yearMatch]);
+
+    const sortWithDefault = sort && Object.keys(sort).length > 0 ? sort : { title: 1 };
 
     const pipeline = [
       textMatch,
@@ -117,27 +88,21 @@ export class TracksService {
         $facet: {
           singerCount: [
             {
-              $match: singerCountMatches.length
-                ? { $and: singerCountMatches }
-                : {},
+              $match: singerCountMatches.length ? { $and: singerCountMatches } : {},
             },
             { $unwind: '$singer' },
             { $sortByCount: '$singer' },
           ],
           orchestraCount: [
             {
-              $match: orchestraCountMatches.length
-                ? { $and: orchestraCountMatches }
-                : {},
+              $match: orchestraCountMatches.length ? { $and: orchestraCountMatches } : {},
             },
             { $unwind: '$orchestra' },
             { $sortByCount: '$orchestra' },
           ],
           genreCount: [
             {
-              $match: genreCountMatches.length
-                ? { $and: genreCountMatches }
-                : {},
+              $match: genreCountMatches.length ? { $and: genreCountMatches } : {},
             },
             { $unwind: '$genre' },
             { $sortByCount: '$genre' },
@@ -150,7 +115,7 @@ export class TracksService {
                   }
                 : {},
             },
-            { $sort: sort ? sort : {} },
+            { $sort: sortWithDefault },
             pagination ? { $skip: pagination.offset } : { $skip: 0 },
             pagination ? { $limit: pagination.limit } : { $limit: 20 },
           ],
@@ -158,7 +123,7 @@ export class TracksService {
       },
     ];
 
-    const res = await this.trackModel.aggregate<FacetedResults>(pipeline);
+    const res = await this.trackModel.aggregate<FacetedResults>(stripNil(pipeline));
     return compoundResultsFromFacetedResults(res[0]);
   }
 
