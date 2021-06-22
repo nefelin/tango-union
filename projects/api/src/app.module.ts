@@ -6,7 +6,6 @@ import { HydrateModule } from './modules/hydrate/hydrate.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { GraphQLModule } from '@nestjs/graphql';
 import * as path from 'path';
-import { IndexModule } from './modules/index/index.module';
 import fs from 'fs';
 
 const TABS_PATH = path.resolve(__dirname, '../generated/tabs.json'); // fixme should be in config
@@ -30,7 +29,6 @@ const TABS_PATH = path.resolve(__dirname, '../generated/tabs.json'); // fixme sh
     MongooseModule.forRoot('mongodb://localhost/raw_tracks'),
     TracksModule,
     HydrateModule,
-    IndexModule,
   ],
   controllers: [],
   providers: [YoutubeSearchService],

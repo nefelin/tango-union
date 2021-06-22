@@ -40,9 +40,7 @@ export class TracksService {
   }
 
   async specificTracks(trackIds: TrackId[]): Promise<SimpleTrack[]> {
-    // return trackIds.map((trackId) => this.simpleSongCache[trackId]);
-    const tracks = await this.trackModel.find({ trackId: { $in: trackIds } });
-    return tracks;
+    return this.trackModel.find({ trackId: { $in: trackIds } }).exec();
   }
 
   async compoundSearch(input: CompoundQueryInput) {

@@ -46,6 +46,7 @@ export class YoutubeLinks {
 export class Track {
   _id?: string;
 
+  @Prop({ required: true })
   trackId: number;
 
   @Prop({ required: false })
@@ -73,10 +74,7 @@ export class Track {
   updatedAt?: Date;
 
   @Prop({ required: false })
-  textSlop?: string;
-
-  @Prop({ required: false })
-  searchGrams?: string;
+  searchGrams: string;
 }
 
 export type TrackDocument = Track & Document;

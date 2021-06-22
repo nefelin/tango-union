@@ -1,0 +1,19 @@
+query CompoundQuery($criteria: CompoundQueryInput!) {
+  compoundQuery(query: $criteria) {
+    trackIds
+    counts {
+      singer {
+        name
+        count
+      }
+      orchestra {
+        name
+        count
+      }
+      genre {
+        name
+        count
+      }
+    }
+  }
+}

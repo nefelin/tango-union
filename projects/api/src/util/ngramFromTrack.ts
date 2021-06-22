@@ -18,6 +18,5 @@ export const nGramsFromString = (str: string, minLen = 2, delimiter = '') => {
 export const addNgramsToTrack = (track: TrackDocument) => {
   const textSlop = slopFromSong(track);
   track.searchGrams = nGramsFromString(textSlop);
-  track.textSlop = undefined;
   track.save();
 }
