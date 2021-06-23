@@ -13,7 +13,7 @@ export interface CompoundInput {
 }
 
 export interface CompoundResults {
-  trackIds: Array<TrackId>;
+  ids: Array<TrackId>;
   counts: SelectIndexCount;
 }
 

@@ -41,9 +41,9 @@ export class TextIndexer {
   indexTrack(track: SimpleTrack) {
     Object.values(track).forEach((value) => {
       if (Array.isArray(value)) {
-        value.forEach((term) => this.insertTerm(term, track.trackId));
+        value.forEach((term) => this.insertTerm(term, track.id));
       } else if (typeof value === 'string') {
-        this.insertTerm(value, track.trackId);
+        this.insertTerm(value, track.id);
       }
     });
   }

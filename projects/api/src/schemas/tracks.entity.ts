@@ -47,7 +47,7 @@ export class Track {
   _id?: string;
 
   @Prop({ required: true })
-  trackId: number;
+  id: number;
 
   @Prop({ required: false })
   genre?: string;

@@ -1,9 +1,14 @@
+import { useApolloClient } from '@apollo/client';
 import Input from '@material-ui/core/Input';
 import { useFormik } from 'formik';
 import * as React from 'react';
 import { useEffect } from 'react';
 
-import type { CompoundQueryQuery, FullCountFragmentFragment } from '../../generated/graphql';
+import type {
+  CompoundQueryQuery,
+  FullCountFragmentFragment,
+} from '../../generated/graphql';
+import { TrackDetailFragmentFragmentDoc } from '../../generated/graphql';
 import CustomSelect from './Searchbar/CustomSelect';
 import {
   InputSpacer,
@@ -19,7 +24,7 @@ interface Props {
   searchState: SearchbarState;
 }
 
-const Searchbar = ({selectOptions, onChange, searchState}: Props) => {
+const Searchbar = ({ selectOptions, onChange, searchState }: Props) => {
   const formik = useFormik<SearchbarState>({
     initialValues: searchState,
     onSubmit: (values) => console.log({ values }),

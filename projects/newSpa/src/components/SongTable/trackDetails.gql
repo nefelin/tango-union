@@ -1,9 +1,0 @@
-query TrackDetails($trackIds: [Float!]!) {
-    tracksByIds(trackIds: $trackIds) {
-        title
-        genre
-        singer
-        orchestra
-        year
-    }
-}

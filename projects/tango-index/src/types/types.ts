@@ -12,7 +12,7 @@ const dropdownCategories = ['singer', 'orchestra', 'genre'] as const;
 export type IndexedCategory = typeof indexedCategories[number];
 export type DropdownCategory = typeof dropdownCategories[number];
 
-export type TrackId = SimpleTrack['trackId'];
+export type TrackId = SimpleTrack['id'];
 
 export type CategoryMember = string; // in case we want to type differently at some point
 
@@ -32,7 +32,7 @@ interface SlopMeta {
 }
 
 export interface SimpleTrack {
-  trackId: number;
+  id: number;
   singer?: string[];
   orchestra?: string[];
   title: string;

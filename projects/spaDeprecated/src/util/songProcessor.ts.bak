@@ -25,7 +25,7 @@ export const process = (rawSongs: RawSong[]): IndexedSongData => {
 
 // slop stuff
 const valuesForSlop = (song: RawSong) =>
-  Object.values(r.omit(["length", "trackId"], song)).join(" ");
+  Object.values(r.omit(["length", "id"], song)).join(" ");
 const slopFromSong = r.pipe(valuesForSlop, cleanSlop);
 const songWithSlop = (song: RawSong) => ({ ...song, slop: slopFromSong(song) });
 
@@ -52,24 +52,24 @@ const makeSelectIndex = (allSongs: RawSong[]): SelectIndex => {
     return genreNames.other;
   };
 
-  for (let { trackId, singer, orchestra, genre } of allSongs) {
+  for (let { id, singer, orchestra, genre } of allSongs) {
     if (singer !== "") {
       options.singer = {
         ...options.singer,
-        [singer]: [...(options.singer[singer] || []), trackId],
+        [singer]: [...(options.singer[singer] || []), id],
       };
     }
     if (orchestra !== "") {
       options.orchestra = {
         ...options.orchestra,
-        [orchestra]: [...(options.orchestra[orchestra] || []), trackId],
+        [orchestra]: [...(options.orchestra[orchestra] || []), id],
       };
     }
 
     const indexGenre = getIndexGenre(genre);
     options.genre = {
       ...options.genre,
-      [indexGenre]: [...(options.genre[indexGenre] || []), trackId],
+      [indexGenre]: [...(options.genre[indexGenre] || []), id],
     };
   }
 

@@ -2,7 +2,7 @@ import { ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class SimpleTrack {
-  trackId: number;
+  id: number;
   singer?: string[];
   orchestra?: string[];
   title: string;

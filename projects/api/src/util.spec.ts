@@ -12,7 +12,7 @@ it('removeSearchIrrelevantTerms should remove any occurences of "Unknown Male" o
 
 describe('queryFromString should flatten object to an appropriate youtube search string', () => {
   const song: Track = {
-    trackId: 0,
+    id: 0,
     title: 'Besos de miel',
     genre: 'fox trot',
     orchestra: ['Francisco Canaro'],

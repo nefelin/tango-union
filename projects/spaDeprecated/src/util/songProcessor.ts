@@ -8,7 +8,7 @@ interface RawSong {
   title: string;
   orchestra: string;
   singer: string;
-  trackId: number;
+  id: number;
   year: Maybe<number>;
 }
 
@@ -22,7 +22,7 @@ type IndexedCategory = typeof indexedCategories[number];
 
 type CategoryMember = string;
 
-type MemberToTracks = Record<CategoryMember, Array<RawSong['trackId']>>;
+type MemberToTracks = Record<CategoryMember, Array<RawSong['id']>>;
 
 type SelectIndex = Record<IndexedCategory, MemberToTracks>;
 
@@ -43,7 +43,7 @@ interface IndexedSongData {
 // slop stuff
 const valuesForSlop = (song: RawSong) =>
   r.pipe(
-    r.omit(['length', 'trackId', 'year', 'youtube']),
+    r.omit(['length', 'id', 'year', 'youtube']),
     Object.values,
     r.reject(r.isEmpty),
     r.join(' ')
@@ -74,24 +74,24 @@ const makeSelectIndex = (allSongs: Array<RawSong>): SelectIndex => {
     return genreNames.other;
   };
 
-  for (const { trackId, singer, orchestra, genre } of allSongs) {
+  for (const { id, singer, orchestra, genre } of allSongs) {
     if (singer !== '') {
       options.singer = {
         ...options.singer,
-        [singer]: [...(options.singer[singer] || []), trackId],
+        [singer]: [...(options.singer[singer] || []), id],
       };
     }
     if (orchestra !== '') {
       options.orchestra = {
         ...options.orchestra,
-        [orchestra]: [...(options.orchestra[orchestra] || []), trackId],
+        [orchestra]: [...(options.orchestra[orchestra] || []), id],
       };
     }
 
     const indexGenre = getIndexGenre(genre);
     options.genre = {
       ...options.genre,
-      [indexGenre]: [...(options.genre[indexGenre] || []), trackId],
+      [indexGenre]: [...(options.genre[indexGenre] || []), id],
     };
   }
 

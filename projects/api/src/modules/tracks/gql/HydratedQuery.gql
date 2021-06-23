@@ -1,5 +1,5 @@
-query TracksByIds($trackIds: [Float!]!) {
-    tracksByIds(trackIds: $trackIds) {
+query TracksByIds($ids: [Float!]!) {
+    tracksByIds(ids: $ids) {
         title
         genre
         singer

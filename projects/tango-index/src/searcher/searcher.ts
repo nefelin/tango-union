@@ -72,9 +72,9 @@ export class Searcher {
       }
     }
 
-    // return counts and trackIds
+    // return counts and ids
     return {
-      trackIds: allIds,
+      ids: allIds,
       counts,
     };
   }

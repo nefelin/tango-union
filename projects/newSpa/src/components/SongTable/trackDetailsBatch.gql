@@ -1,0 +1,14 @@
+query TrackDetailsBatch($ids: [Float!]!) {
+  tracksByIds(ids: $ids) {
+    ...TrackDetailFragment
+  }
+}
+
+fragment TrackDetailFragment on SimpleTrack {
+  id
+  title
+  genre
+  singer
+  orchestra
+  year
+}

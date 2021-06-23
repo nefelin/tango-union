@@ -40,7 +40,7 @@ const MusicDash = () => {
         searchState={searchState}
         onChange={(newState) => setSearchState(newState)}
       />
-      <SongTable trackIds={data?.compoundQuery.trackIds}/>
+      <SongTable ids={data?.compoundQuery.ids}/>
     </div>
   );
 };

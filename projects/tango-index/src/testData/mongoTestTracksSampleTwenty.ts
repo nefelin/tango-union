@@ -4,7 +4,7 @@ export const testTracks: SimpleTrack[] = [
   {
     title: 'Ki-Ki',
     genre: 'tango',
-    trackId: 0,
+    id: 0,
     // orchestra: ['Francisco Canaro'], corrupting cause I need to test handling of indexing no orchestra
     year: 1924,
 
@@ -12,7 +12,7 @@ export const testTracks: SimpleTrack[] = [
   {
     title: 'Kicho',
     genre: 'tango',
-    trackId: 1,
+    id: 1,
     // orchestra: ['Ensemble Hyperion'], corrupting cause I need to test handling of indexing no orchestra
     secondsLong: 386,
     year: 2008,
@@ -21,7 +21,7 @@ export const testTracks: SimpleTrack[] = [
   {
     title: 'Katinka',
     genre: 'fox trot',
-    trackId: 2,
+    id: 2,
     // orchestra: ['Francisco Canaro'], corrupting cause I need to test handling of indexing no orchestra
     secondsLong: 162,
     year: 1926,
@@ -29,7 +29,7 @@ export const testTracks: SimpleTrack[] = [
   {
     title: 'Knock-out de amor',
     genre: 'tango',
-    trackId: 3,
+    id: 3,
     orchestra: [
       'Ángel Domingo Riverol',
       'Guillermo Barbieri',
@@ -42,7 +42,7 @@ export const testTracks: SimpleTrack[] = [
   {
     title: 'B.B.',
     genre: 'tango',
-    trackId: 4,
+    id: 4,
     orchestra: ['Selección Nacional'],
     secondsLong: 187,
     year: 2005,
@@ -50,7 +50,7 @@ export const testTracks: SimpleTrack[] = [
   {
     title: 'Bacán',
     genre: 'tango',
-    trackId: 5,
+    id: 5,
     orchestra: ['Osvaldo Fresedo'],
     secondsLong: 161,
     year: 1926,
@@ -58,7 +58,7 @@ export const testTracks: SimpleTrack[] = [
   {
     title: 'B.B.',
     genre: 'tango',
-    trackId: 6,
+    id: 6,
     orchestra: ['Aníbal Troilo'],
     secondsLong: 205,
     year: 1963,
@@ -66,7 +66,7 @@ export const testTracks: SimpleTrack[] = [
   {
     title: 'Bacán fulero',
     genre: 'tango',
-    trackId: 7,
+    id: 7,
     orchestra: ['Francisco Lomuto'],
     secondsLong: 174,
     year: 1927,
@@ -74,7 +74,7 @@ export const testTracks: SimpleTrack[] = [
   {
     title: 'Baby face',
     genre: 'fox trot',
-    trackId: 8,
+    id: 8,
     orchestra: ['Francisco Canaro'],
     secondsLong: 175,
     year: 1927,
@@ -82,7 +82,7 @@ export const testTracks: SimpleTrack[] = [
   {
     title: 'Kri kri',
     genre: 'fox trot',
-    trackId: 9,
+    id: 9,
     orchestra: ['Adolfo Carabelli'],
     singer: ['Jaime Moreno'],
     secondsLong: 213,
@@ -91,7 +91,7 @@ export const testTracks: SimpleTrack[] = [
   {
     title: 'Bacan fulero',
     genre: 'tango',
-    trackId: 10,
+    id: 10,
     orchestra: ['Roberto Firpo'],
     secondsLong: 177,
     year: 1929,
@@ -99,7 +99,7 @@ export const testTracks: SimpleTrack[] = [
   {
     title: 'Bach',
     genre: '',
-    trackId: 11,
+    id: 11,
     orchestra: ['Trio Neuklang'],
     secondsLong: 195,
     year: 2013,
@@ -107,7 +107,7 @@ export const testTracks: SimpleTrack[] = [
   {
     title: 'Bahía Blanca',
     genre: 'tango',
-    trackId: 12,
+    id: 12,
     orchestra: ['Florindo Sassone'],
     secondsLong: 176,
     year: 1959,
@@ -115,7 +115,7 @@ export const testTracks: SimpleTrack[] = [
   {
     title: 'Bachicha',
     genre: 'tango',
-    trackId: 13,
+    id: 13,
     orchestra: ['Cayetano Puglisi'],
     secondsLong: 164,
     year: 1930,
@@ -123,7 +123,7 @@ export const testTracks: SimpleTrack[] = [
   {
     title: 'Bahía Blanca',
     genre: 'tango',
-    trackId: 14,
+    id: 14,
     orchestra: ['Horacio Salgán', 'Ubaldo Aquiles De Lio'],
     secondsLong: 159,
     year: 1971,
@@ -131,7 +131,7 @@ export const testTracks: SimpleTrack[] = [
   {
     title: 'Bahía Blanca',
     genre: 'tango',
-    trackId: 15,
+    id: 15,
     orchestra: ['Carlos Di Sarli'],
     secondsLong: 170,
     year: 1958,
@@ -139,7 +139,7 @@ export const testTracks: SimpleTrack[] = [
   {
     title: 'Bahía Blanca',
     genre: 'tango',
-    trackId: 16,
+    id: 16,
     orchestra: ['Osvaldo Fresedo'],
     secondsLong: 174,
     year: 1961,
@@ -147,7 +147,7 @@ export const testTracks: SimpleTrack[] = [
   {
     title: 'Bahía Blanca',
     genre: 'tango',
-    trackId: 17,
+    id: 17,
     orchestra: ['Selección Nacional'],
     secondsLong: 197,
     year: 2005,
@@ -155,7 +155,7 @@ export const testTracks: SimpleTrack[] = [
   {
     title: 'Bahía Blanca',
     genre: 'tango',
-    trackId: 18,
+    id: 18,
     orchestra: ['Carlos Di Sarli'],
     secondsLong: 170,
     year: 1957,

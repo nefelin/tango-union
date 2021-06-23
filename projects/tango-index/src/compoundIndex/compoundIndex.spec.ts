@@ -16,5 +16,5 @@ it('should stringify and import stringified indices correctly', () => {
     categories: { orchestra: ['Carlos Di Sarli'] },
   });
 
-  expect(res.trackIds).toEqual([15, 18]);
+  expect(res.ids).toEqual([15, 18]);
 });

@@ -6,6 +6,6 @@ export interface TangoTrack {
   title: string;
   orchestra: string;
   singer: string;
-  trackId: number;
+  id: number;
   year: Maybe<number>;
 }

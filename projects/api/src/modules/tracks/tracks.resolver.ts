@@ -11,15 +11,18 @@ export class TracksResolver {
   constructor(readonly tracksService: TracksService) {}
 
   @Query(() => [RatedYoutube], { name: 'trackSource' })
-  getTrackLinks(@Args('trackId') trackId: number) {
-    return this.tracksService.linksForTrack(trackId);
+  getTrackLinks(@Args('id') id: number) {
+    return this.tracksService.linksForTrack(id);
   }
 
   @Query(() => [SimpleTrack], { name: 'tracksByIds' })
-  async tracksByIds(
-    @Args('trackIds', { type: () => [Number] }) trackIds: number[],
-  ) {
-    return this.tracksService.specificTracks(trackIds);
+  async tracksByIds(@Args('ids', { type: () => [Number] }) ids: number[]) {
+    return this.tracksService.specificTracks(ids);
+  }
+
+  @Query(() => SimpleTrack, { name: 'trackById' })
+  async trackByIds(@Args('id', { type: () => Number }) id: number) {
+    return this.tracksService.specificTrack(id);
   }
 
   @Query(() => CompoundResults)
@@ -31,16 +34,14 @@ export class TracksResolver {
   async getDbTracks() {
     const tracks = await this.tracksService.sampleTracks();
     console.log(tracks);
-    return tracks.map(
-      ({ title, singer, secondsLong, orchestra, trackId, genre, year }) => ({
-        trackId,
-        title,
-        singer,
-        orchestra,
-        year,
-        secondsLong,
-        genre,
-      }),
-    );
+    return tracks.map(({ title, singer, secondsLong, orchestra, id, genre, year }) => ({
+      id,
+      title,
+      singer,
+      orchestra,
+      year,
+      secondsLong,
+      genre,
+    }));
   }
 }

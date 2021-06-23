@@ -7,4 +7,4 @@ export const criteria: CompoundQueryInput = {
   sort: { title: 1 },
 };
 
-export const trackIds: Array<number> = [1, 2, 3, 4, 5];
+export const ids: Array<number> = [1, 2, 3, 4, 5];

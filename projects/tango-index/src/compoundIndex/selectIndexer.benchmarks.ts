@@ -10,7 +10,7 @@ const real20 = testTracks.slice(0, 9);
 const fake20 = bigTracks.slice(0, 9);
 
 const fakeIndex = new SelectIndexer(bigTracks);
-const fakeIds = testTracks.map(({ trackId }) => trackId);
+const fakeIds = testTracks.map(({ id }) => id);
 
 let selectIndexer = new SelectIndexer();
 suite

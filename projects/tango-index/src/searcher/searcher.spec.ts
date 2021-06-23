@@ -16,7 +16,7 @@ describe('Category search', () => {
         ],
       },
     });
-    expect(res.trackIds).toEqual(expected);
+    expect(res.ids).toEqual(expected);
   });
 
   it("should treat criteria in the different category as AND'ed with other categories searches", () => {
@@ -31,7 +31,7 @@ describe('Category search', () => {
         year: ['2005'],
       },
     });
-    expect(res.trackIds).toEqual(expected);
+    expect(res.ids).toEqual(expected);
   });
 });
 
@@ -42,7 +42,7 @@ it("should treat year terms and other text and AND'ed terms", () => {
     text: '50s sarli',
   });
 
-  expect(res.trackIds).toEqual(expected);
+  expect(res.ids).toEqual(expected);
 });
 
 it("should treat non year terms as AND'ed terms", () => {
@@ -51,7 +51,7 @@ it("should treat non year terms as AND'ed terms", () => {
     text: 'bahia fres',
   });
 
-  expect(res.trackIds).toEqual(expected);
+  expect(res.ids).toEqual(expected);
 });
 
 it('should sort results', () => {
@@ -60,5 +60,5 @@ it('should sort results', () => {
     text: '01-99'
   }, 'year', 'DESC');
 
-  console.log(res.trackIds.map(id => testTracks[id]));
+  console.log(res.ids.map(id => testTracks[id]));
 });

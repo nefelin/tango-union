@@ -1,4 +1,4 @@
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client';
 import { createUploadLink } from 'apollo-upload-client';
 import * as React from 'react';
 import { Route } from 'react-router';
@@ -9,8 +9,8 @@ import MusicDash from './features/MusicDash';
 
 const apolloClient = new ApolloClient({
   cache: new InMemoryCache(),
-  link: createUploadLink({ uri: 'http://localhost:4000/graphql' }),
-  connectToDevTools: process.env['REACT_APP_ENV'] === 'local',
+  link: createHttpLink({ uri: 'http://localhost:4000/graphql' }),
+  connectToDevTools: process.env['REACT_APP_ENV'] !== 'prod',
 });
 
 const App = () => (

@@ -15,6 +15,6 @@ it('should stringify and import stringified indices correctly', () => {
 
 it('should ignore case and diacritics', () => {
   const expectedIds = [5,7,10]
-  const trackIds = index.search('bacan');
-  expect(trackIds).toEqual(expectedIds);
+  const ids = index.search('bacan');
+  expect(ids).toEqual(expectedIds);
 });

@@ -47,7 +47,7 @@ export const flattenSingersAndOrchestras = ({
 export const valuesForSlop = (song: SimpleTrack) =>
   r.pipe(
     flattenSingersAndOrchestras,
-    r.omit(['secondsLong', '_id', 'trackId', 'year']),
+    r.omit(['secondsLong', '_id', 'id', 'year']),
     Object.values,
     r.reject(r.isEmpty),
     r.join(' '),

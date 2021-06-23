@@ -16,12 +16,12 @@ export class TracksService {
 
   constructor(@InjectModel(Track.name) private trackModel: Model<TrackDocument>) {}
 
-  rateLink(trackId: number, videoId: string, ratingChange: number): Promise<Track> {
+  rateLink(id: number, videoId: string, ratingChange: number): Promise<Track> {
     // this should check if user has already voted on this link
     return this.trackModel
       .findByIdAndUpdate(
         {
-          trackId: { $eq: trackId },
+          id: { $eq: id },
           'links.videoId': { $eq: videoId },
         },
         {
@@ -39,8 +39,12 @@ export class TracksService {
     return this.trackModel.find().limit(500).exec();
   }
 
-  async specificTracks(trackIds: TrackId[]): Promise<SimpleTrack[]> {
-    return this.trackModel.find({ trackId: { $in: trackIds } }).exec();
+  async specificTracks(ids: TrackId[]): Promise<SimpleTrack[]> {
+    return this.trackModel.find({ id: { $in: ids } }).exec();
+  }
+
+  async specificTrack(id: TrackId): Promise<SimpleTrack> {
+    return this.trackModel.findOne({ id }).exec();
   }
 
   async compoundSearch(input: CompoundQueryInput) {

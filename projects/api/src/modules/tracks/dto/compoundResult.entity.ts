@@ -3,7 +3,7 @@ import { TrackId } from 'tango-index';
 
 @ObjectType()
 export class CompoundResults {
-  trackIds: Array<TrackId>;
+  ids: Array<TrackId>;
   counts: SelectIndexCount;
 }
 

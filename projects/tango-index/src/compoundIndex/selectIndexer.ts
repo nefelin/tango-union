@@ -46,23 +46,23 @@ export class SelectIndexer {
   private indexCategory(
     category: IndexedCategory,
     entry: CategoryMember,
-    trackId: TrackId,
+    id: TrackId,
   ) {
     this.index[category] = {
       ...this.index[category],
-      [entry]: [...(this.index[category][entry] || []), trackId],
+      [entry]: [...(this.index[category][entry] || []), id],
     };
   }
 
   reverseIndexCategory(
     category: IndexedCategory,
     entry: CategoryMember,
-    trackId: TrackId,
+    id: TrackId,
   ) {
-    this.reverseIndex[trackId] = {
-      ...this.reverseIndex[trackId],
+    this.reverseIndex[id] = {
+      ...this.reverseIndex[id],
       [category]: [
-        ...((this.reverseIndex[trackId] || {})[category] || []),
+        ...((this.reverseIndex[id] || {})[category] || []),
         entry,
       ],
     };
@@ -71,10 +71,10 @@ export class SelectIndexer {
   private addToIndices(
     category: IndexedCategory,
     entry: CategoryMember,
-    trackId: TrackId,
+    id: TrackId,
   ) {
-    this.indexCategory(category, entry, trackId);
-    this.reverseIndexCategory(category, entry, trackId);
+    this.indexCategory(category, entry, id);
+    this.reverseIndexCategory(category, entry, id);
   }
 
   countsFromTracksSingleCat(
@@ -120,27 +120,27 @@ export class SelectIndexer {
   }
 
   indexTrack(track: SimpleTrack) {
-    const { trackId, singer, year, orchestra, genre } = track;
+    const { id, singer, year, orchestra, genre } = track;
     if (singer?.length) {
       singer.forEach((thisSinger) =>
-        this.addToIndices('singer', thisSinger, trackId),
+        this.addToIndices('singer', thisSinger, id),
       );
     } else {
-      this.addToIndices('singer', NULL_LABELS.SINGER, trackId);
+      this.addToIndices('singer', NULL_LABELS.SINGER, id);
     }
 
     if (orchestra?.length) {
       orchestra.forEach((thisOrchestra) =>
-        this.addToIndices('orchestra', thisOrchestra, trackId),
+        this.addToIndices('orchestra', thisOrchestra, id),
       );
     } else {
-      this.addToIndices('orchestra', NULL_LABELS.ORCHESTRA, trackId);
+      this.addToIndices('orchestra', NULL_LABELS.ORCHESTRA, id);
     }
 
     const yearEntry = r.isNil(year) ? NULL_LABELS.YEAR : year.toString();
-    this.addToIndices('year', yearEntry, trackId);
+    this.addToIndices('year', yearEntry, id);
 
     const indexGenre = getIndexGenre(genre);
-    this.addToIndices('genre', indexGenre, trackId);
+    this.addToIndices('genre', indexGenre, id);
   }
 }
