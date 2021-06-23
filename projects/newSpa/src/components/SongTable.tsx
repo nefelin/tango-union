@@ -1,46 +1,14 @@
-import { useApolloClient } from '@apollo/client';
 import { nanoid } from 'nanoid';
 import * as React from 'react';
-import { useEffect, useState } from 'react';
 
-import type { SimpleTrack } from '../../generated/graphql';
-
-import {
-  TrackDetailFragmentFragmentDoc,
-  useTrackDetailsBatchQuery,
-  useTrackDetailsQuery,
-} from '../../generated/graphql';
+import useCacheStitchedIdFetch from './SongTable/useCacheStitchedIdFetch';
 
 interface Props {
   ids?: Array<number>;
 }
 
 const SongTable = ({ ids }: Props) => {
-  // const [tracks, setTracks] = useState<Array<SimpleTrack>>([]);
-  const client = useApolloClient();
-
-  const fetchIds =
-    ids?.filter(
-      (id) =>
-        client.readFragment({
-          id: `SimpleTrack:${id}`,
-          fragment: TrackDetailFragmentFragmentDoc,
-        }) === null,
-    ) ?? [];
-
-  const tracks =
-    ids?.map(
-      (id) =>
-        client.readFragment({
-          id: `SimpleTrack:${id}`,
-          fragment: TrackDetailFragmentFragmentDoc,
-        }) ?? null,
-    ) ?? [];
-
-  useTrackDetailsBatchQuery({
-    variables: { ids: fetchIds },
-    skip: fetchIds.length === 0,
-  });
+  const tracks = useCacheStitchedIdFetch(ids);
 
   return (
     <ol>
@@ -54,5 +22,6 @@ const SongTable = ({ ids }: Props) => {
     </ol>
   );
 };
+
 
 export default SongTable;

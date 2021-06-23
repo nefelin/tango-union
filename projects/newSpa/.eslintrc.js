@@ -78,7 +78,7 @@ module.exports = {
     '@typescript-eslint/no-shadow': [2],
     '@typescript-eslint/no-use-before-define': 0,
     '@typescript-eslint/no-implicit-any-catch': 2,
-    '@typescript-eslint/no-explicit-any': 2,
+    '@typescript-eslint/no-explicit-any': 0,
     '@typescript-eslint/interface-name-prefix': 0,
     '@typescript-eslint/explicit-function-return-type': 0,
     '@typescript-eslint/explicit-module-boundary-types': 0,

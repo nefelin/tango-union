@@ -18,14 +18,16 @@ const emptyOptions: FullCountFragmentFragment['counts'] = {
 const MusicDash = () => {
   const [options, setOptions] = useState(emptyOptions);
   const [searchState, setSearchState] = useState(initSearchbarState);
-  const [debouncedSearchState] = useDebounce(searchState, 300);
+  const [debouncedSearchState] = useDebounce(searchState, 500);
 
   const { data, error } = useCompoundQueryQuery({
     variables: { criteria: compoundSearchOptsFromSearchbarState(debouncedSearchState) },
   });
 
   useEffect(() => {
-    setOptions(data?.compoundQuery.counts ?? emptyOptions);
+    if (data?.compoundQuery.counts) {
+      setOptions(data.compoundQuery.counts);
+    }
   }, [data?.compoundQuery.counts]);
 
   if (error) {
