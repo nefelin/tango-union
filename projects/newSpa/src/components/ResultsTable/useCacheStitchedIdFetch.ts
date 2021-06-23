@@ -1,11 +1,16 @@
 import { useApolloClient } from '@apollo/client';
 
 import {
+  SimpleTrack,
   TrackDetailFragmentFragmentDoc,
   useTrackDetailsBatchQuery,
 } from '../../../generated/graphql';
 
-const useCacheStitchedIdFetch = (ids?: Array<number>) => {
+const useCacheStitchedIdFetch = (
+  ids?: Array<number>,
+  exposeNullRows = false,
+): [Array<SimpleTrack>, boolean] => {
+  console.log('hook');
   const client = useApolloClient();
 
   const fetchIds =
@@ -17,7 +22,7 @@ const useCacheStitchedIdFetch = (ids?: Array<number>) => {
         }) === null,
     ) ?? [];
 
-  useTrackDetailsBatchQuery({
+  const { loading } = useTrackDetailsBatchQuery({
     variables: { ids: fetchIds },
     skip: fetchIds.length === 0,
   });
@@ -31,7 +36,10 @@ const useCacheStitchedIdFetch = (ids?: Array<number>) => {
         }) ?? null,
     ) ?? [];
 
-  return tracks;
+  if (exposeNullRows) {
+    return [tracks, loading];
+  }
+  return [tracks.indexOf(null) === -1 ? tracks : [], loading];
 };
 
 export default useCacheStitchedIdFetch;

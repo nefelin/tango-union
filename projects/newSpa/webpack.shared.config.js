@@ -46,7 +46,7 @@ module.exports = (mode, env) => {
             'style-loader',
             'css-loader',
             { loader: 'postcss-loader', options: { postcssOptions } },
-            'sass-loader',
+            // 'sass-loader',
           ],
         },
         {
@@ -69,7 +69,7 @@ module.exports = (mode, env) => {
       new CleanWebpackPlugin(),
       new ESLintWebpackPlugin({
         files: path.resolve(__dirname, './src'),
-        fix: isProduction,
+        fix: true,
         threads: true,
         extensions: ['ts', 'tsx'],
         lintDirtyModulesOnly: cacheEslint,

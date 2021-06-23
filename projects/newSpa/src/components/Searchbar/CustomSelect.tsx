@@ -41,7 +41,6 @@ const CustomSelect = ({ selectOptions, id, label, setter, value }: Props) => {
         filterOption={customSearch}
         onChange={(newSelection, triggeredAction) => {
           setSelection(newSelection);
-          console.log(triggeredAction)
           if (triggeredAction.action === 'clear' || triggeredAction.action === 'remove-value') {
             handleDispatchState(newSelection);
           }
