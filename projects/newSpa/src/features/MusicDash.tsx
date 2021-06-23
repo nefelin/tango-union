@@ -7,6 +7,7 @@ import Searchbar from '../components/Searchbar';
 import { initSearchbarState } from '../components/Searchbar/types';
 import { compoundSearchOptsFromSearchbarState } from '../components/Searchbar/util';
 import { useDebounce } from 'use-debounce';
+import SongTable from '../components/SongTable';
 
 const emptyOptions: FullCountFragmentFragment['counts'] = {
   singer: [],
@@ -39,11 +40,7 @@ const MusicDash = () => {
         searchState={searchState}
         onChange={(newState) => setSearchState(newState)}
       />
-      <ol>
-        {data?.compoundQuery.trackIds.map((id) => (
-          <li key={id}>{id}</li>
-        ))}
-      </ol>
+      <SongTable trackIds={data?.compoundQuery.trackIds}/>
     </div>
   );
 };

@@ -5,6 +5,5 @@ query TrackDetails($trackIds: [Float!]!) {
         singer
         orchestra
         year
-        trackId
     }
 }
