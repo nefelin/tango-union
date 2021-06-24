@@ -7,6 +7,7 @@ export interface SearchbarState {
   singer: Maybe<Array<Option>>;
   genre: Maybe<Array<Option>>;
   search: string;
+  sort: Record<string, 'asc' | 'desc'>;
 }
 
 export const initSearchbarState: SearchbarState = {
@@ -14,4 +15,5 @@ export const initSearchbarState: SearchbarState = {
   orchestra: [],
   singer: [],
   genre: [],
+  sort: { title: 'asc' },
 };

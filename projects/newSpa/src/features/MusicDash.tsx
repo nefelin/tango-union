@@ -1,3 +1,4 @@
+import { useReactiveVar } from '@apollo/client';
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useDebounce } from 'use-debounce';
@@ -6,6 +7,7 @@ import type { FullCountFragmentFragment } from '../../generated/graphql';
 import { useCompoundQueryQuery } from '../../generated/graphql';
 import ResultsTable from '../components/ResultsTable';
 import Searchbar from '../components/Searchbar';
+import reactiveSearchbarState from '../components/Searchbar/searchbarState';
 import { initSearchbarState } from '../components/Searchbar/types';
 import { compoundSearchOptsFromSearchbarState } from '../components/Searchbar/util';
 
@@ -17,13 +19,13 @@ const emptyOptions: FullCountFragmentFragment['counts'] = {
 
 const MusicDash = () => {
   const [options, setOptions] = useState(emptyOptions);
-  const [searchState, setSearchState] = useState(initSearchbarState);
-  const [debouncedSearchState] = useDebounce(searchState, 200);
+  const searchState = useReactiveVar(reactiveSearchbarState);
+  const [debouncedSearchState] = useDebounce(searchState, 300);
   const [page, setPage] = useState(0);
 
   const pageSize = 40;
-  const pagination = { offset: 0 , limit: pageSize * (page +1 ) };
-  console.log(pagination)
+  const pagination = { offset: 0, limit: pageSize * (page + 1) };
+
   const { data, error, loading } = useCompoundQueryQuery({
     variables: {
       criteria: {
@@ -37,11 +39,10 @@ const MusicDash = () => {
     if (data?.compoundQuery.counts) {
       setOptions(data.compoundQuery.counts);
     }
-
   }, [data?.compoundQuery]);
 
   useEffect(() => {
-    setPage(0)
+    setPage(0);
   }, [debouncedSearchState]);
 
   if (error) {
@@ -51,12 +52,13 @@ const MusicDash = () => {
   return (
     <div>
       Dashboard
-      <Searchbar
-        selectOptions={options}
-        searchState={searchState}
-        onChange={(newState) => setSearchState(newState)}
+      <Searchbar selectOptions={options} />
+      <ResultsTable
+        ids={data?.compoundQuery.ids}
+        loading={loading}
+        incPage={() => setPage((prev) => prev + 1)}
+        page={page}
       />
-      <ResultsTable ids={data?.compoundQuery.ids} loading={loading} incPage={() => setPage(prev => prev+1)} page={page} />
     </div>
   );
 };

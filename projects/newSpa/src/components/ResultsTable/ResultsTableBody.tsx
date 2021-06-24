@@ -1,9 +1,13 @@
+import { useReactiveVar } from '@apollo/client';
 import * as r from 'ramda';
 import React, { useEffect, useState } from 'react';
 import type { BaseTableProps, TableComponents } from 'react-base-table';
 import BaseTable from 'react-base-table';
 
 import type { SimpleTrack } from '../../../generated/graphql';
+import reactiveSearchbarState, {
+  sortSearch,
+} from '../Searchbar/searchbarState';
 import overlayRenderer from './renderers/overlayRenderer';
 import StyledTableContainer from './styled';
 import columns from './util';
@@ -25,9 +29,7 @@ interface Props {
 const ResultsTableBody = ({ tracks, incPage, page, loading }: Props) => {
   const [loadedTracks, setLoadedTracks] = useState<Array<SimpleTrack>>([]);
   const tableRef = React.createRef<BaseTable<unknown>>();
-  const [sort, setSort] = useState<Record<string, 'asc' | 'desc'>>(
-    {},
-  );
+  const { sort } = useReactiveVar(reactiveSearchbarState);
 
   useEffect(() => {
     if (tracks.length) {
@@ -43,7 +45,6 @@ const ResultsTableBody = ({ tracks, incPage, page, loading }: Props) => {
 
   const handleTableReset = () => {
     tableRef.current?.scrollToRow(0, 'auto');
-    setSort({});
   };
 
   const youtubeSearch = () => {
@@ -51,11 +52,10 @@ const ResultsTableBody = ({ tracks, incPage, page, loading }: Props) => {
   };
 
   const handleColumnSort: BaseTableProps['onColumnSort'] = ({ key, order }) => {
-    if (sort[key] === 'desc') {
-      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-      setSort(r.omit([key as string]));
+    if (sort[key.toString()] === 'desc') {
+      sortSearch(r.omit([key.toString()], reactiveSearchbarState().sort));
     } else {
-      setSort((prev) => ({ ...prev, [key]: order }));
+      sortSearch({ ...reactiveSearchbarState().sort, [key]: order });
     }
   };
 

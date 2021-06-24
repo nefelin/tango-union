@@ -5,13 +5,13 @@ import type { Option } from 'react-select/src/filters';
 import { cleanSlop } from 'tango-index/dist/compoundIndex/util';
 
 import type { CompoundQueryInput } from '../../../generated/graphql';
-import type { SearchbarState } from './types';
 import { StyledCount, StyledMenuOption } from './styles';
+import type { SearchbarState } from './types';
 
 export const customSearch = (option: Option, searchString: string) =>
   cleanSlop(option.value).indexOf(cleanSlop(searchString)) !== -1;
 
-export type MemberCountList = Array<{name: string, count: number}>;
+export type MemberCountList = Array<{ name: string; count: number }>;
 
 export const optionsFromSelectOptions = (
   op: MemberCountList,
@@ -25,7 +25,7 @@ export const optionsFromSelectOptions = (
     Array<Option>,
     Array<Option>
   >(
-    r.map(tupleObject => [tupleObject.name, tupleObject.count]),
+    r.map((tupleObject) => [tupleObject.name, tupleObject.count]),
     r.reject(([_, count]) => count === 0),
     r.map(([name, count]) => ({
       label: name, // `${name} ${value.length === 0 ? `(+${count})` : ""}`,
@@ -64,5 +64,9 @@ export const compoundSearchOptsFromSearchbarState = (
       ? state.genre.map(({ value }) => value)
       : undefined,
     text: state.search.length ? state.search : undefined,
+    sort: r.mapObjIndexed(
+      (sortOrder: 'asc' | 'desc') => (sortOrder === 'asc' ? 1 : -1),
+      state.sort,
+    ),
   };
 };
