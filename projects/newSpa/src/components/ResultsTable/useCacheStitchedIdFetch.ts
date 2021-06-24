@@ -1,16 +1,17 @@
 import { useApolloClient } from '@apollo/client';
 
+import type {
+  SimpleTrack} from '../../../generated/graphql';
 import {
-  SimpleTrack,
   TrackDetailFragmentFragmentDoc,
   useTrackDetailsBatchQuery,
 } from '../../../generated/graphql';
 
+// fixme would be nice to cut down on re-render
 const useCacheStitchedIdFetch = (
   ids?: Array<number>,
   exposeNullRows = false,
 ): [Array<SimpleTrack>, boolean] => {
-  console.log('hook');
   const client = useApolloClient();
 
   const fetchIds =

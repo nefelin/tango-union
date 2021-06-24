@@ -9,17 +9,18 @@ import useCacheStitchedIdFetch from './ResultsTable/useCacheStitchedIdFetch';
 interface Props {
   ids?: Array<number>;
   loading?: boolean;
+  incPage?: VoidFunction;
+  page: number;
 }
 
-const ResultsTable = ({ ids, loading = false }: Props) => {
+const ResultsTable = ({ ids, loading = false, page, incPage }: Props) => {
   const [tracks, tracksLoading] = useCacheStitchedIdFetch(ids, false);
-  console.log({ tracks, loading });
 
+  console.log('ids', tracks?.length)
   const tableLoading = loading || tracksLoading;
   return (
     <div style={{ position: 'relative' }}>
-      {tableLoading && <StyledLoadingOverlay />}
-      <ResultsTableBody tracks={tracks} />
+      <ResultsTableBody tracks={tracks} incPage={incPage} page={page} loading={tableLoading}/>
     </div>
   );
 };
