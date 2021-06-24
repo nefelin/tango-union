@@ -10,10 +10,3 @@ export interface SearchbarState {
   sort: Record<string, 'asc' | 'desc'>;
 }
 
-export const initSearchbarState: SearchbarState = {
-  search: '',
-  orchestra: [],
-  singer: [],
-  genre: [],
-  sort: { title: 'asc' },
-};

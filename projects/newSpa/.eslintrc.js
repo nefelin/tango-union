@@ -33,6 +33,7 @@ module.exports = {
     'dot-notation': 0,
     'sort-imports': 0,
     'simple-import-sort/imports': 2,
+    'import/prefer-default-export': 1,
 
     'no-console': [2, { allow: ['error'] }],
     'object-curly-newline': 0,

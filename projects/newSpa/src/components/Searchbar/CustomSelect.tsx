@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import type { OptionsType, ValueType } from 'react-select';
 import Select from 'react-select';
 import type { Option } from 'react-select/src/filters';
@@ -11,7 +12,6 @@ import {
   formatOptionLabel,
   optionsFromSelectOptions,
 } from './util';
-import { useState } from 'react';
 
 interface Props {
   id: string;
@@ -23,13 +23,16 @@ interface Props {
 type SelectState = ValueType<{ label: string; value: string; data: any }, true>;
 
 const CustomSelect = ({ selectOptions, id, label, setter, value }: Props) => {
-  const [selection, setSelection] =
-    useState<SelectState>(
-      value,
-    );
+  const [selection, setSelection] = useState<SelectState>(value);
+
+  useEffect(() => {
+    setSelection(value);
+  }, [value]);
+
   const options = optionsFromSelectOptions(selectOptions, value);
 
-  const handleDispatchState = (newState?: SelectState) => setter(id, newState || selection);
+  const handleDispatchState = (newState?: SelectState) =>
+    setter(id, newState || selection);
 
   return (
     <>
@@ -41,7 +44,10 @@ const CustomSelect = ({ selectOptions, id, label, setter, value }: Props) => {
         filterOption={customSearch}
         onChange={(newSelection, triggeredAction) => {
           setSelection(newSelection);
-          if (triggeredAction.action === 'clear' || triggeredAction.action === 'remove-value') {
+          if (
+            triggeredAction.action === 'clear' ||
+            triggeredAction.action === 'remove-value'
+          ) {
             handleDispatchState(newSelection);
           }
         }}

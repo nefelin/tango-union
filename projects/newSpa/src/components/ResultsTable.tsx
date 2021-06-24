@@ -16,7 +16,6 @@ interface Props {
 const ResultsTable = ({ ids, loading = false, page, incPage }: Props) => {
   const [tracks, tracksLoading] = useCacheStitchedIdFetch(ids, false);
 
-  console.log('ids', tracks?.length)
   const tableLoading = loading || tracksLoading;
   return (
     <div style={{ position: 'relative' }}>

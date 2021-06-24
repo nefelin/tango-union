@@ -8,9 +8,10 @@ import type {
   CompoundQueryQuery,
   FullCountFragmentFragment,
 } from '../../generated/graphql';
-import { TrackDetailFragmentFragmentDoc } from '../../generated/graphql';
 import CustomSelect from './Searchbar/CustomSelect';
-import reactiveSearchbarState from './Searchbar/searchbarState';
+import reactiveSearchbarState, {
+  resetSearch,
+} from './Searchbar/searchbar.state';
 import {
   InputSpacer,
   StyledCol,
@@ -28,10 +29,12 @@ const Searchbar = ({ selectOptions }: Props) => {
 
   const formik = useFormik<SearchbarState>({
     initialValues: searchState,
+    enableReinitialize: true,
     onSubmit: (values) => console.log({ values }),
   });
 
   const { values } = formik;
+
   useEffect(() => {
     reactiveSearchbarState(values);
   }, [values]);
@@ -50,6 +53,9 @@ const Searchbar = ({ selectOptions }: Props) => {
             onChange={formik.handleChange}
             value={formik.values.search}
           />
+          <button type="button" onClick={resetSearch}>
+            Clear Search
+          </button>
         </InputSpacer>
         <CustomSelect
           setter={formik.setFieldValue}

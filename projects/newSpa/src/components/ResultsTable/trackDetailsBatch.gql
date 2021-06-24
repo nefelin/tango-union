@@ -10,5 +10,6 @@ fragment TrackDetailFragment on SimpleTrack {
   genre
   singer
   orchestra
+  secondsLong
   year
 }

@@ -1,10 +1,8 @@
 import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client';
-import { createUploadLink } from 'apollo-upload-client';
 import * as React from 'react';
 import { Route } from 'react-router';
 import { BrowserRouter, Switch } from 'react-router-dom';
 
-import LandingPage from './features/LandingPage';
 import MusicDash from './features/MusicDash';
 
 const apolloClient = new ApolloClient({

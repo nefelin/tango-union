@@ -1,15 +1,14 @@
 import { useReactiveVar } from '@apollo/client';
 import * as React from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 
 import type { FullCountFragmentFragment } from '../../generated/graphql';
 import { useCompoundQueryQuery } from '../../generated/graphql';
 import ResultsTable from '../components/ResultsTable';
 import Searchbar from '../components/Searchbar';
-import reactiveSearchbarState from '../components/Searchbar/searchbarState';
-import { initSearchbarState } from '../components/Searchbar/types';
 import { compoundSearchOptsFromSearchbarState } from '../components/Searchbar/util';
+import reactiveSearchbarState from '../components/Searchbar/searchbar.state';
 
 const emptyOptions: FullCountFragmentFragment['counts'] = {
   singer: [],

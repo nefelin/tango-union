@@ -5,12 +5,10 @@ import type { BaseTableProps, TableComponents } from 'react-base-table';
 import BaseTable from 'react-base-table';
 
 import type { SimpleTrack } from '../../../generated/graphql';
-import reactiveSearchbarState, {
-  sortSearch,
-} from '../Searchbar/searchbarState';
-import overlayRenderer from './renderers/overlayRenderer';
+import reactiveSearchbarState, { sortSearch } from '../Searchbar/searchbar.state';
+import columns from './ResultsTableBody/columns';
+import overlayRenderer from './ResultsTableBody/overlayRenderer';
 import StyledTableContainer from './styled';
-import columns from './util';
 
 const TableHeaderCell: TableComponents['TableHeaderCell'] = ({
   className,
@@ -52,7 +50,6 @@ const ResultsTableBody = ({ tracks, incPage, page, loading }: Props) => {
   }
 
   const youtubeSearch = () => {
-    console.log('youtube');
   };
 
   const handleColumnSort: BaseTableProps['onColumnSort'] = ({ key, order }) => {
