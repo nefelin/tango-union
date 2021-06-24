@@ -109,6 +109,7 @@ export class TracksService {
             { $unwind: '$genre' },
             { $sortByCount: '$genre' },
           ],
+          total: [{ $count: 'total' }],
           tracks: [
             {
               $match: allMatches.length

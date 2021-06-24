@@ -4,6 +4,7 @@ import { TrackId } from 'tango-index';
 @ObjectType()
 export class CompoundResults {
   ids: Array<TrackId>;
+  totalResults: number;
   counts: SelectIndexCount;
 }
 

@@ -5,6 +5,7 @@ export interface FacetedResults {
   orchestraCount?: EntityCount[] | null;
   genreCount?: EntityCount[] | null;
   tracks?: SimpleTrack[] | null;
+  total: Array<{ total: number }>;
 }
 
 export interface EntityCount {

@@ -47,6 +47,10 @@ const ResultsTableBody = ({ tracks, incPage, page, loading }: Props) => {
     tableRef.current?.scrollToRow(0, 'auto');
   };
 
+  const handleLoadMore = () => {
+    incPage?.();
+  }
+
   const youtubeSearch = () => {
     console.log('youtube');
   };
@@ -69,9 +73,7 @@ const ResultsTableBody = ({ tracks, incPage, page, loading }: Props) => {
         data={loadedTracks}
         width={1100}
         height={600}
-        onEndReached={() => {
-          incPage?.();
-        }}
+        onEndReached={handleLoadMore}
         onEndReachedThreshold={30}
         components={{ TableHeaderCell }}
         columns={columns(youtubeSearch)}

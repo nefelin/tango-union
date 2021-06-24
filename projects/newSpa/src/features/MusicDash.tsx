@@ -49,6 +49,13 @@ const MusicDash = () => {
     return <div>Error!</div>;
   }
 
+  const handlePageIncrement = () => {
+    const resultCount = data?.compoundQuery?.totalResults;
+    if (resultCount && pagination.limit < resultCount) {
+      setPage((prev) => prev + 1);
+    }
+  };
+
   return (
     <div>
       Dashboard
@@ -56,7 +63,7 @@ const MusicDash = () => {
       <ResultsTable
         ids={data?.compoundQuery.ids}
         loading={loading}
-        incPage={() => setPage((prev) => prev + 1)}
+        incPage={handlePageIncrement}
         page={page}
       />
     </div>
