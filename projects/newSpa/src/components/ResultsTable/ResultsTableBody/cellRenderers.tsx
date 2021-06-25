@@ -1,12 +1,16 @@
 import { useReactiveVar } from '@apollo/client';
 import {
   FormatListBulletedOutlined,
+  HelpOutline,
   PauseCircleOutline,
   PlayCircleFilledWhiteOutlined,
   SearchOutlined,
 } from '@material-ui/icons';
 import type { FunctionComponent } from 'react';
 import React from 'react';
+// eslint-disable-next-line import/no-duplicates
+import type BaseTable from 'react-base-table';
+// eslint-disable-next-line import/no-duplicates
 import type { ColumnShape } from 'react-base-table';
 import styled from 'styled-components';
 
@@ -16,6 +20,7 @@ import {
   playTrackId,
   reactiveYoutubePlayerState,
 } from '../../YoutubePlayer/youtubePlayer.state';
+import { reactiveTableRowsVisible, useResultsPlayingContext } from '../resultsTable.state';
 import { Loader } from './overlayRenderer/styled';
 import { timeStringFromSeconds } from './util';
 
@@ -63,6 +68,25 @@ export const ListCell = ({ song, column: { key } }: CellProps) => {
   return <span>{Array.isArray(value) ? value?.join(', ') : value}</span>;
 };
 
+export const playHeaderRenderer: ColumnShape<SimpleTrack>['headerRenderer'] = ({
+  container,
+}) => <PlayHeader container={container} />;
+
+const PlayHeader = ({ container }: { container: BaseTable<SimpleTrack> }) => {
+  const {index} = useResultsPlayingContext();
+  const [firstRow, lastRow] = useReactiveVar(reactiveTableRowsVisible);
+
+  const activeTrackNotVisible = index !== undefined && (index < firstRow || index > lastRow)
+
+  return activeTrackNotVisible ? (
+    <StyledFakeButton onClick={() => container.scrollToRow(index)}>
+      <HelpOutline />
+    </StyledFakeButton>
+  ) : (
+    <PlayCircleFilledWhiteOutlined />
+  );
+};
+
 export const PlayCell = ({ song }: CellProps) => {
   const { playState, trackId: playingTrackId } = useReactiveVar(
     reactiveYoutubePlayerState,
@@ -74,7 +98,7 @@ export const PlayCell = ({ song }: CellProps) => {
   const IconFromPlayState = () => {
     switch (playState) {
       case 'loading':
-        return <Loader small color='black'/>; // fixme switch loader
+        return <Loader small color="black" />; // fixme switch loader
       case 'playing':
         return <PauseCircleOutline />;
       case 'stopped':

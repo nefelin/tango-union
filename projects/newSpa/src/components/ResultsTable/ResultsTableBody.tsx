@@ -6,7 +6,7 @@ import BaseTable from 'react-base-table';
 
 import type { SimpleTrack } from '../../../generated/graphql';
 import reactiveSearchbarState, { sortSearch } from '../Searchbar/searchbar.state';
-import { reactiveTableResults } from './resultsTable.state';
+import { reactiveTableResults, reactiveTableRowsVisible } from './resultsTable.state';
 import columns from './ResultsTableBody/columns';
 import overlayRenderer from './ResultsTableBody/overlayRenderer';
 import rowRenderer from './ResultsTableBody/rowRenderer';
@@ -65,6 +65,7 @@ const ResultsTableBody = ({ tracks, incPage, page, loading }: Props) => {
 
   return (
       <BaseTable
+        onRowsRendered={({startIndex, stopIndex}) => reactiveTableRowsVisible([startIndex, stopIndex])}
         ref={tableRef}
         fixed
         rowRenderer={rowRenderer}

@@ -5,12 +5,13 @@ import {
   cellRenderComponent,
   LengthCell,
   ListCell,
-  PlayCell,
+  PlayCell, playHeaderRenderer,
 } from './cellRenderers';
 
 const columns: (s: any) => Array<ColumnShape> = (youtubeSearch: any) => [
   {
-    key: 'title-play',
+    headerRenderer: playHeaderRenderer,
+    key: 'play',
     dataKey: 'title',
     title: '',
     width: 50,

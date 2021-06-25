@@ -6,7 +6,9 @@ import type { YouTubePlayer } from 'youtube-player/dist/types';
 
 import { useTrackLinksQuery } from '../../generated/graphql';
 import type { Maybe } from '../types';
-import { reactiveTableResults } from './ResultsTable/resultsTable.state';
+import {
+  useResultsPlayingContext,
+} from './ResultsTable/resultsTable.state';
 import {
   VideoDescriptionContainer,
   VideoDescriptionDatum,
@@ -23,7 +25,9 @@ import {
 
 const YoutubePlayer = () => {
   const { trackId, playState } = useReactiveVar(reactiveYoutubePlayerState);
-  const tableTracks = useReactiveVar(reactiveTableResults);
+  const {
+    nextTrack,
+  } = useResultsPlayingContext();
   const [player, setPlayer] = useState<Maybe<YouTubePlayer>>(null);
 
   const { data } = useTrackLinksQuery({
@@ -45,23 +49,18 @@ const YoutubePlayer = () => {
   }, [playState, player]);
 
   const handlePlay = () => {
-    console.log('play');
     playerPlay();
   };
 
   const handleEnd = () => {
-    console.log('end');
-    const index = tableTracks.findIndex(({ id }) => id === trackId);
-    const nextId = tableTracks[index + 1]?.id;
-    if (nextId) {
-      playTrackId(nextId);
+    if (nextTrack?.id) {
+      playTrackId(nextTrack.id);
     } else {
       playerStop();
     }
   };
 
   const handlePause = () => {
-    console.log('payse');
     if (playState !== 'loading') {
       playerPause();
     }
