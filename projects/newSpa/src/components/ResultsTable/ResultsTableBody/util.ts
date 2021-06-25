@@ -9,7 +9,7 @@ export const timeStringFromSeconds = (secondsTotal: number) => {
 };
 
 export const searchStateFromTrack = (track: SimpleTrack): SearchbarState => {
-  const yearWindow = 2;
+  const yearWindow = 1;
   const yearTerm =
     typeof track.year === 'number'
       ? `${track.year - yearWindow}-${track.year + yearWindow}`

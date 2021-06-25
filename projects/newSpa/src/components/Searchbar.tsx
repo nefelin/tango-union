@@ -1,13 +1,12 @@
-import { useApolloClient, useReactiveVar } from '@apollo/client';
+import { useReactiveVar } from '@apollo/client';
 import Input from '@material-ui/core/Input';
+import { Clear } from '@material-ui/icons';
 import { useFormik } from 'formik';
 import * as React from 'react';
 import { useEffect } from 'react';
 
-import type {
-  CompoundQueryQuery,
-  FullCountFragmentFragment,
-} from '../../generated/graphql';
+import { FullCountFragmentFragment } from '../../generated/graphql';
+import { StyledFakeButton } from './ResultsTable/ResultsTableBody/cellRenderers/styles';
 import CustomSelect from './Searchbar/CustomSelect';
 import reactiveSearchbarState, {
   resetSearch,
@@ -18,7 +17,7 @@ import {
   StyledInputLabel,
   StyledRow,
 } from './Searchbar/styles';
-import type { SearchbarState } from './Searchbar/types';
+import { SearchbarState } from './Searchbar/types';
 
 interface Props {
   selectOptions: FullCountFragmentFragment['counts'];
@@ -35,6 +34,10 @@ const Searchbar = ({ selectOptions }: Props) => {
 
   const { values } = formik;
 
+  const handleClearTextSearch = () => {
+    reactiveSearchbarState({ ...reactiveSearchbarState(), search: '' });
+  };
+
   useEffect(() => {
     reactiveSearchbarState(values);
   }, [values]);
@@ -49,6 +52,12 @@ const Searchbar = ({ selectOptions }: Props) => {
         <InputSpacer>
           <StyledInputLabel htmlFor="search">Search</StyledInputLabel>
           <Input
+            autoFocus
+            endAdornment={
+              <StyledFakeButton onClick={handleClearTextSearch}>
+                <Clear color='disabled' fontSize='small'/>
+              </StyledFakeButton>
+            }
             id="search"
             onChange={formik.handleChange}
             value={formik.values.search}
