@@ -1,9 +1,9 @@
 import 'react-base-table/styles.css';
 
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React from 'react';
 
 import ResultsTableBody from './ResultsTable/ResultsTableBody';
+import StyledTableContainer from './ResultsTable/styled';
 import useCacheStitchedIdFetch from './ResultsTable/useCacheStitchedIdFetch';
 
 interface Props {
@@ -18,19 +18,10 @@ const ResultsTable = ({ ids, loading = false, page, incPage }: Props) => {
 
   const tableLoading = loading || tracksLoading;
   return (
-    <div style={{ position: 'relative' }}>
+    <StyledTableContainer>
       <ResultsTableBody tracks={tracks} incPage={incPage} page={page} loading={tableLoading}/>
-    </div>
+    </StyledTableContainer>
   );
 };
-
-const StyledLoadingOverlay = styled.div`
-  background-color: white;
-  position: absolute;
-  opacity: 0.5;
-  width: 100%;
-  height: 100%;
-  z-index: 10;
-`;
 
 export default ResultsTable;

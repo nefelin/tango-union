@@ -1,15 +1,16 @@
 import { useReactiveVar } from '@apollo/client';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import { useDebounce } from 'use-debounce';
 
 import type { FullCountFragmentFragment } from '../../generated/graphql';
 import { useCompoundQueryQuery } from '../../generated/graphql';
+import NowPlaying from '../components/NowPlaying';
 import ResultsTable from '../components/ResultsTable';
 import Searchbar from '../components/Searchbar';
 import reactiveSearchbarState from '../components/Searchbar/searchbar.state';
 import { compoundSearchOptsFromSearchbarState } from '../components/Searchbar/util';
-import YoutubePlayer from '../components/YoutubePlayer';
 
 const emptyOptions: FullCountFragmentFragment['counts'] = {
   singer: [],
@@ -57,34 +58,30 @@ const MusicDash = () => {
   };
 
   return (
-    <div>
-      Dashboard
+    <MusicDashContainer>
       <Searchbar selectOptions={options} />
-      <ResultsTable
-        ids={data?.compoundQuery.ids}
-        loading={loading}
-        incPage={handlePageIncrement}
-        page={page}
-      />
-      <YoutubePlayer />
-    </div>
+      <ActionRow>
+        <ResultsTable
+          ids={data?.compoundQuery.ids}
+          loading={loading}
+          incPage={handlePageIncrement}
+          page={page}
+        />
+        <NowPlaying />
+      </ActionRow>
+    </MusicDashContainer>
   );
 };
 
-export default MusicDash;
+const MusicDashContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
-// function useTraceUpdate(props: any) {
-//   const prev = useRef(props);
-//   useEffect(() => {
-//     const changedProps = Object.entries(props).reduce((ps, [k, v]) => {
-//       if (prev.current[k] !== v) {
-//         ps[k] = [prev.current[k], v];
-//       }
-//       return ps;
-//     }, {});
-//     if (Object.keys(changedProps).length > 0) {
-//       console.log('Changed props:', changedProps);
-//     }
-//     prev.current = props;
-//   });
-// }
+const ActionRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+`;
+
+export default MusicDash;

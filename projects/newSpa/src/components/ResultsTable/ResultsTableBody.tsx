@@ -63,7 +63,6 @@ const ResultsTableBody = ({ tracks, incPage, page, loading }: Props) => {
   const loadingMore = page > 0 && loading;
 
   return (
-    <StyledTableContainer>
       <BaseTable
         ref={tableRef}
         fixed
@@ -79,7 +78,6 @@ const ResultsTableBody = ({ tracks, incPage, page, loading }: Props) => {
         overlayRenderer={overlayRenderer(loading, loadingMore)}
         loadingMore={loadingMore}
       />
-    </StyledTableContainer>
   );
 };
 
