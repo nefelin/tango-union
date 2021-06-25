@@ -6,6 +6,7 @@ import BaseTable from 'react-base-table';
 
 import type { SimpleTrack } from '../../../generated/graphql';
 import reactiveSearchbarState, { sortSearch } from '../Searchbar/searchbar.state';
+import { reactiveTableResults } from './resultsTable.state';
 import columns from './ResultsTableBody/columns';
 import overlayRenderer from './ResultsTableBody/overlayRenderer';
 import StyledTableContainer from './styled';
@@ -25,13 +26,13 @@ interface Props {
 }
 
 const ResultsTableBody = ({ tracks, incPage, page, loading }: Props) => {
-  const [loadedTracks, setLoadedTracks] = useState<Array<SimpleTrack>>([]);
+ const loadedTracks = useReactiveVar(reactiveTableResults);
   const tableRef = React.createRef<BaseTable<unknown>>();
   const { sort } = useReactiveVar(reactiveSearchbarState);
 
   useEffect(() => {
     if (tracks.length) {
-      setLoadedTracks(tracks);
+      reactiveTableResults(tracks);
     }
   }, [tracks]);
 
