@@ -9,6 +9,7 @@ import reactiveSearchbarState, { sortSearch } from '../Searchbar/searchbar.state
 import { reactiveTableResults } from './resultsTable.state';
 import columns from './ResultsTableBody/columns';
 import overlayRenderer from './ResultsTableBody/overlayRenderer';
+import rowRenderer from './ResultsTableBody/rowRenderer';
 
 const TableHeaderCell: TableComponents['TableHeaderCell'] = ({
   className,
@@ -66,6 +67,7 @@ const ResultsTableBody = ({ tracks, incPage, page, loading }: Props) => {
       <BaseTable
         ref={tableRef}
         fixed
+        rowRenderer={rowRenderer}
         data={loadedTracks}
         width={1100}
         height={600}
