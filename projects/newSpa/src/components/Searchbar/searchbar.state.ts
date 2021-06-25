@@ -7,7 +7,7 @@ export const initSearchbarState: SearchbarState = {
   orchestra: [],
   singer: [],
   genre: [],
-  sort: { title: 'asc' },
+  sort: {}
 };
 
 const reactiveSearchbarState = makeVar(initSearchbarState);

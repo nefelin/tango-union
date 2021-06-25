@@ -16,10 +16,12 @@ import {
   playTrackId,
   reactiveYoutubePlayerState,
 } from '../../YoutubePlayer/youtubePlayer.state';
+import { Loader } from './overlayRenderer/styled';
 import { timeStringFromSeconds } from './util';
 
 interface CellProps {
   song: SimpleTrack;
+  column: ColumnShape<SimpleTrack>;
 }
 
 const StyledFakeButton = styled.div`
@@ -32,8 +34,8 @@ export const cellRenderComponent: (
   Comp: SongRenderer,
 ) => ColumnShape<SimpleTrack>['cellRenderer'] =
   (Comp: SongRenderer) => (data) => {
-    const { rowData } = data;
-    return <Comp song={rowData} />;
+    const { rowData, column } = data;
+    return <Comp song={rowData} column={column} />;
   };
 
 export const ActionCell: SongRenderer = ({ song }: CellProps) => {
@@ -55,23 +57,39 @@ export const LengthCell = ({ song }: CellProps) => (
   </span>
 );
 
-export const ListCell = ({ song }: CellProps) => (
-  <span>{song.singer?.join(', ')}</span>
-);
+export const ListCell = ({ song, column: { key } }: CellProps) => {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+  const value = song[key as keyof CellProps['song']];
+  return <span>{Array.isArray(value) ? value?.join(', ') : value}</span>;
+};
 
 export const PlayCell = ({ song }: CellProps) => {
   const { playState, trackId: playingTrackId } = useReactiveVar(
     reactiveYoutubePlayerState,
   );
-  const isPlaying = playState === 'playing' && playingTrackId === song.id;
 
-  const Icon = () =>
-    isPlaying ? <PauseCircleOutline /> : <PlayCircleFilledWhiteOutlined />;
+  const thisTrackActive = playingTrackId === song.id;
+  const DefaultIcon = <PlayCircleFilledWhiteOutlined />;
+
+  const IconFromPlayState = () => {
+    switch (playState) {
+      case 'loading':
+        return <Loader small color='black'/>; // fixme switch loader
+      case 'playing':
+        return <PauseCircleOutline />;
+      case 'stopped':
+      default:
+        return DefaultIcon;
+    }
+  };
+
+  const Icon = () => (thisTrackActive ? IconFromPlayState() : DefaultIcon);
+  const canStop = playState === 'playing' || playState === 'loading';
+  const action = () =>
+    thisTrackActive && canStop ? playerStop() : playTrackId(song.id);
 
   return (
-    <StyledFakeButton
-      onClick={() => (isPlaying ? playerStop() : playTrackId(song.id))}
-    >
+    <StyledFakeButton onClick={action}>
       <Icon />
     </StyledFakeButton>
   );

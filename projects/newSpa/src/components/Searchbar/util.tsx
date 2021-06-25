@@ -63,7 +63,7 @@ export const compoundSearchOptsFromSearchbarState = (
     genres: state.genre?.length
       ? state.genre.map(({ value }) => value)
       : undefined,
-    text: state.search.length ? state.search : undefined,
+    text: state.search.trim().length > 1 ? state.search.trim() : undefined,
     sort: r.mapObjIndexed(
       (sortOrder: 'asc' | 'desc') => (sortOrder === 'asc' ? 1 : -1),
       state.sort,

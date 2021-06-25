@@ -12,7 +12,6 @@ export class TracksResolver {
 
   @Query(() => [RatedYoutube], { name: 'trackSource' })
   getTrackLinks(@Args('trackId', {type: () => Number}) trackId: number) {
-    console.log('source')
     return this.tracksService.linksForTrack(trackId);
   }
 

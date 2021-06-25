@@ -12,7 +12,6 @@ import { FacetedResults } from './types';
 
 @Injectable()
 export class TracksService {
-  // simpleSongCache: Record<number, SimpleTrack> = {};
 
   constructor(@InjectModel(Track.name) private trackModel: Model<TrackDocument>) {}
 

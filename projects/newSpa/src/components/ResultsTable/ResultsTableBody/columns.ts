@@ -32,6 +32,7 @@ const columns: (s: any) => Array<ColumnShape> = (youtubeSearch: any) => [
     width: 200,
     resizable: true,
     sortable: true,
+    cellRenderer: cellRenderComponent(ListCell),
   },
   {
     key: 'singer',
@@ -59,7 +60,7 @@ const columns: (s: any) => Array<ColumnShape> = (youtubeSearch: any) => [
     sortable: true,
   },
   {
-    key: 'length',
+    key: 'secondsLong',
     dataKey: 'secondsLong',
     title: 'Length',
     width: 75,

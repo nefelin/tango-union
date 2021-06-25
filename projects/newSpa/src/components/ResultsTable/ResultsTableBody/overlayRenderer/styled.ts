@@ -38,11 +38,11 @@ const rotate = keyframes`
   }
 `
 
-export const Loader = styled.div<{small?: boolean}>`
+export const Loader = styled.div<{small?: boolean, color?: string}>`
   display: inline-block;
   border-radius: 100%;
-  margin: 2px;
-  border: 2px solid #0696d7;
+  margin: 2px 2px 2px 4px;
+  border: 2px solid ${({color}) => color || '#0696d7'};
   border-bottom-color: transparent;
   width: ${props => (props.small ? 12 : 22)}px;
   height: ${props => (props.small ? 12 : 22)}px;

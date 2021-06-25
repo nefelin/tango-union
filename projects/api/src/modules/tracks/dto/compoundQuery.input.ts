@@ -24,4 +24,5 @@ export class CompoundSortInput {
   genre?: number;
   year?: number;
   title?: number;
+  secondsLong?: number;
 }

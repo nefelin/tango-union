@@ -1,6 +1,6 @@
 import { useReactiveVar } from '@apollo/client';
 import * as r from 'ramda';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import type { BaseTableProps, TableComponents } from 'react-base-table';
 import BaseTable from 'react-base-table';
 
@@ -9,7 +9,6 @@ import reactiveSearchbarState, { sortSearch } from '../Searchbar/searchbar.state
 import { reactiveTableResults } from './resultsTable.state';
 import columns from './ResultsTableBody/columns';
 import overlayRenderer from './ResultsTableBody/overlayRenderer';
-import StyledTableContainer from './styled';
 
 const TableHeaderCell: TableComponents['TableHeaderCell'] = ({
   className,
@@ -31,10 +30,10 @@ const ResultsTableBody = ({ tracks, incPage, page, loading }: Props) => {
   const { sort } = useReactiveVar(reactiveSearchbarState);
 
   useEffect(() => {
-    if (tracks.length) {
+    if (!loading) {
       reactiveTableResults(tracks);
     }
-  }, [tracks]);
+  }, [tracks, loading]);
 
   useEffect(() => {
     if (page === 0) {

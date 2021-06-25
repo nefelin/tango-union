@@ -47,6 +47,7 @@ const MusicDash = () => {
   }, [debouncedSearchState]);
 
   if (error) {
+    console.error(error)
     return <div>Error!</div>;
   }
 

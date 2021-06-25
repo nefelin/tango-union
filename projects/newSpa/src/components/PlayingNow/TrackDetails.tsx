@@ -39,7 +39,7 @@ const TrackDetails = ({ track }: { track: Maybe<SimpleTrack> }) => {
 
 export const TrackDetailsContainer = styled(Paper)`
   box-sizing: border-box;
-  padding: 5px;
+  padding: 10px;
   width: ${WIDGET_WIDTH};
 `;
 

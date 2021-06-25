@@ -45,10 +45,12 @@ const YoutubePlayer = () => {
   }, [playState, player]);
 
   const handlePlay = () => {
+    console.log('play');
     playerPlay();
   };
 
   const handleEnd = () => {
+    console.log('end');
     const index = tableTracks.findIndex(({ id }) => id === trackId);
     const nextId = tableTracks[index + 1]?.id;
     if (nextId) {
@@ -59,6 +61,7 @@ const YoutubePlayer = () => {
   };
 
   const handlePause = () => {
+    console.log('payse');
     if (playState !== 'loading') {
       playerPause();
     }

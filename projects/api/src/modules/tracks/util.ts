@@ -26,6 +26,8 @@ export const compoundResultsFromFacetedResults = (res: FacetedResults): Compound
       orchestra: res.orchestraCount.map(pairsFromCounts),
       genre: res.genreCount.map(pairsFromCounts),
     },
-    totalResults: res.total[0].total,
+    totalResults: res.total[0]?.total ?? 0,
   };
 };
+
+

@@ -20,4 +20,10 @@ export const playerStop = () => reactiveYoutubePlayerState({...reactiveYoutubePl
 export const playerPause = () => reactiveYoutubePlayerState({...reactiveYoutubePlayerState(), playState: 'stopped'});
 export const playerPlay = () => reactiveYoutubePlayerState({...reactiveYoutubePlayerState(), playState: 'playing'});
 
-export const playTrackId = (trackId: number) => reactiveYoutubePlayerState({...reactiveYoutubePlayerState(), playState: 'loading', trackId});
+export const playTrackId = (trackId: number) => {
+  const currentState = reactiveYoutubePlayerState();
+  const newTrack = trackId !== currentState.trackId;
+  const playState = newTrack ? 'loading' : 'playing';
+
+  reactiveYoutubePlayerState({...currentState, playState, trackId});
+}
