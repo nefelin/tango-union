@@ -20,7 +20,7 @@ const PlayHeader = ({ container }: { container: BaseTable<SimpleTrack> }) => {
 
   const activeTrackNotVisible =
     index !== undefined && (index < firstRow || index > lastRow);
- 
+
   return activeTrackNotVisible ? (
     <StyledFakeButton onClick={() => container.scrollToRow(index)}>
       <HelpOutline />
