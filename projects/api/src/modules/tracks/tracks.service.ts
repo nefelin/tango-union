@@ -131,7 +131,7 @@ export class TracksService {
   }
 
   async linksForTrack(id: number): Promise<Track['youtube']['links']> {
-    const thisSong = await this.trackModel.findById(id).exec();
+    const thisSong = await this.trackModel.findOne({ id }).exec();
     if (!thisSong) {
       throw BadRequestException;
     }

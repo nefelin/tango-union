@@ -11,8 +11,9 @@ export class TracksResolver {
   constructor(readonly tracksService: TracksService) {}
 
   @Query(() => [RatedYoutube], { name: 'trackSource' })
-  getTrackLinks(@Args('id') id: number) {
-    return this.tracksService.linksForTrack(id);
+  getTrackLinks(@Args('trackId', {type: () => Number}) trackId: number) {
+    console.log('source')
+    return this.tracksService.linksForTrack(trackId);
   }
 
   @Query(() => [SimpleTrack], { name: 'tracksByIds' })

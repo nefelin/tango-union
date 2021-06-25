@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, ObjectId } from 'mongoose';
-import * as mongoose from 'mongoose';
-import { ObjectType, OmitType, PickType } from '@nestjs/graphql';
+import { Document } from 'mongoose';
+import { ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class RatedYoutube {

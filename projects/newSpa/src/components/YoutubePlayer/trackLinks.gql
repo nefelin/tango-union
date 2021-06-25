@@ -1,0 +1,7 @@
+query TrackLinks($trackId: Float!) {
+    trackSource(trackId: $trackId) {
+        videoId
+        unionRating
+        description
+    }
+}

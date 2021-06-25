@@ -1,5 +1,7 @@
+import { useReactiveVar } from '@apollo/client';
 import {
   FormatListBulletedOutlined,
+  PauseCircleOutline,
   PlayCircleFilledWhiteOutlined,
   SearchOutlined,
 } from '@material-ui/icons';
@@ -9,6 +11,11 @@ import type { ColumnShape } from 'react-base-table';
 import styled from 'styled-components';
 
 import type { SimpleTrack } from '../../../../generated/graphql';
+import {
+  playerStop,
+  playTrackId,
+  reactiveYoutubePlayerState,
+} from '../../YoutubePlayer/youtubePlayer.state';
 import { timeStringFromSeconds } from './util';
 
 interface CellProps {
@@ -53,23 +60,17 @@ export const ListCell = ({ song }: CellProps) => (
 );
 
 export const PlayCell = ({ song }: CellProps) => {
-  // const { playing, nowPlayingId, dispatch } = useContext(store);
-  //
-  // const isPlaying = playing === 'playing' && nowPlayingId === song._id;
-  //
-  // const action: Action = isPlaying
-  //   ? { type: 'pause' }
-  //   : { type: 'playFromTrackId', id: song._id };
+  const { playState, trackId: playingTrackId } = useReactiveVar(
+    reactiveYoutubePlayerState,
+  );
+  const isPlaying = playState === 'playing' && playingTrackId === song.id;
 
-  const Icon = () => <PlayCircleFilledWhiteOutlined />;
-
-  // const Icon = () =>
-  //   isPlaying ? <PauseCircleOutline /> : <PlayCircleFilledWhiteOutlined />;
+  const Icon = () =>
+    isPlaying ? <PauseCircleOutline /> : <PlayCircleFilledWhiteOutlined />;
 
   return (
     <StyledFakeButton
-      onClick={() => {
-      }}
+      onClick={() => (isPlaying ? playerStop() : playTrackId(song.id))}
     >
       <Icon />
     </StyledFakeButton>

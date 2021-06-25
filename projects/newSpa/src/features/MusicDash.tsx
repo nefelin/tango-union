@@ -7,8 +7,9 @@ import type { FullCountFragmentFragment } from '../../generated/graphql';
 import { useCompoundQueryQuery } from '../../generated/graphql';
 import ResultsTable from '../components/ResultsTable';
 import Searchbar from '../components/Searchbar';
-import { compoundSearchOptsFromSearchbarState } from '../components/Searchbar/util';
 import reactiveSearchbarState from '../components/Searchbar/searchbar.state';
+import { compoundSearchOptsFromSearchbarState } from '../components/Searchbar/util';
+import YoutubePlayer from '../components/YoutubePlayer';
 
 const emptyOptions: FullCountFragmentFragment['counts'] = {
   singer: [],
@@ -65,6 +66,7 @@ const MusicDash = () => {
         incPage={handlePageIncrement}
         page={page}
       />
+      <YoutubePlayer />
     </div>
   );
 };
