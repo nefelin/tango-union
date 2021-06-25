@@ -84,8 +84,8 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 0,
     '@typescript-eslint/explicit-module-boundary-types': 0,
     '@typescript-eslint/consistent-type-imports': [
-      2,
-      { prefer: 'type-imports' },
+      1,
+      { prefer: 'no-type-imports' },
     ],
     '@typescript-eslint/array-type': [2, { default: 'generic' }],
     '@typescript-eslint/consistent-indexed-object-style': [2, 'record'],

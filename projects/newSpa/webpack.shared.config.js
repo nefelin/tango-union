@@ -69,7 +69,7 @@ module.exports = (mode, env) => {
       new CleanWebpackPlugin(),
       new ESLintWebpackPlugin({
         files: path.resolve(__dirname, './src'),
-        fix: true,
+        fix: false,
         threads: true,
         extensions: ['ts', 'tsx'],
         lintDirtyModulesOnly: cacheEslint,

@@ -1,12 +1,11 @@
 import type { ColumnShape } from 'react-base-table';
 
-import {
-  ActionCell,
-  cellRenderComponent,
-  LengthCell,
-  ListCell,
-  PlayCell, playHeaderRenderer,
-} from './cellRenderers';
+import { ActionCell } from './cellRenderers/actionCell';
+import { LengthCell } from './cellRenderers/lengthCell';
+import { ListCell } from './cellRenderers/listCell';
+import PlayCell from './cellRenderers/playCell';
+import playHeaderRenderer from './cellRenderers/playHeader';
+import { cellRenderComponent } from './cellRenderers/types';
 
 const columns: (s: any) => Array<ColumnShape> = (youtubeSearch: any) => [
   {
