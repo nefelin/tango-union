@@ -1,4 +1,9 @@
-import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client';
+import {
+  ApolloClient,
+  ApolloProvider,
+  createHttpLink,
+  InMemoryCache,
+} from '@apollo/client';
 import * as React from 'react';
 import { Route } from 'react-router';
 import { BrowserRouter, Switch } from 'react-router-dom';
@@ -16,7 +21,8 @@ const App = () => (
     <BrowserRouter>
       <React.Suspense fallback={Loading}>
         <Switch>
-          <Route exact path="/" component={MusicDash} />
+          <Route exact path="/player" component={MusicDash} />
+          <Route exact path="/player/:trackList" component={MusicDash} />
         </Switch>
       </React.Suspense>
     </BrowserRouter>
