@@ -5,8 +5,11 @@ import { BaseTableProps } from 'react-base-table';
 import styled from 'styled-components';
 
 import { SimpleTrack } from '../../../generated/graphql';
-import { playTrackId, useTrackStatus } from '../YoutubePlayer/youtubePlayer.state';
 import PlayableRow from '../PlayableRow';
+import {
+  playTrackId,
+  useTrackStatus,
+} from '../YoutubePlayer/youtubePlayer.state';
 
 interface Props {
   cells: Array<React.ReactNode>;
@@ -29,6 +32,7 @@ const DraggableTrack = ({ rowData: track, cells, dragging }: Props) => {
   const style = {
     transform: CSS.Transform.toString(transform),
     transition: conditionalTransition,
+    zIndex: 10,
   };
 
   return (
@@ -44,13 +48,5 @@ const DraggableTrack = ({ rowData: track, cells, dragging }: Props) => {
     </PlayableRow>
   );
 };
-
-const RowContainer = styled.div`
-  display: flex;
-  z-index: 2;
-  width: 100%;
-  height: 100%;
-  background-color: inherit;
-`;
 
 export default DraggableTrack;

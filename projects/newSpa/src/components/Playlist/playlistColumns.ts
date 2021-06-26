@@ -1,13 +1,10 @@
-import type { ColumnShape } from 'react-base-table';
+import { ColumnShape } from 'react-base-table';
 
-// import { ActionCell } from './cellRenderers/actionCell';
-// import { LengthCell } from './cellRenderers/lengthCell';
-// import { ListCell } from './cellRenderers/listCell';
-// import PlayCell from './cellRenderers/playCell';
-// import playHeaderRenderer from './cellRenderers/playHeader';
-// import { cellRenderComponent } from './cellRenderers/types';
+import { LengthCell } from '../ResultsTable/ResultsTableBody/cellRenderers/lengthCell';
+import { ListCell } from '../ResultsTable/ResultsTableBody/cellRenderers/listCell';
+import { cellRenderComponent } from '../ResultsTable/ResultsTableBody/cellRenderers/types';
 
-const playlistColumns: Array<ColumnShape> =  [
+const playlistColumns: Array<ColumnShape> = [
   {
     key: 'title',
     dataKey: 'title',
@@ -21,7 +18,7 @@ const playlistColumns: Array<ColumnShape> =  [
     title: 'Orchestra',
     width: 200,
     resizable: true,
-    // cellRenderer: cellRenderComponent(ListCell),
+    cellRenderer: cellRenderComponent(ListCell),
   },
   {
     key: 'singer',
@@ -29,7 +26,7 @@ const playlistColumns: Array<ColumnShape> =  [
     title: 'Singer',
     width: 200,
     resizable: true,
-    // cellRenderer: cellRenderComponent(ListCell),
+    cellRenderer: cellRenderComponent(ListCell),
   },
   {
     key: 'year',
@@ -37,6 +34,14 @@ const playlistColumns: Array<ColumnShape> =  [
     title: 'Year',
     width: 100,
     resizable: true,
+  },
+  {
+    key: 'secondsLong',
+    dataKey: 'secondsLong',
+    title: 'Length',
+    width: 75,
+    resizable: true,
+    cellRenderer: cellRenderComponent(LengthCell),
   },
   {
     key: 'genre',
