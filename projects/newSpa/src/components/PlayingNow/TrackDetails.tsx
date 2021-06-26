@@ -7,48 +7,50 @@ import type { Maybe } from '../../types';
 import { WIDGET_WIDTH } from '../YoutubePlayer/util';
 
 const TrackDetails = ({ track }: { track: Maybe<SimpleTrack> }) => {
-  if (!track) {
-    return null;
-  }
-
   return (
     <TrackDetailsContainer>
+        <TrackDatumLabel>Title</TrackDatumLabel>
       <TrackDatum>
-        <TrackDatumLabel>Title: </TrackDatumLabel>
-        {track.title}
+        {track?.title}
       </TrackDatum>
+        <TrackDatumLabel>Orchestra</TrackDatumLabel>
       <TrackDatum>
-        <TrackDatumLabel>Orchestra: </TrackDatumLabel>
-        {track.orchestra}
+        {track?.orchestra}
       </TrackDatum>
+        <TrackDatumLabel>Singer</TrackDatumLabel>
       <TrackDatum>
-        <TrackDatumLabel>Singer: </TrackDatumLabel>
-        {track.singer}
+        {track?.singer}
       </TrackDatum>
+        <TrackDatumLabel>Year</TrackDatumLabel>
       <TrackDatum>
-        <TrackDatumLabel>Year: </TrackDatumLabel>
-        {track.year}
+        {track?.year}
       </TrackDatum>
+        <TrackDatumLabel>Genre</TrackDatumLabel>
       <TrackDatum>
-        <TrackDatumLabel>Genre: </TrackDatumLabel>
-        {track.genre}
+        {track?.genre}
       </TrackDatum>
     </TrackDetailsContainer>
   );
 };
 
 export const TrackDetailsContainer = styled(Paper)`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-left: 10px;
   box-sizing: border-box;
   padding: 10px;
-  width: ${WIDGET_WIDTH};
+  transition: height 1s;
 `;
 
 const TrackDatumLabel = styled.span`
+  font-size: 10px;
   font-weight: bold;
 `;
 
 const TrackDatum = styled.div`
-  margin-right: 4px;
+  margin-bottom: 8px;
+  font-size:12px;
 `;
 
 export default TrackDetails;

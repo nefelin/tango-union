@@ -21,3 +21,8 @@ export const VideoDescriptionLabel = styled.span`
   font-weight: bold;
   color: black;
 `;
+
+export const YoutubeContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;

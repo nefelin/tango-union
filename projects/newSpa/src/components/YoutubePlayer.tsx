@@ -10,10 +10,11 @@ import {
   useResultsPlayingContext,
 } from './ResultsTable/resultsTable.state';
 import {
+  YoutubeContainer,
   VideoDescriptionContainer,
   VideoDescriptionDatum,
   VideoDescriptionLabel,
-} from './YoutubePlayer/styled';
+} from './YoutubePlayer/styles';
 import { opts } from './YoutubePlayer/util';
 import {
   playerPause,
@@ -68,7 +69,7 @@ const YoutubePlayer = () => {
 
   const { videoId, description, title } = data?.trackSource[0] ?? {};
   return (
-    <>
+    <YoutubeContainer>
       <YouTube
         onReady={(e) => {
           setPlayer(e.target);
@@ -91,7 +92,7 @@ const YoutubePlayer = () => {
           </VideoDescriptionDatum>
         </VideoDescriptionContainer>
       )}
-    </>
+    </YoutubeContainer>
   );
 };
 

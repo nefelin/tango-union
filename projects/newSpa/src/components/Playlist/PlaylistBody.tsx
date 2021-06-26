@@ -21,7 +21,7 @@ import styled from 'styled-components';
 
 import { SimpleTrack } from '../../../generated/graphql';
 import { useRouterTrackList } from '../ResultsTable/ResultsTableBody/cellRenderers/actionCell';
-import DraggableTrack from './DraggableTrack';
+import DraggableTrack, { playlistRowRenderer } from './DraggableTrack';
 import playlistColumns from './playlistColumns';
 
 const PlaylistBody = ({ tracks }: { tracks: Array<SimpleTrack> }) => {
@@ -66,7 +66,6 @@ const PlaylistBody = ({ tracks }: { tracks: Array<SimpleTrack> }) => {
           <TableContainer>
             <AutoResizer>
               {({ width, height }) => {
-                console.log('playlist', width, height)
                 return (
                   <BaseTable
                     data={tracks}
@@ -75,14 +74,13 @@ const PlaylistBody = ({ tracks }: { tracks: Array<SimpleTrack> }) => {
                     height={height}
                     headerHeight={40}
                     rowHeight={30}
+                    rowRenderer={playlistRowRenderer(dragging)}
                   />
                 )
               }}
             </AutoResizer>
           </TableContainer>
-          {/* {orderedTracks.map((track) => ( */}
-          {/*  <DraggableTrack key={track.id} track={track} dragging={dragging} /> */}
-          {/* ))} */}
+
         </SortableContext>
       </DndContext>{' '}
     </PlaylistContainer>

@@ -3,7 +3,10 @@ import { Paper } from '@material-ui/core';
 import * as React from 'react';
 import styled from 'styled-components';
 
-import { SimpleTrack , TrackDetailFragmentFragmentDoc } from '../../generated/graphql';
+import {
+  SimpleTrack,
+  TrackDetailFragmentFragmentDoc,
+} from '../../generated/graphql';
 import TrackDetails from './PlayingNow/TrackDetails';
 import Playlists from './Playlists';
 import YoutubePlayer from './YoutubePlayer';
@@ -18,15 +21,22 @@ const NowPlaying = () => {
     fragment: TrackDetailFragmentFragmentDoc,
   });
 
+  // fixme fix alignment sizing, etc
   return (
     <NowPlayingCard>
-      <YoutubePlayer />
-      <TrackDetails track={track} />
+      <DetailsRow>
+        <YoutubePlayer />
+        <TrackDetails track={track} />
+      </DetailsRow>
       <Playlists />
     </NowPlayingCard>
   );
 };
 
+const DetailsRow = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
 const NowPlayingCard = styled(Paper)`
   width: 100%;
   display: flex;
