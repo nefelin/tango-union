@@ -3,8 +3,7 @@ import { Paper } from '@material-ui/core';
 import * as React from 'react';
 import styled from 'styled-components';
 
-import type { SimpleTrack } from '../../generated/graphql';
-import { TrackDetailFragmentFragmentDoc } from '../../generated/graphql';
+import { SimpleTrack , TrackDetailFragmentFragmentDoc } from '../../generated/graphql';
 import TrackDetails from './PlayingNow/TrackDetails';
 import Playlists from './Playlists';
 import YoutubePlayer from './YoutubePlayer';
@@ -29,9 +28,14 @@ const NowPlaying = () => {
 };
 
 const NowPlayingCard = styled(Paper)`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin: 10px;
   padding: 20px;
   box-sizing: border-box;
+  height: 600px;
 `;
 
 export default NowPlaying;

@@ -17,24 +17,26 @@ interface RouterTracklistHook {
   tracks: Array<number>;
   addTrack: (id: number) => void;
   removeTrack: (id: number) => void;
+  replaceTracks: (ids: Array<number>) => void;
   // moveTrack: (id: number, newIndex: number) => void;
 }
 
-export const useRouterTrackList = (fallbackRoute: string): RouterTracklistHook => {
+export const useRouterTrackList = (
+  fallbackRoute = '/player',
+): RouterTracklistHook => {
   const history = useHistory();
   const params = useParams<{ trackList?: string }>();
 
-  let tracks: Array<number> = [];
-  try {
-    tracks = params.trackList?.split(',').map((num) => parseInt(num, 10)) ?? [];
-    // console.log('split', params.trackList?.split(','))
-  } catch (_: unknown) {
+  const tracks: Array<number> =
+    params.trackList?.split(',').map((num) => parseInt(num, 10)) ?? [];
+
+  if (tracks.includes(NaN)) {
     console.error('route error, falling back to', fallbackRoute);
     history.push(fallbackRoute);
   }
 
   const updateRouteParam = (newParam: string) => {
-    history.push(`/player/${newParam}`);
+    history.replace(`/player/${newParam}`);
   };
 
   const addTrack = (newId: number) => {
@@ -44,8 +46,12 @@ export const useRouterTrackList = (fallbackRoute: string): RouterTracklistHook =
   };
 
   const removeTrack = (id: number) => {
-      const newList = tracks.filter(listId => listId !== id).join(',');
-      updateRouteParam(newList);
+    const newList = tracks.filter((listId) => listId !== id).join(',');
+    updateRouteParam(newList);
+  };
+
+  const replaceTracks = (ids: Array<number>) => {
+    updateRouteParam(ids.map((id) => id.toString()).join(','));
   };
 
   return {
@@ -53,12 +59,12 @@ export const useRouterTrackList = (fallbackRoute: string): RouterTracklistHook =
     tracks,
     removeTrack,
     // removeIndex <-- FixME
+    replaceTracks,
   };
 };
 
 export const ActionCell: SongRenderer = ({ song }: CellProps) => {
-  const { addTrack, removeTrack, tracks } = useRouterTrackList('/player');
-  console.log(tracks);
+  const { addTrack, removeTrack } = useRouterTrackList('/player');
 
   return (
     <>

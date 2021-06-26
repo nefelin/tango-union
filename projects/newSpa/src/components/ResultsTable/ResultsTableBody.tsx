@@ -1,15 +1,24 @@
 import { useReactiveVar } from '@apollo/client';
 import * as r from 'ramda';
 import React, { useEffect } from 'react';
-import type { BaseTableProps, TableComponents } from 'react-base-table';
-import BaseTable from 'react-base-table';
+import BaseTable, {
+  AutoResizer,
+  BaseTableProps,
+  TableComponents,
+} from 'react-base-table';
+import styled from 'styled-components';
 
-import type { SimpleTrack } from '../../../generated/graphql';
-import reactiveSearchbarState, { sortSearch } from '../Searchbar/searchbar.state';
-import { reactiveTableResults, reactiveTableRowsVisible } from './resultsTable.state';
-import columns from './ResultsTableBody/columns';
+import { SimpleTrack } from '../../../generated/graphql';
+import reactiveSearchbarState, {
+  sortSearch,
+} from '../Searchbar/searchbar.state';
+import {
+  reactiveTableResults,
+  reactiveTableRowsVisible,
+} from './resultsTable.state';
 import overlayRenderer from './ResultsTableBody/overlayRenderer';
 import rowRenderer from './ResultsTableBody/rowRenderer';
+import searchResultColumns from './ResultsTableBody/searchResultColumns';
 
 const TableHeaderCell: TableComponents['TableHeaderCell'] = ({
   className,
@@ -26,7 +35,7 @@ interface Props {
 }
 
 const ResultsTableBody = ({ tracks, incPage, page, loading }: Props) => {
- const loadedTracks = useReactiveVar(reactiveTableResults);
+  const loadedTracks = useReactiveVar(reactiveTableResults);
   const tableRef = React.createRef<BaseTable<unknown>>();
   const { sort } = useReactiveVar(reactiveSearchbarState);
 
@@ -48,10 +57,9 @@ const ResultsTableBody = ({ tracks, incPage, page, loading }: Props) => {
 
   const handleLoadMore = () => {
     incPage?.();
-  }
-
-  const youtubeSearch = () => {
   };
+
+  const youtubeSearch = () => {};
 
   const handleColumnSort: BaseTableProps['onColumnSort'] = ({ key, order }) => {
     if (sort[key.toString()] === 'desc') {
@@ -64,24 +72,39 @@ const ResultsTableBody = ({ tracks, incPage, page, loading }: Props) => {
   const loadingMore = page > 0 && loading;
 
   return (
-      <BaseTable
-        onRowsRendered={({startIndex, stopIndex}) => reactiveTableRowsVisible([startIndex, stopIndex])}
-        ref={tableRef}
-        fixed
-        rowRenderer={rowRenderer}
-        data={loadedTracks}
-        width={1100}
-        height={600}
-        onEndReached={handleLoadMore}
-        onEndReachedThreshold={30}
-        components={{ TableHeaderCell }}
-        columns={columns(youtubeSearch)}
-        sortState={sort}
-        onColumnSort={handleColumnSort}
-        overlayRenderer={overlayRenderer(loading, loadingMore)}
-        loadingMore={loadingMore}
-      />
+    <Container>
+      <AutoResizer>
+        {({ width, height }) => {
+          return (
+            <BaseTable
+              onRowsRendered={({ startIndex, stopIndex }) =>
+                reactiveTableRowsVisible([startIndex, stopIndex])
+              }
+              ref={tableRef}
+              fixed
+              rowRenderer={rowRenderer}
+              data={loadedTracks}
+              width={width}
+              height={600}
+              onEndReached={handleLoadMore}
+              onEndReachedThreshold={30}
+              components={{ TableHeaderCell }}
+              columns={searchResultColumns(width)}
+              sortState={sort}
+              onColumnSort={handleColumnSort}
+              overlayRenderer={overlayRenderer(loading, loadingMore)}
+              loadingMore={loadingMore}
+            />
+          );
+        }}
+      </AutoResizer>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  width: calc(50vw + 220px);
+  height: 50vh;
+`;
 
 export default ResultsTableBody;
