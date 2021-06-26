@@ -50,7 +50,6 @@ const PlaylistBody = ({ tracks }: { tracks: Array<SimpleTrack> }) => {
     }
   };
 
-  console.log({ tracks });
   return orderedTracks.length ? (
     <PlaylistContainer>
       <DndContext

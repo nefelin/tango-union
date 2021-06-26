@@ -28,12 +28,7 @@ export const useRouterTrackList = (
   const params = useParams<{ trackList?: string }>();
 
   const tracks: Array<number> =
-    params.trackList?.split(',').map((num) => parseInt(num, 10)) ?? [];
-
-  if (tracks.includes(NaN)) {
-    console.error('route error, falling back to', fallbackRoute);
-    history.push(fallbackRoute);
-  }
+    params.trackList?.split(',').map((num) => parseInt(num, 10)).filter(x => !isNaN(x)) ?? [];
 
   const updateRouteParam = (newParam: string) => {
     history.replace(`/player/${newParam}`);

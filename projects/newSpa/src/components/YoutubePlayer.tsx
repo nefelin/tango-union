@@ -2,18 +2,17 @@ import { useReactiveVar } from '@apollo/client';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import YouTube from 'react-youtube';
-import type { YouTubePlayer } from 'youtube-player/dist/types';
+import { YouTubePlayer } from 'youtube-player/dist/types';
 
 import { useTrackLinksQuery } from '../../generated/graphql';
-import type { Maybe } from '../types';
+import { Maybe } from '../types';
+import { useResultsPlayingContext } from './ResultsTable/resultsTable.state';
+import useCacheStitchedIdFetch from './ResultsTable/useCacheStitchedIdFetch';
 import {
-  useResultsPlayingContext,
-} from './ResultsTable/resultsTable.state';
-import {
-  YoutubeContainer,
   VideoDescriptionContainer,
   VideoDescriptionDatum,
   VideoDescriptionLabel,
+  YoutubeContainer,
 } from './YoutubePlayer/styles';
 import { opts } from './YoutubePlayer/util';
 import {
@@ -25,10 +24,14 @@ import {
 } from './YoutubePlayer/youtubePlayer.state';
 
 const YoutubePlayer = () => {
-  const { trackId, playState } = useReactiveVar(reactiveYoutubePlayerState);
-  const {
-    nextTrack,
-  } = useResultsPlayingContext();
+  const { trackId, playState, playFocus } = useReactiveVar(
+    reactiveYoutubePlayerState,
+  );
+  const { nextTrackId } = useResultsPlayingContext();
+  const [hydrated] = useCacheStitchedIdFetch(
+    nextTrackId ? [nextTrackId] : [],
+  );
+  const nextTrack = hydrated[0];
   const [player, setPlayer] = useState<Maybe<YouTubePlayer>>(null);
 
   const { data } = useTrackLinksQuery({
@@ -55,7 +58,7 @@ const YoutubePlayer = () => {
 
   const handleEnd = () => {
     if (nextTrack?.id) {
-      playTrackId(nextTrack.id);
+      playTrackId(nextTrack.id, playFocus);
     } else {
       playerStop();
     }

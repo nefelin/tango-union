@@ -1,30 +1,36 @@
 import { makeVar, useReactiveVar } from '@apollo/client';
 
-import type { SimpleTrack } from '../../../generated/graphql';
+import { SimpleTrack } from '../../../generated/graphql';
 import { reactiveYoutubePlayerState } from '../YoutubePlayer/youtubePlayer.state';
+import { useRouterTrackList } from './ResultsTableBody/cellRenderers/actionCell';
 
 interface ResultsContext {
   index?: number;
-  track?: SimpleTrack;
-  nextTrack?: SimpleTrack;
+  trackId?: number;
+  nextTrackId?: number;
 }
 
 export const useResultsPlayingContext = (): ResultsContext => {
-  const { trackId } = useReactiveVar(reactiveYoutubePlayerState);
-  const results = useReactiveVar(reactiveTableResults);
+  const { trackId, playFocus } = useReactiveVar(reactiveYoutubePlayerState);
+  const { tracks: playlistIds } = useRouterTrackList();
+
+  const searchIds = useReactiveVar(reactiveTableResults).map(({ id }) => id);
+  const results = playFocus === 'search' ? searchIds : playlistIds;
 
   if (!trackId) {
     return {};
   }
 
-  const index = results.findIndex(({ id }) => id === trackId);
-  const track = results.find(({ id }) => id === trackId);
-  const nextTrack = results[index + 1];
+  const index = results.findIndex((id) => id === trackId);
+  const track = results.find((id) => id === trackId);
+  const nextTrackId = results[index + 1];
+
+  // console.log({results, playFocus, nextTrackId})
 
   if (index === -1 || !track) {
     return {};
   }
-  return { index, track, nextTrack };
+  return { index, trackId, nextTrackId };
 };
 
 export const reactiveTableResults = makeVar<Array<SimpleTrack>>([]);

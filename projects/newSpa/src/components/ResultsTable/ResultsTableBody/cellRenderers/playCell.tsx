@@ -9,17 +9,18 @@ import {
   playerStop,
   playTrackId,
   reactiveYoutubePlayerState,
+  useTrackStatus,
 } from '../../../YoutubePlayer/youtubePlayer.state';
 import { Loader } from '../overlayRenderer/styled';
 import { StyledFakeButton } from './styles';
-import type { CellProps } from './types';
+import { CellProps } from './types';
 
 const PlayCell = ({ song }: CellProps) => {
-  const { playState, trackId: playingTrackId } = useReactiveVar(
+  const { playState } = useReactiveVar(
     reactiveYoutubePlayerState,
   );
+  const {active, playing } = useTrackStatus(song.id, 'search');
 
-  const thisTrackActive = playingTrackId === song.id;
   const DefaultIcon = <PlayCircleFilledWhiteOutlined />;
 
   const IconFromPlayState = () => {
@@ -34,10 +35,9 @@ const PlayCell = ({ song }: CellProps) => {
     }
   };
 
-  const Icon = () => (thisTrackActive ? IconFromPlayState() : DefaultIcon);
-  const canStop = playState === 'playing' || playState === 'loading';
+  const Icon = () => (active ? IconFromPlayState() : DefaultIcon);
   const action = () =>
-    thisTrackActive && canStop ? playerStop() : playTrackId(song.id);
+    playing ? playerStop() : playTrackId(song.id, 'search');
 
   return (
     <StyledFakeButton onClick={action}>

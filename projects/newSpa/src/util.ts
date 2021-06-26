@@ -14,7 +14,7 @@ export const useTraceUpdate = (props: any) => {
     }, {});
     if (Object.keys(changedProps).length > 0) {
       // eslint-disable-next-line no-console
-      console.log('Changed props:', changedProps);
+      // console.log('Changed props:', changedProps);
     }
     prev.current = props;
   });

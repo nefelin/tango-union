@@ -5,7 +5,8 @@ import { BaseTableProps } from 'react-base-table';
 import styled from 'styled-components';
 
 import { SimpleTrack } from '../../../generated/graphql';
-import { playTrackId } from '../YoutubePlayer/youtubePlayer.state';
+import { playTrackId, useTrackStatus } from '../YoutubePlayer/youtubePlayer.state';
+import PlayableRow from '../PlayableRow';
 
 interface Props {
   cells: Array<React.ReactNode>;
@@ -19,6 +20,7 @@ export const playlistRowRenderer =
     <DraggableTrack cells={cells} rowData={rowData} dragging={dragging} />;
 
 const DraggableTrack = ({ rowData: track, cells, dragging }: Props) => {
+  const status = useTrackStatus(track.id, 'playlist');
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: track.id.toString() });
 
@@ -29,13 +31,17 @@ const DraggableTrack = ({ rowData: track, cells, dragging }: Props) => {
     transition: conditionalTransition,
   };
 
-  if (track.id === 2582) {
-    console.log(style.transform);
-  }
   return (
-    <RowContainer ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <PlayableRow
+      status={status}
+      onDoubleClick={() => playTrackId(track.id, 'playlist')}
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+    >
       {cells}
-    </RowContainer>
+    </PlayableRow>
   );
 };
 
