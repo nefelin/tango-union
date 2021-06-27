@@ -1,12 +1,11 @@
 {
-  "name": "spa",
+  "name": "frontend",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
     "build": "webpack --mode production --progress",
-    "start": "webpack serve --progress --mode development",
-    "start:lintCache": "webpack serve --progress --mode development --env ESLINT_CACHE",
+    "start:dev": "webpack serve --mode development --env ESLINT_CACHE",
     "build:analyze": "npm run build -- --env MEASURE_SPEED --json ./.internal/bundleStats.json && webpack-bundle-analyzer ./.internal/bundleStats.json",
     "dev:analyze": "webpack  --env MEASURE_SPEED --json ./dist/bundleStats.json && webpack-bundle-analyzer ./dist/bundleStats.json",
     "test": "jest --config=./jest.config.js",
@@ -14,7 +13,7 @@
     "lint": "eslint src",
     "lint:fix": "eslint --fix src",
     "lint:staged": "lint-staged",
-    "generate": "graphql-codegen --config codegen.yml",
+    "generate:codegen": "graphql-codegen --config codegen.yml",
     "pre-commit": "npm run typecheck && npm run lint:staged"
   },
   "lint-staged": {

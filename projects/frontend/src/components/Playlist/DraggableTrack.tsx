@@ -32,7 +32,7 @@ const DraggableTrack = ({ rowData: track, cells, dragging }: Props) => {
   const style = {
     transform: CSS.Transform.toString(transform),
     transition: conditionalTransition,
-    zIndex: 10,
+    zIndex: 1,
   };
 
   return (
