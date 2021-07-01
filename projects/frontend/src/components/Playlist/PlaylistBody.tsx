@@ -9,22 +9,23 @@ import {
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
-
+import { snapCenterToCursor } from '@dnd-kit/modifiers';
 import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { Paper } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
 import BaseTable, { AutoResizer } from 'react-base-table';
-import styled from 'styled-components';
+import { createPortal } from 'react-dom';
 
 import { SimpleTrack } from '../../../generated/graphql';
 import { useRouterTrackList } from '../ResultsTable/ResultsTableBody/cellRenderers/actionCell';
 import { playlistRowRenderer } from './DraggableTrack';
+import { PlaylistContainer, TableContainer } from './PlaylistBody/styles';
+import TrackCountOverlay from './PlaylistBody/TrackCountOverlay';
 import playlistColumns from './playlistColumns';
 
 const PlaylistBody = ({ tracks }: { tracks: Array<SimpleTrack> }) => {
@@ -86,24 +87,10 @@ const PlaylistBody = ({ tracks }: { tracks: Array<SimpleTrack> }) => {
               }}
             </AutoResizer>
           </TableContainer>
-          createPortal(
-          <DragOverlay dropAnimation={defaultDropAnimation}>
-            {dragging ? (
-              <div
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  userSelect: 'none',
-                }}
-              >
-                <DraggerCount count={1} />
-              </div>
-            ) : null}
-          </DragOverlay>
-          , document.body )
+          {createPortal(
+            <TrackCountOverlay dragging={dragging} count={1} />,
+            document.body,
+          )}
         </SortableContext>
       </DndContext>
     </PlaylistContainer>
@@ -115,40 +102,5 @@ export const defaultDropAnimation: DropAnimation = {
   easing: 'ease',
   dragSourceOpacity: 0.5,
 };
-
-const DraggerCount = ({ count }: { count: number }) => (
-  <div
-    style={{
-      width: 20,
-      height: 20,
-      fontWeight: 'bold',
-      fontSize: 12,
-      backgroundColor: 'red',
-      color: 'white',
-      padding: '10 0',
-      borderRadius: 10,
-      boxSizing: 'border-box',
-      alignItems: 'center',
-      justifyContent: 'center',
-      display: 'flex',
-    }}
-  >
-    {count}
-  </div>
-);
-
-const TableContainer = styled.div`
-  width: 100%;
-  height: 100%;
-`;
-
-const PlaylistContainer = styled(Paper)`
-  font-size: 10px;
-  box-sizing: border-box;
-  margin-top: 10px;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-`;
 
 export default PlaylistBody;

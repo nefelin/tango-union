@@ -1493,21 +1493,21 @@
   dependencies:
     tslib "^2.0.0"
 
-"@dnd-kit/core@^3.1.1":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@dnd-kit/core/-/core-3.1.1.tgz#c5ad6665931f5a51e74226220e58ac7514f3faf0"
-  integrity sha512-18YY5+1lTqJbGSg6JBSa/fjAOTUYAysFrQ5Ti8oppEPHFacQbC+owM51y2z2KN0LkDHBfGZKw2sFT7++ttwfpA==
+"@dnd-kit/core@^4.0.0-next-202152313425":
+  version "4.0.0-next-202152313425"
+  resolved "https://registry.yarnpkg.com/@dnd-kit/core/-/core-4.0.0-next-202152313425.tgz#8b2072b5f326f7b33e2d14aea75bcdb3cd8a6f04"
+  integrity sha512-WVjZQR2tNx3j97y68GHTEK7q3aHEMtJi8PMTUGTp8HQjaUv2Hl2DH7KDVoIIfp7YDn8rgd9uoEkLT9nrbVqItQ==
   dependencies:
     "@dnd-kit/accessibility" "^3.0.0"
-    "@dnd-kit/utilities" "^2.0.0"
+    "@dnd-kit/utilities" "^2.1.0-next-202152313425"
     tslib "^2.0.0"
 
-"@dnd-kit/modifiers@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@dnd-kit/modifiers/-/modifiers-3.0.0.tgz#d6fc85f31d634d856edbc23f623d63890f5a8616"
-  integrity sha512-CmskqOcW4Bw61JP1Lqkx7cRzv9xQS/5seI+Q5eKhx+mS/MA5IrX2jgtMxvQ6PKYDnx2v/uHxqLNVhlvumtBTSQ==
+"@dnd-kit/modifiers@^4.0.0-next-202152313425":
+  version "4.0.0-next-202152313425"
+  resolved "https://registry.yarnpkg.com/@dnd-kit/modifiers/-/modifiers-4.0.0-next-202152313425.tgz#cf3fcd81bd8c151f22ab1b07664913314d3816d0"
+  integrity sha512-OlOnLbAiliPwbmhhKWD1nBS9PQ9cngsosjrpPkn4LFEH2EyB756XQoZmNuZgvpQJZpwT/3mH36UnY8imL+QwSg==
   dependencies:
-    "@dnd-kit/utilities" "^2.0.0"
+    "@dnd-kit/utilities" "^2.1.0-next-202152313425"
     tslib "^2.0.0"
 
 "@dnd-kit/sortable@^4.0.0":
@@ -1522,6 +1522,13 @@
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@dnd-kit/utilities/-/utilities-2.0.0.tgz#a8462dff65c6f606ecbe95273c7e263b14a1ab97"
   integrity sha512-bjs49yMNzMM+BYRsBUhTqhTk6HEvhuY3leFt6Em6NaYGgygaMbtGbbXof/UXBv7rqyyi0OkmBBnrCCcxqS2t/g==
+  dependencies:
+    tslib "^2.0.0"
+
+"@dnd-kit/utilities@^2.1.0-next-202152313425":
+  version "2.1.0-next-202152313425"
+  resolved "https://registry.yarnpkg.com/@dnd-kit/utilities/-/utilities-2.1.0-next-202152313425.tgz#d20c03ba6ab5bc76f99c95af668d7ddb7ac9f5ad"
+  integrity sha512-dZU20wUVt3/ousbilMvWje70TmV9n1+rbBRG2RhsvCvnxamU+n8fTNRMhKdKZ3uLhiJXbg0M7KD3qrsEH6uswA==
   dependencies:
     tslib "^2.0.0"
 
