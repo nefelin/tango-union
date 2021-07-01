@@ -4,8 +4,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDebounce } from 'use-debounce';
 
-import type { FullCountFragmentFragment } from '../../generated/graphql';
-import { useCompoundQueryQuery } from '../../generated/graphql';
+import { FullCountFragmentFragment , useCompoundQueryQuery } from '../../generated/graphql';
 import NowPlaying from '../components/NowPlaying';
 import ResultsTable from '../components/ResultsTable';
 import Searchbar from '../components/Searchbar';
@@ -27,7 +26,6 @@ const MusicDash = () => {
   const pageSize = 40;
   const pagination = { offset: 0, limit: pageSize * (page + 1) };
 
-
   const { data, error, loading } = useCompoundQueryQuery({
     variables: {
       criteria: {
@@ -48,7 +46,7 @@ const MusicDash = () => {
   }, [debouncedSearchState]);
 
   if (error) {
-    console.error(error)
+    console.error(error);
     return <div>Error!</div>;
   }
 

@@ -26,6 +26,7 @@ const CustomSelect = ({ selectOptions, id, label, setter, value }: Props) => {
   const [selection, setSelection] = useState<SelectState>(value);
 
   useEffect(() => {
+    console.log(value.map(({label}) => label))
     setSelection(value);
   }, [value]);
 

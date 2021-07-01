@@ -2,11 +2,14 @@ import {
   closestCenter,
   DndContext,
   DragEndEvent,
+  DragOverlay,
+  DropAnimation,
   KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
+
 import {
   arrayMove,
   SortableContext,
@@ -21,7 +24,7 @@ import styled from 'styled-components';
 
 import { SimpleTrack } from '../../../generated/graphql';
 import { useRouterTrackList } from '../ResultsTable/ResultsTableBody/cellRenderers/actionCell';
-import DraggableTrack, { playlistRowRenderer } from './DraggableTrack';
+import { playlistRowRenderer } from './DraggableTrack';
 import playlistColumns from './playlistColumns';
 
 const PlaylistBody = ({ tracks }: { tracks: Array<SimpleTrack> }) => {
@@ -50,7 +53,7 @@ const PlaylistBody = ({ tracks }: { tracks: Array<SimpleTrack> }) => {
     }
   };
 
-  return orderedTracks.length ? (
+  return (
     <PlaylistContainer>
       <DndContext
         sensors={sensors}
@@ -67,24 +70,72 @@ const PlaylistBody = ({ tracks }: { tracks: Array<SimpleTrack> }) => {
               {({ width, height }) => {
                 return (
                   <BaseTable
-                    data={tracks}
+                    rowKey="fakeId"
+                    data={tracks.map((track, index) => ({
+                      ...track,
+                      fakeId: `${track.id}_${index}`, // gnarly way to allow duplicate rows
+                    }))}
                     columns={playlistColumns}
                     width={width}
                     height={height}
                     headerHeight={40}
                     rowHeight={30}
-                    rowRenderer={playlistRowRenderer(dragging)}
+                    rowRenderer={playlistRowRenderer()}
                   />
-                )
+                );
               }}
             </AutoResizer>
           </TableContainer>
-
+          createPortal(
+          <DragOverlay dropAnimation={defaultDropAnimation}>
+            {dragging ? (
+              <div
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  userSelect: 'none',
+                }}
+              >
+                <DraggerCount count={1} />
+              </div>
+            ) : null}
+          </DragOverlay>
+          , document.body )
         </SortableContext>
-      </DndContext>{' '}
+      </DndContext>
     </PlaylistContainer>
-  ) : null;
+  );
 };
+
+export const defaultDropAnimation: DropAnimation = {
+  duration: 250,
+  easing: 'ease',
+  dragSourceOpacity: 0.5,
+};
+
+const DraggerCount = ({ count }: { count: number }) => (
+  <div
+    style={{
+      width: 20,
+      height: 20,
+      fontWeight: 'bold',
+      fontSize: 12,
+      backgroundColor: 'red',
+      color: 'white',
+      padding: '10 0',
+      borderRadius: 10,
+      boxSizing: 'border-box',
+      alignItems: 'center',
+      justifyContent: 'center',
+      display: 'flex',
+    }}
+  >
+    {count}
+  </div>
+);
 
 const TableContainer = styled.div`
   width: 100%;

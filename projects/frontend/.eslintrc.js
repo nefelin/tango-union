@@ -90,7 +90,7 @@ module.exports = {
     '@typescript-eslint/array-type': [2, { default: 'generic' }],
     '@typescript-eslint/consistent-indexed-object-style': [2, 'record'],
     '@typescript-eslint/consistent-type-assertions': [
-      2,
+      1,
       {
         assertionStyle: 'never',
       },

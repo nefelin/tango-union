@@ -13,6 +13,7 @@ interface Props {
 type FullProps = Props & HTMLAttributes<HTMLDivElement>;
 
 const PlayableRow = styled.div<FullProps>`
+  user-select: none;
   display: flex;
   background-color: ${({ status: { active } }) =>
     active ? activeColor : 'inherit'}; // fixme theme colors

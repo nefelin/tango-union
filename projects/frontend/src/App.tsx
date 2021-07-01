@@ -9,6 +9,7 @@ import { Route } from 'react-router';
 import { BrowserRouter, Switch } from 'react-router-dom';
 
 import MusicDash from './features/MusicDash';
+// import Playground from './features/Playground';
 
 const apolloClient = new ApolloClient({
   cache: new InMemoryCache(),
@@ -21,6 +22,7 @@ const App = () => (
     <BrowserRouter>
       <React.Suspense fallback={Loading}>
         <Switch>
+          {/*<Route exact path="/" component={Playground} />*/}
           <Route exact path="/player" component={MusicDash} />
           <Route exact path="/player/:trackList" component={MusicDash} />
         </Switch>

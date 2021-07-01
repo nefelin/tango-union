@@ -1,8 +1,7 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import { BaseTableProps } from 'react-base-table';
-import styled from 'styled-components';
 
 import { SimpleTrack } from '../../../generated/graphql';
 import PlayableRow from '../PlayableRow';
@@ -14,38 +13,55 @@ import {
 interface Props {
   cells: Array<React.ReactNode>;
   rowData: SimpleTrack;
-  dragging: boolean;
 }
 
 export const playlistRowRenderer =
-  (dragging: boolean): BaseTableProps<SimpleTrack>['rowRenderer'] =>
+  (): BaseTableProps<SimpleTrack>['rowRenderer'] =>
   ({ cells, rowData }) =>
-    <DraggableTrack cells={cells} rowData={rowData} dragging={dragging} />;
+    <DraggableTrack cells={cells} rowData={rowData} />;
 
-const DraggableTrack = ({ rowData: track, cells, dragging }: Props) => {
+const DraggableTrack = ({ rowData: track, cells }: Props) => {
   const status = useTrackStatus(track.id, 'playlist');
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: track.id.toString() });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: track.id.toString() });
 
-  const conditionalTransition = dragging ? transition || '' : '';
-
-  const style = {
+  const draggingStyle: CSSProperties = {
     transform: CSS.Transform.toString(transform),
-    transition: conditionalTransition,
-    zIndex: 1,
+    height: 2,
+    backgroundColor: 'blue',
+    width: '100%',
+    zIndex: 10,
   };
 
   return (
-    <PlayableRow
-      status={status}
-      onDoubleClick={() => playTrackId(track.id, 'playlist')}
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-    >
-      {cells}
-    </PlayableRow>
+    <>
+      {isDragging && (
+        <PlayableRow
+          style={{position: 'absolute', zIndex:11}}
+          status={status}
+          onDoubleClick={() => playTrackId(track.id, 'playlist')}
+        >
+          {cells}
+        </PlayableRow>
+      )}
+      <PlayableRow
+        status={status}
+        onDoubleClick={() => playTrackId(track.id, 'playlist')}
+        ref={setNodeRef}
+        style={isDragging ? draggingStyle : {}}
+        {...attributes}
+        {...listeners}
+      >
+        {!isDragging && cells}
+      </PlayableRow>
+
+    </>
   );
 };
 
