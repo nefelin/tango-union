@@ -1,4 +1,5 @@
-import type { ColumnShape } from 'react-base-table';
+import * as React from 'react';
+import { ColumnShape } from 'react-base-table';
 
 import { ActionCell } from './cellRenderers/actionCell';
 import { LengthCell } from './cellRenderers/lengthCell';
@@ -9,8 +10,8 @@ import { cellRenderComponent } from './cellRenderers/types';
 
 const idealWidth = 950;
 
-const searchResultColumns = (width: number): Array<ColumnShape> =>  {
-  const widthRatio = width/idealWidth;
+const searchResultColumns = (width: number): Array<ColumnShape> => {
+  const widthRatio = width / idealWidth;
   return [
     {
       headerRenderer: playHeaderRenderer,
@@ -82,6 +83,6 @@ const searchResultColumns = (width: number): Array<ColumnShape> =>  {
       sortable: false,
     },
   ];
-}
+};
 
 export default searchResultColumns;
