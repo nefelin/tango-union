@@ -9,7 +9,6 @@ import {
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
-import { snapCenterToCursor } from '@dnd-kit/modifiers';
 import {
   arrayMove,
   SortableContext,
@@ -23,14 +22,17 @@ import { createPortal } from 'react-dom';
 
 import { SimpleTrack } from '../../../generated/graphql';
 import { useRouterTrackList } from '../ResultsTable/ResultsTableBody/cellRenderers/actionCell';
-import { playlistRowRenderer } from './DraggableTrack';
+import { playlistRowRenderer, useSelectedTracks } from './DraggableTrack';
 import { PlaylistContainer, TableContainer } from './PlaylistBody/styles';
 import TrackCountOverlay from './PlaylistBody/TrackCountOverlay';
 import playlistColumns from './playlistColumns';
+import { moveMany } from './PlaylistBody/util';
 
 const PlaylistBody = ({ tracks }: { tracks: Array<SimpleTrack> }) => {
+  const {isSelected, selected} = useSelectedTracks();
   const { replaceTracks } = useRouterTrackList();
   const [orderedTracks, setOrderedTracks] = useState(tracks);
+  const trackIds = orderedTracks.map(({id}) => id.toString());
   useEffect(() => setOrderedTracks(tracks), [tracks]);
 
   const sensors = useSensors(
@@ -44,16 +46,30 @@ const PlaylistBody = ({ tracks }: { tracks: Array<SimpleTrack> }) => {
   const [dragging, setDragging] = useState(false);
 
   const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    setDragging(false);
+    const {active, over} = event;
 
-    if (active && over && active.id !== over.id) {
-      const oldIndex = tracks.findIndex(
-        ({ id }) => id.toString() === active.id,
-      );
-      const newIndex = tracks.findIndex(({ id }) => id.toString() === over.id);
-      replaceTracks(arrayMove(tracks, oldIndex, newIndex).map(({ id }) => id));
+    if (!over?.id || !active.id) {
+      return
     }
+
+    const activeIndex = trackIds.indexOf(active.id);
+    const overIndex = trackIds.indexOf(over?.id);
+
+
+    if (!isSelected(over.id)) {
+      replaceTracks(moveMany(trackIds, selected, over.id, overIndex > activeIndex).map(x => parseInt(x, 10)));
+    }
+
+    // const { active, over } = event;
+    // setDragging(false);
+    //
+    // if (active && over && active.id !== over.id) {
+    //   const oldIndex = tracks.findIndex(
+    //     ({ id }) => id.toString() === active.id,
+    //   );
+    //   const newIndex = tracks.findIndex(({ id }) => id.toString() === over.id);
+    //   replaceTracks(arrayMove(tracks, oldIndex, newIndex).map(({ id }) => id));
+    // }
   };
 
   return (
@@ -97,12 +113,6 @@ const PlaylistBody = ({ tracks }: { tracks: Array<SimpleTrack> }) => {
       </DndContext>
     </PlaylistContainer>
   );
-};
-
-export const defaultDropAnimation: DropAnimation = {
-  duration: 250,
-  easing: 'ease',
-  dragSourceOpacity: 0.5,
 };
 
 export default PlaylistBody;

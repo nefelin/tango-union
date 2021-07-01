@@ -1,9 +1,13 @@
-import { DragOverlay } from '@dnd-kit/core';
+import { DragOverlay, DropAnimation } from '@dnd-kit/core';
 import { snapCenterToCursor } from '@dnd-kit/modifiers';
 import * as React from 'react';
 import styled from 'styled-components';
 
-import { defaultDropAnimation } from '../PlaylistBody';
+const defaultDropAnimation: DropAnimation = {
+  duration: 250,
+  easing: 'ease',
+  dragSourceOpacity: 0.5,
+};
 
 interface Props {
   dragging: boolean;
