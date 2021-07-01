@@ -34,7 +34,9 @@ const PlaylistBody = ({ tracks }: { tracks: Array<SimpleTrack> }) => {
   useEffect(() => setOrderedTracks(tracks), [tracks]);
 
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: { distance: 15 },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     }),

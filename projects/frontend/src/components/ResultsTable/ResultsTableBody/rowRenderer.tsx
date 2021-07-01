@@ -1,12 +1,14 @@
-import { useReactiveVar } from '@apollo/client';
-import type { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import * as React from 'react';
-import type { BaseTableProps } from 'react-base-table';
-import styled from 'styled-components';
+import { BaseTableProps } from 'react-base-table';
 
-import type { SimpleTrack } from '../../../../generated/graphql';
-import { reactiveYoutubePlayerState, useTrackStatus } from '../../YoutubePlayer/youtubePlayer.state';
+import { SimpleTrack } from '../../../../generated/graphql';
 import PlayableRow from '../../PlayableRow';
+import {
+  playTrackId,
+  reactiveYoutubePlayerState,
+  useTrackStatus,
+} from '../../YoutubePlayer/youtubePlayer.state';
 
 const rowRenderer: BaseTableProps<SimpleTrack>['rowRenderer'] = ({
   cells,
@@ -19,8 +21,15 @@ interface Props {
 }
 
 const CustomRow = ({ cells, rowData }: Props) => {
-  const status = useTrackStatus(rowData.id, 'search')
-  return <PlayableRow status={status}>{cells}</PlayableRow>;
+  const status = useTrackStatus(rowData.id, 'search');
+  return (
+    <PlayableRow
+      onDoubleClick={() => playTrackId(rowData.id, 'search')}
+      status={status}
+    >
+      {cells}
+    </PlayableRow>
+  );
 };
 
 export default rowRenderer;
