@@ -2,15 +2,12 @@ import {
   closestCenter,
   DndContext,
   DragEndEvent,
-  DragOverlay,
-  DropAnimation,
   KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
 import {
-  arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
@@ -22,17 +19,17 @@ import { createPortal } from 'react-dom';
 
 import { SimpleTrack } from '../../../generated/graphql';
 import { useRouterTrackList } from '../ResultsTable/ResultsTableBody/cellRenderers/actionCell';
-import { playlistRowRenderer, useSelectedTracks } from './DraggableTrack';
+import { playlistRowRenderer, useSelection } from './DraggableTrack';
 import { PlaylistContainer, TableContainer } from './PlaylistBody/styles';
 import TrackCountOverlay from './PlaylistBody/TrackCountOverlay';
-import playlistColumns from './playlistColumns';
 import { moveMany } from './PlaylistBody/util';
+import playlistColumns from './playlistColumns';
 
 const PlaylistBody = ({ tracks }: { tracks: Array<SimpleTrack> }) => {
-  const {isSelected, selected} = useSelectedTracks();
+  const { isSelected, selected } = useSelection();
   const { replaceTracks } = useRouterTrackList();
   const [orderedTracks, setOrderedTracks] = useState(tracks);
-  const trackIds = orderedTracks.map(({id}) => id.toString());
+  const trackIds = orderedTracks.map(({ id }) => id.toString());
   useEffect(() => setOrderedTracks(tracks), [tracks]);
 
   const sensors = useSensors(
@@ -46,18 +43,21 @@ const PlaylistBody = ({ tracks }: { tracks: Array<SimpleTrack> }) => {
   const [dragging, setDragging] = useState(false);
 
   const handleDragEnd = (event: DragEndEvent) => {
-    const {active, over} = event;
+    const { active, over } = event;
 
     if (!over?.id || !active.id) {
-      return
+      return;
     }
 
     const activeIndex = trackIds.indexOf(active.id);
     const overIndex = trackIds.indexOf(over?.id);
 
-
     if (!isSelected(over.id)) {
-      replaceTracks(moveMany(trackIds, selected, over.id, overIndex > activeIndex).map(x => parseInt(x, 10)));
+      replaceTracks(
+        moveMany(trackIds, selected, over.id, overIndex > activeIndex).map(
+          (x) => parseInt(x, 10),
+        ),
+      );
     }
 
     // const { active, over } = event;

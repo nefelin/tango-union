@@ -23,30 +23,59 @@ export const playlistRowRenderer =
 
 const reactiveSelectedTracks = makeVar<Array<string>>([]);
 
-export const useSelectedTracks = () => {
+export const useSelection = (id = '-1') => {
   const selected = useReactiveVar(reactiveSelectedTracks);
+  const [startedSelected, setStartedSelected] = useState(false);
 
-  const addSelected = (id: string) => {
+  const addSelected = () => {
     reactiveSelectedTracks([...reactiveSelectedTracks(), id]);
   };
 
-  const removeSelected = (id: string) => {
+  const removeSelected = () => {
     reactiveSelectedTracks(
       reactiveSelectedTracks().filter((listId) => id !== listId),
     );
   };
 
-  const toggleSelected = (id: string) => {
+  const toggleSelected = () => {
     if (selected.includes(id)) {
-      removeSelected(id);
+      removeSelected();
     } else {
-      addSelected(id);
+      addSelected();
     }
   };
 
-  const isSelected = (id: string) => selected.includes(id);
+  // late night bad decision, sort of overloading this function to work in two contexts....
+  const isSelected = (checkId?: string) => selected.includes(checkId || id);
 
-  const replaceSelected = (...id: Array<string>) => reactiveSelectedTracks(id);
+  const replaceSelected = () => reactiveSelectedTracks([id]);
+
+  const mouseHandlers = {
+    onMouseDown: (e: MouseEvent) => {
+      // fixme at proper shift selecting
+      if (!isSelected()) {
+        if (e.metaKey || e.shiftKey) {
+          addSelected();
+          setStartedSelected(false);
+        } else {
+          replaceSelected();
+          setStartedSelected(true);
+        }
+      } else {
+        setStartedSelected(true);
+      }
+    },
+
+    onMouseUp: (e: MouseEvent) => {
+      if (isSelected() && startedSelected) {
+        if (e.metaKey || e.shiftKey) {
+          removeSelected();
+        } else {
+          replaceSelected();
+        }
+      }
+    },
+  }
 
   return {
     selected,
@@ -55,18 +84,17 @@ export const useSelectedTracks = () => {
     replaceSelected,
     addSelected,
     removeSelected,
+    mouseHandlers,
   };
 };
 
 const DraggableTrack = ({ rowData: track, cells }: Props) => {
   const status = useTrackStatus(track.id, 'playlist');
 
-  const [startedSelected, setStartedSelected] = useState(false);
-  const { isSelected, removeSelected, replaceSelected, addSelected } =
-    useSelectedTracks();
+  const { isSelected, mouseHandlers} =
+    useSelection(track.id.toString());
 
   const id = track.id.toString();
-  const selected = isSelected(id);
 
   const {
     attributes,
@@ -86,53 +114,26 @@ const DraggableTrack = ({ rowData: track, cells }: Props) => {
     zIndex: 10,
   };
 
-  const handleMouseDown = (e: MouseEvent) => {
-    // fixme at proper shift selecting
-    if (!selected) {
-      if (e.metaKey || e.shiftKey) {
-        // fixme confusing nightmare
-        addSelected(id);
-        setStartedSelected(false);
-      } else {
-        replaceSelected(id);
-        setStartedSelected(true);
-      }
-    } else {
-      setStartedSelected(true);
-    }
-  };
-
-  const handleMouseUp = (e: MouseEvent) => {
-    if (selected && startedSelected) {
-      if (e.metaKey || e.shiftKey) {
-        removeSelected(id);
-      } else {
-        replaceSelected(id);
-      }
-    }
-  };
-
   return (
     <>
       {isDragging && (
         <PlayableRow
           style={{ position: 'absolute', zIndex: 11 }}
           status={status}
-          selected={selected}
+          selected={isSelected()}
         >
           {cells}
         </PlayableRow>
       )}
       <PlayableRow
         status={status}
-        selected={selected}
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
+        selected={isSelected()}
         onDoubleClick={() => playTrackId(track.id, 'playlist')}
         ref={setNodeRef}
         style={isDragging ? draggingStyle : {}}
         {...attributes}
         {...listeners}
+        {...mouseHandlers}
       >
         {!isDragging && cells}
       </PlayableRow>

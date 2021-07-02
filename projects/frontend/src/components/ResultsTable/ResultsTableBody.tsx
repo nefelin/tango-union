@@ -21,22 +21,7 @@ import overlayRenderer from './ResultsTableBody/overlayRenderer';
 import rowRenderer from './ResultsTableBody/rowRenderer';
 import searchResultColumns from './ResultsTableBody/searchResultColumns';
 
-interface RowFocusState {
-  rowIndex: number;
-  tableName: string;
-}
 
-export const reactiveRowFocus = makeVar<Maybe<RowFocusState>>(null);
-export const useRowIsHovered = ({
-  rowIndex,
-  tableName,
-}: {
-  rowIndex: number;
-  tableName: string;
-}) => {
-  const rowFocus = useReactiveVar(reactiveRowFocus);
-  return rowFocus?.rowIndex === rowIndex && rowFocus?.tableName === tableName;
-};
 
 const TableHeaderCell: TableComponents['TableHeaderCell'] = ({
   className,

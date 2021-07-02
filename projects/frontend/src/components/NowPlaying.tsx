@@ -34,9 +34,11 @@ const NowPlaying = () => {
 };
 
 const DetailsRow = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: row;
 `;
+
 const NowPlayingCard = styled(Paper)`
   width: 100%;
   display: flex;

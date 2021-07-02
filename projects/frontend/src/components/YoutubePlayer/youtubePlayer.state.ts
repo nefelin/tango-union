@@ -9,7 +9,7 @@ interface YoutubePlayerState {
 }
 
 export type PlayState = 'playing' | 'stopped' | 'loading';
-export type PlayFocusSource = 'playlist' | 'search';
+export type PlayFocusSource = string
 export interface TrackStatus {
   active: boolean;
   playing: boolean;

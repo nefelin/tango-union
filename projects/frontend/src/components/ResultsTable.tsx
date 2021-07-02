@@ -13,13 +13,26 @@ interface Props {
   page: number;
 }
 
+interface PlaylistConfig {
+  name: string;
+}
+
+export const PlaylistConfigContext = React.createContext({ name: '' });
+
 const ResultsTable = ({ ids, loading = false, page, incPage }: Props) => {
   const [tracks, tracksLoading] = useCacheStitchedIdFetch(ids, false);
 
   const tableLoading = loading || tracksLoading;
   return (
     <StyledTableContainer>
-      <ResultsTableBody tracks={tracks} incPage={incPage} page={page} loading={tableLoading}/>
+      <PlaylistConfigContext.Provider value={{ name: 'search' }}>
+        <ResultsTableBody
+          tracks={tracks}
+          incPage={incPage}
+          page={page}
+          loading={tableLoading}
+        />
+      </PlaylistConfigContext.Provider>
     </StyledTableContainer>
   );
 };

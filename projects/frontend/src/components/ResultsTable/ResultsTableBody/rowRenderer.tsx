@@ -1,20 +1,21 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useContext } from 'react';
 import * as React from 'react';
 import { BaseTableProps } from 'react-base-table';
 
 import { SimpleTrack } from '../../../../generated/graphql';
+import { useHoveredRow } from '../../../state/hoveredRow.state';
 import PlayableRow from '../../PlayableRow';
-import { useSelectedTracks } from '../../Playlist/DraggableTrack';
+import { useSelection } from '../../Playlist/DraggableTrack';
+import { PlaylistConfigContext } from '../../ResultsTable';
 import {
   playTrackId,
   useTrackStatus,
 } from '../../YoutubePlayer/youtubePlayer.state';
-import { reactiveRowFocus } from '../ResultsTableBody';
 
 const rowRenderer: BaseTableProps<SimpleTrack>['rowRenderer'] = ({
   cells,
   rowData,
-  rowIndex
+  rowIndex,
 }) => <CustomRow cells={cells} rowData={rowData} rowIndex={rowIndex} />;
 
 interface Props {
@@ -24,14 +25,17 @@ interface Props {
 }
 
 const CustomRow = ({ cells, rowData, rowIndex }: Props) => {
-  const status = useTrackStatus(rowData.id, 'search');
-  const { isSelected } = useSelectedTracks();
-  const selected = isSelected(rowData.id.toString());
+  const { name: playlistName } = useContext(PlaylistConfigContext);
+  const status = useTrackStatus(rowData.id, playlistName);
+  const { setHoveredRow, clearHoveredRow } = useHoveredRow();
+
+  const { isSelected } = useSelection(rowData.id.toString());
   return (
     <PlayableRow
-      onMouseEnter={() => reactiveRowFocus({rowIndex, tableName: 'search'})}
-      selected={selected}
-      onDoubleClick={() => playTrackId(rowData.id, 'search')}
+      onMouseEnter={() => setHoveredRow({ rowIndex, tableName: playlistName })}
+      onMouseLeave={() => clearHoveredRow()}
+      selected={isSelected()}
+      onDoubleClick={() => playTrackId(rowData.id, playlistName)}
       status={status}
     >
       {cells}

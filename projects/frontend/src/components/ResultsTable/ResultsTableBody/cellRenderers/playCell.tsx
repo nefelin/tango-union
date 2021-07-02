@@ -2,52 +2,72 @@ import { useReactiveVar } from '@apollo/client';
 import {
   PauseCircleOutline,
   PlayCircleFilledWhiteOutlined,
+  VolumeMute,
+  VolumeUp,
 } from '@material-ui/icons';
-import React, { useEffect } from 'react';
+import React, { useContext } from 'react';
 
+import { useHoveredRow } from '../../../../state/hoveredRow.state';
+import { PlaylistConfigContext } from '../../../ResultsTable';
 import {
   playerStop,
   playTrackId,
   reactiveYoutubePlayerState,
   useTrackStatus,
 } from '../../../YoutubePlayer/youtubePlayer.state';
-import { useRowIsHovered } from '../../ResultsTableBody';
 import { Loader } from '../overlayRenderer/styled';
 import { StyledFakeButton } from './styles';
 import { CellProps } from './types';
 
 const PlayCell = ({ song, rowIndex }: CellProps) => {
+  const { name: playlistName } = useContext(PlaylistConfigContext);
   const { playState } = useReactiveVar(reactiveYoutubePlayerState);
-  const { active, playing } = useTrackStatus(song.id, 'search');
+  const { active } = useTrackStatus(song.id, playlistName);
 
-  const DefaultIcon = <ConditionalPlayButton rowIndex={rowIndex} />; // fixme hide when not hovering
-
-  const IconFromPlayState = () => {
-    switch (playState) {
-      case 'loading':
-        return <Loader small color="black" />; // fixme switch loader
-      case 'playing':
-        return <PauseCircleOutline />;
-      case 'stopped':
-      default:
-        return DefaultIcon;
-    }
-  };
-
-  const Icon = () => (active ? IconFromPlayState() : DefaultIcon);
-  const action = () =>
-    playing ? playerStop() : playTrackId(song.id, 'search');
-
-  return (
-    <StyledFakeButton onClick={action}>
-      <Icon />
-    </StyledFakeButton>
+  const showLoading = playState === 'loading' && active;
+  return showLoading ? (
+    <Loader small color="black" />
+  ) : (
+    <DynamicPlayButton rowIndex={rowIndex} id={song.id} />
   );
 };
 
-const ConditionalPlayButton = ({ rowIndex }: { rowIndex: number }) => {
-  const hovered = useRowIsHovered({ rowIndex, tableName: 'search' });
-  return hovered ? <PlayCircleFilledWhiteOutlined /> : null;
+const DynamicPlayButton = ({
+  rowIndex,
+  id,
+}: {
+  rowIndex: number;
+  id: number;
+}) => {
+  const { name: playlistName } = useContext(PlaylistConfigContext);
+  const { active, playing } = useTrackStatus(id, playlistName);
+  const { hovered } = useHoveredRow({
+    rowLens: { rowIndex, tableName: playlistName },
+  });
+
+  const action = () => (playing ? playerStop() : playTrackId(id, playlistName));
+
+  const icon = active
+    ? activeRowIcon(hovered, playing)
+    : inactiveRowIcon(hovered);
+
+  return <StyledFakeButton onClick={action}>{icon}</StyledFakeButton>;
+};
+
+const inactiveRowIcon = (hovered: boolean) =>
+  hovered ? <PlayCircleFilledWhiteOutlined /> : null;
+
+const activeRowIcon = (hovered: boolean, playing: boolean): JSX.Element => {
+  if (hovered) {
+    if (playing) {
+      return <PauseCircleOutline />;
+    }
+    return <PlayCircleFilledWhiteOutlined />;
+  }
+  if (playing) {
+    return <VolumeUp />;
+  }
+  return <VolumeMute />;
 };
 
 export default PlayCell;
