@@ -6,7 +6,6 @@ import { WIDGET_WIDTH } from './util';
 export const VideoDescriptionContainer = styled(Paper)`
   box-sizing: border-box;
   margin-top: -8px;
-  margin-bottom: 5px;
   padding: 8px 3px 3px 3px;
   width: ${WIDGET_WIDTH};
   font-size: 10px;

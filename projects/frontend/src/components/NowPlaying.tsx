@@ -40,6 +40,7 @@ const DetailsRow = styled.div`
 `;
 
 const NowPlayingCard = styled(Paper)`
+  height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -47,7 +48,6 @@ const NowPlayingCard = styled(Paper)`
   margin: 10px;
   padding: 20px;
   box-sizing: border-box;
-  height: 600px;
 `;
 
 export default NowPlaying;

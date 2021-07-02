@@ -4,7 +4,10 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDebounce } from 'use-debounce';
 
-import { FullCountFragmentFragment , useCompoundQueryQuery } from '../../generated/graphql';
+import {
+  FullCountFragmentFragment,
+  useCompoundQueryQuery,
+} from '../../generated/graphql';
 import NowPlaying from '../components/NowPlaying';
 import ResultsTable from '../components/ResultsTable';
 import Searchbar from '../components/Searchbar';
@@ -74,6 +77,8 @@ const MusicDash = () => {
 };
 
 const MusicDashContainer = styled.div`
+  height: 80vh;
+  padding: 1vh;
   display: flex;
   flex-direction: column;
 `;

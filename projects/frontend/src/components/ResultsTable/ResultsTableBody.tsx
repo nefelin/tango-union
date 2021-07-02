@@ -21,8 +21,6 @@ import overlayRenderer from './ResultsTableBody/overlayRenderer';
 import rowRenderer from './ResultsTableBody/rowRenderer';
 import searchResultColumns from './ResultsTableBody/searchResultColumns';
 
-
-
 const TableHeaderCell: TableComponents['TableHeaderCell'] = ({
   className,
   column: { title },
@@ -88,7 +86,7 @@ const ResultsTableBody = ({ tracks, incPage, page, loading }: Props) => {
               rowRenderer={rowRenderer}
               data={loadedTracks}
               width={width}
-              height={600}
+              height={height + 8} // this is hacky fixme
               onEndReached={handleLoadMore}
               onEndReachedThreshold={30}
               components={{ TableHeaderCell }}
@@ -107,7 +105,7 @@ const ResultsTableBody = ({ tracks, incPage, page, loading }: Props) => {
 
 const Container = styled.div`
   width: calc(50vw + 220px);
-  height: 50vh;
+  height: 100%;
 `;
 
 export default ResultsTableBody;

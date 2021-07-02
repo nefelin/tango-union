@@ -6,7 +6,7 @@ export const removeSearchIrrelevantTerms: (query: string) => string = r.replace(
   '',
 );
 
-export const queryStringFromSong: (song: Track) => string = r.pipe(
+export const queryStringFromSong: (song: Track) => string = r.pipe( // fixme this is broken since added things like Unknown and Instrumental to the core data, be sure to remove those null values before searching...
   r.pick(['orchestra', 'singer', 'year', 'title']),
   Object.values,
   r.flatten,
