@@ -9,7 +9,30 @@ import { Maybe } from '../../types';
 import { WIDGET_WIDTH } from '../YoutubePlayer/util';
 
 const flagFields = ['title', 'orchestra', 'singer', 'year', 'genre'] as const;
-type TrackFlags = Partial<Record<typeof flagFields[number], boolean>>;
+type FlagKeys = typeof flagFields[number];
+type TrackFlags = Partial<Record<FlagKeys, boolean>>;
+type FlagWeights = Record<FlagKeys, number>;
+
+const flagWeights: FlagWeights = {
+  title: 4,
+  orchestra: 3,
+  singer: 2,
+  year: 1,
+  genre: 0,
+};
+const maxScore = Object.values<number>(flagWeights).reduce(
+  (prev, curr) => prev + curr,
+  0,
+);
+
+const scoreTrackMatch = (flags: TrackFlags): number => {
+  const scored = r.mapObjIndexed(
+    (flag, key) => (flags[key] ? flagWeights[key] : 0),
+    flagWeights,
+  );
+  return Object.values<number>(scored).reduce((prev, curr) => prev + curr, 0);
+};
+
 const flagMissing = (
   texts: Array<string>,
   track: Maybe<SimpleTrack>,
@@ -77,6 +100,9 @@ const TrackDetails = ({ track }: { track: Maybe<SimpleTrack> }) => {
         <FoundFlag found={found.genre} />
       </TrackDatumLabel>
       <TrackDatum>{track?.genre}</TrackDatum>
+      <TrackDatumLabel>
+        Match score: {`${scoreTrackMatch(found)}/${maxScore}`}
+      </TrackDatumLabel>
     </TrackDetailsContainer>
   );
 };
