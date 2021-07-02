@@ -82,7 +82,7 @@ const MusicDash = () => {
 };
 
 const MusicDashContainer = styled.div`
-  height: 80vh;
+  height: 85vh;
   padding: 1vh;
   display: flex;
   flex-direction: column;

@@ -1,4 +1,5 @@
 import { useReactiveVar } from '@apollo/client';
+import { Button } from '@material-ui/core';
 import Input from '@material-ui/core/Input';
 import { Clear } from '@material-ui/icons';
 import { useFormik } from 'formik';
@@ -12,7 +13,9 @@ import reactiveSearchbarState, {
   resetSearch,
 } from './Searchbar/searchbar.state';
 import {
+  ClearButtonContainer,
   InputSpacer,
+  SearchInputContainer,
   StyledCol,
   StyledInputLabel,
   StyledRow,
@@ -50,21 +53,28 @@ const Searchbar = ({ selectOptions }: Props) => {
     <StyledRow>
       <StyledCol>
         <InputSpacer>
-          <StyledInputLabel htmlFor="search">Search</StyledInputLabel>
-          <Input
-            autoFocus
-            endAdornment={
-              <StyledFakeButton onClick={handleClearTextSearch}>
-                <Clear color='disabled' fontSize='small'/>
-              </StyledFakeButton>
-            }
-            id="search"
-            onChange={formik.handleChange}
-            value={formik.values.search}
-          />
-          <button type="button" onClick={resetSearch}>
-            Clear Search
-          </button>
+          <SearchInputContainer>
+            <input
+              autoComplete="off"
+              placeholder="Search..."
+              id="search"
+              onChange={formik.handleChange}
+              value={formik.values.search}
+            />
+            <ClearButtonContainer onClick={() => handleClearTextSearch()}>
+              <Clear color="disabled" fontSize="small" />
+            </ClearButtonContainer>
+          </SearchInputContainer>
+          <Button
+            disableRipple
+            size="small"
+            variant="outlined"
+            color="primary"
+            type="button"
+            onClick={resetSearch}
+          >
+            Clear All Criteria
+          </Button>
         </InputSpacer>
         <CustomSelect
           setter={formik.setFieldValue}

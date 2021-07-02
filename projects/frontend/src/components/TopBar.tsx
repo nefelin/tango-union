@@ -1,8 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-import Logo from './TopBar/Logo';
-
 const TopBar = () => (
   <TopBarContainer>
     <LogoContainer>TANGO UNION</LogoContainer>
@@ -21,7 +19,7 @@ const TopBarContainer = styled.div`
   position: relative;
   padding: 13px 20px;
   margin-bottom: 20px;
-  background-color: #a72d2d;
+  background-color: #0606b9;
   top: 0;
   left: 0;
   right: 0;
