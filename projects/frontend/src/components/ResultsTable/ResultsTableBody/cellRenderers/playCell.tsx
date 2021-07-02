@@ -7,8 +7,8 @@ import {
 } from '@material-ui/icons';
 import React, { useContext } from 'react';
 
+import { PlaylistConfigContext } from '../../../../context/playlistConfig.context';
 import { useHoveredRow } from '../../../../state/hoveredRow.state';
-import { PlaylistConfigContext } from '../../../ResultsTable';
 import {
   playerStop,
   playTrackId,

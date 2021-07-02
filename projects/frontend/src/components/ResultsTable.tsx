@@ -2,6 +2,7 @@ import 'react-base-table/styles.css';
 
 import React from 'react';
 
+import { PlaylistConfigContext } from '../context/playlistConfig.context';
 import ResultsTableBody from './ResultsTable/ResultsTableBody';
 import StyledTableContainer from './ResultsTable/styled';
 import useCacheStitchedIdFetch from './ResultsTable/useCacheStitchedIdFetch';
@@ -12,12 +13,6 @@ interface Props {
   incPage?: VoidFunction;
   page: number;
 }
-
-interface PlaylistConfig {
-  name: string;
-}
-
-export const PlaylistConfigContext = React.createContext({ name: '' });
 
 const ResultsTable = ({ ids, loading = false, page, incPage }: Props) => {
   const [tracks, tracksLoading] = useCacheStitchedIdFetch(ids, false);

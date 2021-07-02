@@ -7,11 +7,15 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { GraphQLModule } from '@nestjs/graphql';
 import * as path from 'path';
 import fs from 'fs';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 const TABS_PATH = path.resolve(__dirname, '../generated/tabs.json'); // fixme should be in config
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: path.join(__dirname, 'static'),
+    }),
     GraphQLModule.forRootAsync({
       useFactory: async () => {
         const tabs = fs.existsSync(TABS_PATH) ? require(TABS_PATH) : [];

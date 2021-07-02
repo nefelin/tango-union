@@ -76,6 +76,7 @@ module.exports = {
     'react/jsx-closing-tag-location': 0,
 
     // Typescript
+    '@typescript-eslint/no-empty-function': 0,
     '@typescript-eslint/no-shadow': [2],
     '@typescript-eslint/no-use-before-define': 0,
     '@typescript-eslint/no-implicit-any-catch': 2,

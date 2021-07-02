@@ -28,7 +28,7 @@ export const useRouterTrackList = (
   const params = useParams<{ trackList?: string }>();
 
   const tracks: Array<number> =
-    params.trackList?.split(',').map((num) => parseInt(num, 10)).filter(x => !isNaN(x)) ?? [];
+    params.trackList?.split(',').map((num) => parseInt(num, 10)).filter(x => !Number.isNaN(x)) ?? [];
 
   const updateRouteParam = (newParam: string) => {
     history.replace(`/player/${newParam}`);

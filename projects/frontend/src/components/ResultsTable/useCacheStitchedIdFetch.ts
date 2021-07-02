@@ -1,8 +1,7 @@
 import { useApolloClient } from '@apollo/client';
 
-import type {
-  SimpleTrack} from '../../../generated/graphql';
 import {
+  SimpleTrack,
   TrackDetailFragmentFragmentDoc,
   useTrackDetailsBatchQuery,
 } from '../../../generated/graphql';

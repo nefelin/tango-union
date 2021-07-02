@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { ColumnShape } from 'react-base-table';
 
 import { ActionCell } from './cellRenderers/actionCell';

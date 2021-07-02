@@ -5,7 +5,7 @@ import {
   InMemoryCache,
 } from '@apollo/client';
 import * as React from 'react';
-import { Route } from 'react-router';
+import { Redirect, Route } from 'react-router';
 import { BrowserRouter, Switch } from 'react-router-dom';
 
 import MusicDash from './features/MusicDash';
@@ -22,7 +22,7 @@ const App = () => (
     <BrowserRouter>
       <React.Suspense fallback={Loading}>
         <Switch>
-          {/*<Route exact path="/" component={Playground} />*/}
+          <Route exact path="/" component={() => <Redirect to="/player" />} />
           <Route exact path="/player" component={MusicDash} />
           <Route exact path="/player/:trackList" component={MusicDash} />
         </Switch>

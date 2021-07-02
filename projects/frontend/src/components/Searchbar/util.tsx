@@ -1,12 +1,12 @@
 import * as r from 'ramda';
 import * as React from 'react';
-import type { FormatOptionLabelMeta } from 'react-select';
-import type { Option } from 'react-select/src/filters';
+import { FormatOptionLabelMeta } from 'react-select';
+import { Option } from 'react-select/src/filters';
 import { cleanSlop } from 'tango-index/dist/compoundIndex/util';
 
-import type { CompoundQueryInput } from '../../../generated/graphql';
+import { CompoundQueryInput } from '../../../generated/graphql';
 import { StyledCount, StyledMenuOption } from './styles';
-import type { SearchbarState } from './types';
+import { SearchbarState } from './types';
 
 export const customSearch = (option: Option, searchString: string) =>
   cleanSlop(option.value).indexOf(cleanSlop(searchString)) !== -1;

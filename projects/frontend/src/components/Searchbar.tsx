@@ -32,7 +32,7 @@ const Searchbar = ({ selectOptions }: Props) => {
   const formik = useFormik<SearchbarState>({
     initialValues: searchState,
     enableReinitialize: true,
-    onSubmit: (values) => console.log({ values }),
+    onSubmit: () => {},
   });
 
   const { values } = formik;

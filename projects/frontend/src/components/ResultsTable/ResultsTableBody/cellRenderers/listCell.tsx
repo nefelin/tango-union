@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { CellProps } from './types';
+import { CellProps } from './types';
 
 export const ListCell = ({ song, column: { key } }: CellProps) => {
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions

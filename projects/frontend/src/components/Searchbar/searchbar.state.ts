@@ -1,6 +1,6 @@
 import { makeVar } from '@apollo/client';
 
-import type { SearchbarState } from './types';
+import { SearchbarState } from './types';
 
 export const initSearchbarState: SearchbarState = {
   search: '',

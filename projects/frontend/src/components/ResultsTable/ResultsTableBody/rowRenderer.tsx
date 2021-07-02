@@ -3,10 +3,10 @@ import * as React from 'react';
 import { BaseTableProps } from 'react-base-table';
 
 import { SimpleTrack } from '../../../../generated/graphql';
+import { PlaylistConfigContext } from '../../../context/playlistConfig.context';
 import { useHoveredRow } from '../../../state/hoveredRow.state';
 import PlayableRow from '../../PlayableRow';
 import { useSelection } from '../../Playlist/DraggableTrack';
-import { PlaylistConfigContext } from '../../ResultsTable';
 import {
   playTrackId,
   useTrackStatus,

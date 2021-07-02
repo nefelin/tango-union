@@ -1,6 +1,6 @@
-import type { Option } from 'react-select/src/filters';
+import { Option } from 'react-select/src/filters';
 
-import type { Maybe } from '../../types';
+import { Maybe } from '../../types';
 
 export interface SearchbarState {
   orchestra: Maybe<Array<Option>>;
@@ -9,4 +9,3 @@ export interface SearchbarState {
   search: string;
   sort: Record<string, 'asc' | 'desc'>;
 }
-

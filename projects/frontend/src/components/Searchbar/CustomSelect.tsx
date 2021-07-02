@@ -1,15 +1,13 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import type { OptionsType, ValueType } from 'react-select';
-import Select from 'react-select';
-import type { Option } from 'react-select/src/filters';
+import Select, { OptionsType, ValueType } from 'react-select';
+import { Option } from 'react-select/src/filters';
 
-import type { Barely } from '../../types';
+import { Barely } from '../../types';
 import { StyledInputLabel } from './styles';
-import type { MemberCountList } from './util';
-import {
-  customSearch,
+import {   customSearch,
   formatOptionLabel,
+MemberCountList ,
   optionsFromSelectOptions,
 } from './util';
 
