@@ -4,9 +4,9 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 const defaultDropAnimation: DropAnimation = {
-  duration: 250,
-  easing: 'ease',
-  dragSourceOpacity: 0.5,
+  duration: 0,
+  // easing: 'ease',
+  // dragSourceOpacity: 0.5,
 };
 
 interface Props {
@@ -21,11 +21,17 @@ const TrackCountOverlay = ({ dragging, count }: Props) => (
   >
     {dragging ? (
       <CenteringDiv>
-        <DraggerCount>{count}</DraggerCount>
+        <RelativeDiv>
+          <DraggerCount>{count}</DraggerCount>
+        </RelativeDiv>
       </CenteringDiv>
     ) : null}
   </DragOverlay>
 );
+
+const RelativeDiv = styled.div`
+position:relative;
+`;
 
 const CenteringDiv = styled.div`
   width: 100%;
@@ -37,6 +43,9 @@ const CenteringDiv = styled.div`
 `;
 
 const DraggerCount = styled.div`
+  position: absolute;
+  top: -16px;
+  left: -16px;
   width: 20px;
   height: 20px;
   font-weight: bold;

@@ -106,7 +106,7 @@ const PlaylistBody = ({ tracks }: { tracks: Array<SimpleTrack> }) => {
             </AutoResizer>
           </TableContainer>
           {createPortal(
-            <TrackCountOverlay dragging={dragging} count={1} />,
+            <TrackCountOverlay dragging={dragging} count={selected.length} />,
             document.body,
           )}
         </SortableContext>

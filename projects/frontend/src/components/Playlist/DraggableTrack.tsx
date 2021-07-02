@@ -23,7 +23,7 @@ export const playlistRowRenderer =
 
 const reactiveSelectedTracks = makeVar<Array<string>>([]);
 
-export const useSelection = (id = '-1') => {
+export const useSelection = (id = '-1') => { // fixme handle copying
   const selected = useReactiveVar(reactiveSelectedTracks);
   const [startedSelected, setStartedSelected] = useState(false);
 
