@@ -5,8 +5,8 @@ import styled from 'styled-components';
 
 const defaultDropAnimation: DropAnimation = {
   duration: 0,
-  // easing: 'ease',
-  // dragSourceOpacity: 0.5,
+  easing: 'ease',
+  dragSourceOpacity: 0.5,
 };
 
 interface Props {

@@ -13,6 +13,7 @@ import ResultsTable from '../components/ResultsTable';
 import Searchbar from '../components/Searchbar';
 import reactiveSearchbarState from '../components/Searchbar/searchbar.state';
 import { compoundSearchOptsFromSearchbarState } from '../components/Searchbar/util';
+import TopBar from '../components/TopBar';
 
 const emptyOptions: FullCountFragmentFragment['counts'] = {
   singer: [],
@@ -38,6 +39,8 @@ const MusicDash = () => {
     },
   });
 
+  document.body.style.margin = '';
+
   useEffect(() => {
     if (data?.compoundQuery.counts) {
       setOptions(data.compoundQuery.counts);
@@ -60,7 +63,8 @@ const MusicDash = () => {
     }
   };
 
-  return (
+  return (<>
+      <TopBar />
     <MusicDashContainer>
       <Searchbar selectOptions={options} />
       <ActionRow>
@@ -73,6 +77,7 @@ const MusicDash = () => {
         <NowPlaying />
       </ActionRow>
     </MusicDashContainer>
+    </>
   );
 };
 
