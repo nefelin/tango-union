@@ -80,7 +80,12 @@ const MusicDash = () => {
         </ActionRow>
       </MusicDashContainer>
       <Footer>
-        <FooterHeader>Made with ❤️ </FooterHeader>
+        <FooterHeader>
+          Made with{' '}
+          <span aria-label="heart emoji" role="img">
+            ❤️
+          </span>
+        </FooterHeader>
         <FooterFooter>by Eric Lindgren</FooterFooter>
       </Footer>
     </>

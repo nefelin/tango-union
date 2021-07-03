@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 
 import { FullCountFragmentFragment } from '../../generated/graphql';
 import { StyledFakeButton } from './ResultsTable/ResultsTableBody/cellRenderers/styles';
+import CustomInput from './Searchbar/CustomInput';
 import CustomSelect from './Searchbar/CustomSelect';
 import reactiveSearchbarState, {
   resetSearch,
@@ -21,7 +22,6 @@ import {
   StyledRow,
 } from './Searchbar/styles';
 import { SearchbarState } from './Searchbar/types';
-import CustomInput from './Searchbar/CustomInput';
 
 interface Props {
   selectOptions: FullCountFragmentFragment['counts'];

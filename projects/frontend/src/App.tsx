@@ -19,7 +19,7 @@ const apolloClient = new ApolloClient({
 
 const App = () => (
   <ApolloProvider client={apolloClient}>
-    <BrowserRouter>
+    <BrowserRouter basename="/">
       <React.Suspense fallback={Loading}>
         <Switch>
           <Route exact path="/" component={() => <Redirect to="/player" />} />

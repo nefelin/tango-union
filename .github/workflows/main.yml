@@ -1,0 +1,29 @@
+name: Publish Frontend Artifact
+
+on:
+  push:
+    branches:
+      -master
+
+jobs:
+  deploy:
+    runs-on: ubunto-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build frontend
+        run: yarn build:front
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-reagion: us-east-1
+
+      - name: Deploy static assets
+        run: aws s3 sync ./projects/frontend/dist/ s3://tango-union --delete

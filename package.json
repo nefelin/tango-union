@@ -7,8 +7,8 @@
   "author": "nefelin <nephilim.eric@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "api": "yarn workspace api",
-    "spa": "yarn workspace frontend",
+    "back": "yarn workspace api",
+    "front": "yarn workspace frontend",
     "union_index": "yarn workspace union_index",
     "typecheck": "concurrently --kill-others-on-fail \"yarn workspace api typecheck\" \"yarn workspace frontend typecheck\"",
     "start:dev": "concurrently --kill-others-on-fail \"yarn workspace api start:dev\" \"yarn workspace frontend start:dev\"",
