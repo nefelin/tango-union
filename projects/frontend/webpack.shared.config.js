@@ -9,13 +9,12 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const webpack = require('webpack');
 const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 
-
 module.exports = (mode, env) => {
   const isProduction = mode === 'production';
   const cacheEslint = env['ESLINT_CACHE'];
   const measureSpeed = env['MEASURE_SPEED'];
 
-  const smp = new SpeedMeasurePlugin({disable: !measureSpeed});
+  const smp = new SpeedMeasurePlugin({ disable: !measureSpeed });
   if (cacheEslint)
     console.info(
       'Caching eslint results -- linting only changed files and ' +
@@ -46,7 +45,6 @@ module.exports = (mode, env) => {
             'style-loader',
             'css-loader',
             { loader: 'postcss-loader', options: { postcssOptions } },
-            // 'sass-loader',
           ],
         },
         {
@@ -75,7 +73,7 @@ module.exports = (mode, env) => {
         lintDirtyModulesOnly: cacheEslint,
         failOnError: isProduction,
       }),
-      new ForkTsCheckerWebpackPlugin(),
+      new ForkTsCheckerWebpackPlugin({}),
       new webpack.DefinePlugin({
         'process.env.REACT_APP_ENV': JSON.stringify(process.env.REACT_APP_ENV),
       }),

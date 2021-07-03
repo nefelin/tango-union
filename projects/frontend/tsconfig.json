@@ -9,6 +9,7 @@
     "resolveJsonModule": true,
     "downlevelIteration": true,
     "strict": true,
+    "noImplicitAny": false,
     "strictNullChecks": true,
     "noImplicitReturns": true,
     "noUncheckedIndexedAccess": true,

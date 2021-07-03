@@ -49,6 +49,7 @@ const flagMissing = (
   };
 
   const basicCheck: TrackFlags = r.mapObjIndexed(
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     (val) => corpus.includes(cleanSlop(ensureString(val as any))),
     r.pick(flagFields, track || {}),
   );
