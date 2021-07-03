@@ -69,7 +69,6 @@ const YoutubePlayer = () => {
   };
 
   const { videoId, description, title } = data?.trackSource[0] ?? {};
-  console.log({ videoId, description, title, data });
   return (
     <YoutubeContainer>
       <YouTube

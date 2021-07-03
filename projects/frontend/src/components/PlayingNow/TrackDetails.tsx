@@ -6,7 +6,6 @@ import { cleanSlop } from 'tango-index/dist/compoundIndex/util';
 
 import { SimpleTrack, useTrackLinksQuery } from '../../../generated/graphql';
 import { Maybe } from '../../types';
-import { WIDGET_WIDTH } from '../YoutubePlayer/util';
 
 const flagFields = ['title', 'orchestra', 'singer', 'year', 'genre'] as const;
 type FlagKeys = typeof flagFields[number];
@@ -100,9 +99,12 @@ const TrackDetails = ({ track }: { track: Maybe<SimpleTrack> }) => {
         <FoundFlag found={found.genre} />
       </TrackDatumLabel>
       <TrackDatum>{track?.genre}</TrackDatum>
-      <TrackDatumLabel>
-        Match score: {`${scoreTrackMatch(found)}/${maxScore}`}
-      </TrackDatumLabel>
+      <TrackScoreLabel>
+        Match score:{' '}
+        <TrackScoreDatum>{`${scoreTrackMatch(
+          found,
+        )}/${maxScore}`}</TrackScoreDatum>
+      </TrackScoreLabel>
     </TrackDetailsContainer>
   );
 };
@@ -138,6 +140,14 @@ const TrackDatumLabel = styled.div`
   display: flex;
   font-size: 10px;
   font-weight: bold;
+`;
+
+export const TrackScoreLabel = styled.div`
+  font-size: 14px;
+`;
+
+export const TrackScoreDatum = styled.span`
+  font-size: 14px;
 `;
 
 const TrackDatum = styled.div`
