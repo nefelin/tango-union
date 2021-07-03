@@ -1,5 +1,5 @@
 import { ObjectType } from '@nestjs/graphql';
-import { TrackId } from 'tango-index';
+import { TrackId } from '../../../types';
 
 @ObjectType()
 export class CompoundResults {

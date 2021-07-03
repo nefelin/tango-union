@@ -1,4 +1,5 @@
 export type Maybe<T> = T | null;
+export type Barely<T> = T | null | undefined;
 
 export interface TangoTrack {
   genre: string;
@@ -9,3 +10,5 @@ export interface TangoTrack {
   id: number;
   year: Maybe<number>;
 }
+
+export type TrackId = number;

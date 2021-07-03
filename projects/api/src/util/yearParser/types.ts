@@ -1,4 +1,5 @@
-import { Maybe } from '../../types/utilTypes';
+import { Maybe } from '../../types';
+
 type InternalYear = number;
 
 export type YearFilter<UnknownYearType = null, YearType = InternalYear> = Set<YearType | UnknownYearType>;

@@ -2,9 +2,9 @@ import * as r from 'ramda';
 import * as React from 'react';
 import { FormatOptionLabelMeta } from 'react-select';
 import { Option } from 'react-select/src/filters';
-import { cleanSlop } from 'tango-index/dist/compoundIndex/util';
 
 import { CompoundQueryInput } from '../../../generated/graphql';
+import { cleanSlop } from '../../util/cleanSlop';
 import { StyledCount, StyledMenuOption } from './styles';
 import { SearchbarState } from './types';
 

@@ -1,4 +1,3 @@
-import { Barely, Maybe } from '../../types/utilTypes';
 import {
   ParseResult,
   rangePostfixToken,
@@ -10,6 +9,7 @@ import {
   yearToken,
   YearToken,
 } from './types';
+import { Barely, Maybe } from '../../types';
 
 export class YearParser<T> {
   unknownYearValue: T;

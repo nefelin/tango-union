@@ -2,10 +2,10 @@ import { Paper } from '@material-ui/core';
 import * as r from 'ramda';
 import * as React from 'react';
 import styled from 'styled-components';
-import { cleanSlop } from 'tango-index/dist/compoundIndex/util';
 
 import { SimpleTrack, useTrackLinksQuery } from '../../../generated/graphql';
 import { Maybe } from '../../types';
+import { cleanSlop } from '../../util/cleanSlop';
 
 const flagFields = ['title', 'orchestra', 'singer', 'year', 'genre'] as const;
 type FlagKeys = typeof flagFields[number];

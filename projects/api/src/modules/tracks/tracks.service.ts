@@ -4,11 +4,11 @@ import { Track, TrackDocument } from '../../schemas/tracks.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { SimpleTrack } from './dto/simpletrack.entity';
-import { TrackId } from 'tango-index';
 import { CompoundQueryInput } from './dto/compoundQuery.input';
 import { andifyMongoTextSearch, compoundResultsFromFacetedResults } from './util';
-import { YearParser } from 'tango-index/dist/searcher/years/yearParser';
 import { FacetedResults } from './types';
+import { TrackId } from '../../types';
+import { YearParser } from '../../util/yearParser/yearParser';
 
 @Injectable()
 export class TracksService {
