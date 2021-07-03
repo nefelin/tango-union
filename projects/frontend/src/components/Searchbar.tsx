@@ -21,6 +21,7 @@ import {
   StyledRow,
 } from './Searchbar/styles';
 import { SearchbarState } from './Searchbar/types';
+import CustomInput from './Searchbar/CustomInput';
 
 interface Props {
   selectOptions: FullCountFragmentFragment['counts'];
@@ -53,18 +54,12 @@ const Searchbar = ({ selectOptions }: Props) => {
     <StyledRow>
       <StyledCol>
         <InputSpacer>
-          <SearchInputContainer>
-            <input
-              autoComplete="off"
-              placeholder="Search..."
-              id="search"
+            <CustomInput
+
               onChange={formik.handleChange}
               value={formik.values.search}
+              onClear={handleClearTextSearch}
             />
-            <ClearButtonContainer onClick={() => handleClearTextSearch()}>
-              <Clear color="disabled" fontSize="small" />
-            </ClearButtonContainer>
-          </SearchInputContainer>
           <Button
             disableRipple
             size="small"

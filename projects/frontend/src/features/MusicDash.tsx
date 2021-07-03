@@ -8,6 +8,7 @@ import {
   FullCountFragmentFragment,
   useCompoundQueryQuery,
 } from '../../generated/graphql';
+import { Footer, FooterFooter, FooterHeader } from '../components/Footer';
 import NowPlaying from '../components/NowPlaying';
 import ResultsTable from '../components/ResultsTable';
 import Searchbar from '../components/Searchbar';
@@ -63,26 +64,31 @@ const MusicDash = () => {
     }
   };
 
-  return (<>
+  return (
+    <>
       <TopBar />
-    <MusicDashContainer>
-      <Searchbar selectOptions={options} />
-      <ActionRow>
-        <ResultsTable
-          ids={data?.compoundQuery.ids}
-          loading={loading}
-          incPage={handlePageIncrement}
-          page={page}
-        />
-        <NowPlaying />
-      </ActionRow>
-    </MusicDashContainer>
+      <MusicDashContainer>
+        <Searchbar selectOptions={options} />
+        <ActionRow>
+          <ResultsTable
+            ids={data?.compoundQuery.ids}
+            loading={loading}
+            incPage={handlePageIncrement}
+            page={page}
+          />
+          <NowPlaying />
+        </ActionRow>
+      </MusicDashContainer>
+      <Footer>
+        <FooterHeader>Made with ❤️ </FooterHeader>
+        <FooterFooter>by Eric Lindgren</FooterFooter>
+      </Footer>
     </>
   );
 };
 
 const MusicDashContainer = styled.div`
-  height: 85vh;
+  height: 83vh;
   padding: 1vh;
   display: flex;
   flex-direction: column;

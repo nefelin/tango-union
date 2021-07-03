@@ -16,13 +16,13 @@ const LogoContainer = styled.div`
 `;
 
 const TopBarContainer = styled.div`
-  position: relative;
-  padding: 13px 20px;
+  height: 55px;
+  width: 100%;
+  display: flex;
+  padding-left: 20px;
   margin-bottom: 20px;
   background-color: #0606b9;
-  top: 0;
-  left: 0;
-  right: 0;
+  align-items: center;
 `;
 
 export default TopBar;

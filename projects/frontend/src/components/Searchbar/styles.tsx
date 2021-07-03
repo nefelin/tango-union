@@ -35,14 +35,17 @@ export const StyledMenuOption = styled.div`
   justify-content: space-between;
 `;
 
-export const SearchInputContainer = styled.div`
-  border: 1px solid #d0d0d0;
-  border-radius: 5px;
-  margin-right: 20px;
+export const SearchInputContainer = styled.div<{ focus: boolean }>`
+  border: ${({ focus }) => (focus ? '2px solid #2684ff' : '1px solid #d0d0d0')};
+  border-radius: 4px;
+  margin-right: ${({ focus }) => (focus ? '19px' : '20px')};;
   display: flex;
-  padding: 10px;
+  padding-left: ${({ focus }) => (focus ? '9px' : '10px')};;;
+  align-items: center;
+  justify-content: center;
   height: 38px;
   box-sizing: border-box;
+  transition: all 100ms;
 
   & input {
     border: none;
@@ -59,6 +62,11 @@ export const SearchInputContainer = styled.div`
 export const ClearButtonContainer = styled.div.attrs(() => ({
   role: 'button',
 }))`
-  align-self: flex-end;
+  cursor: pointer;
+  margin-right: 10px;
   display: flex;
+
+  & :focus {
+    border: 2px solid blue;
+  }
 `;
