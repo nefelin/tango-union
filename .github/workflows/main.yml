@@ -3,7 +3,7 @@ name: Publish Frontend Artifact
 on:
   push:
     branches:
-      -master
+      - master
 
 jobs:
   deploy:
