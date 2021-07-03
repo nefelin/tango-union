@@ -28,9 +28,7 @@ const YoutubePlayer = () => {
     reactiveYoutubePlayerState,
   );
   const { nextTrackId } = useResultsPlayingContext();
-  const [hydrated] = useCacheStitchedIdFetch(
-    nextTrackId ? [nextTrackId] : [],
-  );
+  const [hydrated] = useCacheStitchedIdFetch(nextTrackId ? [nextTrackId] : []);
   const nextTrack = hydrated[0];
   const [player, setPlayer] = useState<Maybe<YouTubePlayer>>(null);
 
@@ -71,6 +69,7 @@ const YoutubePlayer = () => {
   };
 
   const { videoId, description, title } = data?.trackSource[0] ?? {};
+  console.log({ videoId, description, title, data });
   return (
     <YoutubeContainer>
       <YouTube
@@ -83,18 +82,16 @@ const YoutubePlayer = () => {
         videoId={videoId}
         opts={opts(true)}
       />
-      {description && (
-        <VideoDescriptionContainer>
-          <VideoDescriptionDatum>
-            <VideoDescriptionLabel>Title: </VideoDescriptionLabel>
-            {title}
-          </VideoDescriptionDatum>
-          <VideoDescriptionDatum>
-            <VideoDescriptionLabel>Description: </VideoDescriptionLabel>
-            {description}
-          </VideoDescriptionDatum>
-        </VideoDescriptionContainer>
-      )}
+      <VideoDescriptionContainer>
+        <VideoDescriptionDatum>
+          <VideoDescriptionLabel>Title: </VideoDescriptionLabel>
+          {title}
+        </VideoDescriptionDatum>
+        <VideoDescriptionDatum>
+          <VideoDescriptionLabel>Description: </VideoDescriptionLabel>
+          {description}
+        </VideoDescriptionDatum>
+      </VideoDescriptionContainer>
     </YoutubeContainer>
   );
 };
