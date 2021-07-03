@@ -25,7 +25,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-          aws-reagion: us-east-1
+          aws-region: us-east-1
 
       - name: Deploy static assets
         run: aws s3 sync ./projects/frontend/dist/ s3://tango-union --delete
