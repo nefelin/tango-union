@@ -29,4 +29,9 @@ jobs:
           aws-region: us-east-1
 
       - name: Deploy static assets
-        run: aws s3 sync ./projects/frontend/dist/ s3://tango-union --delete
+        run: aws s3 sync ./dist/ s3://tango-union \
+             --exclude "*.js" --acl "public-read" --delete \
+             --include "*.js" --acl "public-read" --delete --content-encoding utf-8
+             
+      - name: Create Cloudfront Invalidation
+        run: aws cloudfront create-invalidation --distribution-id E2DGAP9MFS82IR --paths "/*"
