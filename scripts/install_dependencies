@@ -2,4 +2,4 @@
 source ~/.bash_profile
 source ~/.bashrc
 cd /home/ec2-user/app/projects/api
-yarn install
+sudo yarn install
