@@ -1,5 +1,6 @@
 #!/bin/bash
-source /home/ec2-user/.bash_profile
-source /home/ec2-user/.bash_profile
+export NVM_DIR="/home/ec2-user/.nvm" [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+#source /home/ec2-user/.bash_profile
+#source /home/ec2-user/.bash_profile
 cd /home/ec2-user/app/projects/api
 yarn install
