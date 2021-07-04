@@ -1,7 +1,7 @@
 version: 0.0
 os: linux
 permissions:
-  - object: /
+  - object:
       pattern: "**"
       owner: ec2-user
       group: ec2-user
