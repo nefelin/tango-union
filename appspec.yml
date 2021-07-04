@@ -1,5 +1,10 @@
 version: 0.0
 os: linux
+permissions:
+  - object: /
+      pattern: "**"
+      owner: ec2-user
+      group: ec2-user
 files:
   - source: .
     destination: /home/ec2-user/app
@@ -7,8 +12,8 @@ hooks:
   AfterInstall:
     - location: scripts/install_dependencies
       timeout: 300
-      runas: root
+      runas: ec2-user
   ApplicationStart:
     - location: scripts/start_server
       timeout: 300
-      runas: root
+      runas: ec2-user
