@@ -41,6 +41,7 @@ const fs_1 = __importDefault(require("fs"));
 const serve_static_1 = require("@nestjs/serve-static");
 const config_1 = require("@nestjs/config");
 const TABS_PATH = path.resolve(__dirname, '../generated/tabs.json');
+const tabEndpointHost = process.env.NODE_ENV === 'dev' ? 'http://localhost' : 'https://api.tangounion.net';
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -56,7 +57,7 @@ AppModule = __decorate([
             graphql_1.GraphQLModule.forRootAsync({
                 useFactory: async () => {
                     const tabs = fs_1.default.existsSync(TABS_PATH) ? require(TABS_PATH) : [];
-                    const endpoint = 'http://localhost:4000/graphql';
+                    const endpoint = `${tabEndpointHost}:${process.env.PORT}/graphql`;
                     return {
                         playground: Object.assign({ endpoint }, (tabs ? { tabs } : {})),
                         autoSchemaFile: path.join(process.cwd(), 'generated/schema.gql'),
