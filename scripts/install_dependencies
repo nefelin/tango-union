@@ -1,4 +1,4 @@
 #!/bin/bash
-PATH=/home/ec2-user/.nvm/versions/node/v16.4.1/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/ec2-user/.local/bin:/home/ec2-user/bin
+source /home/ec2-user/bash_profile_generic
 cd /home/ec2-user/app/projects/api
 /home/ec2-user/.nvm/versions/node/v16.4.1/bin/yarn install
