@@ -1,5 +1,8 @@
 #!/bin/bash
 source /home/ec2-user/bash_profile_generic
+nvm install 14.13
+nvm use 14.13
+npm install -g yarn
 cd /home/ec2-user/app/projects/api
 /home/ec2-user/.nvm/versions/node/v16.4.1/bin/yarn install
 cp /home/ec2-user/app_env /home/ec2-user/app/projects/api/.env

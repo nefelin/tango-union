@@ -58,8 +58,8 @@ AppModule = __decorate([
                 useFactory: async () => {
                     const tabs = fs_1.default.existsSync(TABS_PATH) ? require(TABS_PATH) : [];
                     const endpoint = `${tabEndpointHost}:${process.env.PORT}/graphql`;
+                    console.log({ endpoint });
                     return {
-                        playground: Object.assign({ endpoint }, (tabs ? { tabs } : {})),
                         autoSchemaFile: path.join(process.cwd(), 'generated/schema.gql'),
                     };
                 },

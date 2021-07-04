@@ -25,11 +25,12 @@ const tabEndpointHost = process.env.NODE_ENV === 'dev' ? 'http://localhost' : 'h
       useFactory: async () => {
         const tabs = fs.existsSync(TABS_PATH) ? require(TABS_PATH) : [];
         const endpoint = `${tabEndpointHost}:${process.env.PORT}/graphql`;
+        console.log({endpoint})
         return {
-          playground: {
-            endpoint,
-            ...(tabs ? { tabs } : {}),
-          },
+          // playground: {
+          //   endpoint,
+          //   ...(tabs ? { tabs } : {}),
+          // },
           autoSchemaFile: path.join(process.cwd(), 'generated/schema.gql'),
         };
       },
