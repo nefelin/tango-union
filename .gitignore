@@ -37,3 +37,5 @@ lerna-debug.log*
 
 # Typescript Internal
 tsBuildInfo
+
+.env

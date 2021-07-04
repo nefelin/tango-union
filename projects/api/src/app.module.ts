@@ -8,11 +8,16 @@ import { GraphQLModule } from '@nestjs/graphql';
 import * as path from 'path';
 import fs from 'fs';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 const TABS_PATH = path.resolve(__dirname, '../generated/tabs.json'); // fixme should be in config
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+      isGlobal: true,
+    }),
     ServeStaticModule.forRoot({
       rootPath: path.join(__dirname, 'static'),
     }),
@@ -30,7 +35,10 @@ const TABS_PATH = path.resolve(__dirname, '../generated/tabs.json'); // fixme sh
       },
     }),
     ScheduleModule.forRoot(),
-    MongooseModule.forRoot('mongodb://localhost/raw_tracks'),
+    MongooseModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({ uri: configService.get('MONGODB_URI') }),
+    }),
     TracksModule,
     HydrateModule,
   ],
