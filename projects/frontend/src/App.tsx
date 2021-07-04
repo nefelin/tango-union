@@ -11,10 +11,14 @@ import { BrowserRouter, Switch } from 'react-router-dom';
 import MusicDash from './features/MusicDash';
 // import Playground from './features/Playground';
 
+const host = process.env['REACT_APP_ENV'] === 'prod' ? 'https://api.tangounion.net' : 'http://localhost';
+const port = 4000;
+
 const apolloClient = new ApolloClient({
   cache: new InMemoryCache(),
-  link: createHttpLink({ uri: 'http://localhost:4000/graphql' }),
-  connectToDevTools: process.env['REACT_APP_ENV'] !== 'prod',
+  link: createHttpLink({ uri: `${host}:${port}/graphql` }),
+  connectToDevTools: true,
+  // connectToDevTools: process.env['REACT_APP_ENV'] !== 'prod',
 });
 
 const App = () => (
