@@ -1,3 +1,4 @@
 #!/bin/bash
 cd /home/ec2-user/app/projects/api
+npm install -g yarn
 yarn install
