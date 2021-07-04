@@ -1,5 +1,4 @@
 #!/bin/bash
-source ~/.bash_profile
-source ~/.bashrc
+PATH=/home/ec2-user/.nvm/versions/node/v16.4.1/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/ec2-user/.local/bin:/home/ec2-user/bin
 cd /home/ec2-user/app/projects/api
 yarn start
