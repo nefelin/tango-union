@@ -11,7 +11,7 @@ import { BrowserRouter, Switch } from 'react-router-dom';
 import MusicDash from './features/MusicDash';
 // import Playground from './features/Playground';
 
-const host = process.env['REACT_APP_ENV'] === 'prod' ? 'https://api.tangounion.net' : 'http://localhost';
+const host = process.env['REACT_APP_ENV'] === 'prod' ? 'http://api.tangounion.net' : 'http://localhost';
 const port = 4000;
 
 const apolloClient = new ApolloClient({
