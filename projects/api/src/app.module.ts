@@ -12,7 +12,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 const TABS_PATH = path.resolve(__dirname, '../generated/tabs.json'); // fixme should be in config
 const tabEndpointHost = process.env.NODE_ENV === 'dev' ? 'http://localhost' : 'https://api.tangounion.net';
-
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -25,7 +24,7 @@ const tabEndpointHost = process.env.NODE_ENV === 'dev' ? 'http://localhost' : 'h
     GraphQLModule.forRootAsync({
       useFactory: async () => {
         const tabs = fs.existsSync(TABS_PATH) ? require(TABS_PATH) : [];
-        const endpoint = `${tabEndpointHost}:4000/graphql`;
+        const endpoint = `${tabEndpointHost}:${process.env.PORT}/graphql`;
         return {
           playground: {
             endpoint,

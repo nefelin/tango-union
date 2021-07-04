@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const compression = require('compression');
-const PORT = 4000;
+const PORT = process.env.PORT;
 const GENERATE_FLAG = 'generateOnly';
 
 async function bootstrap() {
@@ -11,7 +11,7 @@ async function bootstrap() {
   if (schemaGenerationMode) {
     console.info('Starting nest app to generate schema...');
     const app = await NestFactory.create(AppModule);
-    await app.listen(4000);
+    await app.listen(PORT);
     console.info('Schema generated, exiting...');
     process.exit(0);
   }
