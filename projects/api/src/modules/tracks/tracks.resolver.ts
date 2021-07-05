@@ -10,9 +10,9 @@ import { CompoundResults } from './dto/compoundResult.entity';
 export class TracksResolver {
   constructor(readonly tracksService: TracksService) {}
 
-  @Query(() => [RatedYoutube], { name: 'trackSource' })
-  getTrackLinks(@Args('trackId', {type: () => Number}) trackId: number) {
-    return this.tracksService.linksForTrack(trackId);
+  @Query(() => [RatedYoutube], { name: 'linksForTracks' })
+  linksForTracks(@Args('ids', {type: () => [Number]}) ids: Array<number>) {
+    return this.tracksService.linksForTracks(ids);
   }
 
   @Query(() => [SimpleTrack], { name: 'tracksByIds' })

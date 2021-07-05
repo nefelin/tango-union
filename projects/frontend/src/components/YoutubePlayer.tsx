@@ -33,7 +33,7 @@ const YoutubePlayer = () => {
   const [player, setPlayer] = useState<Maybe<YouTubePlayer>>(null);
 
   const { data } = useTrackLinksQuery({
-    variables: { trackId: trackId ?? 0 },
+    variables: { ids: [trackId || 0] },
     skip: trackId === null,
   });
 
@@ -68,7 +68,7 @@ const YoutubePlayer = () => {
     }
   };
 
-  const { videoId, description, title } = data?.trackSource[0] ?? {};
+  const { videoId, description, title } = data?.linksForTracks[0] ?? {};
   return (
     <YoutubeContainer>
       <YouTube

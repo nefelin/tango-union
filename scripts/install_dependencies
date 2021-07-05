@@ -4,4 +4,6 @@ nvm use 14.13
 npm install -g yarn
 source /home/ec2-user/bash_profile_generic
 cd /home/ec2-user/app/projects/api
-/home/ec2-user/.nvm/versions/node/v16.4.1/bin/yarn install
+yarn install
+yarn build
+

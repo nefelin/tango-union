@@ -1,5 +1,5 @@
 import * as r from 'ramda';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Track, TrackDocument } from '../../schemas/tracks.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -12,7 +12,6 @@ import { YearParser } from '../../util/yearParser/yearParser';
 
 @Injectable()
 export class TracksService {
-
   constructor(@InjectModel(Track.name) private trackModel: Model<TrackDocument>) {}
 
   rateLink(id: number, videoId: string, ratingChange: number): Promise<Track> {
@@ -129,15 +128,14 @@ export class TracksService {
     return compoundResultsFromFacetedResults(res[0]);
   }
 
-  async linksForTrack(id: number): Promise<Track['youtube']['links']> {
-    const thisSong = await this.trackModel.findOne({ id }).exec();
-    if (!thisSong) {
-      throw BadRequestException;
+  async linksForTracks(ids: Array<number>): Promise<Track['youtube']['links']> {
+    const songs = await this.trackModel.find({ id: { $in: ids } }).exec();
+    for (const thisSong of songs) {
+      if (!thisSong.youtube) {
+        throw new Error(`No links scraped for track ${thisSong.id}`);
+      }
     }
 
-    if (!thisSong.youtube) {
-      throw new Error(`No links scraped for track ${id}`);
-    }
-    return thisSong.youtube.links;
+    return ids.map((id) => songs.find((song) => song.id === id).youtube.links[0]);
   }
 }

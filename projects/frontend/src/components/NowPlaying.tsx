@@ -11,6 +11,7 @@ import TrackDetails from './PlayingNow/TrackDetails';
 import Playlists from './Playlists';
 import YoutubePlayer from './YoutubePlayer';
 import { reactiveYoutubePlayerState } from './YoutubePlayer/youtubePlayer.state';
+import YoutubePlaylistLink from './YoutubePlaylistLink';
 
 const NowPlaying = () => {
   const client = useApolloClient();
@@ -29,6 +30,7 @@ const NowPlaying = () => {
         <TrackDetails track={track} />
       </DetailsRow>
       <Playlists />
+      <YoutubePlaylistLink />
     </NowPlayingCard>
   );
 };

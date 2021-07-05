@@ -65,11 +65,11 @@ const flagMissing = (
 
 const TrackDetails = ({ track }: { track: Maybe<SimpleTrack> }) => {
   const { data } = useTrackLinksQuery({
-    variables: { trackId: track?.id ?? 0 },
+    variables: { ids: [track?.id ?? 0] },
     skip: track?.id === null,
   });
 
-  const { description = '', title = '' } = data?.trackSource[0] ?? {};
+  const { description = '', title = '' } = data?.linksForTracks[0] ?? {};
 
   const found = flagMissing([description, title], track);
 
@@ -135,6 +135,7 @@ export const TrackDetailsContainer = styled(Paper)`
   box-sizing: border-box;
   padding: 10px;
   transition: height 1s;
+  min-height: 150px;
 `;
 
 const TrackDatumLabel = styled.div`

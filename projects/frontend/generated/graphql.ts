@@ -53,7 +53,7 @@ export type PaginationInput = {
 
 export type Query = {
   __typename?: 'Query';
-  trackSource: Array<RatedYoutube>;
+  linksForTracks: Array<RatedYoutube>;
   tracksByIds: Array<SimpleTrack>;
   trackById: SimpleTrack;
   compoundQuery: CompoundResults;
@@ -61,8 +61,8 @@ export type Query = {
 };
 
 
-export type QueryTrackSourceArgs = {
-  trackId: Scalars['Float'];
+export type QueryLinksForTracksArgs = {
+  ids: Array<Scalars['Float']>;
 };
 
 
@@ -130,15 +130,15 @@ export type TrackDetailFragmentFragment = (
 );
 
 export type TrackLinksQueryVariables = Exact<{
-  trackId: Scalars['Float'];
+  ids: Array<Scalars['Float']> | Scalars['Float'];
 }>;
 
 
 export type TrackLinksQuery = (
   { __typename?: 'Query' }
-  & { trackSource: Array<(
+  & { linksForTracks: Array<(
     { __typename?: 'RatedYoutube' }
-    & Pick<RatedYoutube, 'videoId' | 'unionRating' | 'description' | 'title'>
+    & Pick<RatedYoutube, 'videoId' | 'title' | 'description'>
   )> }
 );
 
@@ -238,12 +238,11 @@ export type TrackDetailsBatchQueryHookResult = ReturnType<typeof useTrackDetails
 export type TrackDetailsBatchLazyQueryHookResult = ReturnType<typeof useTrackDetailsBatchLazyQuery>;
 export type TrackDetailsBatchQueryResult = Apollo.QueryResult<TrackDetailsBatchQuery, TrackDetailsBatchQueryVariables>;
 export const TrackLinksDocument = gql`
-    query TrackLinks($trackId: Float!) {
-  trackSource(trackId: $trackId) {
+    query TrackLinks($ids: [Float!]!) {
+  linksForTracks(ids: $ids) {
     videoId
-    unionRating
-    description
     title
+    description
   }
 }
     `;
@@ -260,7 +259,7 @@ export const TrackLinksDocument = gql`
  * @example
  * const { data, loading, error } = useTrackLinksQuery({
  *   variables: {
- *      trackId: // value for 'trackId'
+ *      ids: // value for 'ids'
  *   },
  * });
  */
