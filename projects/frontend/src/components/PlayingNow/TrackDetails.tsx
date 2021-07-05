@@ -9,7 +9,7 @@ import { cleanSlop } from '../../util/cleanSlop';
 
 const flagFields = ['title', 'orchestra', 'singer', 'year', 'genre'] as const;
 type FlagKeys = typeof flagFields[number];
-type TrackFlags = Partial<Record<FlagKeys, boolean>>;
+type TrackFlags = Partial<Record<FlagKeys, Maybe<boolean>>>;
 type FlagWeights = Record<FlagKeys, number>;
 
 const flagWeights: FlagWeights = {
@@ -27,12 +27,18 @@ const maxScore = Object.values<number>(flagWeights).reduce(
 const goodScoreThreshold = 0.6;
 
 const scoreTrackMatch = (flags: TrackFlags): number => {
-  const scored = r.mapObjIndexed(
-    (flag, key) => (flags[key] ? flagWeights[key] : 0),
-    flagWeights,
-  );
+  const scored = r.mapObjIndexed((flag, key) => {
+    if (flags[key] === null) {
+      return Math.floor(flagWeights[key] / 2); // half points for nullish values ('Instrumental' singer and 'Unknown' orchestra)
+    }
+    return flags[key] ? flagWeights[key] : 0;
+  }, flagWeights);
+
   return Object.values<number>(scored).reduce((prev, curr) => prev + curr, 0);
 };
+
+const signifiesBlankValue = (val?: string) =>
+  val && (val === 'Instrumental' || val === 'Unknown');
 
 const flagMissing = (
   texts: Array<string>,
@@ -41,6 +47,7 @@ const flagMissing = (
   const corpus = cleanSlop(texts.join(' '));
 
   const ensureString = (val: string | number | Array<string>) => {
+    console.log({val})
     if (Array.isArray(val)) {
       return val.join(' ');
     }
@@ -51,8 +58,10 @@ const flagMissing = (
   };
 
   const basicCheck: TrackFlags = r.mapObjIndexed(
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    (val) => corpus.includes(cleanSlop(ensureString(val as any))),
+    (val) =>
+      signifiesBlankValue(ensureString(val as any))
+        ? null
+        : corpus.includes(cleanSlop(ensureString(val as any))),
     r.pick(flagFields, track || {}),
   );
 
@@ -106,12 +115,12 @@ const TrackDetails = ({ track }: { track: Maybe<SimpleTrack> }) => {
       <TrackDatum>{track?.singer?.join(', ')}</TrackDatum>
       <TrackDatumLabel>
         Year
-        <FoundFlag found={found.year} />
+        <FoundFlag found={found.year} severity="warn" />
       </TrackDatumLabel>
       <TrackDatum>{track?.year}</TrackDatum>
       <TrackDatumLabel>
         Genre
-        <FoundFlag found={found.genre} severity='warn' />
+        <FoundFlag found={found.genre} severity="warn" />
       </TrackDatumLabel>
       <TrackDatum>{track?.genre}</TrackDatum>
     </TrackDetailsContainer>
@@ -120,16 +129,19 @@ const TrackDetails = ({ track }: { track: Maybe<SimpleTrack> }) => {
 
 const FoundFlag = ({
   found,
-  severity = 'error',
+  severity,
 }: {
-  found?: boolean;
+  found?: Maybe<boolean>;
   severity?: 'warn' | 'error';
 }) => {
   if (found === undefined) {
     return null;
   }
 
-  const negativeColor = severity === 'error' ? 'red' : '#e8a102';
+  const severityDefault = found === null ? 'warn' : 'error';
+  const severityWithDefault = severity || severityDefault;
+  const negativeColor = severityWithDefault === 'error' ? 'red' : '#e8a102';
+
   return (
     <div
       style={{
