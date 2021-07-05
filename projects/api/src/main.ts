@@ -4,10 +4,9 @@ import { AppModule } from './app.module';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const compression = require('compression');
 const PORT = process.env.PORT;
-const GENERATE_FLAG = 'generateOnly';
 
 async function bootstrap() {
-  const schemaGenerationMode = process.argv.includes(GENERATE_FLAG);
+  const schemaGenerationMode = process.env.GENERATE_ONLY;
   if (schemaGenerationMode) {
     console.info('Starting nest app to generate schema...');
     const app = await NestFactory.create(AppModule);
