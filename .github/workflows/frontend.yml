@@ -6,7 +6,7 @@ on:
       - master
     paths:
       - 'projects/frontend/**'
-      - '.github/workflows/**'
+      - '.github/workflows/frontend.yml'
 
 jobs:
   deploy:

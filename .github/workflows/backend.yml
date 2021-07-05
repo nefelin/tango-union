@@ -1,4 +1,4 @@
-name: Publish Frontend Artifact
+name: Deploy Backend via Codedeploy
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - master
     paths:
       - 'projects/api/**'
-      - '.github/workflows/**'
+      - '.github/workflows/backend.yml'
 
 jobs:
   deploy:
