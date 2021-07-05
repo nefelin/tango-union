@@ -24,6 +24,8 @@ const maxScore = Object.values<number>(flagWeights).reduce(
   0,
 );
 
+const goodScoreThreshold = 0.6;
+
 const scoreTrackMatch = (flags: TrackFlags): number => {
   const scored = r.mapObjIndexed(
     (flag, key) => (flags[key] ? flagWeights[key] : 0),
@@ -72,9 +74,21 @@ const TrackDetails = ({ track }: { track: Maybe<SimpleTrack> }) => {
   const { description = '', title = '' } = data?.linksForTracks[0] ?? {};
 
   const found = flagMissing([description, title], track);
+  const trackScore = scoreTrackMatch(found);
+
+  const scoreJudgement =
+    trackScore / maxScore > goodScoreThreshold ? 'good' : 'bad';
 
   return (
     <TrackDetailsContainer>
+      <TrackScoreLabel>
+        Match score:{' '}
+        {track && (
+          <TrackScoreDatum
+            rating={scoreJudgement}
+          >{`${trackScore}/${maxScore}`}</TrackScoreDatum>
+        )}
+      </TrackScoreLabel>
       <TrackDatumLabel>
         Title
         <FoundFlag found={found.title} />
@@ -84,12 +98,12 @@ const TrackDetails = ({ track }: { track: Maybe<SimpleTrack> }) => {
         Orchestra
         <FoundFlag found={found.orchestra} />
       </TrackDatumLabel>
-      <TrackDatum>{track?.orchestra}</TrackDatum>
+      <TrackDatum>{track?.orchestra?.join(', ')}</TrackDatum>
       <TrackDatumLabel>
         Singer
         <FoundFlag found={found.singer} />
       </TrackDatumLabel>
-      <TrackDatum>{track?.singer}</TrackDatum>
+      <TrackDatum>{track?.singer?.join(', ')}</TrackDatum>
       <TrackDatumLabel>
         Year
         <FoundFlag found={found.year} />
@@ -97,27 +111,29 @@ const TrackDetails = ({ track }: { track: Maybe<SimpleTrack> }) => {
       <TrackDatum>{track?.year}</TrackDatum>
       <TrackDatumLabel>
         Genre
-        <FoundFlag found={found.genre} />
+        <FoundFlag found={found.genre} severity='warn' />
       </TrackDatumLabel>
       <TrackDatum>{track?.genre}</TrackDatum>
-      <TrackScoreLabel>
-        Match score:{' '}
-        <TrackScoreDatum>{`${scoreTrackMatch(
-          found,
-        )}/${maxScore}`}</TrackScoreDatum>
-      </TrackScoreLabel>
     </TrackDetailsContainer>
   );
 };
 
-const FoundFlag = ({ found }: { found?: boolean }) => {
+const FoundFlag = ({
+  found,
+  severity = 'error',
+}: {
+  found?: boolean;
+  severity?: 'warn' | 'error';
+}) => {
   if (found === undefined) {
     return null;
   }
+
+  const negativeColor = severity === 'error' ? 'red' : '#e8a102';
   return (
     <div
       style={{
-        color: found ? 'green' : 'red',
+        color: found ? 'green' : negativeColor,
         fontWeight: found ? 'inherit' : 'bold',
         marginLeft: 5,
       }}
@@ -146,10 +162,13 @@ const TrackDatumLabel = styled.div`
 
 export const TrackScoreLabel = styled.div`
   font-size: 14px;
+  margin-bottom: 12px;
 `;
 
-export const TrackScoreDatum = styled.span`
+export const TrackScoreDatum = styled.span<{ rating: 'good' | 'bad' }>`
   font-size: 14px;
+  font-weight: bold;
+  color: ${({ rating }) => (rating === 'good' ? 'green' : 'red')};
 `;
 
 const TrackDatum = styled.div`
