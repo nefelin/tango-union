@@ -47,7 +47,6 @@ const flagMissing = (
   const corpus = cleanSlop(texts.join(' '));
 
   const ensureString = (val: string | number | Array<string>) => {
-    console.log({val})
     if (Array.isArray(val)) {
       return val.join(' ');
     }
