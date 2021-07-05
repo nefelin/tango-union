@@ -30,10 +30,9 @@ jobs:
 
       - name: Create CodeDeploy Deployment
         id: deploy
-        run: aws deploy create-deployment
-        args:
-          - --application-name tango-union
-          - --deployment-group-name tango-union
-          - --deployment-config-name CodeDeployDefault.AllAtOnce
-          - --github-location repository=nefelin/tango-union,commitId=cea489771a9280855609c9f7380d5a874887679c
-
+        run: |
+          aws deploy create-deployment \
+            --application-name tango-union \
+            --deployment-group-name tango-union \
+            --deployment-config-name CodeDeployDefault.AllAtOnce \
+            --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
