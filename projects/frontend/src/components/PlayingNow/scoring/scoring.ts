@@ -53,6 +53,5 @@ export const flagMissing = (
     }
   }
 
-  console.log(scoreTrackMatch(checkerObj))
   return checkerObj;
 };
