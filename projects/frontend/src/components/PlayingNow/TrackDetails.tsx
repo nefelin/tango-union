@@ -13,7 +13,7 @@ import { goodScoreThreshold, maxScore } from './scoring/types';
 const TrackDetails = ({ track }: { track: Maybe<SimpleTrack> }) => {
   const { data } = useTrackDetailsBatchQuery({
     variables: { ids: [track?.id ?? 0] },
-    skip: track?.id === null,
+    skip: track === null,
   });
 
   const { description = '', title = '' } = data?.tracksByIds[0]?.link ?? {};
