@@ -115,7 +115,7 @@ export class HydrateService {
         });
       }
     });
-    console.info('Done.')
+    console.info('Done.');
   }
 
   stopHydrating() {
