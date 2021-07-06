@@ -37,6 +37,9 @@ export class YoutubeLinks {
   @Prop({ required: true })
   scrapedAt: Date;
 
+  @Prop({ required: false })
+  linkScore?: number;
+
   @Prop({ required: true })
   links: RatedYoutube[];
 }

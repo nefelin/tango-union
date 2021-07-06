@@ -1,6 +1,9 @@
 // tells mongo these terms should be AND'ed
 import { EntityCount, FacetedResults } from './types';
 import { CompoundResults } from './dto/compoundResult.entity';
+import { RatedYoutube, TrackDocument } from '../../schemas/tracks.entity';
+import { SimpleTrack } from './dto/simpletrack.entity';
+import { CompoundSortInput } from './dto/compoundQuery.input';
 
 export const andifyMongoTextSearch = (text?: string) => {
   if (!text) {
@@ -30,4 +33,19 @@ export const compoundResultsFromFacetedResults = (res: FacetedResults): Compound
   };
 };
 
+export const simpleTrackFromTrackDoc = (track: TrackDocument): SimpleTrack => ({
+  id: track.id,
+  title: track.title,
+  orchestra: track.orchestra,
+  year: track.year,
+  genre: track.genre,
+  singer: track.singer,
+  secondsLong: track.secondsLong,
+  link: track.youtube.links[0],
+  linkScore: track.youtube.linkScore,
+});
 
+export const cleanSort = (dirtySort: CompoundSortInput) => ({
+  ...dirtySort,
+  ...(dirtySort.linkScore ? { 'youtube.linkScore': dirtySort.linkScore } : {}),
+});

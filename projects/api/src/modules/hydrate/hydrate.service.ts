@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { YoutubeSearchService } from '../youtube-search/youtube-search.service';
 import { queryStringFromSong } from '../../util';
 import { Interval } from '@nestjs/schedule';
+import { scoreTrack } from './scoring/scoring';
 
 @Injectable()
 export class HydrateService {
@@ -20,9 +21,7 @@ export class HydrateService {
   ) {}
 
   private hydratedCount(): Promise<number> {
-    return this.trackModel
-      .countDocuments({ youtube: { $exists: true } })
-      .exec();
+    return this.trackModel.countDocuments({ youtube: { $exists: true } }).exec();
   }
 
   private unhydratedCount() {
@@ -30,9 +29,7 @@ export class HydrateService {
   }
 
   private async resetCounters() {
-    this.initialUnhydratedCount = await this.trackModel
-      .countDocuments({ youtube: { $exists: false } })
-      .exec();
+    this.initialUnhydratedCount = await this.trackModel.countDocuments({ youtube: { $exists: false } }).exec();
     this.hydrationTick = 0;
     this.startTime = Date.now();
   }
@@ -56,14 +53,8 @@ export class HydrateService {
   }
 
   private async updateRate() {
-    const timePerTrack =
-      (Date.now() - this.startTime) / this.hydrationTick / 1000;
-    process.stdout.write(
-      ` -- hours remaining ${(
-        (timePerTrack * this.unhydratedCount()) /
-        3600
-      ).toPrecision(4)}`,
-    );
+    const timePerTrack = (Date.now() - this.startTime) / this.hydrationTick / 1000;
+    process.stdout.write(` -- hours remaining ${((timePerTrack * this.unhydratedCount()) / 3600).toPrecision(4)}`);
   }
 
   private async hydrate(track: TrackDocument) {
@@ -85,13 +76,46 @@ export class HydrateService {
   }
 
   private async hydrateNext() {
-    const next = await this.trackModel
-      .findOne({ youtube: { $exists: false } })
-      .exec();
+    const next = await this.trackModel.findOne({ youtube: { $exists: false } }).exec();
     if (!next) {
       return this.stopHydrating();
     }
     return this.hydrate(next);
+  }
+
+  async scoreUnscoredTracks() {
+    const unscored = await this.trackModel.find({
+      youtube: { $exists: true },
+      'youtube.linkScore': { $exists: false },
+    });
+
+    this.scoreTracks(unscored);
+  }
+
+  async rescoreAllTracks() {
+    const withYoutube = await this.trackModel.find({
+      youtube: { $exists: true },
+    });
+    this.scoreTracks(withYoutube);
+  }
+
+  private async scoreTracks(tracks: Array<TrackDocument>) {
+    console.info(`Updating link scores for ${tracks.length} tracks.`);
+    await tracks.forEach((track) => {
+      const score = scoreTrack(track, 0);
+      if (score === null) {
+        console.error(`Track, '${track.id}', has no links and cannot be scored.`);
+      } else {
+        track.youtube.linkScore = score;
+        track.markModified('youtube');
+        track.save((err) => {
+          if (err) {
+            throw new Error(`Error scoring track ${track.id}: ${err}`);
+          }
+        });
+      }
+    });
+    console.info('Done.')
   }
 
   stopHydrating() {
@@ -100,9 +124,7 @@ export class HydrateService {
   }
 
   async report() {
-    return `Currently hydrating: ${
-      this.isHydrating
-    }, remaining unhydrated: ${this.unhydratedCount()}`;
+    return `Currently hydrating: ${this.isHydrating}, remaining unhydrated: ${this.unhydratedCount()}`;
   }
 
   handleHydrationSuccess() {

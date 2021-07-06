@@ -53,6 +53,7 @@ export const formatOptionLabel = (
 export const compoundSearchOptsFromSearchbarState = (
   state: SearchbarState,
 ): CompoundQueryInput => {
+  console.log(state.sort)
   return {
     orchestras: state.orchestra?.length
       ? state.orchestra.map(({ value }) => value)

@@ -12,4 +12,10 @@ fragment TrackDetailFragment on SimpleTrack {
   orchestra
   secondsLong
   year
+  linkScore
+  link {
+    description
+    title
+    videoId
+  }
 }

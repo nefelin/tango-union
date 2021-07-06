@@ -25,4 +25,5 @@ export class CompoundSortInput {
   year?: number;
   title?: number;
   secondsLong?: number;
+  linkScore?: number;
 }

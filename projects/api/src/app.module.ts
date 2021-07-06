@@ -19,9 +19,6 @@ const tabEndpointHost = process.env.NODE_ENV === 'dev' ? 'http://localhost' : 'h
       envFilePath: '.env',
       isGlobal: true,
     }),
-    ServeStaticModule.forRoot({
-      rootPath: path.join(__dirname, 'static'),
-    }),
     GraphQLModule.forRootAsync({
       useFactory: async () => {
         const tabs = fs.existsSync(TABS_PATH) ? require(TABS_PATH) : [];

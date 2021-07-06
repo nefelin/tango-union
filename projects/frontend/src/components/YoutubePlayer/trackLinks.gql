@@ -1,7 +1,0 @@
-query TrackLinks($ids: [Float!]!) {
-    linksForTracks(ids: $ids) {
-        videoId
-        title
-        description
-    }
-}

@@ -1,4 +1,5 @@
 import { ObjectType } from '@nestjs/graphql';
+import { RatedYoutube } from '../../../schemas/tracks.entity';
 
 @ObjectType()
 export class SimpleTrack {
@@ -9,4 +10,7 @@ export class SimpleTrack {
   genre?: string;
   secondsLong?: number;
   year?: number;
+  link?: RatedYoutube;
+  linkScore?: number;
 }
+

@@ -64,6 +64,14 @@ const searchResultColumns = (width: number): Array<ColumnShape> => {
       sortable: true,
     },
     {
+      key: 'linkScore',
+      dataKey: 'linkScore',
+      title: 'Rating',
+      width: widthRatio * 50,
+      resizable: true,
+      sortable: true,
+    },
+    {
       key: 'secondsLong',
       dataKey: 'secondsLong',
       title: 'Length',

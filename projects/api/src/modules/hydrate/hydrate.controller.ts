@@ -1,7 +1,9 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { HydrateService } from './hydrate.service';
+import { ManagementGuard } from '../../guards/dbManagement.guard';
 
 @Controller('hydrate')
+@UseGuards(ManagementGuard)
 export class HydrateController {
   constructor(private readonly hydrateService: HydrateService) {}
 
@@ -18,5 +20,15 @@ export class HydrateController {
   @Get('report')
   hydrationReport() {
     return this.hydrateService.report();
+  }
+
+  @Get('scoreAll')
+  scoreAll() {
+    this.hydrateService.rescoreAllTracks();
+  }
+
+  @Get('scoreMissing')
+  scoreTracks() {
+    this.hydrateService.scoreUnscoredTracks();
   }
 }

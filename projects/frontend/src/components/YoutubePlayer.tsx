@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import YouTube from 'react-youtube';
 import { YouTubePlayer } from 'youtube-player/dist/types';
 
-import { useTrackLinksQuery } from '../../generated/graphql';
+import { useTrackDetailsBatchQuery } from '../../generated/graphql';
 import { Maybe } from '../types';
 import { useResultsPlayingContext } from './ResultsTable/resultsTable.state';
 import useCacheStitchedIdFetch from './ResultsTable/useCacheStitchedIdFetch';
@@ -32,7 +32,7 @@ const YoutubePlayer = () => {
   const nextTrack = hydrated[0];
   const [player, setPlayer] = useState<Maybe<YouTubePlayer>>(null);
 
-  const { data } = useTrackLinksQuery({
+  const { data } = useTrackDetailsBatchQuery({
     variables: { ids: [trackId || 0] },
     skip: trackId === null,
   });
@@ -68,7 +68,7 @@ const YoutubePlayer = () => {
     }
   };
 
-  const { videoId, description, title } = data?.linksForTracks[0] ?? {};
+  const { videoId, description, title } = data?.tracksByIds[0]?.link ?? {};
   return (
     <YoutubeContainer>
       <YouTube

@@ -5,7 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { SimpleTrack } from './dto/simpletrack.entity';
 import { CompoundQueryInput } from './dto/compoundQuery.input';
-import { andifyMongoTextSearch, compoundResultsFromFacetedResults } from './util';
+import { andifyMongoTextSearch, cleanSort, compoundResultsFromFacetedResults, simpleTrackFromTrackDoc } from './util';
 import { FacetedResults } from './types';
 import { TrackId } from '../../types';
 import { YearParser } from '../../util/yearParser/yearParser';
@@ -38,7 +38,8 @@ export class TracksService {
   }
 
   async specificTracks(ids: TrackId[]): Promise<SimpleTrack[]> {
-    return this.trackModel.find({ id: { $in: ids } }).exec();
+    const trackDocs = await this.trackModel.find({ id: { $in: ids } }).exec();
+    return trackDocs.map(simpleTrackFromTrackDoc);
   }
 
   async specificTrack(id: TrackId): Promise<SimpleTrack> {
@@ -46,8 +47,8 @@ export class TracksService {
   }
 
   async compoundSearch(input: CompoundQueryInput) {
-    const { orchestras, singers, genres, text, sort, pagination } = input;
-
+    const { orchestras, singers, genres, text, sort: dirtySort, pagination } = input;
+    const sort = cleanSort(dirtySort);
     // do year business on text input
     const yearParser = new YearParser(null);
     const years = text ? yearParser.yearsFromSearch(text) : null;

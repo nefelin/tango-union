@@ -1,18 +1,21 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-import { useTrackLinksQuery } from '../../generated/graphql';
+import { useTrackDetailsBatchQuery } from '../../generated/graphql';
 import { useRouterTrackList } from './ResultsTable/ResultsTableBody/cellRenderers/actionCell';
 
 const YoutubePlaylistLink = () => {
   const { tracks: ids } = useRouterTrackList('/player');
 
-  const { data } = useTrackLinksQuery({
+  const { data } = useTrackDetailsBatchQuery({
     variables: { ids },
     skip: ids.length === 0,
   });
 
-  const videoIds = data?.linksForTracks.map(({ videoId }) => videoId) ?? [];
+  const videoIds =
+    data?.tracksByIds
+      .map((track) => track.link?.videoId ?? null)
+      .map((x) => x !== null) ?? [];
   const youtubeLink = `http://www.youtube.com/watch_videos?video_ids=${videoIds.join(
     ',',
   )}`;

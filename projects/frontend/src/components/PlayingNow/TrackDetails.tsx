@@ -1,100 +1,37 @@
 import { Paper } from '@material-ui/core';
-import * as r from 'ramda';
 import * as React from 'react';
 import styled from 'styled-components';
 
-import { SimpleTrack, useTrackLinksQuery } from '../../../generated/graphql';
+import {
+  SimpleTrack,
+  useTrackDetailsBatchQuery,
+} from '../../../generated/graphql';
 import { Maybe } from '../../types';
-import { cleanSlop } from '../../util/cleanSlop';
-
-const flagFields = ['title', 'orchestra', 'singer', 'year', 'genre'] as const;
-type FlagKeys = typeof flagFields[number];
-type TrackFlags = Partial<Record<FlagKeys, Maybe<boolean>>>;
-type FlagWeights = Record<FlagKeys, number>;
-
-const flagWeights: FlagWeights = {
-  title: 4,
-  orchestra: 3,
-  singer: 2,
-  year: 1,
-  genre: 0,
-};
-const maxScore = Object.values<number>(flagWeights).reduce(
-  (prev, curr) => prev + curr,
-  0,
-);
-
-const goodScoreThreshold = 0.6;
-
-const scoreTrackMatch = (flags: TrackFlags): number => {
-  const scored = r.mapObjIndexed((flag, key) => {
-    if (flags[key] === null) {
-      return Math.floor(flagWeights[key] / 2); // half points for nullish values ('Instrumental' singer and 'Unknown' orchestra)
-    }
-    return flags[key] ? flagWeights[key] : 0;
-  }, flagWeights);
-
-  return Object.values<number>(scored).reduce((prev, curr) => prev + curr, 0);
-};
-
-const signifiesBlankValue = (val?: string) =>
-  val && (val === 'Instrumental' || val === 'Unknown');
-
-const flagMissing = (
-  texts: Array<string>,
-  track: Maybe<SimpleTrack>,
-): TrackFlags => {
-  const corpus = cleanSlop(texts.join(' '));
-
-  const ensureString = (val: string | number | Array<string>) => {
-    if (Array.isArray(val)) {
-      return val.join(' ');
-    }
-    if (typeof val === 'number') {
-      return val.toString();
-    }
-    return val;
-  };
-
-  const basicCheck: TrackFlags = r.mapObjIndexed(
-    (val) =>
-      signifiesBlankValue(ensureString(val as any))
-        ? null
-        : corpus.includes(cleanSlop(ensureString(val as any))),
-    r.pick(flagFields, track || {}),
-  );
-
-  const dualTitle = track?.title.split('|').map(cleanSlop) ?? [];
-  const titleFound =
-    track?.title && dualTitle.length > 1
-      ? r.any((title) => corpus.includes(title), dualTitle)
-      : basicCheck['title'];
-
-  return { ...basicCheck, title: titleFound };
-};
+import { flagMissing } from './scoring/scoring';
+import { goodScoreThreshold, maxScore } from './scoring/types';
 
 const TrackDetails = ({ track }: { track: Maybe<SimpleTrack> }) => {
-  const { data } = useTrackLinksQuery({
+  const { data } = useTrackDetailsBatchQuery({
     variables: { ids: [track?.id ?? 0] },
     skip: track?.id === null,
   });
 
-  const { description = '', title = '' } = data?.linksForTracks[0] ?? {};
+  const { description = '', title = '' } = data?.tracksByIds[0]?.link ?? {};
+  const linkScore = data?.tracksByIds[0]?.linkScore;
 
   const found = flagMissing([description, title], track);
-  const trackScore = scoreTrackMatch(found);
 
   const scoreJudgement =
-    trackScore / maxScore > goodScoreThreshold ? 'good' : 'bad';
+    linkScore && (linkScore / maxScore > goodScoreThreshold ? 'good' : 'bad');
 
   return (
     <TrackDetailsContainer>
       <TrackScoreLabel>
         Match score:{' '}
-        {track && (
+        {scoreJudgement && (
           <TrackScoreDatum
             rating={scoreJudgement}
-          >{`${trackScore}/${maxScore}`}</TrackScoreDatum>
+          >{`${linkScore}/${maxScore}`}</TrackScoreDatum>
         )}
       </TrackScoreLabel>
       <TrackDatumLabel>

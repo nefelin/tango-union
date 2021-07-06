@@ -38,6 +38,7 @@ export type CompoundSortInput = {
   year?: Maybe<Scalars['Float']>;
   title?: Maybe<Scalars['Float']>;
   secondsLong?: Maybe<Scalars['Float']>;
+  linkScore?: Maybe<Scalars['Float']>;
 };
 
 export type CountTuple = {
@@ -109,6 +110,8 @@ export type SimpleTrack = {
   genre?: Maybe<Scalars['String']>;
   secondsLong?: Maybe<Scalars['Float']>;
   year?: Maybe<Scalars['Float']>;
+  link?: Maybe<RatedYoutube>;
+  linkScore?: Maybe<Scalars['Float']>;
 };
 
 export type TrackDetailsBatchQueryVariables = Exact<{
@@ -126,19 +129,10 @@ export type TrackDetailsBatchQuery = (
 
 export type TrackDetailFragmentFragment = (
   { __typename?: 'SimpleTrack' }
-  & Pick<SimpleTrack, 'id' | 'title' | 'genre' | 'singer' | 'orchestra' | 'secondsLong' | 'year'>
-);
-
-export type TrackLinksQueryVariables = Exact<{
-  ids: Array<Scalars['Float']> | Scalars['Float'];
-}>;
-
-
-export type TrackLinksQuery = (
-  { __typename?: 'Query' }
-  & { linksForTracks: Array<(
+  & Pick<SimpleTrack, 'id' | 'title' | 'genre' | 'singer' | 'orchestra' | 'secondsLong' | 'year' | 'linkScore'>
+  & { link?: Maybe<(
     { __typename?: 'RatedYoutube' }
-    & Pick<RatedYoutube, 'videoId' | 'title' | 'description'>
+    & Pick<RatedYoutube, 'description' | 'title' | 'videoId'>
   )> }
 );
 
@@ -182,6 +176,12 @@ export const TrackDetailFragmentFragmentDoc = gql`
   orchestra
   secondsLong
   year
+  linkScore
+  link {
+    description
+    title
+    videoId
+  }
 }
     `;
 export const FullCountFragmentFragmentDoc = gql`
@@ -237,43 +237,6 @@ export function useTrackDetailsBatchLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type TrackDetailsBatchQueryHookResult = ReturnType<typeof useTrackDetailsBatchQuery>;
 export type TrackDetailsBatchLazyQueryHookResult = ReturnType<typeof useTrackDetailsBatchLazyQuery>;
 export type TrackDetailsBatchQueryResult = Apollo.QueryResult<TrackDetailsBatchQuery, TrackDetailsBatchQueryVariables>;
-export const TrackLinksDocument = gql`
-    query TrackLinks($ids: [Float!]!) {
-  linksForTracks(ids: $ids) {
-    videoId
-    title
-    description
-  }
-}
-    `;
-
-/**
- * __useTrackLinksQuery__
- *
- * To run a query within a React component, call `useTrackLinksQuery` and pass it any options that fit your needs.
- * When your component renders, `useTrackLinksQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useTrackLinksQuery({
- *   variables: {
- *      ids: // value for 'ids'
- *   },
- * });
- */
-export function useTrackLinksQuery(baseOptions: Apollo.QueryHookOptions<TrackLinksQuery, TrackLinksQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<TrackLinksQuery, TrackLinksQueryVariables>(TrackLinksDocument, options);
-      }
-export function useTrackLinksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TrackLinksQuery, TrackLinksQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<TrackLinksQuery, TrackLinksQueryVariables>(TrackLinksDocument, options);
-        }
-export type TrackLinksQueryHookResult = ReturnType<typeof useTrackLinksQuery>;
-export type TrackLinksLazyQueryHookResult = ReturnType<typeof useTrackLinksLazyQuery>;
-export type TrackLinksQueryResult = Apollo.QueryResult<TrackLinksQuery, TrackLinksQueryVariables>;
 export const CompoundQueryDocument = gql`
     query CompoundQuery($criteria: CompoundQueryInput!) {
   compoundQuery(query: $criteria) {
