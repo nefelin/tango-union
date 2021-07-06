@@ -3,7 +3,7 @@ import * as r from 'ramda';
 import { flagFields, flagWeights, TrackFlags } from './types';
 import { cleanSlop } from '../../../util/slop';
 import { TrackDocument } from '../../../schemas/tracks.entity';
-import { ensureString, signifiesBlankValue } from './util';
+import { ensureSingleString, signifiesBlankValue } from './util';
 import { Maybe } from '../../../types';
 
 const scoreTrackMatch = (flags: TrackFlags): number => {
@@ -17,22 +17,43 @@ const scoreTrackMatch = (flags: TrackFlags): number => {
   return Object.values<number>(scored).reduce((prev, curr) => prev + curr, 0);
 };
 
-const flagMissing = (track: TrackDocument, index: number): TrackFlags => {
+const flagMissing = (trackDoc: TrackDocument, index: number): TrackFlags => {
+  const track = trackDoc.toObject();
   const { title = '', description = '' } = track.youtube.links[index];
   const textFields = [title, description];
   const corpus = cleanSlop(textFields.join(' '));
 
-  const basicCheck: TrackFlags = r.mapObjIndexed(
-    (val) =>
-      signifiesBlankValue(ensureString(val as any)) ? null : corpus.includes(cleanSlop(ensureString(val as any))),
-    r.pick(flagFields, track || {}),
-  );
+  const checkerObj = {};
 
-  const dualTitle = track?.title.split('|').map(cleanSlop) ?? [];
-  const titleFound =
-    track?.title && dualTitle.length > 1 ? r.any((title) => corpus.includes(title), dualTitle) : basicCheck['title'];
+  const multiTitle = track?.title.split('|') ?? [];
+  const trackWithArrayedTitle = {
+    ...track,
+    title: multiTitle.length > 1 ? multiTitle : track?.title,
+  };
 
-  return { ...basicCheck, title: titleFound };
+  const flaggableTrack = r.pick(flagFields, trackWithArrayedTitle || {});
+  // eslint-disable-next-line no-restricted-syntax
+  for (const [key, value] of Object.entries(flaggableTrack)) {
+    if (r.isNil(value)) {
+      // do nothing
+    } else if (typeof value === 'string' && signifiesBlankValue(value)) {
+      checkerObj[key] = null;
+    } else if (Array.isArray(value)) {
+      let found = false;
+      value.forEach((term) => {
+        if (corpus.includes(cleanSlop(ensureSingleString(term)))) {
+          found = true;
+        }
+      });
+      checkerObj[key] = found;
+    } else if (typeof value === 'string' || typeof value === 'number') {
+      checkerObj[key] = corpus.includes(cleanSlop(ensureSingleString(value)));
+    } else {
+      checkerObj[key] = false;
+    }
+  }
+
+  return checkerObj;
 };
 
 export const scoreTrack = (track: TrackDocument, index: number): Maybe<number> => {

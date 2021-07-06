@@ -4,7 +4,7 @@ import { SimpleTrack } from '../../../../generated/graphql';
 import { Maybe } from '../../../types';
 import { cleanSlop } from '../../../util/cleanSlop';
 import { flagFields, flagWeights, TrackFlags } from './types';
-import { ensureString, signifiesBlankValue } from './util';
+import { ensureSingleString, signifiesBlankValue } from './util';
 
 export const scoreTrackMatch = (flags: TrackFlags): number => {
   const scored = r.mapObjIndexed((flag, key) => {
@@ -23,19 +23,36 @@ export const flagMissing = (
 ): TrackFlags => {
   const corpus = cleanSlop(texts.join(' '));
 
-  const basicCheck: TrackFlags = r.mapObjIndexed(
-    (val) =>
-      signifiesBlankValue(ensureString(val as any))
-        ? null
-        : corpus.includes(cleanSlop(ensureString(val as any))),
-    r.pick(flagFields, track || {}),
-  );
+  const checkerObj = {};
 
-  const dualTitle = track?.title.split('|').map(cleanSlop) ?? [];
-  const titleFound =
-    track?.title && dualTitle.length > 1
-      ? r.any((title) => corpus.includes(title), dualTitle)
-      : basicCheck['title'];
+  const multiTitle = track?.title.split('|') ?? [];
+  const trackWithArrayedTitle = {
+    ...track,
+    title: multiTitle.length > 1 ? multiTitle : track?.title,
+  };
 
-  return { ...basicCheck, title: titleFound };
+  const flaggableTrack = r.pick(flagFields, trackWithArrayedTitle || {});
+  // eslint-disable-next-line no-restricted-syntax
+  for (const [key, value] of Object.entries(flaggableTrack)) {
+    if (r.isNil(value)) {
+      // do nothing
+    } else if (typeof value === 'string' && signifiesBlankValue(value)) {
+      checkerObj[key] = null;
+    } else if (Array.isArray(value)) {
+      let found = false;
+      value.forEach((term) => {
+        if (corpus.includes(cleanSlop(ensureSingleString(term)))) {
+          found = true;
+        }
+      });
+      checkerObj[key] = found;
+    } else if (typeof value === 'string' || typeof value === 'number') {
+      checkerObj[key] = corpus.includes(cleanSlop(ensureSingleString(value)));
+    } else {
+      checkerObj[key] = false;
+    }
+  }
+
+  console.log(scoreTrackMatch(checkerObj))
+  return checkerObj;
 };
