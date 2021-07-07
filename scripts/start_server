@@ -4,4 +4,4 @@ chown -R ec2-user /home/ec2-user/app
 npm install -g pm2
 cp /home/ec2-user/app_env /home/ec2-user/app/projects/api/.env
 cd /home/ec2-user/app/projects/api
-sudo "$(which pm2)" start /home/ec2-user/app/projects/api/ecosystem.config.js
+pm2 start /home/ec2-user/app/projects/api/ecosystem.config.js
