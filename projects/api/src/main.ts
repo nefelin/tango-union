@@ -40,18 +40,19 @@ async function bootstrap() {
   app.enableCors({
     origin: function (origin, callback) {
       if (whitelist.indexOf(origin) !== -1) {
-        console.log('allowed cors for:', origin);
+        // console.log('allowed cors for:', origin);
         callback(null, true);
       } else {
         console.error('blocked cors for:', origin);
         callback(null, false);
       }
     },
-    // allowedHeaders: 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe',
-    // methods: 'GET,PUT,POST,DELETE,UPDATE,OPTIONS',
+    allowedHeaders: 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe',
+    methods: 'GET,PUT,POST,DELETE,UPDATE,OPTIONS',
     credentials: true,
   });
 
+  await app.init();
   http.createServer(server).listen(HTTP_PORT, () => console.log(`Listening on port ${HTTP_PORT}...`));
   if (httpsOptions) {
     https
