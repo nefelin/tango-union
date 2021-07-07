@@ -6,7 +6,6 @@ import * as http from 'http';
 import * as https from 'https';
 import express from 'express';
 
-
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const compression = require('compression');
 const HTTP_PORT = process.env.HTTP_PORT;
@@ -38,7 +37,9 @@ async function bootstrap() {
 
   http.createServer(server).listen(HTTP_PORT, () => console.log(`Listening on port ${HTTP_PORT}...`));
   if (httpsOptions) {
-    https.createServer(httpsOptions, server).listen(HTTPS_PORT, () => console.log(`Listening (SSL) on port ${HTTP_PORT}...`));
+    https
+      .createServer(httpsOptions, server)
+      .listen(HTTPS_PORT, () => console.log(`Listening (SSL) on port ${HTTPS_PORT}...`));
   }
 }
 
