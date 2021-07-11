@@ -63,7 +63,7 @@ module.exports = (mode, env) => {
     plugins: [
       new HtmlWebpackPlugin({
         template: path.resolve(__dirname, './src/template.html'),
-        favicon: path.resolve(__dirname, './favicon_io/favicon.ico'),
+        favicon: path.resolve(__dirname, './assets/CloudLogo.svg'),
       }),
       new CleanWebpackPlugin(),
       new ESLintWebpackPlugin({
