@@ -13,11 +13,11 @@ const TopBar = () => (
 );
 
 const TitleSpan = styled.span`
-  @import url('https://fonts.googleapis.com/css2?family=Encode+Sans+SC:wght@500&display=swap');
   color: white;
   font-size: 20px;
   margin-left: 20px;
   font-family: 'Encode Sans SC', sans-serif;
+  font-weight: 700;
 `;
 
 const LogoContainer = styled.div`
