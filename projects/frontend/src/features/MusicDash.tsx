@@ -86,7 +86,7 @@ const MusicDash = () => {
             ❤️
           </span>
         </FooterHeader>
-        <FooterFooter>by Eric Lindgren</FooterFooter>
+        <FooterFooter className="nameplate">by Eric Lindgren</FooterFooter>
       </Footer>
     </>
   );

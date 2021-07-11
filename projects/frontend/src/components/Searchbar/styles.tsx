@@ -15,7 +15,7 @@ export const StyledRow = styled.div`
 `;
 
 export const InputSpacer = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 8px;
   display: flex;
   flex-direction: row;
 `;

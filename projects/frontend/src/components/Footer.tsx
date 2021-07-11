@@ -8,12 +8,12 @@ export const Footer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  & :last-child {
+  & .nameplate {
     opacity: 0;
     transition: opacity 1s;
   }
   &:hover {
-    & :last-child {
+    & .nameplate {
       opacity: 1;
       transition: opacity 1s;
     }

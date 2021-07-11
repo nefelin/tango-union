@@ -34,8 +34,8 @@ const CustomSelect = ({ selectOptions, id, label, setter, value }: Props) => {
 
   return (
     <>
-      <StyledInputLabel htmlFor={id}>{label}</StyledInputLabel>
       <Select
+        placeholder={label}
         isClearable
         isSearchable
         isMulti

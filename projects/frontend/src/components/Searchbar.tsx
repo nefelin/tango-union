@@ -75,7 +75,7 @@ const Searchbar = ({ selectOptions }: Props) => {
           setter={formik.setFieldValue}
           value={formik.values.orchestra || []}
           id="orchestra"
-          label="Orchestra"
+          label="Orchestras"
           selectOptions={selectOptions.orchestra}
         />
       </StyledCol>
@@ -84,7 +84,7 @@ const Searchbar = ({ selectOptions }: Props) => {
           setter={formik.setFieldValue}
           value={formik.values.singer || []}
           id="singer"
-          label="Singer"
+          label="Singers"
           selectOptions={selectOptions.singer}
         />
       </StyledCol>
@@ -93,7 +93,7 @@ const Searchbar = ({ selectOptions }: Props) => {
           setter={formik.setFieldValue}
           value={formik.values.genre || []}
           id="genre"
-          label="Genre"
+          label="Genres"
           selectOptions={selectOptions.genre}
         />
       </StyledCol>

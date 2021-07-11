@@ -22,6 +22,6 @@ export const VideoDescriptionLabel = styled.span`
 `;
 
 export const YoutubeContainer = styled.div`
-  display: flex;
+  display: flex; 
   flex-direction: column;
 `;
