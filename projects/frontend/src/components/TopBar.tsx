@@ -1,19 +1,28 @@
 import * as React from 'react';
 import styled from 'styled-components';
+
 import CloudLogo from '../../assets/CloudLogo';
 
 const TopBar = () => (
   <TopBarContainer>
-    <LogoContainer><CloudLogo size='40px' /><span style={{marginLeft: '20px'}} >TANGO UNION</span></LogoContainer>
+    <LogoContainer>
+      <CloudLogo size="40px" />
+      <TitleSpan>Tango Union</TitleSpan>
+    </LogoContainer>
   </TopBarContainer>
 );
+
+const TitleSpan = styled.span`
+  @import url('https://fonts.googleapis.com/css2?family=Encode+Sans+SC:wght@500&display=swap');
+  color: white;
+  font-size: 20px;
+  margin-left: 20px;
+  font-family: 'Encode Sans SC', sans-serif;
+`;
 
 const LogoContainer = styled.div`
   position: relative;
   left: 0;
-  font-size: 20px;
-  color: white;
-  font-family: 'Malayalam MN';
   display: flex;
   align-items: center;
 `;
