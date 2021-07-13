@@ -1,27 +1,21 @@
 import InputLabel from '@material-ui/core/InputLabel';
 import styled from 'styled-components';
+import { Button } from '@material-ui/core';
 
 export const StyledCol = styled.div`
   display: flex;
   flex-direction: column;
-  width: 33%;
+  width: 100%;
   justify-content: flex-end;
-  margin-right: 20px;
+  gap: 8px;
 `;
 
 export const StyledRow = styled.div`
+  height: 38px;
+  width: 100%;
+  gap: 20px;
   display: flex;
   flex-direction: row;
-`;
-
-export const InputSpacer = styled.div`
-  margin-bottom: 8px;
-  display: flex;
-  flex-direction: row;
-`;
-
-export const StyledInputLabel = styled(InputLabel)`
-  margin-bottom: 5px;
 `;
 
 export const StyledCount = styled.div`
@@ -38,12 +32,11 @@ export const StyledMenuOption = styled.div`
 export const SearchInputContainer = styled.div<{ focus: boolean }>`
   border: ${({ focus }) => (focus ? '2px solid #2684ff' : '1px solid #d0d0d0')};
   border-radius: 4px;
-  margin-right: ${({ focus }) => (focus ? '19px' : '20px')};;
+  margin-right: ${({ focus }) => (focus ? '-1px' : '0')};;
   display: flex;
   padding-left: ${({ focus }) => (focus ? '9px' : '10px')};;;
   align-items: center;
   justify-content: center;
-  height: 38px;
   box-sizing: border-box;
   transition: all 100ms;
 

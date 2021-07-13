@@ -1,26 +1,16 @@
 import { useReactiveVar } from '@apollo/client';
 import { Button } from '@material-ui/core';
-import Input from '@material-ui/core/Input';
-import { Clear } from '@material-ui/icons';
 import { useFormik } from 'formik';
 import * as React from 'react';
 import { useEffect } from 'react';
 
 import { FullCountFragmentFragment } from '../../generated/graphql';
-import { StyledFakeButton } from './ResultsTable/ResultsTableBody/cellRenderers/styles';
 import CustomInput from './Searchbar/CustomInput';
 import CustomSelect from './Searchbar/CustomSelect';
 import reactiveSearchbarState, {
   resetSearch,
 } from './Searchbar/searchbar.state';
-import {
-  ClearButtonContainer,
-  InputSpacer,
-  SearchInputContainer,
-  StyledCol,
-  StyledInputLabel,
-  StyledRow,
-} from './Searchbar/styles';
+import { StyledCol, StyledRow } from './Searchbar/styles';
 import { SearchbarState } from './Searchbar/types';
 
 interface Props {
@@ -51,17 +41,14 @@ const Searchbar = ({ selectOptions }: Props) => {
   }
 
   return (
-    <StyledRow>
-      <StyledCol>
-        <InputSpacer>
-            <CustomInput
-
-              onChange={formik.handleChange}
-              value={formik.values.search}
-              onClear={handleClearTextSearch}
-            />
+    <StyledCol>
+      <StyledRow>
+        <CustomInput
+          onChange={formik.handleChange}
+          value={formik.values.search}
+          onClear={handleClearTextSearch}
+        />
           <Button
-            disableRipple
             size="small"
             variant="outlined"
             color="primary"
@@ -70,7 +57,8 @@ const Searchbar = ({ selectOptions }: Props) => {
           >
             Clear All Criteria
           </Button>
-        </InputSpacer>
+      </StyledRow>
+      <StyledRow>
         <CustomSelect
           setter={formik.setFieldValue}
           value={formik.values.orchestra || []}
@@ -78,8 +66,6 @@ const Searchbar = ({ selectOptions }: Props) => {
           label="Orchestras"
           selectOptions={selectOptions.orchestra}
         />
-      </StyledCol>
-      <StyledCol>
         <CustomSelect
           setter={formik.setFieldValue}
           value={formik.values.singer || []}
@@ -87,8 +73,6 @@ const Searchbar = ({ selectOptions }: Props) => {
           label="Singers"
           selectOptions={selectOptions.singer}
         />
-      </StyledCol>
-      <StyledCol>
         <CustomSelect
           setter={formik.setFieldValue}
           value={formik.values.genre || []}
@@ -96,8 +80,8 @@ const Searchbar = ({ selectOptions }: Props) => {
           label="Genres"
           selectOptions={selectOptions.genre}
         />
-      </StyledCol>
-    </StyledRow>
+      </StyledRow>
+    </StyledCol>
   );
 };
 

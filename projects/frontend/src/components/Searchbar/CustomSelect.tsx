@@ -1,16 +1,40 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import Select, { OptionsType, ValueType } from 'react-select';
 import { Option } from 'react-select/src/filters';
+import { AutoSizer, List } from 'react-virtualized';
 
 import { Barely } from '../../types';
-import { StyledInputLabel } from './styles';
-import {   customSearch,
+import {
+  customSearch,
   formatOptionLabel,
-MemberCountList ,
+  MemberCountList,
   optionsFromSelectOptions,
 } from './util';
 
+const makeMenuList =
+  (width: number, optionCount: number) =>
+  ({ children }) => {
+    const rows = children || [];
+    const rowRenderer = ({ key, index, isScrolling, isVisible, style }) => (
+      <div key={key} style={style}>
+        {rows[index]}
+      </div>
+    );
+
+    const height = Math.min(optionCount * 30, 300);
+
+    return (
+      <List
+        style={{ width: '100%' }}
+        width={width}
+        height={height}
+        rowHeight={30}
+        rowCount={optionCount}
+        rowRenderer={rowRenderer}
+      />
+    );
+  };
 interface Props {
   id: string;
   label: string;
@@ -33,31 +57,36 @@ const CustomSelect = ({ selectOptions, id, label, setter, value }: Props) => {
     setter(id, newState || selection);
 
   return (
-    <>
-      <Select
-        placeholder={label}
-        isClearable
-        isSearchable
-        isMulti
-        filterOption={customSearch}
-        onChange={(newSelection, triggeredAction) => {
-          setSelection(newSelection);
-          if (
-            triggeredAction.action === 'clear' ||
-            triggeredAction.action === 'remove-value'
-          ) {
-            handleDispatchState(newSelection);
-          }
-        }}
-        onMenuClose={handleDispatchState}
-        onBlur={() => handleDispatchState()}
-        value={selection}
-        inputId={id}
-        options={options}
-        formatOptionLabel={formatOptionLabel}
-        closeMenuOnSelect={false}
-      />
-    </>
+    <AutoSizer style={{ width: '100%'}} >
+      {({ width, height }) => {
+        return (
+            <Select
+              components={{ MenuList: makeMenuList(width, options.length - selection.length) }}
+              placeholder={label}
+              isClearable
+              isSearchable
+              isMulti
+              filterOption={customSearch}
+              onChange={(newSelection, triggeredAction) => {
+                setSelection(newSelection);
+                if (
+                  triggeredAction.action === 'clear' ||
+                  triggeredAction.action === 'remove-value'
+                ) {
+                  handleDispatchState(newSelection);
+                }
+              }}
+              onMenuClose={handleDispatchState}
+              onBlur={() => handleDispatchState()}
+              value={selection}
+              inputId={id}
+              options={options}
+              formatOptionLabel={formatOptionLabel}
+              closeMenuOnSelect={false}
+            />
+        );
+      }}
+    </AutoSizer>
   );
 };
 
