@@ -4,7 +4,10 @@ import { useFormik } from 'formik';
 import * as React from 'react';
 import { useEffect } from 'react';
 
-import { FullCountFragmentFragment } from '../../generated/graphql';
+import {
+  FullCountFragmentFragment,
+} from '../../generated/graphql';
+import { optionsFromStrings } from './ResultsTable/ResultsTableBody/util';
 import CustomInput from './Searchbar/CustomInput';
 import CustomSelect from './Searchbar/CustomSelect';
 import reactiveSearchbarState, {
@@ -29,7 +32,7 @@ const Searchbar = ({ selectOptions }: Props) => {
   const { values } = formik;
 
   const handleClearTextSearch = () => {
-    reactiveSearchbarState({ ...reactiveSearchbarState(), search: '' });
+    reactiveSearchbarState({ ...reactiveSearchbarState(), text: '' });
   };
 
   useEffect(() => {
@@ -45,38 +48,38 @@ const Searchbar = ({ selectOptions }: Props) => {
       <StyledRow>
         <CustomInput
           onChange={formik.handleChange}
-          value={formik.values.search}
+          value={formik.values.text || ''}
           onClear={handleClearTextSearch}
         />
-          <Button
-            size="small"
-            variant="outlined"
-            color="primary"
-            type="button"
-            onClick={resetSearch}
-          >
-            Clear All Criteria
-          </Button>
+        <Button
+          size="small"
+          variant="outlined"
+          color="primary"
+          type="button"
+          onClick={resetSearch}
+        >
+          Clear All Criteria
+        </Button>
       </StyledRow>
       <StyledRow>
         <CustomSelect
           setter={formik.setFieldValue}
-          value={formik.values.orchestra || []}
-          id="orchestra"
+          value={optionsFromStrings(formik.values.orchestras)}
+          id="orchestras"
           label="Orchestras"
           selectOptions={selectOptions.orchestra}
         />
         <CustomSelect
           setter={formik.setFieldValue}
-          value={formik.values.singer || []}
-          id="singer"
+          value={optionsFromStrings(formik.values.singers)}
+          id="singers"
           label="Singers"
           selectOptions={selectOptions.singer}
         />
         <CustomSelect
           setter={formik.setFieldValue}
-          value={formik.values.genre || []}
-          id="genre"
+          value={optionsFromStrings(formik.values.genres)}
+          id="genres"
           label="Genres"
           selectOptions={selectOptions.genre}
         />

@@ -11,9 +11,9 @@ import {
 import { Footer, FooterFooter, FooterHeader } from '../components/Footer';
 import NowPlaying from '../components/NowPlaying';
 import ResultsTable from '../components/ResultsTable';
+import { useSortState } from '../components/ResultsTable/state/sort.state';
 import Searchbar from '../components/Searchbar';
 import reactiveSearchbarState from '../components/Searchbar/searchbar.state';
-import { compoundSearchOptsFromSearchbarState } from '../components/Searchbar/util';
 import TopBar from '../components/TopBar';
 
 const emptyOptions: FullCountFragmentFragment['counts'] = {

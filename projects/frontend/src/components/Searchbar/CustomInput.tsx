@@ -28,7 +28,7 @@ const CustomInput = ({ onChange, value, onClear }: Props) => {
         ref={inputRef}
         autoComplete="off"
         placeholder="Search..."
-        id="search"
+        id="text"
         {...{ value, onChange }}
       />
       <ClearButtonContainer onClick={onClear}>

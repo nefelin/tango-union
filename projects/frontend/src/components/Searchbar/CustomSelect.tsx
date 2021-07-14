@@ -5,6 +5,7 @@ import { Option } from 'react-select/src/filters';
 import { AutoSizer, List } from 'react-virtualized';
 
 import { Barely } from '../../types';
+import { stringsFromOptions } from '../ResultsTable/ResultsTableBody/util';
 import {
   customSearch,
   formatOptionLabel,
@@ -39,7 +40,7 @@ interface Props {
   id: string;
   label: string;
   value: Array<Option>;
-  setter: (field: string, value: Barely<OptionsType<Option>>) => void;
+  setter: (field: string, value: Barely<Array<string>>) => void;
   selectOptions: MemberCountList;
 }
 type SelectState = ValueType<{ label: string; value: string; data: any }, true>;
@@ -54,7 +55,7 @@ const CustomSelect = ({ selectOptions, id, label, setter, value }: Props) => {
   const options = optionsFromSelectOptions(selectOptions, value);
 
   const handleDispatchState = (newState?: SelectState) =>
-    setter(id, newState || selection);
+    setter(id, stringsFromOptions(newState || selection));
 
   return (
     <AutoSizer style={{ width: '100%'}} >

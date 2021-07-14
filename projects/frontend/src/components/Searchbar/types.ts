@@ -1,11 +1,3 @@
-import { Option } from 'react-select/src/filters';
+import { CompoundQueryInput } from '../../../generated/graphql';
 
-import { Maybe } from '../../types';
-
-export interface SearchbarState {
-  orchestra: Maybe<Array<Option>>;
-  singer: Maybe<Array<Option>>;
-  genre: Maybe<Array<Option>>;
-  search: string;
-  sort: Record<string, 'asc' | 'desc'>;
-}
+export type SearchbarState = Partial<Omit<CompoundQueryInput, 'pagination' | 'sort'>>;

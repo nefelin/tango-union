@@ -1,5 +1,10 @@
-import { SimpleTrack } from '../../../../generated/graphql';
-import { Barely, Maybe } from '../../../types';
+import * as r from 'ramda';
+import { ColumnShape } from 'react-base-table';
+import { OptionsType } from 'react-select';
+import { Option } from 'react-select/src/filters';
+
+import { CompoundSortInput, SimpleTrack } from '../../../../generated/graphql';
+import { Barely } from '../../../types';
 import { SearchbarState } from '../../Searchbar/types';
 
 export const timeStringFromSeconds = (secondsTotal: number) => {
@@ -16,17 +21,33 @@ export const searchStateFromTrack = (track: SimpleTrack): SearchbarState => {
       : '';
 
   return {
-    search: yearTerm,
-    orchestra: optionsFromStrings(track.orchestra),
-    singer: optionsFromStrings(track.singer),
-    genre: optionsFromStrings(track.genre ? [track.genre] : null),
-    sort: {},
+    text: yearTerm,
+    orchestras: track.orchestra,
+    singers: track.singer,
+    genres: track.genre ? [track.genre] : null,
   };
 };
 
-const optionsFromStrings = (names: Barely<Array<string>>) =>
+export const optionsFromStrings = (names: Barely<Array<string>>) =>
   names?.map((name) => ({
     label: name,
     value: name,
     data: name,
-  })) ?? null;
+  })) ?? [];
+
+export const stringsFromOptions = (options: Barely<OptionsType<Option>>) =>
+  options?.map(({ label }) => label);
+
+export const tableSortFromSearchbarSort = (
+  sort: Barely<CompoundSortInput>,
+): ColumnShape['sortState'] =>
+  r.mapObjIndexed((val) => {
+    switch (val) {
+      case -1:
+        return 'DESC';
+      case 1:
+        return 'ASC';
+      default:
+        return undefined;
+    }
+  }, sort || {});

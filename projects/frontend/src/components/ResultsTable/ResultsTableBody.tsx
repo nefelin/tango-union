@@ -19,6 +19,7 @@ import {
 import overlayRenderer from './ResultsTableBody/overlayRenderer';
 import rowRenderer from './ResultsTableBody/rowRenderer';
 import searchResultColumns from './ResultsTableBody/searchResultColumns';
+import { useSortState } from './state/sort.state';
 
 const TableHeaderCell: TableComponents['TableHeaderCell'] = ({
   className,
@@ -63,9 +64,9 @@ const ResultsTableBody = ({ tracks, incPage, page, loading }: Props) => {
 
   const handleColumnSort: BaseTableProps['onColumnSort'] = ({ key, order }) => {
     if (sort[key.toString()] === 'desc') {
-      sortSearch(r.omit([key.toString()], reactiveSearchbarState().sort));
+      setSort(r.omit([key.toString()], sort));
     } else {
-      sortSearch({ ...reactiveSearchbarState().sort, [key]: order });
+      setSort({ ...sort, [key]: order });
     }
   };
 

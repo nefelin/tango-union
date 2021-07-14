@@ -3,10 +3,8 @@ import * as React from 'react';
 import { FormatOptionLabelMeta } from 'react-select';
 import { Option } from 'react-select/src/filters';
 
-import { CompoundQueryInput } from '../../../generated/graphql';
 import { cleanSlop } from '../../util/cleanSlop';
 import { StyledCount, StyledMenuOption } from './styles';
-import { SearchbarState } from './types';
 
 export const customSearch = (option: Option, searchString: string) =>
   cleanSlop(option.value).indexOf(cleanSlop(searchString)) !== -1;
@@ -48,25 +46,4 @@ export const formatOptionLabel = (
       <StyledCount>{data} results</StyledCount>
     </StyledMenuOption>
   );
-};
-
-export const compoundSearchOptsFromSearchbarState = (
-  state: SearchbarState,
-): CompoundQueryInput => {
-  return {
-    orchestras: state.orchestra?.length
-      ? state.orchestra.map(({ value }) => value)
-      : undefined,
-    singers: state.singer?.length
-      ? state.singer.map(({ value }) => value)
-      : undefined,
-    genres: state.genre?.length
-      ? state.genre.map(({ value }) => value)
-      : undefined,
-    text: state.search.trim().length > 1 ? state.search.trim() : undefined,
-    sort: r.mapObjIndexed(
-      (sortOrder: 'asc' | 'desc') => (sortOrder === 'asc' ? 1 : -1),
-      state.sort,
-    ),
-  };
 };

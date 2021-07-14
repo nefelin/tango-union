@@ -78,11 +78,10 @@ const SearchButton = ({ song }: { song: SimpleTrack }) => {
   const handleClick = ({ metaKey }: MouseEvent) => {
     const newState: SearchbarState = metaKey
       ? {
-          search: song.title,
-          sort: {},
-          orchestra: null,
-          singer: null,
-          genre: null,
+          text: song.title,
+          orchestras: null,
+          singers: null,
+          genres: null,
         }
       : searchStateFromTrack(song);
     reactiveSearchbarState(newState);
