@@ -1,4 +1,3 @@
-import { useReactiveVar } from '@apollo/client';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -13,7 +12,7 @@ import NowPlaying from '../components/NowPlaying';
 import ResultsTable from '../components/ResultsTable';
 import { useSortState } from '../components/ResultsTable/state/sort.state';
 import Searchbar from '../components/Searchbar';
-import reactiveSearchbarState from '../components/Searchbar/searchbar.state';
+import { useSearchbarState } from '../components/Searchbar/searchbar.state';
 import TopBar from '../components/TopBar';
 
 const emptyOptions: FullCountFragmentFragment['counts'] = {
@@ -25,9 +24,9 @@ const objCompare = (a: any, b: any) => JSON.stringify(a) === JSON.stringify(b);
 
 const MusicDash = () => {
   const [options, setOptions] = useState(emptyOptions);
-  const searchState = useReactiveVar(reactiveSearchbarState);
+  const { searchbarState } = useSearchbarState();
   const { sortInput, resetSort } = useSortState();
-  const [debouncedSearch] = useDebounce(searchState, 300, {
+  const [debouncedSearch] = useDebounce(searchbarState, 300, {
     equalityFn: objCompare,
   });
   const [debouncedSort] = useDebounce(sortInput, 300, {

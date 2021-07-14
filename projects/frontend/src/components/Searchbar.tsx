@@ -4,15 +4,11 @@ import { useFormik } from 'formik';
 import * as React from 'react';
 import { useEffect } from 'react';
 
-import {
-  FullCountFragmentFragment,
-} from '../../generated/graphql';
+import { FullCountFragmentFragment } from '../../generated/graphql';
 import { optionsFromStrings } from './ResultsTable/ResultsTableBody/util';
 import CustomInput from './Searchbar/CustomInput';
 import CustomSelect from './Searchbar/CustomSelect';
-import reactiveSearchbarState, {
-  resetSearch,
-} from './Searchbar/searchbar.state';
+import { useSearchbarState } from './Searchbar/searchbar.state';
 import { StyledCol, StyledRow } from './Searchbar/styles';
 import { SearchbarState } from './Searchbar/types';
 
@@ -21,7 +17,7 @@ interface Props {
 }
 
 const Searchbar = ({ selectOptions }: Props) => {
-  const searchState = useReactiveVar(reactiveSearchbarState);
+  const { setSearchbarState, searchbarState, resetSearchbar } = useSearchbarState();
 
   const formik = useFormik<SearchbarState>({
     initialValues: {},
@@ -32,11 +28,11 @@ const Searchbar = ({ selectOptions }: Props) => {
   const { values } = formik;
 
   const handleClearTextSearch = () => {
-    reactiveSearchbarState({ ...reactiveSearchbarState(), text: '' });
+    setSearchbarState({ ...searchbarState, text: '' });
   };
 
   useEffect(() => {
-    reactiveSearchbarState(values);
+    setSearchbarState(values);
   }, [values]);
 
   if (!selectOptions) {
@@ -56,7 +52,7 @@ const Searchbar = ({ selectOptions }: Props) => {
           variant="outlined"
           color="primary"
           type="button"
-          onClick={resetSearch}
+          onClick={resetSearchbar}
         >
           Clear All Criteria
         </Button>
