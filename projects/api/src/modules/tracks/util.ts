@@ -1,16 +1,17 @@
 // tells mongo these terms should be AND'ed
 import { EntityCount, FacetedResults } from './types';
 import { CompoundResults } from './dto/compoundResult.entity';
-import { RatedYoutube, TrackDocument } from '../../schemas/tracks.entity';
+import { TrackDocument } from '../../schemas/tracks.entity';
 import { SimpleTrack } from './dto/simpletrack.entity';
 import { CompoundSortInput } from './dto/compoundQuery.input';
+import { cleanSlop } from '../../util/slop';
 
 export const andifyMongoTextSearch = (text?: string) => {
   if (!text) {
     return text;
   }
 
-  return text
+  return cleanSlop(text)
     .split(' ')
     .map((word) => `"${word}"`) // tells mongo these terms should be AND'ed
     .join(' ');
