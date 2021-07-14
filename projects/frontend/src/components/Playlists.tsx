@@ -1,8 +1,8 @@
 import * as React from 'react';
 
+import { useRoutedTrackList } from '../hooks/useRoutedTracklist';
 import PlaylistBody from './Playlist/PlaylistBody';
 import useCacheStitchedIdFetch from './ResultsTable/useCacheStitchedIdFetch';
-import { useRoutedTrackList } from '../hooks/useRoutedTracklist';
 
 const Playlists = () => {
   const { tracks: ids } = useRoutedTrackList();

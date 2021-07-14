@@ -1,4 +1,3 @@
-import { useReactiveVar } from '@apollo/client';
 import { Button } from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as React from 'react';
@@ -20,7 +19,7 @@ const Searchbar = ({ selectOptions }: Props) => {
   const { setSearchbarState, searchbarState, resetSearchbar } = useSearchbarState();
 
   const formik = useFormik<SearchbarState>({
-    initialValues: {},
+    initialValues: searchbarState,
     enableReinitialize: true,
     onSubmit: () => {},
   });

@@ -1,17 +1,13 @@
-import { makeVar, useReactiveVar } from '@apollo/client';
-
+import { useRoutedState } from '../../hooks/useRoutedState';
 import { SearchbarState } from './types';
 
 const initSearchbarState: SearchbarState = {};
 
-const reactiveSearchbarState = makeVar(initSearchbarState);
-
 export const useSearchbarState = () => {
-  const searchbarState = useReactiveVar(reactiveSearchbarState);
+  const { search: searchbarState, setSearch: setSearchbarState } =
+    useRoutedState();
 
-  const setSearchbarState = (newState: SearchbarState) =>
-    reactiveSearchbarState(newState);
-  const resetSearchbar = () => reactiveSearchbarState(initSearchbarState);
+  const resetSearchbar = () => setSearchbarState(initSearchbarState);
 
   return {
     searchbarState,

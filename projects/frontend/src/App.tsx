@@ -28,7 +28,7 @@ const App = () => (
         <Switch>
           <Route exact path="/" component={() => <Redirect to="/player" />} />
           <Route exact path="/player" component={MusicDash} />
-          <Route exact path="/player/:trackList" component={MusicDash} />
+          <Route exact path="/player/:saved" component={MusicDash} />
         </Switch>
       </React.Suspense>
     </BrowserRouter>

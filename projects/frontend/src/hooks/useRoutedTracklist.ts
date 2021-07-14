@@ -1,4 +1,5 @@
-import { useHistory, useParams } from 'react-router';
+
+import { useRoutedState } from './useRoutedState';
 
 interface RoutedTracklistHook {
   tracks: Array<number>;
@@ -8,34 +9,26 @@ interface RoutedTracklistHook {
   // moveTrack: (id: number, newIndex: number) => void;
 }
 
-export const useRoutedTrackList = (
-): RoutedTracklistHook => {
-  const history = useHistory();
-  const params = useParams<{ trackList?: string }>();
+export const useRoutedTrackList = (): RoutedTracklistHook => {
+  const { tracks: stringTracks, setTracks } = useRoutedState();
 
   const tracks: Array<number> =
-    params.trackList
-      ?.split(',')
+    stringTracks
       .map((num) => parseInt(num, 10))
       .filter((x) => !Number.isNaN(x)) ?? [];
 
-  const updateRouteParam = (newParam: string) => {
-    history.replace(`/player/${newParam}`);
-  };
-
   const addTrack = (newId: number) => {
     const stringId = newId.toString();
-    const newList = params.trackList?.concat(',', stringId) ?? stringId;
-    updateRouteParam(newList);
+    setTracks([...stringTracks, stringId]);
   };
 
   const removeTrack = (id: number) => {
-    const newList = tracks.filter((listId) => listId !== id).join(',');
-    updateRouteParam(newList);
+    const newList = stringTracks.filter((listId) => listId !== id.toString());
+    setTracks(newList);
   };
 
   const replaceTracks = (ids: Array<number>) => {
-    updateRouteParam(ids.map((id) => id.toString()).join(','));
+    setTracks(ids.map((id) => id.toString()));
   };
 
   return {
