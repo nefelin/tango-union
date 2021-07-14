@@ -24,7 +24,7 @@ const Searchbar = ({ selectOptions }: Props) => {
   const searchState = useReactiveVar(reactiveSearchbarState);
 
   const formik = useFormik<SearchbarState>({
-    initialValues: searchState,
+    initialValues: {},
     enableReinitialize: true,
     onSubmit: () => {},
   });

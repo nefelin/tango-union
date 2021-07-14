@@ -21,11 +21,18 @@ const emptyOptions: FullCountFragmentFragment['counts'] = {
   orchestra: [],
   genre: [],
 };
+const objCompare = (a: any, b: any) => JSON.stringify(a) === JSON.stringify(b);
 
 const MusicDash = () => {
   const [options, setOptions] = useState(emptyOptions);
   const searchState = useReactiveVar(reactiveSearchbarState);
-  const [debouncedSearchState] = useDebounce(searchState, 300);
+  const { sortInput, resetSort } = useSortState();
+  const [debouncedSearch] = useDebounce(searchState, 300, {
+    equalityFn: objCompare,
+  });
+  const [debouncedSort] = useDebounce(sortInput, 300, {
+    equalityFn: objCompare,
+  });
   const [page, setPage] = useState(0);
 
   const pageSize = 40;
@@ -34,7 +41,8 @@ const MusicDash = () => {
   const { data, error, loading } = useCompoundQueryQuery({
     variables: {
       criteria: {
-        ...compoundSearchOptsFromSearchbarState(debouncedSearchState),
+        ...debouncedSearch,
+        sort: debouncedSort,
         pagination,
       },
     },
@@ -48,9 +56,11 @@ const MusicDash = () => {
     }
   }, [data?.compoundQuery]);
 
-  useEffect(() => {
+  const resetPageAndSort = () => {
     setPage(0);
-  }, [debouncedSearchState]);
+    resetSort();
+  };
+  useEffect(resetPageAndSort, [debouncedSearch]);
 
   if (error) {
     console.error(error);

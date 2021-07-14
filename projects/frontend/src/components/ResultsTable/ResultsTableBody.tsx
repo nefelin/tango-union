@@ -9,9 +9,6 @@ import BaseTable, {
 import styled from 'styled-components';
 
 import { SimpleTrack } from '../../../generated/graphql';
-import reactiveSearchbarState, {
-  sortSearch,
-} from '../Searchbar/searchbar.state';
 import {
   reactiveTableResults,
   reactiveTableRowsVisible,
@@ -38,7 +35,7 @@ interface Props {
 const ResultsTableBody = ({ tracks, incPage, page, loading }: Props) => {
   const loadedTracks = useReactiveVar(reactiveTableResults);
   const tableRef = React.createRef<BaseTable<unknown>>();
-  const { sort } = useReactiveVar(reactiveSearchbarState);
+  const { sort, setSort } = useSortState();
 
   useEffect(() => {
     if (!loading) {
@@ -59,8 +56,6 @@ const ResultsTableBody = ({ tracks, incPage, page, loading }: Props) => {
   const handleLoadMore = () => {
     incPage?.();
   };
-
-  const youtubeSearch = () => {};
 
   const handleColumnSort: BaseTableProps['onColumnSort'] = ({ key, order }) => {
     if (sort[key.toString()] === 'desc') {

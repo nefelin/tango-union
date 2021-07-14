@@ -47,7 +47,7 @@ export class TracksService {
   }
 
   async compoundSearch(input: CompoundQueryInput) {
-    const { orchestras, singers, genres, text, sort: dirtySort, pagination } = input;
+    const { orchestras, singers, genres, text, sort: dirtySort = {}, pagination } = input;
     const sort = cleanSort(dirtySort);
     // do year business on text input
     const yearParser = new YearParser(null);
