@@ -5,11 +5,8 @@ import React, { CSSProperties, MouseEvent, useState } from 'react';
 import { BaseTableProps } from 'react-base-table';
 
 import { SimpleTrack } from '../../../generated/graphql';
+import { useYoutubePlayerState } from '../../hooks/state/useYoutubePlayerState';
 import PlayableRow from '../PlayableRow';
-import {
-  playTrackId,
-  useTrackStatus,
-} from '../YoutubePlayer/youtubePlayer.state';
 
 interface Props {
   cells: Array<React.ReactNode>;
@@ -23,7 +20,8 @@ export const playlistRowRenderer =
 
 const reactiveSelectedTracks = makeVar<Array<string>>([]);
 
-export const useSelection = (id = '-1') => { // fixme handle copying
+export const useSelection = (id = '-1') => {
+  // fixme handle copying
   const selected = useReactiveVar(reactiveSelectedTracks);
   const [startedSelected, setStartedSelected] = useState(false);
 
@@ -75,7 +73,7 @@ export const useSelection = (id = '-1') => { // fixme handle copying
         }
       }
     },
-  }
+  };
 
   return {
     selected,
@@ -89,10 +87,10 @@ export const useSelection = (id = '-1') => { // fixme handle copying
 };
 
 const DraggableTrack = ({ rowData: track, cells }: Props) => {
-  const status = useTrackStatus(track.id, 'playlist');
+  const { trackStatus, play } = useYoutubePlayerState();
+  const status = trackStatus(track.id, 'playlist');
 
-  const { isSelected, mouseHandlers} =
-    useSelection(track.id.toString());
+  const { isSelected, mouseHandlers } = useSelection(track.id.toString());
 
   const id = track.id.toString();
 
@@ -128,7 +126,7 @@ const DraggableTrack = ({ rowData: track, cells }: Props) => {
       <PlayableRow
         status={status}
         selected={isSelected()}
-        onDoubleClick={() => playTrackId(track.id, 'playlist')}
+        onDoubleClick={() => play(track.id, 'playlist')}
         ref={setNodeRef}
         style={isDragging ? draggingStyle : {}}
         {...attributes}

@@ -1,6 +1,6 @@
 import * as r from 'ramda';
 
-import { Barely } from '../types';
+import { Barely } from '../types/barely';
 
 const foldDiacritics = (s: string) =>
   s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');

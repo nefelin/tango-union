@@ -1,0 +1,1 @@
+export type Unary<T> = (x: T) => void;

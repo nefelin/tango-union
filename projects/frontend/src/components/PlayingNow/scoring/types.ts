@@ -1,4 +1,4 @@
-import { Maybe } from '../../../types';
+import { Maybe } from '../../../types/maybe';
 
 export const flagFields = ['title', 'orchestra', 'singer', 'year', 'genre'] as const;
 export type FlagKeys = typeof flagFields[number];

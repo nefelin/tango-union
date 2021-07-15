@@ -8,21 +8,19 @@ import {
 import React, { useContext } from 'react';
 
 import { PlaylistConfigContext } from '../../../../context/playlistConfig.context';
+import { useYoutubePlayerState } from '../../../../hooks/state/useYoutubePlayerState';
 import { useHoveredRow } from '../../../../state/hoveredRow.state';
-import {
-  playerStop,
-  playTrackId,
-  reactiveYoutubePlayerState,
-  useTrackStatus,
-} from '../../../YoutubePlayer/youtubePlayer.state';
 import { Loader } from '../overlayRenderer/styled';
 import { StyledFakeButton } from './styles';
 import { CellProps } from './types';
 
 const PlayCell = ({ song, rowIndex }: CellProps) => {
   const { name: playlistName } = useContext(PlaylistConfigContext);
-  const { playState } = useReactiveVar(reactiveYoutubePlayerState);
-  const { active } = useTrackStatus(song.id, playlistName);
+  const {
+    youtubePlayerState: { playState },
+    trackStatus,
+  } = useYoutubePlayerState();
+  const { active } = trackStatus(song.id, playlistName);
 
   const showLoading = playState === 'loading' && active;
   return showLoading ? (
@@ -39,13 +37,15 @@ const DynamicPlayButton = ({
   rowIndex: number;
   id: number;
 }) => {
+  const { play, stop } = useYoutubePlayerState();
   const { name: playlistName } = useContext(PlaylistConfigContext);
-  const { active, playing } = useTrackStatus(id, playlistName);
+  const { trackStatus } = useYoutubePlayerState();
   const { hovered } = useHoveredRow({
     rowLens: { rowIndex, tableName: playlistName },
   });
 
-  const action = () => (playing ? playerStop() : playTrackId(id, playlistName));
+  const { active, playing } = trackStatus(id, playlistName);
+  const action = () => (playing ? stop() : play(id, playlistName));
 
   const icon = active
     ? activeRowIcon(hovered, playing)

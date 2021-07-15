@@ -1,8 +1,8 @@
 import { makeVar, useReactiveVar } from '@apollo/client';
 
 import { SimpleTrack } from '../../../generated/graphql';
-import { reactiveYoutubePlayerState } from '../YoutubePlayer/youtubePlayer.state';
-import { useRoutedTrackList } from '../../hooks/useRoutedTracklist';
+import { usePlaylistState } from '../../hooks/state/usePlaylistState';
+import { useYoutubePlayerState } from '../../hooks/state/useYoutubePlayerState';
 
 interface ResultsContext {
   index?: number;
@@ -11,8 +11,10 @@ interface ResultsContext {
 }
 
 export const useResultsPlayingContext = (): ResultsContext => {
-  const { trackId, playFocus } = useReactiveVar(reactiveYoutubePlayerState);
-  const { tracks: playlistIds } = useRoutedTrackList();
+  const {
+    youtubePlayerState: { trackId, playFocus },
+  } = useYoutubePlayerState();
+  const { tracks: playlistIds } = usePlaylistState();
 
   const searchIds = useReactiveVar(reactiveTableResults).map(({ id }) => id);
   const results = playFocus === 'search' ? searchIds : playlistIds;

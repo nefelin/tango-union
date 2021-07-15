@@ -1,7 +1,7 @@
 import { HTMLAttributes } from 'react';
 import styled from 'styled-components';
 
-import { TrackStatus } from './YoutubePlayer/youtubePlayer.state';
+import { TrackStatus } from '../hooks/state/useYoutubePlayerState/types';
 
 const activeColor = 'rgb(240, 240, 240)';
 const playingColor = 'rgb(230, 230, 230)';

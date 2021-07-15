@@ -1,7 +1,6 @@
-
 import { useRoutedState } from './useRoutedState';
 
-interface RoutedTracklistHook {
+interface Props {
   tracks: Array<number>;
   addTrack: (id: number) => void;
   removeTrack: (id: number) => void;
@@ -9,7 +8,7 @@ interface RoutedTracklistHook {
   // moveTrack: (id: number, newIndex: number) => void;
 }
 
-export const useRoutedTrackList = (): RoutedTracklistHook => {
+export const usePlaylistState = (): Props => {
   const { tracks: stringTracks, setTracks } = useRoutedState();
 
   const tracks: Array<number> =

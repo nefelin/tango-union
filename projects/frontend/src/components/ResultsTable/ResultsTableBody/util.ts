@@ -4,7 +4,7 @@ import { OptionsType } from 'react-select';
 import { Option } from 'react-select/src/filters';
 
 import { CompoundSortInput, SimpleTrack } from '../../../../generated/graphql';
-import { Barely } from '../../../types';
+import { Barely } from '../../../types/barely';
 import { SearchbarState } from '../../Searchbar/types';
 
 export const timeStringFromSeconds = (secondsTotal: number) => {

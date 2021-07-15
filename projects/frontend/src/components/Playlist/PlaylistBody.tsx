@@ -18,16 +18,16 @@ import BaseTable, { AutoResizer } from 'react-base-table';
 import { createPortal } from 'react-dom';
 
 import { SimpleTrack } from '../../../generated/graphql';
+import { usePlaylistState } from '../../hooks/state/usePlaylistState';
 import { playlistRowRenderer, useSelection } from './DraggableTrack';
 import { PlaylistContainer, TableContainer } from './PlaylistBody/styles';
 import TrackCountOverlay from './PlaylistBody/TrackCountOverlay';
 import { moveMany } from './PlaylistBody/util';
 import playlistColumns from './playlistColumns';
-import { useRoutedTrackList } from '../../hooks/useRoutedTracklist';
 
 const PlaylistBody = ({ tracks }: { tracks: Array<SimpleTrack> }) => {
   const { isSelected, selected } = useSelection();
-  const { replaceTracks } = useRoutedTrackList();
+  const { replaceTracks } = usePlaylistState();
   const [orderedTracks, setOrderedTracks] = useState(tracks);
   const trackIds = orderedTracks.map(({ id }) => id.toString());
   useEffect(() => setOrderedTracks(tracks), [tracks]);

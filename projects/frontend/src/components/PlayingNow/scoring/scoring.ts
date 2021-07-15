@@ -1,7 +1,7 @@
 import * as r from 'ramda';
 
 import { SimpleTrack } from '../../../../generated/graphql';
-import { Maybe } from '../../../types';
+import { Maybe } from '../../../types/maybe';
 import { cleanSlop } from '../../../util/cleanSlop';
 import { flagFields, flagWeights, TrackFlags } from './types';
 import { ensureSingleString, signifiesBlankValue } from './util';

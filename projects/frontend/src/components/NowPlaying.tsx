@@ -7,15 +7,17 @@ import {
   SimpleTrack,
   TrackDetailFragmentFragmentDoc,
 } from '../../generated/graphql';
+import { useYoutubePlayerState } from '../hooks/state/useYoutubePlayerState';
 import TrackDetails from './PlayingNow/TrackDetails';
 import Playlists from './Playlists';
 import YoutubePlayer from './YoutubePlayer';
-import { reactiveYoutubePlayerState } from './YoutubePlayer/youtubePlayer.state';
 import YoutubePlaylistLink from './YoutubePlaylistLink';
 
 const NowPlaying = () => {
   const client = useApolloClient();
-  const { trackId } = useReactiveVar(reactiveYoutubePlayerState);
+  const {
+    youtubePlayerState: { trackId },
+  } = useYoutubePlayerState();
 
   const track = client.readFragment<SimpleTrack>({
     id: `SimpleTrack:${trackId}`,

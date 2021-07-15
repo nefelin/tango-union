@@ -5,7 +5,8 @@ import YouTube from 'react-youtube';
 import { YouTubePlayer } from 'youtube-player/dist/types';
 
 import { useTrackDetailsBatchQuery } from '../../generated/graphql';
-import { Maybe } from '../types';
+import { useYoutubePlayerState } from '../hooks/state/useYoutubePlayerState';
+import { Maybe } from '../types/maybe';
 import { useResultsPlayingContext } from './ResultsTable/resultsTable.state';
 import useCacheStitchedIdFetch from './ResultsTable/useCacheStitchedIdFetch';
 import {
@@ -15,22 +16,16 @@ import {
   YoutubeContainer,
 } from './YoutubePlayer/styles';
 import { opts } from './YoutubePlayer/util';
-import {
-  playerPause,
-  playerPlay,
-  playerStop,
-  playTrackId,
-  reactiveYoutubePlayerState,
-} from './YoutubePlayer/youtubePlayer.state';
 
 const YoutubePlayer = () => {
-  const { trackId, playState, playFocus } = useReactiveVar(
-    reactiveYoutubePlayerState,
-  );
+  const { youtubePlayerState, play, stop, resume, pause } =
+    useYoutubePlayerState();
   const { nextTrackId } = useResultsPlayingContext();
   const [hydrated] = useCacheStitchedIdFetch(nextTrackId ? [nextTrackId] : []);
   const nextTrack = hydrated[0];
   const [player, setPlayer] = useState<Maybe<YouTubePlayer>>(null);
+
+  const { trackId, playState, playFocus } = youtubePlayerState;
 
   const { data } = useTrackDetailsBatchQuery({
     variables: { ids: [trackId || 0] },
@@ -51,20 +46,20 @@ const YoutubePlayer = () => {
   }, [playState, player]);
 
   const handlePlay = () => {
-    playerPlay();
+    resume();
   };
 
   const handleEnd = () => {
     if (nextTrack?.id) {
-      playTrackId(nextTrack.id, playFocus);
+      play(nextTrack.id, playFocus);
     } else {
-      playerStop();
+      stop();
     }
   };
 
   const handlePause = () => {
     if (playState !== 'loading') {
-      playerPause();
+      pause();
     }
   };
 

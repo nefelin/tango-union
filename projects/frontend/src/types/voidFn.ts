@@ -1,0 +1,1 @@
+export type VoidFn<T extends Array<any>> = (...ar: T) => void;

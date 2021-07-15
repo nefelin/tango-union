@@ -12,8 +12,8 @@ import NowPlaying from '../components/NowPlaying';
 import ResultsTable from '../components/ResultsTable';
 import { useSortState } from '../components/ResultsTable/state/sort.state';
 import Searchbar from '../components/Searchbar';
-import { useSearchbarState } from '../components/Searchbar/searchbar.state';
 import TopBar from '../components/TopBar';
+import { useSearchbarState } from '../hooks/state/useSearchbarState';
 
 const emptyOptions: FullCountFragmentFragment['counts'] = {
   singer: [],

@@ -1,7 +1,7 @@
 import * as r from 'ramda';
 import { useHistory, useParams } from 'react-router';
 
-import { SearchbarState } from '../components/Searchbar/types';
+import { SearchbarState } from '../../components/Searchbar/types';
 
 interface SavedState {
   tracks: Array<string>;

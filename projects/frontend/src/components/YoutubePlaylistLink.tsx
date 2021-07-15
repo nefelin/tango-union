@@ -2,10 +2,10 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import { useTrackDetailsBatchQuery } from '../../generated/graphql';
-import { useRoutedTrackList } from '../hooks/useRoutedTracklist';
+import { usePlaylistState } from '../hooks/state/usePlaylistState';
 
 const YoutubePlaylistLink = () => {
-  const { tracks: ids } = useRoutedTrackList();
+  const { tracks: ids } = usePlaylistState();
 
   const { data } = useTrackDetailsBatchQuery({
     variables: { ids },

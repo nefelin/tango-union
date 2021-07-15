@@ -1,7 +1,7 @@
 import { useDebounce } from 'use-debounce';
 
-import { useRoutedState } from '../../hooks/useRoutedState';
-import { SearchbarState } from './types';
+import { SearchbarState } from '../../components/Searchbar/types';
+import { useRoutedState } from './useRoutedState';
 
 const initSearchbarState: SearchbarState = {};
 

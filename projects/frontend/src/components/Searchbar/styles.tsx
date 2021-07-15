@@ -1,6 +1,6 @@
+import { Button } from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
 import styled from 'styled-components';
-import { Button } from '@material-ui/core';
 
 export const StyledCol = styled.div`
   display: flex;

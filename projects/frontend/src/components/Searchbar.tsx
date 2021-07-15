@@ -4,10 +4,10 @@ import * as React from 'react';
 import { useEffect } from 'react';
 
 import { FullCountFragmentFragment } from '../../generated/graphql';
+import { useSearchbarState } from '../hooks/state/useSearchbarState';
 import { optionsFromStrings } from './ResultsTable/ResultsTableBody/util';
 import CustomInput from './Searchbar/CustomInput';
 import CustomSelect from './Searchbar/CustomSelect';
-import { useSearchbarState } from './Searchbar/searchbar.state';
 import { StyledCol, StyledRow } from './Searchbar/styles';
 import { SearchbarState } from './Searchbar/types';
 
@@ -16,7 +16,8 @@ interface Props {
 }
 
 const Searchbar = ({ selectOptions }: Props) => {
-  const { setSearchbarState, searchbarState, resetSearchbar } = useSearchbarState();
+  const { setSearchbarState, searchbarState, resetSearchbar } =
+    useSearchbarState();
 
   const formik = useFormik<SearchbarState>({
     initialValues: searchbarState,
