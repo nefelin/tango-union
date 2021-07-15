@@ -1,6 +1,6 @@
 import { makeVar, useReactiveVar } from '@apollo/client';
 
-import { Maybe } from '../types/maybe';
+import { Maybe } from '../../types/maybe';
 
 interface RowFocusState {
   rowIndex: number;
@@ -17,8 +17,9 @@ interface HoveredRowInterface {
   clearHoveredRow: VoidFunction;
 }
 
-export const reactiveRowFocus = makeVar<Maybe<RowFocusState>>(null);
-export const useHoveredRow = (props?: Props): HoveredRowInterface => {
+const reactiveRowFocus = makeVar<Maybe<RowFocusState>>(null);
+
+export const useHoveredRowState = (props?: Props): HoveredRowInterface => {
   const rowFocus = useReactiveVar(reactiveRowFocus);
 
   const hovered =
@@ -27,6 +28,7 @@ export const useHoveredRow = (props?: Props): HoveredRowInterface => {
 
   const setHoveredRow = (r: RowFocusState) =>
     setTimeout(() => reactiveRowFocus(r), 0);
+
   const clearHoveredRow = () => reactiveRowFocus(null);
 
   return {

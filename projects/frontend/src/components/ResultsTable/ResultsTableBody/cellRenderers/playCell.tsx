@@ -8,8 +8,8 @@ import {
 import React, { useContext } from 'react';
 
 import { PlaylistConfigContext } from '../../../../context/playlistConfig.context';
+import { useHoveredRowState } from '../../../../hooks/state/useHoveredRowState';
 import { useYoutubePlayerState } from '../../../../hooks/state/useYoutubePlayerState';
-import { useHoveredRow } from '../../../../state/hoveredRow.state';
 import { Loader } from '../overlayRenderer/styled';
 import { StyledFakeButton } from './styles';
 import { CellProps } from './types';
@@ -40,7 +40,7 @@ const DynamicPlayButton = ({
   const { play, stop } = useYoutubePlayerState();
   const { name: playlistName } = useContext(PlaylistConfigContext);
   const { trackStatus } = useYoutubePlayerState();
-  const { hovered } = useHoveredRow({
+  const { hovered } = useHoveredRowState({
     rowLens: { rowIndex, tableName: playlistName },
   });
 

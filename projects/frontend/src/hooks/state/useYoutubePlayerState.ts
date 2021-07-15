@@ -22,11 +22,13 @@ export const useYoutubePlayerState = (): HookProps => {
       ...reactiveYoutubePlayerState(),
       playState: 'stopped',
     });
+
   const pause = () =>
     reactiveYoutubePlayerState({
       ...reactiveYoutubePlayerState(),
       playState: 'stopped',
     });
+
   const resume = () =>
     reactiveYoutubePlayerState({
       ...reactiveYoutubePlayerState(),
