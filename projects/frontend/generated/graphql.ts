@@ -26,7 +26,7 @@ export type CompoundQueryInput = {
 
 export type CompoundResults = {
   __typename?: 'CompoundResults';
-  ids: Array<Scalars['Float']>;
+  ids: Array<Scalars['String']>;
   totalResults: Scalars['Float'];
   counts: SelectIndexCount;
 };
@@ -63,17 +63,17 @@ export type Query = {
 
 
 export type QueryLinksForTracksArgs = {
-  ids: Array<Scalars['Float']>;
+  ids: Array<Scalars['String']>;
 };
 
 
 export type QueryTracksByIdsArgs = {
-  ids: Array<Scalars['Float']>;
+  ids: Array<Scalars['String']>;
 };
 
 
 export type QueryTrackByIdArgs = {
-  id: Scalars['Float'];
+  id: Scalars['String'];
 };
 
 
@@ -103,7 +103,7 @@ export type SelectIndexCount = {
 
 export type SimpleTrack = {
   __typename?: 'SimpleTrack';
-  id: Scalars['Float'];
+  id: Scalars['String'];
   singer?: Maybe<Array<Scalars['String']>>;
   orchestra?: Maybe<Array<Scalars['String']>>;
   title: Scalars['String'];
@@ -115,7 +115,7 @@ export type SimpleTrack = {
 };
 
 export type TrackDetailsBatchQueryVariables = Exact<{
-  ids: Array<Scalars['Float']> | Scalars['Float'];
+  ids: Array<Scalars['String']> | Scalars['String'];
 }>;
 
 
@@ -203,7 +203,7 @@ export const FullCountFragmentFragmentDoc = gql`
 }
     `;
 export const TrackDetailsBatchDocument = gql`
-    query TrackDetailsBatch($ids: [Float!]!) {
+    query TrackDetailsBatch($ids: [String!]!) {
   tracksByIds(ids: $ids) {
     ...TrackDetailFragment
   }

@@ -8,7 +8,7 @@ import {
 
 // fixme would be nice to cut down on re-render
 const useCacheStitchedIdFetch = (
-  ids?: Array<number>,
+  ids?: Array<string>,
   exposeNullRows = false,
 ): [Array<SimpleTrack>, boolean] => {
   const client = useApolloClient();

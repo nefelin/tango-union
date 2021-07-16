@@ -6,8 +6,8 @@ import { useYoutubePlayerState } from '../../hooks/state/useYoutubePlayerState';
 
 interface ResultsContext {
   index?: number;
-  trackId?: number;
-  nextTrackId?: number;
+  trackId?: string;
+  nextTrackId?: string;
 }
 
 export const useResultsPlayingContext = (): ResultsContext => {

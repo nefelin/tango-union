@@ -3,7 +3,7 @@ import { RatedYoutube } from '../../../schemas/tracks.entity';
 
 @ObjectType()
 export class SimpleTrack {
-  id: number;
+  id: string;
   singer?: string[];
   orchestra?: string[];
   title: string;

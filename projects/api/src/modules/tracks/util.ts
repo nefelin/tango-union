@@ -24,7 +24,7 @@ export const compoundResultsFromFacetedResults = (res: FacetedResults): Compound
   });
 
   return {
-    ids: res.tracks.map(({ id }) => id),
+    ids: res.tracks.map(({ id }) => id.toString()),
     counts: {
       singer: res.singerCount.map(pairsFromCounts),
       orchestra: res.orchestraCount.map(pairsFromCounts),
@@ -35,7 +35,7 @@ export const compoundResultsFromFacetedResults = (res: FacetedResults): Compound
 };
 
 export const simpleTrackFromTrackDoc = (track: TrackDocument): SimpleTrack => ({
-  id: track.id,
+  id: track.id.toString(),
   title: track.title,
   orchestra: track.orchestra,
   year: track.year,

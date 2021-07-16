@@ -43,7 +43,8 @@ export class TracksService {
   }
 
   async specificTrack(id: TrackId): Promise<SimpleTrack> {
-    return this.trackModel.findOne({ id }).exec();
+    const track = await this.trackModel.findOne({ id }).exec();
+    return simpleTrackFromTrackDoc(track);
   }
 
   async compoundSearch(input: CompoundQueryInput) {
@@ -129,8 +130,9 @@ export class TracksService {
     return compoundResultsFromFacetedResults(res[0]);
   }
 
-  async linksForTracks(ids: Array<number>): Promise<Track['youtube']['links']> {
-    const songs = await this.trackModel.find({ id: { $in: ids } }).exec();
+  async linksForTracks(ids: Array<string>): Promise<Track['youtube']['links']> {
+    const numIds = ids.map((id) => parseInt(id, 10));
+    const songs = await this.trackModel.find({ id: { $in: numIds } }).exec();
     for (const thisSong of songs) {
       if (!thisSong.youtube) {
         throw new Error(`No links scraped for track ${thisSong.id}`);

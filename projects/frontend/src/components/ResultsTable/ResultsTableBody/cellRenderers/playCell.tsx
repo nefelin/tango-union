@@ -35,7 +35,7 @@ const DynamicPlayButton = ({
   id,
 }: {
   rowIndex: number;
-  id: number;
+  id: string;
 }) => {
   const { play, stop } = useYoutubePlayerState();
   const { name: playlistName } = useContext(PlaylistConfigContext);

@@ -1,4 +1,4 @@
-query TrackLinks($ids: [Float!]!) {
+query TrackLinks($ids: [String!]!) {
     linksForTracks(ids: $ids) {
         videoId
         title

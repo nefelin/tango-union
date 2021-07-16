@@ -35,7 +35,7 @@ export const useYoutubePlayerState = (): HookProps => {
       playState: 'playing',
     });
 
-  const play = (trackId: number, playFocus: PlayFocusSource) => {
+  const play = (trackId: string, playFocus: PlayFocusSource) => {
     const currentState = reactiveYoutubePlayerState();
     const newTrack = trackId !== currentState.trackId;
     const playState = newTrack ? 'loading' : 'playing';
@@ -48,7 +48,7 @@ export const useYoutubePlayerState = (): HookProps => {
     });
   };
 
-  const trackStatus = (id: number, source: PlayFocusSource): TrackStatus => {
+  const trackStatus = (id: string, source: PlayFocusSource): TrackStatus => {
     const { trackId, playState, playFocus } = youtubePlayerState;
     let active = false;
     let playing = false;

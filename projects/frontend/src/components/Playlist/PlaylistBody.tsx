@@ -54,9 +54,7 @@ const PlaylistBody = ({ tracks }: { tracks: Array<SimpleTrack> }) => {
 
     if (!isSelected(over.id)) {
       replaceTracks(
-        moveMany(trackIds, selected, over.id, overIndex > activeIndex).map(
-          (x) => parseInt(x, 10),
-        ),
+        moveMany(trackIds, selected, over.id, overIndex > activeIndex)
       );
     }
 

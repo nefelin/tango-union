@@ -1,4 +1,3 @@
-import * as r from 'ramda';
 import { TracksService } from './tracks.service';
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { RatedYoutube } from '../../schemas/tracks.entity';
@@ -11,17 +10,17 @@ export class TracksResolver {
   constructor(readonly tracksService: TracksService) {}
 
   @Query(() => [RatedYoutube], { name: 'linksForTracks' })
-  linksForTracks(@Args('ids', {type: () => [Number]}) ids: Array<number>) {
+  linksForTracks(@Args('ids', {type: () => [String]}) ids: Array<string>) {
     return this.tracksService.linksForTracks(ids);
   }
 
   @Query(() => [SimpleTrack], { name: 'tracksByIds' })
-  async tracksByIds(@Args('ids', { type: () => [Number] }) ids: number[]) {
+  async tracksByIds(@Args('ids', { type: () => [String] }) ids: string[]) {
     return this.tracksService.specificTracks(ids);
   }
 
   @Query(() => SimpleTrack, { name: 'trackById' })
-  async trackByIds(@Args('id', { type: () => Number }) id: number) {
+  async trackByIds(@Args('id', { type: () => String }) id: string) {
     return this.tracksService.specificTrack(id);
   }
 
@@ -33,7 +32,6 @@ export class TracksResolver {
   @Query(() => [SimpleTrack], { name: 'allTracks' })
   async getDbTracks() {
     const tracks = await this.tracksService.sampleTracks();
-    console.log(tracks);
     return tracks.map(({ title, singer, secondsLong, orchestra, id, genre, year }) => ({
       id,
       title,

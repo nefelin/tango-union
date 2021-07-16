@@ -1,7 +1,7 @@
 import { Maybe } from '../../../types/maybe';
 
 export interface YoutubePlayerState {
-  trackId: Maybe<number>;
+  trackId: Maybe<string>;
   playState: PlayState;
   playFocus: PlayFocusSource;
 }
@@ -19,6 +19,6 @@ export interface HookProps {
   stop: VoidFunction;
   pause: VoidFunction;
   resume: VoidFunction;
-  play: (id: number, source: PlayFocusSource) => void;
-  trackStatus: (id: number, source: PlayFocusSource) => TrackStatus;
+  play: (id: string, source: PlayFocusSource) => void;
+  trackStatus: (id: string, source: PlayFocusSource) => TrackStatus;
 }

@@ -1,4 +1,4 @@
-query TracksByIds($ids: [Float!]!) {
+query TracksByIds($ids: [String!]!) {
     tracksByIds(ids: $ids) {
         title
         genre

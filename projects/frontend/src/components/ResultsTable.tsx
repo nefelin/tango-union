@@ -8,7 +8,7 @@ import StyledTableContainer from './ResultsTable/styled';
 import useCacheStitchedIdFetch from './ResultsTable/useCacheStitchedIdFetch';
 
 interface Props {
-  ids?: Array<number>;
+  ids?: Array<string>;
   loading?: boolean;
   incPage?: VoidFunction;
   page: number;

@@ -1,4 +1,4 @@
-query TrackDetailsBatch($ids: [Float!]!) {
+query TrackDetailsBatch($ids: [String!]!) {
   tracksByIds(ids: $ids) {
     ...TrackDetailFragment
   }
