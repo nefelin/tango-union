@@ -6,7 +6,7 @@ import {
   SimpleTrack,
   useTrackDetailsBatchQuery,
 } from '../../../generated/graphql';
-import { Maybe } from '../../types/maybe';
+import { Maybe } from '../../types/utility/maybe';
 import { flagMissing } from './scoring/scoring';
 import { goodScoreThreshold, maxScore } from './scoring/types';
 

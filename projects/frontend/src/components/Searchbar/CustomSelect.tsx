@@ -4,7 +4,7 @@ import Select, { ValueType } from 'react-select';
 import { Option } from 'react-select/src/filters';
 import { AutoSizer, List } from 'react-virtualized';
 
-import { Barely } from '../../types/barely';
+import { Barely } from '../../types/utility/barely';
 import { stringsFromOptions } from '../ResultsTable/ResultsTableBody/util';
 import {
   customSearch,

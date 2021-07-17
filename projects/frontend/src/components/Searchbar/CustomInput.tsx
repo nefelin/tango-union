@@ -2,7 +2,7 @@ import { Clear } from '@material-ui/icons';
 import { ChangeEvent, useRef, useState } from 'react';
 import * as React from 'react';
 
-import { Unary } from '../../types/unary';
+import { Unary } from '../../types/utility/unary';
 import { ClearButtonContainer, SearchInputContainer } from './styles';
 
 interface Props {

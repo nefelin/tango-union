@@ -1,6 +1,6 @@
 import { makeVar, useReactiveVar } from '@apollo/client';
 
-import { Maybe } from '../../types/maybe';
+import { Maybe } from '../../types/utility/maybe';
 
 interface RowFocusState {
   rowIndex: number;

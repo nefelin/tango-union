@@ -1,4 +1,4 @@
-import { Maybe } from '../../../types/maybe';
+import { Maybe } from '../../../types/utility/maybe';
 
 export interface YoutubePlayerState {
   trackId: Maybe<string>;

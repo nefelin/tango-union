@@ -6,7 +6,7 @@ import { YouTubePlayer } from 'youtube-player/dist/types';
 
 import { useTrackDetailsBatchQuery } from '../../generated/graphql';
 import { useYoutubePlayerState } from '../hooks/state/useYoutubePlayerState';
-import { Maybe } from '../types/maybe';
+import { Maybe } from '../types/utility/maybe';
 import { useResultsPlayingContext } from './ResultsTable/resultsTable.state';
 import useCacheStitchedIdFetch from './ResultsTable/useCacheStitchedIdFetch';
 import {
