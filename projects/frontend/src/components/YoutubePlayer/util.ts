@@ -13,5 +13,6 @@ export const opts = (autoplay?: boolean): Options => ({
   width: WIDGET_WIDTH,
   playerVars: {
     autoplay: autoplay ? 1 : 0,
+    origin: 'https://tangounion.net'
   },
 });
