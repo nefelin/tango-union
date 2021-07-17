@@ -1,6 +1,5 @@
-import { useReactiveVar } from '@apollo/client';
 import * as r from 'ramda';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import BaseTable, {
   AutoResizer,
   BaseTableProps,
@@ -8,9 +7,8 @@ import BaseTable, {
 } from 'react-base-table';
 import styled from 'styled-components';
 
-import { SimpleTrack } from '../../../generated/graphql';
+import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
 import {
-  reactiveTableResults,
   reactiveTableRowsVisible,
 } from './resultsTable.state';
 import overlayRenderer from './ResultsTableBody/overlayRenderer';
@@ -27,19 +25,19 @@ const TableHeaderCell: TableComponents['TableHeaderCell'] = ({
 
 interface Props {
   incPage?: VoidFunction;
-  tracks: Array<SimpleTrack>;
+  tracks: Array<PlaylistTrack>;
   page: number;
   loading: boolean;
 }
 
 const ResultsTableBody = ({ tracks, incPage, page, loading }: Props) => {
-  const loadedTracks = useReactiveVar(reactiveTableResults);
+  const [loadedTracks, setLoadedTracks] = useState<Array<PlaylistTrack>>([]);
   const tableRef = React.createRef<BaseTable<unknown>>();
   const { sort, setSort } = useSortState();
 
   useEffect(() => {
     if (!loading) {
-      reactiveTableResults(tracks);
+      setLoadedTracks(tracks);
     }
   }, [tracks, loading]);
 

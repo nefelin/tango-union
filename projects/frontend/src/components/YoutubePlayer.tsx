@@ -1,14 +1,12 @@
-import { useReactiveVar } from '@apollo/client';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import YouTube from 'react-youtube';
 import { YouTubePlayer } from 'youtube-player/dist/types';
 
 import { useTrackDetailsBatchQuery } from '../../generated/graphql';
+import { useGlobalPlaylistsState } from '../hooks/state/usePlaylistsState';
 import { useYoutubePlayerState } from '../hooks/state/useYoutubePlayerState';
 import { Maybe } from '../types/utility/maybe';
-import { useResultsPlayingContext } from './ResultsTable/resultsTable.state';
-import useCacheStitchedIdFetch from './ResultsTable/useCacheStitchedIdFetch';
 import {
   VideoDescriptionContainer,
   VideoDescriptionDatum,
@@ -20,15 +18,15 @@ import { opts } from './YoutubePlayer/util';
 const YoutubePlayer = () => {
   const { youtubePlayerState, play, stop, resume, pause } =
     useYoutubePlayerState();
-  const { nextTrackId } = useResultsPlayingContext();
-  const [hydrated] = useCacheStitchedIdFetch(nextTrackId ? [nextTrackId] : []);
-  const nextTrack = hydrated[0];
+  const {
+    context: { nextTrack },
+  } = useGlobalPlaylistsState();
   const [player, setPlayer] = useState<Maybe<YouTubePlayer>>(null);
 
-  const { trackId, playState, playFocus } = youtubePlayerState;
+  const { trackId, playState } = youtubePlayerState;
 
   const { data } = useTrackDetailsBatchQuery({
-    variables: { ids: [trackId ?? ''] }, // should never execute with empty string due to skip, will error
+    variables: { ids: [trackId?.[0] ?? ''] }, // should never execute with empty string due to skip, will error
     skip: trackId === null,
   });
 
@@ -50,8 +48,8 @@ const YoutubePlayer = () => {
   };
 
   const handleEnd = () => {
-    if (nextTrack?.id) {
-      play(nextTrack.id, playFocus);
+    if (nextTrack) {
+      play(nextTrack);
     } else {
       stop();
     }

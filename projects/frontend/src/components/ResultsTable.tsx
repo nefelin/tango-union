@@ -3,19 +3,20 @@ import 'react-base-table/styles.css';
 import React from 'react';
 
 import { PlaylistConfigContext } from '../context/playlistConfig.context';
+import { usePlaylistsState } from '../hooks/state/usePlaylistsState';
 import ResultsTableBody from './ResultsTable/ResultsTableBody';
 import StyledTableContainer from './ResultsTable/styled';
 import useCacheStitchedIdFetch from './ResultsTable/useCacheStitchedIdFetch';
 
 interface Props {
-  ids?: Array<string>;
   loading?: boolean;
   incPage?: VoidFunction;
   page: number;
 }
 
-const ResultsTable = ({ ids, loading = false, page, incPage }: Props) => {
-  const [tracks, tracksLoading] = useCacheStitchedIdFetch(ids, false);
+const ResultsTable = ({ loading = false, page, incPage }: Props) => {
+  const {tracks: ids} = usePlaylistsState('results');
+  const [tracks, tracksLoading] = useCacheStitchedIdFetch(ids);
 
   const tableLoading = loading || tracksLoading;
   return (

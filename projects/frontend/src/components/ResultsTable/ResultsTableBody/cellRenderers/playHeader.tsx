@@ -1,13 +1,13 @@
 import { useReactiveVar } from '@apollo/client';
 import { HelpOutline, PlayCircleFilledWhiteOutlined } from '@material-ui/icons';
 import * as React from 'react';
+import { useContext } from 'react';
 import BaseTable, { ColumnShape } from 'react-base-table';
 
 import { SimpleTrack } from '../../../../../generated/graphql';
-import {
-  reactiveTableRowsVisible,
-  useResultsPlayingContext,
-} from '../../resultsTable.state';
+import { PlaylistConfigContext } from '../../../../context/playlistConfig.context';
+import { useGlobalPlaylistsState } from '../../../../hooks/state/usePlaylistsState';
+import { reactiveTableRowsVisible } from '../../resultsTable.state';
 import { StyledFakeButton } from './styles';
 
 const playHeaderRenderer: ColumnShape<SimpleTrack>['headerRenderer'] = ({
@@ -15,9 +15,13 @@ const playHeaderRenderer: ColumnShape<SimpleTrack>['headerRenderer'] = ({
 }) => <PlayHeader container={container} />;
 
 const PlayHeader = ({ container }: { container: BaseTable<SimpleTrack> }) => {
-  const { index } = useResultsPlayingContext();
+  const {
+    context: { trackIndex, playlistId },
+  } = useGlobalPlaylistsState();
+  const { name: playlistName } = useContext(PlaylistConfigContext);
   const [firstRow, lastRow] = useReactiveVar(reactiveTableRowsVisible);
 
+  const index = playlistId === playlistName ? trackIndex : undefined;
   const activeTrackNotVisible =
     index !== undefined && (index < firstRow || index > lastRow);
 

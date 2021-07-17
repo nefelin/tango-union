@@ -1,15 +1,16 @@
 import { makeVar, useReactiveVar } from '@apollo/client';
 
+import { PlaylistTrack, TrackIdTuple } from './usePlaylistsState/types';
+import { sameId, tupleIdFromPlaylistTrack } from './usePlaylistsState/util';
 import {
   HookProps,
-  PlayFocusSource, TrackStatus,
+  TrackStatus,
   YoutubePlayerState,
 } from './useYoutubePlayerState/types';
 
 const initYoutubePlayerState: YoutubePlayerState = {
   trackId: null,
   playState: 'stopped',
-  playFocus: 'search',
 };
 
 const reactiveYoutubePlayerState = makeVar(initYoutubePlayerState);
@@ -35,7 +36,7 @@ export const useYoutubePlayerState = (): HookProps => {
       playState: 'playing',
     });
 
-  const play = (trackId: string, playFocus: PlayFocusSource) => {
+  const play = (trackId: TrackIdTuple) => {
     const currentState = reactiveYoutubePlayerState();
     const newTrack = trackId !== currentState.trackId;
     const playState = newTrack ? 'loading' : 'playing';
@@ -44,16 +45,18 @@ export const useYoutubePlayerState = (): HookProps => {
       ...currentState,
       playState,
       trackId,
-      playFocus,
     });
   };
 
-  const trackStatus = (id: string, source: PlayFocusSource): TrackStatus => {
-    const { trackId, playState, playFocus } = youtubePlayerState;
+  const trackStatus = (
+    track: PlaylistTrack,
+  ): TrackStatus => {
+    const id = tupleIdFromPlaylistTrack(track);
+    const { trackId, playState} = youtubePlayerState;
     let active = false;
     let playing = false;
 
-    if (trackId === id && playFocus === source) {
+    if (trackId && sameId(id, trackId)) {
       active = true;
       if (playState === 'playing') {
         playing = true;
@@ -66,5 +69,5 @@ export const useYoutubePlayerState = (): HookProps => {
     };
   };
 
-  return { youtubePlayerState, trackStatus, resume, pause, play, stop };
+  return { youtubePlayerState, currentTrack: youtubePlayerState.trackId, trackStatus, resume, pause, play, stop };
 };

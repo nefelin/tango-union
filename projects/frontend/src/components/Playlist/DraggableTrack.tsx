@@ -4,17 +4,18 @@ import { CSS } from '@dnd-kit/utilities';
 import React, { CSSProperties, MouseEvent, useState } from 'react';
 import { BaseTableProps } from 'react-base-table';
 
-import { SimpleTrack } from '../../../generated/graphql';
+import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
+import { tupleIdFromPlaylistTrack } from '../../hooks/state/usePlaylistsState/util';
 import { useYoutubePlayerState } from '../../hooks/state/useYoutubePlayerState';
 import PlayableRow from '../PlayableRow';
 
 interface Props {
   cells: Array<React.ReactNode>;
-  rowData: SimpleTrack;
+  rowData: PlaylistTrack;
 }
 
 export const playlistRowRenderer =
-  (): BaseTableProps<SimpleTrack>['rowRenderer'] =>
+  (): BaseTableProps<PlaylistTrack>['rowRenderer'] =>
   ({ cells, rowData }) =>
     <DraggableTrack cells={cells} rowData={rowData} />;
 
@@ -88,7 +89,7 @@ export const useSelection = (id = '-1') => {
 
 const DraggableTrack = ({ rowData: track, cells }: Props) => {
   const { trackStatus, play } = useYoutubePlayerState();
-  const status = trackStatus(track.id, 'playlist');
+  const status = trackStatus(track);
 
   const { isSelected, mouseHandlers } = useSelection(track.id.toString());
 
@@ -126,7 +127,7 @@ const DraggableTrack = ({ rowData: track, cells }: Props) => {
       <PlayableRow
         status={status}
         selected={isSelected()}
-        onDoubleClick={() => play(track.id, 'playlist')}
+        onDoubleClick={() => play(tupleIdFromPlaylistTrack(track))}
         ref={setNodeRef}
         style={isDragging ? draggingStyle : {}}
         {...attributes}

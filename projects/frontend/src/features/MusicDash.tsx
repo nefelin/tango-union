@@ -13,6 +13,7 @@ import ResultsTable from '../components/ResultsTable';
 import { useSortState } from '../components/ResultsTable/state/sort.state';
 import Searchbar from '../components/Searchbar';
 import TopBar from '../components/TopBar';
+import { usePlaylistsState } from '../hooks/state/usePlaylistsState';
 import { useSearchbarState } from '../hooks/state/useSearchbarState';
 
 const emptyOptions: FullCountFragmentFragment['counts'] = {
@@ -26,6 +27,7 @@ const MusicDash = () => {
   const [options, setOptions] = useState(emptyOptions);
   const { searchbarState } = useSearchbarState();
   const { sortInput, resetSort } = useSortState();
+  const { addTracks, replaceTracks } = usePlaylistsState('results');
   const [debouncedSearch] = useDebounce(searchbarState, 300, {
     equalityFn: objCompare,
   });
@@ -53,6 +55,7 @@ const MusicDash = () => {
     if (data?.compoundQuery.counts) {
       setOptions(data.compoundQuery.counts);
     }
+    replaceTracks(data?.compoundQuery.ids ?? [])
   }, [data?.compoundQuery]);
 
   const resetPageAndSort = () => {
@@ -80,7 +83,6 @@ const MusicDash = () => {
         <Searchbar selectOptions={options} />
         <ActionRow>
           <ResultsTable
-            ids={data?.compoundQuery.ids}
             loading={loading}
             incPage={handlePageIncrement}
             page={page}

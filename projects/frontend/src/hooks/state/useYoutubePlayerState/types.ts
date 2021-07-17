@@ -1,13 +1,12 @@
 import { Maybe } from '../../../types/utility/maybe';
+import { PlaylistTrack, TrackIdTuple } from '../usePlaylistsState/types';
 
 export interface YoutubePlayerState {
-  trackId: Maybe<string>;
+  trackId: Maybe<TrackIdTuple>;
   playState: PlayState;
-  playFocus: PlayFocusSource;
 }
 
 export type PlayState = 'playing' | 'stopped' | 'loading';
-export type PlayFocusSource = string;
 
 export interface TrackStatus {
   active: boolean;
@@ -15,10 +14,11 @@ export interface TrackStatus {
 }
 
 export interface HookProps {
+  currentTrack: Maybe<TrackIdTuple>;
   youtubePlayerState: YoutubePlayerState;
   stop: VoidFunction;
   pause: VoidFunction;
   resume: VoidFunction;
-  play: (id: string, source: PlayFocusSource) => void;
-  trackStatus: (id: string, source: PlayFocusSource) => TrackStatus;
+  play: (id: TrackIdTuple) => void;
+  trackStatus: (track: PlaylistTrack) => TrackStatus;
 }

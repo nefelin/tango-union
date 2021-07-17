@@ -1,4 +1,3 @@
-import { useReactiveVar } from '@apollo/client';
 import {
   PauseCircleOutline,
   PlayCircleFilledWhiteOutlined,
@@ -9,33 +8,37 @@ import React, { useContext } from 'react';
 
 import { PlaylistConfigContext } from '../../../../context/playlistConfig.context';
 import { useHoveredRowState } from '../../../../hooks/state/useHoveredRowState';
+import { PlaylistTrack } from '../../../../hooks/state/usePlaylistsState/types';
+import { tupleIdFromPlaylistTrack } from '../../../../hooks/state/usePlaylistsState/util';
 import { useYoutubePlayerState } from '../../../../hooks/state/useYoutubePlayerState';
 import { Loader } from '../overlayRenderer/styled';
 import { StyledFakeButton } from './styles';
 import { CellProps } from './types';
 
 const PlayCell = ({ song, rowIndex }: CellProps) => {
-  const { name: playlistName } = useContext(PlaylistConfigContext);
   const {
     youtubePlayerState: { playState },
     trackStatus,
   } = useYoutubePlayerState();
-  const { active } = trackStatus(song.id, playlistName);
+  const { active } = trackStatus(song);
 
   const showLoading = playState === 'loading' && active;
   return showLoading ? (
     <Loader small color="black" />
   ) : (
-    <DynamicPlayButton rowIndex={rowIndex} id={song.id} />
+    <DynamicPlayButton
+      rowIndex={rowIndex}
+      track={song}
+    />
   );
 };
 
 const DynamicPlayButton = ({
   rowIndex,
-  id,
+  track,
 }: {
   rowIndex: number;
-  id: string;
+  track: PlaylistTrack;
 }) => {
   const { play, stop } = useYoutubePlayerState();
   const { name: playlistName } = useContext(PlaylistConfigContext);
@@ -44,8 +47,8 @@ const DynamicPlayButton = ({
     rowLens: { rowIndex, tableName: playlistName },
   });
 
-  const { active, playing } = trackStatus(id, playlistName);
-  const action = () => (playing ? stop() : play(id, playlistName));
+  const { active, playing } = trackStatus(track);
+  const action = () => (playing ? stop() : play(tupleIdFromPlaylistTrack(track)));
 
   const icon = active
     ? activeRowIcon(hovered, playing)

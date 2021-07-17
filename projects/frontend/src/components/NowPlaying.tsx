@@ -20,7 +20,7 @@ const NowPlaying = () => {
   } = useYoutubePlayerState();
 
   const track = client.readFragment<SimpleTrack>({
-    id: `SimpleTrack:${trackId}`,
+    id: `SimpleTrack:${trackId?.[0]}`,
     fragment: TrackDetailFragmentFragmentDoc,
   });
 
