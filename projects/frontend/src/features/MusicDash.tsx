@@ -13,7 +13,7 @@ import ResultsTable from '../components/ResultsTable';
 import { useSortState } from '../components/ResultsTable/state/sort.state';
 import Searchbar from '../components/Searchbar';
 import TopBar from '../components/TopBar';
-import { usePlaylistsState } from '../hooks/state/usePlaylistsState';
+import { usePlaylistState } from '../hooks/state/usePlaylistState';
 import { useSearchbarState } from '../hooks/state/useSearchbarState';
 
 const emptyOptions: FullCountFragmentFragment['counts'] = {
@@ -27,7 +27,7 @@ const MusicDash = () => {
   const [options, setOptions] = useState(emptyOptions);
   const { searchbarState } = useSearchbarState();
   const { sortInput, resetSort } = useSortState();
-  const { addTracks, replaceTracks } = usePlaylistsState('results');
+  const { addTracks, replaceTracks } = usePlaylistState('results');
   const [debouncedSearch] = useDebounce(searchbarState, 300, {
     equalityFn: objCompare,
   });

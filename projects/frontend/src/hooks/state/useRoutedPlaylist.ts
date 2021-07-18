@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { usePlaylistsState } from './usePlaylistsState';
+import { usePlaylistState } from './usePlaylistState';
 import { useRoutedState } from './useRoutedState';
 
 interface Props {
@@ -13,9 +13,8 @@ interface Props {
 
 export const useRoutedPlaylist = (): Props => {
   const { tracks, setTracks } = useRoutedState();
-  const { tracks: stateTracks } = usePlaylistsState('quicklist');
+  const { tracks: stateTracks } = usePlaylistState('quicklist');
 
-  console.log('routehook')
   useEffect(() => {
     replaceTracks(stateTracks.map(x => x[0])) // pull song ids from idtuples
   }, [stateTracks])

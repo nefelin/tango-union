@@ -6,7 +6,7 @@ import BaseTable, { ColumnShape } from 'react-base-table';
 
 import { SimpleTrack } from '../../../../../generated/graphql';
 import { PlaylistConfigContext } from '../../../../context/playlistConfig.context';
-import { useGlobalPlaylistsState } from '../../../../hooks/state/usePlaylistsState';
+import { useGlobalPlaylistsState } from '../../../../hooks/state/useGlobalPlaylistState';
 import { reactiveTableRowsVisible } from '../../resultsTable.state';
 import { StyledFakeButton } from './styles';
 

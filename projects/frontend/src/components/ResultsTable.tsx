@@ -3,7 +3,7 @@ import 'react-base-table/styles.css';
 import React from 'react';
 
 import { PlaylistConfigContext } from '../context/playlistConfig.context';
-import { usePlaylistsState } from '../hooks/state/usePlaylistsState';
+import { usePlaylistState } from '../hooks/state/usePlaylistState';
 import ResultsTableBody from './ResultsTable/ResultsTableBody';
 import StyledTableContainer from './ResultsTable/styled';
 import useCacheStitchedIdFetch from './ResultsTable/useCacheStitchedIdFetch';
@@ -15,7 +15,7 @@ interface Props {
 }
 
 const ResultsTable = ({ loading = false, page, incPage }: Props) => {
-  const {tracks: ids} = usePlaylistsState('results');
+  const {tracks: ids} = usePlaylistState('results');
   const [tracks, tracksLoading] = useCacheStitchedIdFetch(ids);
 
   const tableLoading = loading || tracksLoading;

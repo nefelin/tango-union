@@ -4,7 +4,7 @@ import YouTube from 'react-youtube';
 import { YouTubePlayer } from 'youtube-player/dist/types';
 
 import { useTrackDetailsBatchQuery } from '../../generated/graphql';
-import { useGlobalPlaylistsState } from '../hooks/state/usePlaylistsState';
+import { useGlobalPlaylistsState } from '../hooks/state/useGlobalPlaylistState';
 import { useYoutubePlayerState } from '../hooks/state/useYoutubePlayerState';
 import { Maybe } from '../types/utility/maybe';
 import {
