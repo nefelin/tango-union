@@ -6,7 +6,7 @@ import {
 import React, { MouseEvent } from 'react';
 
 import { SimpleTrack } from '../../../../../generated/graphql';
-import { usePlaylistState } from '../../../../hooks/state/usePlaylistState';
+import { usePlaylistsState } from '../../../../hooks/state/usePlaylistsState';
 import { useSearchbarState } from '../../../../hooks/state/useSearchbarState';
 import { SearchbarState } from '../../../Searchbar/types';
 import { searchStateFromTrack } from '../util';
@@ -14,16 +14,13 @@ import { StyledFakeButton } from './styles';
 import { CellProps, SongRenderer } from './types';
 
 export const ActionCell: SongRenderer = ({ song }: CellProps) => {
-  const { addTrack, removeTrack } = usePlaylistState();
+  const { addTracks } = usePlaylistsState('quicklist');
 
   return (
     <>
       <SearchButton song={song} />
-      <StyledFakeButton onClick={() => addTrack(song.id)}>
+      <StyledFakeButton onClick={() => addTracks([song.id])}>
         <FormatListBulletedOutlined />
-      </StyledFakeButton>
-      <StyledFakeButton onClick={() => removeTrack(song.id)}>
-        <CancelOutlined />
       </StyledFakeButton>
     </>
   );
