@@ -17,19 +17,21 @@ import * as React from 'react';
 import BaseTable, { AutoResizer } from 'react-base-table';
 import { createPortal } from 'react-dom';
 
-import { SimpleTrack } from '../../../generated/graphql';
-import { useRoutedPlaylist } from '../../hooks/state/useRoutedPlaylist';
-import { playlistRowRenderer, useSelection } from './DraggableTrack';
+import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
+import { tupleIdFromPlaylistTrack } from '../../hooks/state/usePlaylistsState/util';
+import { usePlaylistState } from '../../hooks/state/usePlaylistState';
+import { useSelectionState } from '../../hooks/state/useSelectionState';
+import { playlistRowRenderer } from './DraggableTrack';
 import { PlaylistContainer, TableContainer } from './PlaylistBody/styles';
 import TrackCountOverlay from './PlaylistBody/TrackCountOverlay';
 import { moveMany } from './PlaylistBody/util';
 import playlistColumns from './playlistColumns';
 
-const PlaylistBody = ({ tracks }: { tracks: Array<SimpleTrack> }) => {
-  const { isSelected, selected } = useSelection();
-  const { replaceTracks } = useRoutedPlaylist();
+const PlaylistBody = ({ tracks }: { tracks: Array<PlaylistTrack> }) => {
+  const { isSelected, selected } = useSelectionState();
+  const { rearrangeTracks } = usePlaylistState('quicklist');
   const [orderedTracks, setOrderedTracks] = useState(tracks);
-  const trackIds = orderedTracks.map(({ id }) => id.toString());
+  const trackIds = orderedTracks.map(tupleIdFromPlaylistTrack);
   useEffect(() => setOrderedTracks(tracks), [tracks]);
 
   const sensors = useSensors(
@@ -49,12 +51,12 @@ const PlaylistBody = ({ tracks }: { tracks: Array<SimpleTrack> }) => {
       return;
     }
 
-    const activeIndex = trackIds.indexOf(active.id);
-    const overIndex = trackIds.indexOf(over?.id);
+    const activeIndex = trackIds.findIndex(id => id[1] === active.id);
+    const overIndex = trackIds.findIndex(id => id[1] === over?.id);
 
     if (!isSelected(over.id)) {
-      replaceTracks(
-        moveMany(trackIds, selected, over.id, overIndex > activeIndex)
+      rearrangeTracks(
+        moveMany(trackIds, selected, over.id, overIndex > activeIndex),
       );
     }
 

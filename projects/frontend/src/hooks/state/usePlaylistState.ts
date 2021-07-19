@@ -6,7 +6,7 @@ import {
   generateLocalSongId,
   newSongList,
 } from './useGlobalPlaylistState/util';
-import { Playlist, PlaylistId, TrackIdTuple } from './usePlaylistsState/types';
+import { LocalSongId, Playlist, PlaylistId, SongId, TrackIdTuple } from './usePlaylistsState/types';
 
 export const usePlaylistState = (listId: PlaylistId) => {
   const lists = useReactiveVar(reactiveSongLists);
@@ -26,7 +26,7 @@ export const usePlaylistState = (listId: PlaylistId) => {
     reactiveSongLists({ ...lists, [listId]: newList });
   });
 
-  const removeTrack = (id: string) => {
+  const removeTrack = (id: LocalSongId) => {
     const prevList = reactiveSongLists()[listId] || newSongList(listId);
     const newTracks = prevList.tracks.filter(([_, localId]) => localId !== id);
 
@@ -36,7 +36,7 @@ export const usePlaylistState = (listId: PlaylistId) => {
     });
   };
 
-  const replaceTracks = (ids: Array<string>) => {
+  const replaceTracks = (ids: Array<SongId>) => {
     const prevList = reactiveSongLists()[listId] || newSongList(listId);
 
     const tracksWithLocalIds: Array<TrackIdTuple> = ids.map((id) => [
@@ -50,11 +50,21 @@ export const usePlaylistState = (listId: PlaylistId) => {
     });
   };
 
+  const rearrangeTracks = (ids: Array<TrackIdTuple>) => {
+    const prevList = reactiveSongLists()[listId] || newSongList(listId);
+
+    reactiveSongLists({
+      ...reactiveSongLists(),
+      [listId]: { ...prevList, tracks: ids },
+    });
+  }
+
   return {
     tracks: thisList.tracks,
     addTracks,
     removeTrack,
     // removeIndex <-- FixME
     replaceTracks,
+    rearrangeTracks,
   };
 };

@@ -7,9 +7,10 @@ import { PlaylistConfigContext } from '../../../context/playlistConfig.context';
 import { useHoveredRowState } from '../../../hooks/state/useHoveredRowState';
 import { PlaylistTrack } from '../../../hooks/state/usePlaylistsState/types';
 import { tupleIdFromPlaylistTrack } from '../../../hooks/state/usePlaylistsState/util';
+import { useSelectionHandlers } from '../../../hooks/state/useSelectionHandlers';
+import { useSelectionState } from '../../../hooks/state/useSelectionState';
 import { useYoutubePlayerState } from '../../../hooks/state/useYoutubePlayerState';
 import PlayableRow from '../../PlayableRow';
-import { useSelection } from '../../Playlist/DraggableTrack';
 
 const rowRenderer: BaseTableProps<PlaylistTrack>['rowRenderer'] = ({
   cells,
@@ -27,7 +28,7 @@ const CustomRow = ({ cells, rowData, rowIndex }: Props) => {
   const { name: playlistName } = useContext(PlaylistConfigContext);
   const { trackStatus, play } = useYoutubePlayerState();
   const { setHoveredRow, clearHoveredRow } = useHoveredRowState();
-  const { isSelected } = useSelection(rowData.id.toString());
+  const { isSelected } = useSelectionHandlers(rowData.localSongId);
 
   const status = trackStatus(rowData);
 
