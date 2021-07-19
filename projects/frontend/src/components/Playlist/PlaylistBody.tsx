@@ -81,7 +81,7 @@ const PlaylistBody = ({ tracks }: { tracks: Array<PlaylistTrack> }) => {
         onDragStart={() => setDragging(true)}
       >
         <SortableContext
-          items={orderedTracks?.map(({ id }) => id.toString()) || []}
+          items={orderedTracks?.map(({ localSongId }) => localSongId) || []}
           strategy={verticalListSortingStrategy}
         >
           <TableContainer>

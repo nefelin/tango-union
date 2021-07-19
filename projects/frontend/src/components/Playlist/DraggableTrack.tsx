@@ -42,7 +42,7 @@ const DraggableTrack = ({ rowData: track, cells }: Props) => {
     border: 'none',
     backgroundColor: 'blue',
     width: '100%',
-    zIndex: 10,
+    zIndex: 1000,
   };
 
   return (
