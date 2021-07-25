@@ -70,22 +70,14 @@ const CustomSelect = ({ selectOptions, id, label, setter, value }: Props) => {
             isSearchable
             isMulti
             filterOption={customSearch}
-            onChange={(newSelection, triggeredAction) => {
-              setSelection(newSelection);
-              if (
-                triggeredAction.action === 'clear' ||
-                triggeredAction.action === 'remove-value'
-              ) {
-                handleDispatchState(newSelection);
-              }
-            }}
+            onChange={handleDispatchState}
             onMenuClose={handleDispatchState}
             onBlur={() => handleDispatchState()}
             value={selection}
             inputId={id}
             options={options}
             formatOptionLabel={formatOptionLabel}
-            closeMenuOnSelect={false}
+            closeMenuOnSelect
           />
         );
       }}
