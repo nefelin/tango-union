@@ -52,10 +52,10 @@ const MusicDash = () => {
   document.body.style.margin = '';
 
   useEffect(() => {
-    if (data?.compoundQuery.counts) {
+    if (data?.compoundQuery) {
       setOptions(data.compoundQuery.counts);
+      replaceTracks(data?.compoundQuery.ids ?? [])
     }
-    replaceTracks(data?.compoundQuery.ids ?? [])
   }, [data?.compoundQuery]);
 
   const resetPageAndSort = () => {

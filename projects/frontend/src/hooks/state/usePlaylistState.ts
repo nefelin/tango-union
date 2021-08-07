@@ -63,7 +63,6 @@ export const usePlaylistState = (listId: PlaylistId) => {
     tracks: thisList.tracks,
     addTracks,
     removeTracks,
-    // removeIndex <-- FixME
     replaceTracks,
     rearrangeTracks,
   };

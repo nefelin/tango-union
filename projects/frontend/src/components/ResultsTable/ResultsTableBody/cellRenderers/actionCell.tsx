@@ -1,5 +1,4 @@
 import {
-  CancelOutlined,
   FormatListBulletedOutlined,
   SearchOutlined,
 } from '@material-ui/icons';

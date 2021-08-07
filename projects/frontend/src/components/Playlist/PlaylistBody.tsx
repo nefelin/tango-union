@@ -22,20 +22,21 @@ import { tupleIdFromPlaylistTrack } from '../../hooks/state/usePlaylistsState/ut
 import { usePlaylistState } from '../../hooks/state/usePlaylistState';
 import { useSelectionState } from '../../hooks/state/useSelectionState';
 import useKeyboardShortcut from '../../hooks/useKeyboardShortcut';
+import { Maybe } from '../../types/utility/maybe';
 import { playlistRowRenderer } from './DraggableTrack';
 import { PlaylistContainer, TableContainer } from './PlaylistBody/styles';
 import TrackCountOverlay from './PlaylistBody/TrackCountOverlay';
 import { moveMany } from './PlaylistBody/util';
 import playlistColumns from './playlistColumns';
 
-const PlaylistBody = ({ tracks }: { tracks: Array<PlaylistTrack> }) => {
+const PlaylistBody = ({ tracks }: { tracks: Maybe<Array<PlaylistTrack>> }) => {
   const { isSelected, selected, removeSelected } = useSelectionState();
   const { rearrangeTracks, removeTracks } = usePlaylistState('quicklist');
-  const [orderedTracks, setOrderedTracks] = useState(tracks);
+  const [orderedTracks, setOrderedTracks] = useState(tracks ?? []);
   const trackIds = orderedTracks.map(tupleIdFromPlaylistTrack);
   useKeyboardShortcut(['Backspace', 'Delete'], () => {removeTracks(...selected); removeSelected(...selected)})
 
-  useEffect(() => setOrderedTracks(tracks), [tracks]);
+  useEffect(() => setOrderedTracks(tracks ?? []), [tracks]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -93,7 +94,7 @@ const PlaylistBody = ({ tracks }: { tracks: Array<PlaylistTrack> }) => {
                 return (
                   <BaseTable
                     rowKey="fakeId"
-                    data={tracks.map((track, index) => ({
+                    data={tracks?.map((track, index) => ({
                       ...track,
                       fakeId: `${track.id}_${index}`, // gnarly way to allow duplicate rows
                     }))}

@@ -8,6 +8,7 @@ import BaseTable, {
 import styled from 'styled-components';
 
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
+import { Maybe } from '../../types/utility/maybe';
 import {
   reactiveTableRowsVisible,
 } from './resultsTable.state';
@@ -25,7 +26,7 @@ const TableHeaderCell: TableComponents['TableHeaderCell'] = ({
 
 interface Props {
   incPage?: VoidFunction;
-  tracks: Array<PlaylistTrack>;
+  tracks: Maybe<Array<PlaylistTrack>>;
   page: number;
   loading: boolean;
 }
@@ -36,10 +37,10 @@ const ResultsTableBody = ({ tracks, incPage, page, loading }: Props) => {
   const { sort, setSort } = useSortState();
 
   useEffect(() => {
-    if (!loading) {
+    if (tracks) {
       setLoadedTracks(tracks);
     }
-  }, [tracks, loading]);
+  }, [tracks]);
 
   useEffect(() => {
     if (page === 0) {

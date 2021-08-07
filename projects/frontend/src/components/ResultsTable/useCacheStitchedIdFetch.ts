@@ -1,7 +1,6 @@
 import { useApolloClient } from '@apollo/client';
 
 import {
-  SimpleTrack,
   TrackDetailFragmentFragmentDoc,
   useTrackDetailsBatchQuery,
 } from '../../../generated/graphql';
@@ -14,7 +13,7 @@ import { Maybe } from '../../types/utility/maybe';
 // fixme would be nice to cut down on re-render
 const useCacheStitchedIdFetch = (
   ids?: Array<TrackIdTuple>,
-): [Array<PlaylistTrack>, boolean] => {
+): [Maybe<Array<PlaylistTrack>>, boolean] => {
   const client = useApolloClient();
 
   const fetchIds =
@@ -47,10 +46,9 @@ const useCacheStitchedIdFetch = (
         localSongId,
       };
     }) ?? [];
-
   return [
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    tracks.indexOf(null) === -1 ? (tracks as Array<PlaylistTrack>) : [],
+    tracks.indexOf(null) === -1 ? (tracks as Array<PlaylistTrack>) : null,
     loading,
   ];
 };
