@@ -2,7 +2,7 @@ import { makeVar, useReactiveVar } from '@apollo/client';
 
 import { LocalSongId } from './usePlaylistsState/types';
 
-const reactiveSelectedTracks = makeVar<Array<LocalSongId>>([]);
+export const reactiveSelectedTracks = makeVar<Array<LocalSongId>>([]);
 
 export const useSelectionState = () => {
   // fixme handle copying
@@ -12,9 +12,9 @@ export const useSelectionState = () => {
     reactiveSelectedTracks([...reactiveSelectedTracks(), id]);
   };
 
-  const removeSelected = (id: LocalSongId) => {
+  const removeSelected = (...ids: Array<LocalSongId>) => {
     reactiveSelectedTracks(
-      reactiveSelectedTracks().filter((listId) => id !== listId),
+      reactiveSelectedTracks().filter((listId) => !ids.includes(listId)),
     );
   };
 

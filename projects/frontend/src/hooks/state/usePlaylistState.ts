@@ -26,9 +26,9 @@ export const usePlaylistState = (listId: PlaylistId) => {
     reactiveSongLists({ ...lists, [listId]: newList });
   });
 
-  const removeTrack = (id: LocalSongId) => {
+  const removeTracks = (...ids: Array<LocalSongId>) => {
     const prevList = reactiveSongLists()[listId] || newSongList(listId);
-    const newTracks = prevList.tracks.filter(([_, localId]) => localId !== id);
+    const newTracks = prevList.tracks.filter(([_, localId]) => !ids.includes(localId));
 
     reactiveSongLists({
       ...reactiveSongLists(),
@@ -62,7 +62,7 @@ export const usePlaylistState = (listId: PlaylistId) => {
   return {
     tracks: thisList.tracks,
     addTracks,
-    removeTrack,
+    removeTracks,
     // removeIndex <-- FixME
     replaceTracks,
     rearrangeTracks,

@@ -21,6 +21,7 @@ import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
 import { tupleIdFromPlaylistTrack } from '../../hooks/state/usePlaylistsState/util';
 import { usePlaylistState } from '../../hooks/state/usePlaylistState';
 import { useSelectionState } from '../../hooks/state/useSelectionState';
+import useKeyboardShortcut from '../../hooks/useKeyboardShortcut';
 import { playlistRowRenderer } from './DraggableTrack';
 import { PlaylistContainer, TableContainer } from './PlaylistBody/styles';
 import TrackCountOverlay from './PlaylistBody/TrackCountOverlay';
@@ -28,10 +29,12 @@ import { moveMany } from './PlaylistBody/util';
 import playlistColumns from './playlistColumns';
 
 const PlaylistBody = ({ tracks }: { tracks: Array<PlaylistTrack> }) => {
-  const { isSelected, selected } = useSelectionState();
-  const { rearrangeTracks } = usePlaylistState('quicklist');
+  const { isSelected, selected, removeSelected } = useSelectionState();
+  const { rearrangeTracks, removeTracks } = usePlaylistState('quicklist');
   const [orderedTracks, setOrderedTracks] = useState(tracks);
   const trackIds = orderedTracks.map(tupleIdFromPlaylistTrack);
+  useKeyboardShortcut(['Backspace', 'Delete'], () => {removeTracks(...selected); removeSelected(...selected)})
+
   useEffect(() => setOrderedTracks(tracks), [tracks]);
 
   const sensors = useSensors(
