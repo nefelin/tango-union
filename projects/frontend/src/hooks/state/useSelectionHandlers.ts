@@ -1,12 +1,16 @@
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, useContext, useState } from 'react';
 
+import { PlaylistConfigContext } from '../../context/playlistConfig.context';
+import { reactiveSongLists } from './useGlobalPlaylistState/songLists.state';
 import { LocalSongId} from './usePlaylistsState/types';
+import { localSongIdFromTrackIdTuple } from './usePlaylistsState/util';
 import { useSelectionState } from './useSelectionState';
 
 export const useSelectionHandlers = (id: LocalSongId) => {
   const { removeSelected, addSelected, replaceSelected, isSelected } =
     useSelectionState();
   const [startedSelected, setStartedSelected] = useState(false);
+  const {name: playlistId} = useContext(PlaylistConfigContext);
 
   const toggleSelected = () => {
     if (isSelected(id)) {
@@ -18,14 +22,26 @@ export const useSelectionHandlers = (id: LocalSongId) => {
 
   const handlers = {
     onMouseDown: (e: MouseEvent) => {
-      // fixme at proper shift selecting
       if (!isSelected(id)) {
-        if (e.metaKey || e.shiftKey) {
+        setStartedSelected(false);
+        if (e.metaKey) {
           addSelected(id);
-          setStartedSelected(false);
+        } else if (e.shiftKey) {
+          const playlist = reactiveSongLists()[playlistId];
+          const tracks = playlist?.tracks ?? [];
+          const selection = playlist?.selection ?? [];
+          const tail = !!selection.length && selection[selection.length-1];
+
+          if (tail) {
+            const tailIndex = tracks.findIndex(([_, localSongId]) => tail === localSongId);
+            const thisIndex = tracks.findIndex(([_, localSongId]) => id === localSongId);
+            const ordered = tailIndex > thisIndex ? [thisIndex, tailIndex] : [tailIndex, thisIndex];
+            const tracksToAdd = tracks.slice(ordered[0], ordered[1]).map(localSongIdFromTrackIdTuple);
+            addSelected(...tracksToAdd)
+          }
+          addSelected(id)
         } else {
           replaceSelected(id);
-          setStartedSelected(true);
         }
       } else {
         setStartedSelected(true);
@@ -34,7 +50,10 @@ export const useSelectionHandlers = (id: LocalSongId) => {
 
     onMouseUp: (e: MouseEvent) => {
       if (isSelected(id) && startedSelected) {
-        if (e.metaKey || e.shiftKey) {
+        if (e.shiftKey) {
+          return
+        }
+        if (e.metaKey) {
           removeSelected(id);
         } else {
           replaceSelected(id);

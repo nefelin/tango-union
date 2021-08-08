@@ -9,3 +9,5 @@ export const sameId = (one: Maybe<TrackIdTuple>, two: Maybe<TrackIdTuple>) => {
   }
   return one[0] === two[0] && one[1] === two[1];
 }
+
+export const localSongIdFromTrackIdTuple = (tuple: TrackIdTuple) => tuple[1];

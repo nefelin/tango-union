@@ -8,13 +8,13 @@ export const useSelectionState = () => {
   // fixme handle copying
   const {name: playlistId} = useContext(PlaylistConfigContext)
 
-  const addSelected = (id: LocalSongId) => {
+  const addSelected = (...ids: Array<LocalSongId>) => {
     const lists = reactiveSongLists();
     const thisList = lists[playlistId];
     if (!thisList) {
       console.error(`Playlist '${playlistId}' not found, can't add selection`)
     } else {
-      const newSelection = [...thisList.selection, id];
+      const newSelection = [...thisList.selection, ...ids];
       reactiveSongLists({...lists, [playlistId]: {...thisList, selection: newSelection}});
     }
   };
