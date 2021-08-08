@@ -11,6 +11,7 @@ import { useSelectionHandlers } from '../../../hooks/state/useSelectionHandlers'
 import { useSelectionState } from '../../../hooks/state/useSelectionState';
 import { useYoutubePlayerState } from '../../../hooks/state/useYoutubePlayerState';
 import PlayableRow from '../../PlayableRow';
+import DraggableTrack from '../../Playlist/DraggableTrack';
 
 const rowRenderer: BaseTableProps<PlaylistTrack>['rowRenderer'] = ({
   cells,
@@ -25,22 +26,24 @@ interface Props {
 }
 
 const CustomRow = ({ cells, rowData, rowIndex }: Props) => {
-  const { trackStatus, play } = useYoutubePlayerState();
-  const { listeners } = useHoveredRowState(rowIndex);
-  const { isSelected } = useSelectionHandlers(rowData.localSongId);
+  // const { trackStatus, play } = useYoutubePlayerState();
+  // const { listeners } = useHoveredRowState(rowIndex);
+  // const { isSelected } = useSelectionHandlers(rowData.localSongId);
+  //
+  // const status = trackStatus(rowData);
+  //
+  // return (
+  //   <PlayableRow
+  //     {...listeners}
+  //     selected={isSelected()}
+  //     onDoubleClick={() => play(tupleIdFromPlaylistTrack(rowData))}
+  //     status={status}
+  //   >
+  //     {cells}
+  //   </PlayableRow>
+  // );
+  return <DraggableTrack cells={cells} rowData={rowData} rowIndex={rowIndex} />;
 
-  const status = trackStatus(rowData);
-
-  return (
-    <PlayableRow
-      {...listeners}
-      selected={isSelected()}
-      onDoubleClick={() => play(tupleIdFromPlaylistTrack(rowData))}
-      status={status}
-    >
-      {cells}
-    </PlayableRow>
-  );
 };
 
 export default rowRenderer;

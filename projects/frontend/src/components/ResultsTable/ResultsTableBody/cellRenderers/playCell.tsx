@@ -4,9 +4,8 @@ import {
   VolumeMute,
   VolumeUp,
 } from '@material-ui/icons';
-import React, { useContext } from 'react';
+import React from 'react';
 
-import { PlaylistConfigContext } from '../../../../context/playlistConfig.context';
 import { useHoveredRowState } from '../../../../hooks/state/useHoveredRowState';
 import { PlaylistTrack } from '../../../../hooks/state/usePlaylistsState/types';
 import { tupleIdFromPlaylistTrack } from '../../../../hooks/state/usePlaylistsState/util';

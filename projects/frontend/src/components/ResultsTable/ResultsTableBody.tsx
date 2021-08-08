@@ -1,5 +1,5 @@
 import * as r from 'ramda';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import BaseTable, {
   AutoResizer,
   BaseTableProps,
@@ -9,9 +9,7 @@ import styled from 'styled-components';
 
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
 import { Maybe } from '../../types/utility/maybe';
-import {
-  reactiveTableRowsVisible,
-} from './resultsTable.state';
+import { reactiveTableRowsVisible } from './resultsTable.state';
 import overlayRenderer from './ResultsTableBody/overlayRenderer';
 import rowRenderer from './ResultsTableBody/rowRenderer';
 import searchResultColumns from './ResultsTableBody/searchResultColumns';
@@ -29,12 +27,24 @@ interface Props {
   tracks: Maybe<Array<PlaylistTrack>>;
   page: number;
   loading: boolean;
+  lockScroll: boolean;
 }
 
-const ResultsTableBody = ({ tracks, incPage, page, loading }: Props) => {
+const ResultsTableBody = ({
+  tracks,
+  incPage,
+  page,
+  loading,
+  lockScroll,
+}: Props) => {
   const [loadedTracks, setLoadedTracks] = useState<Array<PlaylistTrack>>([]);
   const tableRef = React.createRef<BaseTable<unknown>>();
   const { sort, setSort } = useSortState();
+
+  const lockedScrollTop = useRef<Maybe<number>>(null);
+  useEffect(() => {
+    if (lockScroll === false) lockedScrollTop.current = null;
+  }, [lockScroll]);
 
   useEffect(() => {
     if (tracks) {
@@ -66,12 +76,30 @@ const ResultsTableBody = ({ tracks, incPage, page, loading }: Props) => {
 
   const loadingMore = page > 0 && loading;
 
+  const handleScroll = ({
+    scrollTop,
+  }: {
+    scrollLeft: number;
+    scrollTop: number;
+    horizontalScrollDirection: 'forward' | 'backward';
+    verticalScrollDirection: 'forward' | 'backward';
+    scrollUpdateWasRequested: boolean;
+  }) => {
+    if (lockScroll) {
+      if (!lockedScrollTop.current) {
+        lockedScrollTop.current = scrollTop;
+      }
+      tableRef.current?.scrollToTop(lockedScrollTop.current);
+    }
+  };
+
   return (
     <Container>
       <AutoResizer>
         {({ width, height }) => {
           return (
             <BaseTable
+              onScroll={handleScroll}
               onRowsRendered={({ startIndex, stopIndex }) =>
                 reactiveTableRowsVisible([startIndex, stopIndex])
               }

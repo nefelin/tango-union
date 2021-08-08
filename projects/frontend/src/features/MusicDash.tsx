@@ -7,6 +7,7 @@ import {
   FullCountFragmentFragment,
   useCompoundQueryQuery,
 } from '../../generated/graphql';
+import DragContext from '../components/DragContext';
 import { Footer, FooterFooter, FooterHeader } from '../components/Footer';
 import NowPlaying from '../components/NowPlaying';
 import ResultsTable from '../components/ResultsTable';
@@ -80,6 +81,7 @@ const MusicDash = () => {
     <>
       <TopBar />
       <MusicDashContainer>
+        <DragContext>
         <Searchbar selectOptions={options} />
         <ActionRow>
           <ResultsTable
@@ -89,6 +91,7 @@ const MusicDash = () => {
           />
           <NowPlaying />
         </ActionRow>
+        </DragContext>
       </MusicDashContainer>
       <Footer>
         <FooterHeader>
