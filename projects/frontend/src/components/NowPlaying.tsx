@@ -1,5 +1,4 @@
-import { useApolloClient, useReactiveVar } from '@apollo/client';
-import { Paper } from '@material-ui/core';
+import { useApolloClient } from '@apollo/client';
 import * as React from 'react';
 import styled from 'styled-components';
 
@@ -7,11 +6,11 @@ import {
   SimpleTrack,
   TrackDetailFragmentFragmentDoc,
 } from '../../generated/graphql';
+import { PlaylistConfigContext } from '../context/playlistConfig.context';
 import { useYoutubePlayerState } from '../hooks/state/useYoutubePlayerState';
 import TrackDetails from './PlayingNow/TrackDetails';
 import Playlists from './Playlists';
 import YoutubePlayer from './YoutubePlayer';
-import YoutubePlaylistLink from './YoutubePlaylistLink';
 
 const NowPlaying = () => {
   const client = useApolloClient();
@@ -31,7 +30,9 @@ const NowPlaying = () => {
         <YoutubePlayer />
         <TrackDetails track={track} />
       </DetailsRow>
-      <Playlists />
+      <PlaylistConfigContext.Provider value={{name:'quicklist'}}>
+        <Playlists />
+      </PlaylistConfigContext.Provider>
     </NowPlayingCard>
   );
 };

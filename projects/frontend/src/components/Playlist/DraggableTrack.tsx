@@ -3,6 +3,7 @@ import { CSS } from '@dnd-kit/utilities';
 import React, { CSSProperties } from 'react';
 import { BaseTableProps } from 'react-base-table';
 
+import { useHoveredRowState } from '../../hooks/state/useHoveredRowState';
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
 import { tupleIdFromPlaylistTrack } from '../../hooks/state/usePlaylistsState/util';
 import { useSelectionHandlers } from '../../hooks/state/useSelectionHandlers';
@@ -12,15 +13,18 @@ import PlayableRow from '../PlayableRow';
 interface Props {
   cells: Array<React.ReactNode>;
   rowData: PlaylistTrack;
+  rowIndex: number;
 }
 
 export const playlistRowRenderer =
   (): BaseTableProps<PlaylistTrack>['rowRenderer'] =>
-  ({ cells, rowData }) =>
-    <DraggableTrack cells={cells} rowData={rowData} />;
+  ({ cells, rowData, rowIndex }) =>
+    <DraggableTrack cells={cells} rowData={rowData} rowIndex={rowIndex} />;
 
-const DraggableTrack = ({ rowData: track, cells }: Props) => {
+const DraggableTrack = ({ rowData: track, cells, rowIndex}: Props) => {
   const { trackStatus, play } = useYoutubePlayerState();
+  const { setHoveredRow, clearHoveredRow } = useHoveredRowState();
+
   const status = trackStatus(track);
 
   const { isSelected, handlers } = useSelectionHandlers(track.localSongId);
@@ -57,6 +61,8 @@ const DraggableTrack = ({ rowData: track, cells }: Props) => {
         </PlayableRow>
       )}
       <PlayableRow
+        onMouseEnter={() => setHoveredRow({ rowIndex, tableName: 'quicklist' })}
+        onMouseLeave={() => clearHoveredRow()}
         status={status}
         selected={isSelected()}
         onDoubleClick={() => play(tupleIdFromPlaylistTrack(track))}

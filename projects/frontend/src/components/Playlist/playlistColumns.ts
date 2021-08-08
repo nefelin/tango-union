@@ -2,21 +2,31 @@ import { ColumnShape } from 'react-base-table';
 
 import { LengthCell } from '../ResultsTable/ResultsTableBody/cellRenderers/lengthCell';
 import { ListCell } from '../ResultsTable/ResultsTableBody/cellRenderers/listCell';
+import PlayCell from '../ResultsTable/ResultsTableBody/cellRenderers/playCell';
 import { cellRenderComponent } from '../ResultsTable/ResultsTableBody/cellRenderers/types';
 
 const playlistColumns: Array<ColumnShape> = [
   {
+    key: 'play',
+    dataKey: '',
+    title: '',
+    width:  53,
+    cellRenderer: cellRenderComponent(PlayCell),
+    sortable: false,
+    style: { padding: '0 0 0 3px' }
+  },
+  {
     key: 'title',
     dataKey: 'title',
     title: 'Title',
-    width: 250,
+    width: 230,
     resizable: true,
   },
   {
     key: 'orchestra',
     dataKey: 'orchestra',
     title: 'Orchestra',
-    width: 200,
+    width: 210,
     resizable: true,
     cellRenderer: cellRenderComponent(ListCell),
   },
@@ -24,7 +34,7 @@ const playlistColumns: Array<ColumnShape> = [
     key: 'singer',
     dataKey: 'singer',
     title: 'Singer',
-    width: 200,
+    width: 210,
     resizable: true,
     cellRenderer: cellRenderComponent(ListCell),
   },
