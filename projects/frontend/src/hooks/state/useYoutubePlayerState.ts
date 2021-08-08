@@ -38,7 +38,7 @@ export const useYoutubePlayerState = (): HookProps => {
 
   const play = (trackId: TrackIdTuple) => {
     const currentState = reactiveYoutubePlayerState();
-    const newTrack = trackId !== currentState.trackId;
+    const newTrack = !sameId(trackId, currentState.trackId);
     const playState = newTrack ? 'loading' : 'playing';
 
     reactiveYoutubePlayerState({
