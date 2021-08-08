@@ -1,6 +1,7 @@
 import 'react-base-table/styles.css';
 
 import React from 'react';
+import { useDebounce } from 'use-debounce';
 
 import { PlaylistConfigContext } from '../context/playlistConfig.context';
 import { usePlaylistState } from '../hooks/state/usePlaylistState';
@@ -17,8 +18,8 @@ interface Props {
 const ResultsTable = ({ loading = false, page, incPage }: Props) => {
   const {tracks: ids} = usePlaylistState('results');
   const [tracks, tracksLoading] = useCacheStitchedIdFetch(ids);
-
-  const tableLoading = loading || tracksLoading;
+  const [ tableLoading ] = useDebounce(loading || tracksLoading, 100)
+  
   return (
     <StyledTableContainer>
       <PlaylistConfigContext.Provider value={{ name: 'search' }}>
