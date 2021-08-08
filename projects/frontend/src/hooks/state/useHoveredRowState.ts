@@ -1,5 +1,7 @@
 import { makeVar, useReactiveVar } from '@apollo/client';
+import { useContext } from 'react';
 
+import { PlaylistConfigContext } from '../../context/playlistConfig.context';
 import { Maybe } from '../../types/utility/maybe';
 
 interface RowFocusState {
@@ -7,33 +9,28 @@ interface RowFocusState {
   tableName: string;
 }
 
-interface Props {
-  rowLens?: RowFocusState;
-}
-
-interface HoveredRowInterface {
-  hovered: boolean;
-  setHoveredRow: (x: RowFocusState) => void;
-  clearHoveredRow: VoidFunction;
-}
-
 const reactiveRowFocus = makeVar<Maybe<RowFocusState>>(null);
 
-export const useHoveredRowState = (props?: Props): HoveredRowInterface => {
+export const useHoveredRowState = (rowIndex: number) => {
+  const {name: tableName} = useContext(PlaylistConfigContext);
   const rowFocus = useReactiveVar(reactiveRowFocus);
 
   const hovered =
-    rowFocus?.rowIndex === props?.rowLens?.rowIndex &&
-    rowFocus?.tableName === props?.rowLens?.tableName;
+    rowFocus?.rowIndex === rowIndex &&
+    rowFocus?.tableName === tableName;
 
   const setHoveredRow = (r: RowFocusState) =>
     setTimeout(() => reactiveRowFocus(r), 0);
 
   const clearHoveredRow = () => reactiveRowFocus(null);
 
+  const listeners = {
+    onMouseEnter:() => setHoveredRow({ rowIndex, tableName }),
+  onMouseLeave:() => clearHoveredRow()
+  }
+
   return {
     hovered,
-    setHoveredRow,
-    clearHoveredRow,
+    listeners
   };
 };

@@ -41,11 +41,8 @@ const DynamicPlayButton = ({
   track: PlaylistTrack;
 }) => {
   const { play, stop } = useYoutubePlayerState();
-  const { name: playlistName } = useContext(PlaylistConfigContext);
   const { trackStatus } = useYoutubePlayerState();
-  const { hovered } = useHoveredRowState({
-    rowLens: { rowIndex, tableName: playlistName },
-  });
+  const { hovered } = useHoveredRowState(rowIndex);
 
   const { active, playing } = trackStatus(track);
   const action = () => (playing ? stop() : play(tupleIdFromPlaylistTrack(track)));

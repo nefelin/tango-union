@@ -25,7 +25,7 @@ export const playlistRowRenderer =
 
 const DraggableTrack = ({ rowData: track, cells, rowIndex}: Props) => {
   const { trackStatus, play } = useYoutubePlayerState();
-  const { setHoveredRow, clearHoveredRow } = useHoveredRowState();
+  const { listeners: hoverListeners } = useHoveredRowState(rowIndex);
 
   const status = trackStatus(track);
 
@@ -63,8 +63,7 @@ const DraggableTrack = ({ rowData: track, cells, rowIndex}: Props) => {
         </PlayableRow>
       )}
       <PlayableRow
-        onMouseEnter={() => setHoveredRow({ rowIndex, tableName: 'quicklist' })}
-        onMouseLeave={() => clearHoveredRow()}
+        {...hoverListeners}
         status={status}
         selected={isSelected()}
         onDoubleClick={() => play(tupleIdFromPlaylistTrack(track))}

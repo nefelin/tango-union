@@ -25,17 +25,15 @@ interface Props {
 }
 
 const CustomRow = ({ cells, rowData, rowIndex }: Props) => {
-  const { name: playlistName } = useContext(PlaylistConfigContext);
   const { trackStatus, play } = useYoutubePlayerState();
-  const { setHoveredRow, clearHoveredRow } = useHoveredRowState();
+  const { listeners } = useHoveredRowState(rowIndex);
   const { isSelected } = useSelectionHandlers(rowData.localSongId);
 
   const status = trackStatus(rowData);
 
   return (
     <PlayableRow
-      onMouseEnter={() => setHoveredRow({ rowIndex, tableName: playlistName })}
-      onMouseLeave={() => clearHoveredRow()}
+      {...listeners}
       selected={isSelected()}
       onDoubleClick={() => play(tupleIdFromPlaylistTrack(rowData))}
       status={status}
