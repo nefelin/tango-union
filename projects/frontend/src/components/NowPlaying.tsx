@@ -32,7 +32,6 @@ const NowPlaying = () => {
         <TrackDetails track={track} />
       </DetailsRow>
       <Playlists />
-      <YoutubePlaylistLink />
     </NowPlayingCard>
   );
 };
@@ -43,14 +42,13 @@ const DetailsRow = styled.div`
   flex-direction: row;
 `;
 
-const NowPlayingCard = styled(Paper)`
+const NowPlayingCard = styled.div`
   height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 10px;
-  padding: 20px;
   box-sizing: border-box;
 `;
 
