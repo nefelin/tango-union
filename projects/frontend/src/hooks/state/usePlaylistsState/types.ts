@@ -4,6 +4,7 @@ export interface Playlist {
   id: PlaylistId;
   label?: string;
   tracks: Array<TrackIdTuple>;
+  selection: Array<LocalSongId>;
 }
 
 export type LocalSongId = string; // an id that identifies a song as a unique instance, used to differentiate between duplicates in the same list or the same track on different lists

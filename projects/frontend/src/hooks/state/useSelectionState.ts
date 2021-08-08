@@ -1,27 +1,48 @@
-import { makeVar, useReactiveVar } from '@apollo/client';
+import { useContext } from 'react';
 
+import { PlaylistConfigContext } from '../../context/playlistConfig.context';
+import { reactiveSongLists } from './useGlobalPlaylistState/songLists.state';
 import { LocalSongId } from './usePlaylistsState/types';
-
-export const reactiveSelectedTracks = makeVar<Array<LocalSongId>>([]);
 
 export const useSelectionState = () => {
   // fixme handle copying
-  const selected = useReactiveVar(reactiveSelectedTracks);
+  const {name: playlistId} = useContext(PlaylistConfigContext)
 
   const addSelected = (id: LocalSongId) => {
-    reactiveSelectedTracks([...reactiveSelectedTracks(), id]);
+    const lists = reactiveSongLists();
+    const thisList = lists[playlistId];
+    if (!thisList) {
+      console.error(`Playlist '${playlistId}' not found, can't add selection`)
+    } else {
+      const newSelection = [...thisList.selection, id];
+      reactiveSongLists({...lists, [playlistId]: {...thisList, selection: newSelection}});
+    }
   };
 
   const removeSelected = (...ids: Array<LocalSongId>) => {
-    reactiveSelectedTracks(
-      reactiveSelectedTracks().filter((listId) => !ids.includes(listId)),
-    );
+    const lists = reactiveSongLists();
+    const thisList = lists[playlistId];
+    if (!thisList) {
+      console.error(`Playlist '${playlistId}' not found, can't add selection`)
+    } else {
+      const newSelection = thisList.selection.filter((listId) => !ids.includes(listId));
+      reactiveSongLists({...lists, [playlistId]: {...thisList, selection: newSelection}});
+    }
   };
 
-  // late night bad decision, sort of overloading this function to work in two contexts....
-  const isSelected = (id: LocalSongId) => selected.includes(id);
+  const isSelected = (id: LocalSongId) => reactiveSongLists()[playlistId]?.selection.includes(id) ?? false;
 
-  const replaceSelected = (id: LocalSongId) => reactiveSelectedTracks([id]);
+  const replaceSelected = (id: LocalSongId) => {
+    const lists = reactiveSongLists();
+    const thisList = lists[playlistId];
+    if (!thisList) {
+      console.error(`Playlist '${playlistId}' not found, can't add selection`)
+    } else {
+      reactiveSongLists({...lists, [playlistId]: {...thisList, selection: [id]}});
+    }
+  }
+
+  const selected = () => reactiveSongLists()[playlistId]?.selection ?? []
 
   return {
     selected,

@@ -12,7 +12,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as React from 'react';
 import BaseTable, { AutoResizer } from 'react-base-table';
 import { createPortal } from 'react-dom';
@@ -35,7 +35,7 @@ const PlaylistBody = ({ tracks  }: { tracks: Maybe<Array<PlaylistTrack>>}) => {
   const [orderedTracks, setOrderedTracks] = useState(tracks ?? []);
   const trackIds = orderedTracks.map(tupleIdFromPlaylistTrack);
 
-  useKeyboardShortcut(['Backspace', 'Delete'], () => {removeTracks(...selected); removeSelected(...selected)})
+  useKeyboardShortcut(['Backspace', 'Delete'], () => {removeTracks(...selected()); removeSelected(...selected())})
 
   useEffect(() => setOrderedTracks(tracks ?? []), [tracks]);
 
@@ -61,7 +61,7 @@ const PlaylistBody = ({ tracks  }: { tracks: Maybe<Array<PlaylistTrack>>}) => {
 
     if (!isSelected(over.id)) {
       rearrangeTracks(
-        moveMany(trackIds, selected, over.id, overIndex > activeIndex),
+        moveMany(trackIds, selected(), over.id, overIndex > activeIndex),
       );
     }
 

@@ -1,7 +1,7 @@
 import { makeVar } from '@apollo/client';
 
-import { Playlist } from '../usePlaylistsState/types';
+import { Playlist, PlaylistId } from '../usePlaylistsState/types';
 
-type ListState = Record<string, Playlist>;
+type ListState = Record<PlaylistId, Playlist>;
 
 export const reactiveSongLists = makeVar<ListState>({});
