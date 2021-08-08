@@ -16,6 +16,8 @@ interface Props {
   rowIndex: number;
 }
 
+const DRAGGED_TRACK_Z_INDEX = 10;
+
 export const playlistRowRenderer =
   (): BaseTableProps<PlaylistTrack>['rowRenderer'] =>
   ({ cells, rowData, rowIndex }) =>
@@ -46,14 +48,14 @@ const DraggableTrack = ({ rowData: track, cells, rowIndex}: Props) => {
     border: 'none',
     backgroundColor: 'blue',
     width: '100%',
-    zIndex: 1000,
+    zIndex: DRAGGED_TRACK_Z_INDEX,
   };
 
   return (
     <>
       {isDragging && (
         <PlayableRow
-          style={{ position: 'absolute', zIndex: 11 }}
+          style={{ position: 'absolute', zIndex: DRAGGED_TRACK_Z_INDEX+1 }}
           status={status}
           selected={isSelected()}
         >
