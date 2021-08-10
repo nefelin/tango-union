@@ -1,6 +1,12 @@
+import { useApolloClient } from '@apollo/client';
+import { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 
+import { searchStateFromTracks } from '../../components/DragContext/searchStateFromTracks';
+import useCacheStitchedIdFetch from '../../components/ResultsTable/useCacheStitchedIdFetch';
 import { SearchbarState } from '../../components/Searchbar/types';
+import cachedTracksFromIds from '../../util/cachedTracksFromIds';
+import { TrackIdTuple } from './usePlaylistsState/types';
 import { useRoutedState } from './useRoutedState';
 
 const initSearchbarState: SearchbarState = {};
@@ -12,7 +18,13 @@ export const useSearchbarState = () => {
   const { search: searchbarState, setSearch: setSearchbarState } =
     useRoutedState();
   const [debouncedText] = useDebounce(searchbarState.text, 300);
+  const apolloClient = useApolloClient();
 
+  const searchFromIds = (ids: Array<TrackIdTuple>) => {
+        setSearchbarState(searchStateFromTracks(cachedTracksFromIds(apolloClient, ids)));
+  }
+
+  // stick search in the title, helpful juggling tabs
   document.title = debouncedText?.length
     ? `${debouncedText} - ${DYNAMIC_TITLE_SUFFIX}`
     : DEFAULT_PAGE_TITLE;
@@ -20,6 +32,7 @@ export const useSearchbarState = () => {
   const resetSearchbar = () => setSearchbarState(initSearchbarState);
 
   return {
+    searchFromIds,
     searchbarState,
     resetSearchbar,
     setSearchbarState,

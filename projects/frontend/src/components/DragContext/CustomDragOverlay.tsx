@@ -1,7 +1,11 @@
 import { DragOverlay, DropAnimation } from '@dnd-kit/core';
 import { snapCenterToCursor } from '@dnd-kit/modifiers';
+import { PageviewOutlined } from '@material-ui/icons';
+import SearchIcon from '@material-ui/icons/Search';
 import * as React from 'react';
 import styled from 'styled-components';
+
+import { CustomDragOverlayProps } from './props';
 
 const defaultDropAnimation: DropAnimation = {
   duration: 0,
@@ -9,28 +13,36 @@ const defaultDropAnimation: DropAnimation = {
   dragSourceOpacity: 0.5,
 };
 
-interface Props {
-  dragging: boolean;
-  count: number;
-}
-
-const TrackCountOverlay = ({ dragging, count }: Props) => (
-  <DragOverlay
-    modifiers={[snapCenterToCursor]}
-    dropAnimation={defaultDropAnimation}
-  >
-    {dragging ? (
-      <CenteringDiv>
-        <RelativeDiv>
-          <DraggerCount>{count}</DraggerCount>
-        </RelativeDiv>
-      </CenteringDiv>
-    ) : null}
-  </DragOverlay>
-);
+const CustomDragOverlay = ({
+  dragging,
+  count,
+  mode,
+}: CustomDragOverlayProps) => {
+  const element =
+    mode === 'move' ? (
+      <DraggerCount>{count}</DraggerCount>
+    ) : (
+      <PageviewOutlined
+        fontSize="large"
+        style={{ transform: 'translate(-10px,-10px)' }}
+      />
+    );
+  return (
+    <DragOverlay
+      modifiers={[snapCenterToCursor]}
+      dropAnimation={defaultDropAnimation}
+    >
+      {dragging ? (
+        <CenteringDiv>
+          <RelativeDiv>{element}</RelativeDiv>
+        </CenteringDiv>
+      ) : null}
+    </DragOverlay>
+  );
+};
 
 const RelativeDiv = styled.div`
-position:relative;
+  position: relative;
 `;
 
 const CenteringDiv = styled.div`
@@ -60,4 +72,4 @@ const DraggerCount = styled.div`
   display: flex;
 `;
 
-export default TrackCountOverlay;
+export default CustomDragOverlay;

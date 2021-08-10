@@ -13,21 +13,6 @@ export const timeStringFromSeconds = (secondsTotal: number) => {
   return `${minutes}:${seconds.toString().padStart(2, '0')}`;
 };
 
-export const searchStateFromTrack = (track: SimpleTrack): SearchbarState => {
-  const yearWindow = 1;
-  const yearTerm =
-    typeof track.year === 'number'
-      ? `${track.year - yearWindow}-${track.year + yearWindow}`
-      : '';
-
-  return {
-    text: yearTerm,
-    orchestras: track.orchestra,
-    singers: track.singer,
-    genres: track.genre ? [track.genre] : null,
-  };
-};
-
 export const optionsFromStrings = (names: Barely<Array<string>>) =>
   names?.map((name) => ({
     label: name,

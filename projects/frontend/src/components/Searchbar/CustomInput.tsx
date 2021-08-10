@@ -11,7 +11,7 @@ interface Props {
   onClear: VoidFunction;
 }
 
-const CustomInput = ({ onChange, value, onClear }: Props) => {
+const CustomInput = ({ onChange, value, onClear })=> {
   const [focus, setFocus] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 

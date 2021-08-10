@@ -7,6 +7,7 @@ import { useHoveredRowState } from '../../hooks/state/useHoveredRowState';
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
 import { tupleIdFromPlaylistTrack } from '../../hooks/state/usePlaylistsState/util';
 import { useSelectionHandlers } from '../../hooks/state/useSelectionHandlers';
+import { useSelectionState } from '../../hooks/state/useSelectionState';
 import { useYoutubePlayerState } from '../../hooks/state/useYoutubePlayerState';
 import PlayableRow from '../PlayableRow';
 
@@ -23,13 +24,14 @@ export const playlistRowRenderer =
   ({ cells, rowData, rowIndex }) =>
     <DraggableTrack cells={cells} rowData={rowData} rowIndex={rowIndex} />;
 
-const DraggableTrack = ({ rowData: track, cells, rowIndex}: Props) => {
+const DraggableTrack = ({ rowData: track, cells, rowIndex }: Props) => {
   const { trackStatus, play } = useYoutubePlayerState();
   const { listeners: hoverListeners } = useHoveredRowState(rowIndex);
 
   const status = trackStatus(track);
 
-  const { isSelected, handlers } = useSelectionHandlers(track.localSongId);
+  const { selectionStatus } = useSelectionState();
+  const { handlers } = useSelectionHandlers(track.localSongId);
 
   const id = track.localSongId;
 
@@ -55,9 +57,9 @@ const DraggableTrack = ({ rowData: track, cells, rowIndex}: Props) => {
     <>
       {isDragging && (
         <PlayableRow
-          style={{ position: 'absolute', zIndex: DRAGGED_TRACK_Z_INDEX+1 }}
+          style={{ position: 'absolute', zIndex: DRAGGED_TRACK_Z_INDEX + 1 }}
           status={status}
-          selected={isSelected()}
+          selectionStatus={selectionStatus(track.localSongId)}
         >
           {cells}
         </PlayableRow>
@@ -65,7 +67,7 @@ const DraggableTrack = ({ rowData: track, cells, rowIndex}: Props) => {
       <PlayableRow
         {...hoverListeners}
         status={status}
-        selected={isSelected()}
+        selectionStatus={selectionStatus(track.localSongId)}
         onDoubleClick={() => play(tupleIdFromPlaylistTrack(track))}
         ref={setNodeRef}
         style={isDragging ? draggingStyle : {}}

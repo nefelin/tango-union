@@ -4,25 +4,18 @@ import { PlaylistConfigContext } from '../../context/playlistConfig.context';
 import { reactiveSongLists } from './useGlobalPlaylistState/songLists.state';
 import { LocalSongId} from './usePlaylistsState/types';
 import { localSongIdFromTrackIdTuple } from './usePlaylistsState/util';
-import { useSelectionState } from './useSelectionState';
+import { reactiveSelectedPlaylist, useSelectionState } from './useSelectionState';
 
 export const useSelectionHandlers = (id: LocalSongId) => {
-  const { removeSelected, addSelected, replaceSelected, isSelected } =
+  const { removeSelected, addSelected, replaceSelected, selectionStatus } =
     useSelectionState();
   const [startedSelected, setStartedSelected] = useState(false);
   const {name: playlistId} = useContext(PlaylistConfigContext);
 
-  const toggleSelected = () => {
-    if (isSelected(id)) {
-      removeSelected(id);
-    } else {
-      addSelected(id);
-    }
-  };
-
   const handlers = {
     onMouseDown: (e: MouseEvent) => {
-      if (!isSelected(id)) {
+      reactiveSelectedPlaylist(playlistId);
+      if (selectionStatus(id) === null) {
         setStartedSelected(false);
         if (e.metaKey) {
           addSelected(id);
@@ -49,7 +42,7 @@ export const useSelectionHandlers = (id: LocalSongId) => {
     },
 
     onMouseUp: (e: MouseEvent) => {
-      if (isSelected(id) && startedSelected) {
+      if (selectionStatus(id) !== null && startedSelected) {
         if (e.shiftKey) {
           return
         }
@@ -63,7 +56,6 @@ export const useSelectionHandlers = (id: LocalSongId) => {
   };
 
   return {
-    isSelected: () => isSelected(id),
     handlers
   }
 };
