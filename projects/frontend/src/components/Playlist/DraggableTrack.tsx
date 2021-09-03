@@ -1,6 +1,4 @@
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import React, { CSSProperties } from 'react';
+import React from 'react';
 import { BaseTableProps } from 'react-base-table';
 
 import { useHoveredRowState } from '../../hooks/state/useHoveredRowState';
@@ -9,6 +7,8 @@ import { tupleIdFromPlaylistTrack } from '../../hooks/state/usePlaylistsState/ut
 import { useSelectionHandlers } from '../../hooks/state/useSelectionHandlers';
 import { useSelectionState } from '../../hooks/state/useSelectionState';
 import { useYoutubePlayerState } from '../../hooks/state/useYoutubePlayerState';
+import mergeListenerMaps from '../../util/mergeListenerMaps';
+import { useSortable } from '../DragNDrop/hooks/useSortable';
 import PlayableRow from '../PlayableRow';
 
 interface Props {
@@ -17,14 +17,14 @@ interface Props {
   rowIndex: number;
 }
 
-const DRAGGED_TRACK_Z_INDEX = 10;
-
 export const playlistRowRenderer =
   (): BaseTableProps<PlaylistTrack>['rowRenderer'] =>
   ({ cells, rowData, rowIndex }) =>
     <DraggableTrack cells={cells} rowData={rowData} rowIndex={rowIndex} />;
 
 const DraggableTrack = ({ rowData: track, cells, rowIndex }: Props) => {
+  const id = track.localSongId;
+
   const { trackStatus, play } = useYoutubePlayerState();
   const { listeners: hoverListeners } = useHoveredRowState(rowIndex);
 
@@ -33,49 +33,23 @@ const DraggableTrack = ({ rowData: track, cells, rowIndex }: Props) => {
   const { selectionStatus } = useSelectionState();
   const { handlers } = useSelectionHandlers(track.localSongId);
 
-  const id = track.localSongId;
+  const { listeners } = useSortable(id);
 
-  const {
-    attributes,
+  const mergedListeners = mergeListenerMaps([
     listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id });
-
-  const draggingStyle: CSSProperties = {
-    transform: CSS.Transform.toString(transform),
-    height: 1,
-    border: 'none',
-    backgroundColor: 'blue',
-    width: '100%',
-    zIndex: DRAGGED_TRACK_Z_INDEX,
-  };
+    handlers,
+    hoverListeners,
+  ]);
 
   return (
     <>
-      {isDragging && (
-        <PlayableRow
-          style={{ position: 'absolute', zIndex: DRAGGED_TRACK_Z_INDEX + 1 }}
-          status={status}
-          selectionStatus={selectionStatus(track.localSongId)}
-        >
-          {cells}
-        </PlayableRow>
-      )}
       <PlayableRow
-        {...hoverListeners}
         status={status}
         selectionStatus={selectionStatus(track.localSongId)}
         onDoubleClick={() => play(tupleIdFromPlaylistTrack(track))}
-        ref={setNodeRef}
-        style={isDragging ? draggingStyle : {}}
-        {...attributes}
-        {...listeners}
-        {...handlers}
+        {...mergedListeners}
       >
-        {!isDragging && cells}
+        {cells}
       </PlayableRow>
     </>
   );

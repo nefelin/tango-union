@@ -87,10 +87,6 @@
   },
   "dependencies": {
     "@apollo/client": "^3.3.19",
-    "@dnd-kit/core": "^4.0.0-next-202152313425",
-    "@dnd-kit/modifiers": "^4.0.0-next-202152313425",
-    "@dnd-kit/sortable": "^4.0.0",
-    "@dnd-kit/utilities": "^2.0.0",
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
     "@types/ramda": "^0.27.42",

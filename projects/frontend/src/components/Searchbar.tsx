@@ -1,4 +1,3 @@
-import { useDroppable } from '@dnd-kit/core';
 import { Button } from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as React from 'react';
@@ -6,6 +5,7 @@ import { useEffect } from 'react';
 
 import { FullCountFragmentFragment } from '../../generated/graphql';
 import { useSearchbarState } from '../hooks/state/useSearchbarState';
+import { useDroppable } from './DragNDrop/hooks/useDroppable';
 import { optionsFromStrings } from './ResultsTable/ResultsTableBody/util';
 import CustomInput from './Searchbar/CustomInput';
 import CustomSelect from './Searchbar/CustomSelect';
@@ -17,7 +17,7 @@ interface Props {
 }
 
 const Searchbar = ({ selectOptions }: Props) => {
-  const { setNodeRef } = useDroppable({ id: 'searchbar' });
+  const { listeners } = useDroppable('searchbar');
   const { setSearchbarState, searchbarState, resetSearchbar } =
     useSearchbarState();
 
@@ -42,7 +42,7 @@ const Searchbar = ({ selectOptions }: Props) => {
   }
 
   return (
-    <StyledCol ref={setNodeRef}>
+    <StyledCol {...listeners}>
       <StyledRow>
         <CustomInput
           onChange={formik.handleChange}
