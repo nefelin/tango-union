@@ -1,6 +1,5 @@
-import {useEffect, useState} from 'react';
-
-import {Maybe} from '../store/types';
+import {Maybe} from "../store/types";
+import {useEffect, useState} from "react";
 
 interface MouseCoordinates {
     clientX: number;

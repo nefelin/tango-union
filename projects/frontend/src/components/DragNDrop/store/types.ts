@@ -11,9 +11,12 @@ export interface Coordinates {
 export interface State {
     dragMode: Maybe<DragMode>
     overId: Maybe<DroppableId>;
+    overPosition: Maybe<Position>;
     initCoordinates: Coordinates;
 }
 
 export type DragStartEvent = State;
 export type DragEndEvent = State;
 export type DragOverEvent = State;
+
+export type Position = ['top' | 'bottom', 'left' | 'right'];

@@ -68,7 +68,7 @@ const DndContext: FunctionComponent<Props> = ({
   const value = { state, dispatch };
   return (
     <DndMonitorContext.Provider value={value}>
-      <Dragger content={draggerElement} />
+      <Dragger />
       {children}
     </DndMonitorContext.Provider>
   );

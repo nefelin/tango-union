@@ -1,23 +1,25 @@
-import React, {
-  ReactNode,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import useMouseCoordinates from '../hooks/useMouseCoordinates';
 import { DndMonitorContext } from '../store/context';
+import { Counter } from './Counter/Counter';
 
-interface DraggerProps {
-  content: ReactNode;
-}
-
-export const Dragger = ({ content }: DraggerProps) => {
+export const Dragger = () => {
   const { state } = useContext(DndMonitorContext);
   const [renderOffset, setRenderOffset] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
+  const [contents, setContents] = useState(<Counter />);
   const { pageX, pageY } = useMouseCoordinates();
+
+  useEffect(() => {
+    setContents(
+      state?.overId === 'box' ? (
+        <div style={{ backgroundColor: 'green' }}>?</div>
+      ) : (
+        <Counter />
+      ),
+    );
+  }, [state?.overId]);
 
   useEffect(() => {
     if (containerRef.current) {
@@ -26,7 +28,7 @@ export const Dragger = ({ content }: DraggerProps) => {
         y: containerRef.current.clientHeight * 0.8,
       });
     }
-  }, [content]);
+  }, [contents]);
 
   return (
     <div
@@ -42,10 +44,9 @@ export const Dragger = ({ content }: DraggerProps) => {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        zIndex: 100,
       }}
     >
-      {content}
+      {contents}
     </div>
   );
 };

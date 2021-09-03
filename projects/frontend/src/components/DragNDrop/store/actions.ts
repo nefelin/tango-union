@@ -1,4 +1,4 @@
-import {Coordinates, DraggableId, DroppableId, Maybe} from './types';
+import {Coordinates, DraggableId, DroppableId, Maybe, Position} from "./types";
 
 export enum ActionType {
     DragInit = 'dragInit',
@@ -15,4 +15,4 @@ export type Action = | { type: ActionType.DragInit, initCoordinates: Coordinates
     | { type: ActionType.DragMove; coordinates: Coordinates }
     | { type: ActionType.DragEnd }
     | { type: ActionType.DragCancel }
-    | { type: ActionType.DragOver, overId: Maybe<DroppableId> }
+    | { type: ActionType.DragOver, overId: Maybe<DroppableId>, overPosition: Maybe<Position> }

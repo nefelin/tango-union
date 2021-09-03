@@ -1,4 +1,4 @@
-import {Coordinates} from './types';
+import {Coordinates} from "./types";
 
 export const coordinateDistance = (a: Coordinates, b: Coordinates): number => {
     const diff = {x: Math.abs(a.x - b.x), y: Math.abs(a.y - b.y)};

@@ -8,6 +8,7 @@ import * as React from 'react';
 import { Redirect, Route } from 'react-router';
 import { BrowserRouter, Switch } from 'react-router-dom';
 
+import DnDTester from './features/DnDTester';
 import MusicDash from './features/MusicDash';
 // import Playground from './features/Playground';
 const isProd = process.env['REACT_APP_ENV'] === 'prod';
@@ -29,6 +30,7 @@ const App = () => (
           <Route exact path="/" component={() => <Redirect to="/player" />} />
           <Route exact path="/player" component={MusicDash} />
           <Route exact path="/player/:saved" component={MusicDash} />
+          <Route exact path="/dndtester" component={DnDTester} />
         </Switch>
       </React.Suspense>
     </BrowserRouter>
