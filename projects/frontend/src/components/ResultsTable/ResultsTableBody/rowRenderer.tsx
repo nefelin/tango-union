@@ -6,7 +6,6 @@ import { SimpleTrack } from '../../../../generated/graphql';
 import { PlaylistConfigContext } from '../../../context/playlistConfig.context';
 import { useHoveredRowState } from '../../../hooks/state/useHoveredRowState';
 import { PlaylistTrack } from '../../../hooks/state/usePlaylistsState/types';
-import { tupleIdFromPlaylistTrack } from '../../../hooks/state/usePlaylistsState/util';
 import { useSelectionHandlers } from '../../../hooks/state/useSelectionHandlers';
 import { useSelectionState } from '../../../hooks/state/useSelectionState';
 import { useYoutubePlayerState } from '../../../hooks/state/useYoutubePlayerState';

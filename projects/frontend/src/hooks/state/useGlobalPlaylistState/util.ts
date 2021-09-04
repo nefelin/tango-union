@@ -10,7 +10,7 @@ export const newSongList = (id: string): Playlist => ({
 });
 
 export const generatePlaylistId = () => nanoid(8);
-export const generateLocalSongId = () => nanoid(12);
+export const generateListId = () => nanoid(12);
 
 export const createContext = (
   { id, tracks }: Playlist,

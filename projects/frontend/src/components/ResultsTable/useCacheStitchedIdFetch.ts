@@ -6,34 +6,34 @@ import {
 } from '../../../generated/graphql';
 import {
   PlaylistTrack,
-  TrackIdTuple,
 } from '../../hooks/state/usePlaylistsState/types';
+import { CompactTrack } from '../../types/CompactTrack';
 import { Maybe } from '../../types/utility/maybe';
 
 // fixme would be nice to cut down on re-render
 const useCacheStitchedIdFetch = (
-  ids?: Array<TrackIdTuple>,
+  ids?: Array<CompactTrack>,
 ): [Maybe<Array<PlaylistTrack>>, boolean] => {
   const client = useApolloClient();
 
   const fetchIds =
     ids?.filter(
-      ([id]) =>
+      ({trackId}) =>
         client.readFragment({
-          id: `SimpleTrack:${id}`,
+          id: `SimpleTrack:${trackId}`,
           fragment: TrackDetailFragmentFragmentDoc,
         }) === null,
     ) ?? [];
 
   const { loading } = useTrackDetailsBatchQuery({
-    variables: { ids: fetchIds.map(([id]) => id) },
+    variables: { ids: fetchIds.map(({trackId}) => trackId) },
     skip: fetchIds.length === 0,
   });
 
   const tracks =
-    ids?.map(([id, localSongId]): Maybe<PlaylistTrack> => {
+    ids?.map(({trackId, listId}): Maybe<PlaylistTrack> => {
       const found = client.readFragment({
-        id: `SimpleTrack:${id}`,
+        id: `SimpleTrack:${trackId}`,
         fragment: TrackDetailFragmentFragmentDoc,
       });
 
@@ -43,7 +43,7 @@ const useCacheStitchedIdFetch = (
 
       return {
         ...found,
-        localSongId,
+        listId,
       };
     }) ?? [];
   return [

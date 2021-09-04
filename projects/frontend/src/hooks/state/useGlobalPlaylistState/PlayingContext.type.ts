@@ -1,9 +1,10 @@
-import { PlaylistId, TrackIdTuple } from '../usePlaylistsState/types';
+import { CompactTrack } from '../../../types/CompactTrack';
+import { PlaylistId } from '../usePlaylistsState/types';
 
 export interface PlayingContext {
-  currentTrack?: TrackIdTuple;
-  previousTrack?: TrackIdTuple;
-  nextTrack?: TrackIdTuple;
+  currentTrack?: CompactTrack;
+  previousTrack?: CompactTrack;
+  nextTrack?: CompactTrack;
   playlistId?: PlaylistId;
   trackIndex?: number;
 }

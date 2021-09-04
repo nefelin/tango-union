@@ -3,7 +3,6 @@ import * as React from 'react';
 import BaseTable, { AutoResizer } from 'react-base-table';
 
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
-import { tupleIdFromPlaylistTrack } from '../../hooks/state/usePlaylistsState/util';
 import { usePlaylistState } from '../../hooks/state/usePlaylistState';
 import { useSelectionState } from '../../hooks/state/useSelectionState';
 import useKeyboardShortcut from '../../hooks/useKeyboardShortcut';
@@ -17,7 +16,6 @@ const PlaylistBody = ({ tracks }: { tracks: Maybe<Array<PlaylistTrack>> }) => {
   const { selectionStatus, selected, removeSelected } = useSelectionState();
   const { rearrangeTracks, removeTracks } = usePlaylistState('quicklist');
   const [orderedTracks, setOrderedTracks] = useState(tracks ?? []);
-  const trackIds = orderedTracks.map(tupleIdFromPlaylistTrack);
 
   useKeyboardShortcut(['Backspace', 'Delete'], () => {
     removeTracks(...selected());

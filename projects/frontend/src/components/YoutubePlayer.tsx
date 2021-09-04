@@ -23,11 +23,11 @@ const YoutubePlayer = () => {
   } = useGlobalPlaylistsState();
   const [player, setPlayer] = useState<Maybe<YouTubePlayer>>(null);
 
-  const { trackId, playState } = youtubePlayerState;
+  const { activeTrack, playState } = youtubePlayerState;
 
   const { data } = useTrackDetailsBatchQuery({
-    variables: { ids: [trackId?.[0] ?? ''] }, // should never execute with empty string due to skip, will error
-    skip: trackId === null,
+    variables: { ids: [activeTrack?.[0] ?? ''] }, // should never execute with empty string due to skip, will error
+    skip: activeTrack === null,
   });
 
   useEffect(() => {

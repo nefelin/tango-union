@@ -1,16 +1,18 @@
 import { MouseEvent, useContext, useState } from 'react';
 
 import { PlaylistConfigContext } from '../../context/playlistConfig.context';
+import { ListId } from '../../types/CompactTrack';
 import { reactiveSongLists } from './useGlobalPlaylistState/songLists.state';
-import { LocalSongId} from './usePlaylistsState/types';
-import { localSongIdFromTrackIdTuple } from './usePlaylistsState/util';
-import { reactiveSelectedPlaylist, useSelectionState } from './useSelectionState';
+import {
+  reactiveSelectedPlaylist,
+  useSelectionState,
+} from './useSelectionState';
 
-export const useSelectionHandlers = (id: LocalSongId) => {
+export const useSelectionHandlers = (id: ListId) => {
   const { removeSelected, addSelected, replaceSelected, selectionStatus } =
     useSelectionState();
   const [startedSelected, setStartedSelected] = useState(false);
-  const {name: playlistId} = useContext(PlaylistConfigContext);
+  const { name: playlistId } = useContext(PlaylistConfigContext);
 
   const handlers = {
     onMouseDown: (e: MouseEvent) => {
@@ -23,16 +25,21 @@ export const useSelectionHandlers = (id: LocalSongId) => {
           const playlist = reactiveSongLists()[playlistId];
           const tracks = playlist?.tracks ?? [];
           const selection = playlist?.selection ?? [];
-          const tail = !!selection.length && selection[selection.length-1];
+          const tail = !!selection.length && selection[selection.length - 1];
 
           if (tail) {
-            const tailIndex = tracks.findIndex(([_, localSongId]) => tail === localSongId);
-            const thisIndex = tracks.findIndex(([_, localSongId]) => id === localSongId);
-            const ordered = tailIndex > thisIndex ? [thisIndex, tailIndex] : [tailIndex, thisIndex];
-            const tracksToAdd = tracks.slice(ordered[0], ordered[1]).map(localSongIdFromTrackIdTuple);
-            addSelected(...tracksToAdd)
+            const tailIndex = tracks.findIndex(({ listId }) => tail === listId);
+            const thisIndex = tracks.findIndex(({ listId }) => id === listId);
+            const ordered =
+              tailIndex > thisIndex
+                ? [thisIndex, tailIndex]
+                : [tailIndex, thisIndex];
+            const tracksToAdd = tracks
+              .slice(ordered[0], ordered[1])
+              .map(({ listId }) => listId);
+            addSelected(...tracksToAdd);
           }
-          addSelected(id)
+          addSelected(id);
         } else {
           replaceSelected(id);
         }
@@ -44,7 +51,7 @@ export const useSelectionHandlers = (id: LocalSongId) => {
     onMouseUp: (e: MouseEvent) => {
       if (selectionStatus(id) !== null && startedSelected) {
         if (e.shiftKey) {
-          return
+          return;
         }
         if (e.metaKey) {
           removeSelected(id);
@@ -56,6 +63,6 @@ export const useSelectionHandlers = (id: LocalSongId) => {
   };
 
   return {
-    handlers
-  }
+    handlers,
+  };
 };

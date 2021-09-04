@@ -8,8 +8,8 @@ import React from 'react';
 
 import { useHoveredRowState } from '../../../../hooks/state/useHoveredRowState';
 import { PlaylistTrack } from '../../../../hooks/state/usePlaylistsState/types';
-import { tupleIdFromPlaylistTrack } from '../../../../hooks/state/usePlaylistsState/util';
 import { useYoutubePlayerState } from '../../../../hooks/state/useYoutubePlayerState';
+import { compressTrack } from '../../../../types/CompactTrack';
 import { Loader } from '../overlayRenderer/styled';
 import { StyledFakeButton } from './styles';
 import { CellProps } from './types';
@@ -44,7 +44,7 @@ const DynamicPlayButton = ({
   const { hovered } = useHoveredRowState(rowIndex);
 
   const { active, playing } = trackStatus(track);
-  const action = () => (playing ? stop() : play(tupleIdFromPlaylistTrack(track)));
+  const action = () => (playing ? stop() : play(compressTrack(track)));
 
   const icon = active
     ? activeRowIcon(hovered, playing)

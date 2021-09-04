@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { PlayingContext } from './useGlobalPlaylistState/PlayingContext.type';
 import { reactiveSongLists } from './useGlobalPlaylistState/songLists.state';
 import { createContext } from './useGlobalPlaylistState/util';
-import { sameId } from './usePlaylistsState/util';
 import { useYoutubePlayerState } from './useYoutubePlayerState';
 
 const initContext: PlayingContext = {};
@@ -22,7 +21,7 @@ export const useGlobalPlaylistsState = () => {
 
     Object.values(lists).some((playlist) => {
       const index = playlist.tracks.findIndex(
-        (idTuple) => sameId(idTuple, currentTrack),
+        ({listId}) => currentTrack.listId === listId
       );
       if (index !== -1) {
         setContext(createContext(playlist, index));

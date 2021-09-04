@@ -1,26 +1,19 @@
 import { useEffect } from 'react';
 
+import { CompactTrack, CompoundIdString, compoundIdStringFromCompactTrack } from '../../types/CompactTrack';
 import { usePlaylistState } from './usePlaylistState';
 import { useRoutedState } from './useRoutedState';
 
-interface Props {
-  tracks: Array<string>;
-  addTrack: (id: string) => void;
-  removeTrack: (id: string) => void;
-  replaceTracks: (ids: Array<string>) => void;
-  // moveTrack: (id: number, newIndex: number) => void;
-}
-
-export const useRoutedPlaylist = (): Props => {
+export const useRoutedPlaylist = () => {
   const { tracks, setTracks } = useRoutedState();
   const { tracks: stateTracks } = usePlaylistState('quicklist');
 
   useEffect(() => {
-    replaceTracks(stateTracks.map(x => x[0])) // pull song ids from idtuples
+    setTracks(stateTracks.map(compoundIdStringFromCompactTrack)) // pull song ids from idtuples
   }, [stateTracks])
 
-  const addTrack = (newId: string) => {
-    setTracks([...tracks, newId]);
+  const addTrack = (track: CompactTrack) => {
+    setTracks([...tracks, compoundIdStringFromCompactTrack(track)]);
   };
 
   const removeTrack = (id: string) => {
@@ -28,7 +21,7 @@ export const useRoutedPlaylist = (): Props => {
     setTracks(newList);
   };
 
-  const replaceTracks = (ids: Array<string>) => {
+  const replaceTracks = (ids: Array<CompoundIdString>) => {
     setTracks(ids);
   };
 

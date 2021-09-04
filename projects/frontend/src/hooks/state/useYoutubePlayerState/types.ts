@@ -1,8 +1,9 @@
+import { CompactTrack } from '../../../types/CompactTrack';
 import { Maybe } from '../../../types/utility/maybe';
-import { PlaylistTrack, TrackIdTuple } from '../usePlaylistsState/types';
+import { PlaylistTrack } from '../usePlaylistsState/types';
 
 export interface YoutubePlayerState {
-  trackId: Maybe<TrackIdTuple>;
+  activeTrack: Maybe<CompactTrack>;
   playState: PlayState;
 }
 
@@ -14,11 +15,11 @@ export interface TrackStatus {
 }
 
 export interface HookProps {
-  currentTrack: Maybe<TrackIdTuple>;
+  currentTrack: Maybe<CompactTrack>;
   youtubePlayerState: YoutubePlayerState;
   stop: VoidFunction;
   pause: VoidFunction;
   resume: VoidFunction;
-  play: (id: TrackIdTuple) => void;
+  play: (id: CompactTrack) => void;
   trackStatus: (track: PlaylistTrack) => TrackStatus;
 }

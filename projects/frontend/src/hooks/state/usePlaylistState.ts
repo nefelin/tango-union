@@ -1,68 +1,81 @@
 import { useReactiveVar } from '@apollo/client';
 import * as r from 'ramda';
 
+import { CompactTrack, ListId, TrackId } from '../../types/CompactTrack';
 import { reactiveSongLists } from './useGlobalPlaylistState/songLists.state';
-import {
-  generateLocalSongId,
-  newSongList,
-} from './useGlobalPlaylistState/util';
-import { LocalSongId, Playlist, PlaylistId, SongId, TrackIdTuple } from './usePlaylistsState/types';
+import { generateListId, newSongList } from './useGlobalPlaylistState/util';
+import { Playlist, PlaylistId } from './usePlaylistsState/types';
 
-export const usePlaylistState = (listId: PlaylistId) => {
+export const usePlaylistState = (playlistId: PlaylistId) => {
   const lists = useReactiveVar(reactiveSongLists);
-  const thisList = reactiveSongLists()[listId] || newSongList(listId); // this is okay for returning tracks but cannot be used in functions as it can lead to race conditions
+  const thisList = reactiveSongLists()[playlistId] || newSongList(playlistId); // this is okay for returning tracks but cannot be used in functions as it can lead to race conditions
 
-  const addTracks = r.curry((newIds: Array<string>) => {
-    const tracksWithLocalIds: Array<TrackIdTuple> = newIds.map((id) => [
-      id,
-      generateLocalSongId(),
-    ]);
+  const addTracks = (newIds: Array<string>) => {
+    const tracksWithLocalIds: Array<CompactTrack> = newIds.map((trackId) => ({
+      trackId,
+      listId: generateListId(),
+    }));
 
-    const prevList = reactiveSongLists()[listId] || newSongList(listId);
+    console.log({ tracksWithLocalIds });
+
+    const prevList = reactiveSongLists()[playlistId] || newSongList(playlistId);
     const newList: Playlist = {
       ...prevList,
       tracks: [...prevList.tracks, ...tracksWithLocalIds],
     };
-    reactiveSongLists({ ...lists, [listId]: newList });
-  });
+    reactiveSongLists({ ...lists, [playlistId]: newList });
+  };
 
-  const removeTracks = (...ids: Array<LocalSongId>) => {
-    const prevList = reactiveSongLists()[listId] || newSongList(listId);
-    const newTracks = prevList.tracks.filter(([_, localId]) => !ids.includes(localId));
+  const removeTracks = (...ids: Array<ListId>) => {
+    const prevList = reactiveSongLists()[playlistId] || newSongList(playlistId);
+    const newTracks = prevList.tracks.filter(
+      ({ listId }) => !ids.includes(listId),
+    );
 
     reactiveSongLists({
       ...reactiveSongLists(),
-      [listId]: { ...prevList, tracks: newTracks },
+      [playlistId]: { ...prevList, tracks: newTracks },
     });
   };
 
-  const replaceTracks = (ids: Array<SongId>) => {
-    const prevList = reactiveSongLists()[listId] || newSongList(listId);
-
-    const tracksWithLocalIds: Array<TrackIdTuple> = ids.map((id) => [
-      id,
-      generateLocalSongId(),
-    ]);
+  const loadTracks = (tracks: Array<CompactTrack>) => {
+    // like replace tracks but takes compactTrack for loading from route for example
+    const prevList = reactiveSongLists()[playlistId] || newSongList(playlistId);
 
     reactiveSongLists({
       ...reactiveSongLists(),
-      [listId]: { ...prevList, tracks: tracksWithLocalIds },
+      [playlistId]: { ...prevList, tracks },
     });
   };
 
-  const rearrangeTracks = (ids: Array<TrackIdTuple>) => {
-    const prevList = reactiveSongLists()[listId] || newSongList(listId);
+  const replaceTracks = (ids: Array<TrackId>) => {
+    const prevList = reactiveSongLists()[playlistId] || newSongList(playlistId);
+
+    const tracksWithLocalIds: Array<CompactTrack> = ids.map((trackId) => ({
+      trackId,
+      listId: generateListId(),
+    }));
 
     reactiveSongLists({
       ...reactiveSongLists(),
-      [listId]: { ...prevList, tracks: ids },
+      [playlistId]: { ...prevList, tracks: tracksWithLocalIds },
     });
-  }
+  };
+
+  const rearrangeTracks = (ids: Array<CompactTrack>) => {
+    const prevList = reactiveSongLists()[playlistId] || newSongList(playlistId);
+
+    reactiveSongLists({
+      ...reactiveSongLists(),
+      [playlistId]: { ...prevList, tracks: ids },
+    });
+  };
 
   return {
     tracks: thisList.tracks,
     addTracks,
     removeTracks,
+    loadTracks,
     replaceTracks,
     rearrangeTracks,
   };

@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import GlobalDragState from '../context/globalDragState.context';
 import { reactiveSongLists } from '../hooks/state/useGlobalPlaylistState/songLists.state';
-import { selectedTuplesFromList } from '../hooks/state/usePlaylistsState/util';
+import { selectedTracks } from '../hooks/state/usePlaylistsState/util';
 import { useSearchbarState } from '../hooks/state/useSearchbarState';
 import {
   reactiveSelectedPlaylist,
@@ -12,7 +12,6 @@ import {
 import { CustomDragMode } from './DragContext/props';
 import DndContext from './DragNDrop/DnDContext';
 import { Counter } from './DragNDrop/Dragger/Counter/Counter';
-import { Dragger } from './DragNDrop/Dragger/Dragger';
 import { DragOverEvent } from './DragNDrop/store/types';
 
 const DragContext: React.FunctionComponent = ({ children }) => {
@@ -21,21 +20,20 @@ const DragContext: React.FunctionComponent = ({ children }) => {
   const { selected } = useSelectionState();
   const { searchFromIds } = useSearchbarState();
 
-  const handleDragStart = () => setDragging(true);
+  const handleDragStart = () => setDragMode('move');
   const handleDragEnd = () => {
     if (dragMode === 'search') {
       const activeList = reactiveSelectedPlaylist();
       if (activeList) {
         const thisList = reactiveSongLists()[activeList];
         if (thisList) {
-          searchFromIds(selectedTuplesFromList(thisList));
+          searchFromIds(selectedTracks(thisList));
         }
       }
     }
-    setDragging(false);
+    setDragMode('move');
   };
   const handleDragOver = ({ overId }: DragOverEvent) => {
-    console.log({ overId });
     if (overId === 'searchbar') {
       setDragMode('search');
     } else {

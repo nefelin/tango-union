@@ -1,14 +1,12 @@
-import {
-  LocalSongId,
-  TrackIdTuple,
-} from '../../../hooks/state/usePlaylistsState/types';
+import { CompactTrack, ListId } from '../../../types/CompactTrack';
 
+// fixme generate new listIds if the track changes lists
 export function moveMany(
-  ar: Array<TrackIdTuple>,
-  sourceIds: Array<LocalSongId>,
-  targetId: LocalSongId,
+  ar: Array<CompactTrack>,
+  sourceIds: Array<ListId>,
+  targetId: ListId,
   forward: boolean,
-): Array<TrackIdTuple> {
+): Array<CompactTrack> {
   const cloneArray = ar.slice();
   const orderedSources = cloneArray.filter((id) =>
     sourceIds.some((sourceId) => sourceId === id[1]),

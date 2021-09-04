@@ -2,9 +2,10 @@ import * as r from 'ramda';
 import { useHistory, useParams } from 'react-router';
 
 import { SearchbarState } from '../../components/Searchbar/types';
+import { CompoundIdString } from '../../types/CompactTrack';
 
 interface SavedState {
-  tracks: Array<string>;
+  tracks: Array<CompoundIdString>;
   search: SearchbarState;
 }
 
@@ -27,7 +28,7 @@ export const useRoutedState = () => {
     history.replace(`/player/${asString}`);
   };
 
-  const setTracks = (newTracks: Array<string>) =>
+  const setTracks = (newTracks: Array<CompoundIdString>) =>
     replaceRoute({ ...paramObj, tracks: newTracks });
 
   const setSearch = (newSearch: SearchbarState) =>

@@ -5,8 +5,8 @@ import { useDebounce } from 'use-debounce';
 import { searchStateFromTracks } from '../../components/DragContext/searchStateFromTracks';
 import useCacheStitchedIdFetch from '../../components/ResultsTable/useCacheStitchedIdFetch';
 import { SearchbarState } from '../../components/Searchbar/types';
+import { CompactTrack } from '../../types/CompactTrack';
 import cachedTracksFromIds from '../../util/cachedTracksFromIds';
-import { TrackIdTuple } from './usePlaylistsState/types';
 import { useRoutedState } from './useRoutedState';
 
 const initSearchbarState: SearchbarState = {};
@@ -20,7 +20,7 @@ export const useSearchbarState = () => {
   const [debouncedText] = useDebounce(searchbarState.text, 300);
   const apolloClient = useApolloClient();
 
-  const searchFromIds = (ids: Array<TrackIdTuple>) => {
+  const searchFromIds = (ids: Array<CompactTrack>) => {
         setSearchbarState(searchStateFromTracks(cachedTracksFromIds(apolloClient, ids)));
   }
 

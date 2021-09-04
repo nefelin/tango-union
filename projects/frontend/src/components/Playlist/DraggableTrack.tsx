@@ -3,10 +3,10 @@ import { BaseTableProps } from 'react-base-table';
 
 import { useHoveredRowState } from '../../hooks/state/useHoveredRowState';
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
-import { tupleIdFromPlaylistTrack } from '../../hooks/state/usePlaylistsState/util';
 import { useSelectionHandlers } from '../../hooks/state/useSelectionHandlers';
 import { useSelectionState } from '../../hooks/state/useSelectionState';
 import { useYoutubePlayerState } from '../../hooks/state/useYoutubePlayerState';
+import { compressTrack } from '../../types/CompactTrack';
 import mergeListenerMaps from '../../util/mergeListenerMaps';
 import { useSortable } from '../DragNDrop/hooks/useSortable';
 import PlayableRow from '../PlayableRow';
@@ -23,7 +23,7 @@ export const playlistRowRenderer =
     <DraggableTrack cells={cells} rowData={rowData} rowIndex={rowIndex} />;
 
 const DraggableTrack = ({ rowData: track, cells, rowIndex }: Props) => {
-  const id = track.localSongId;
+  const id = track.listId;
 
   const { trackStatus, play } = useYoutubePlayerState();
   const { listeners: hoverListeners } = useHoveredRowState(rowIndex);
@@ -31,7 +31,7 @@ const DraggableTrack = ({ rowData: track, cells, rowIndex }: Props) => {
   const status = trackStatus(track);
 
   const { selectionStatus } = useSelectionState();
-  const { handlers } = useSelectionHandlers(track.localSongId);
+  const { handlers } = useSelectionHandlers(track.listId);
 
   const { listeners } = useSortable(id);
 
@@ -45,8 +45,8 @@ const DraggableTrack = ({ rowData: track, cells, rowIndex }: Props) => {
     <>
       <PlayableRow
         status={status}
-        selectionStatus={selectionStatus(track.localSongId)}
-        onDoubleClick={() => play(tupleIdFromPlaylistTrack(track))}
+        selectionStatus={selectionStatus(track.listId)}
+        onDoubleClick={() => play(compressTrack(track))}
         {...mergedListeners}
       >
         {cells}

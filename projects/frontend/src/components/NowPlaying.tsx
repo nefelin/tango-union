@@ -15,11 +15,11 @@ import YoutubePlayer from './YoutubePlayer';
 const NowPlaying = () => {
   const client = useApolloClient();
   const {
-    youtubePlayerState: { trackId },
+    youtubePlayerState: { activeTrack },
   } = useYoutubePlayerState();
 
   const track = client.readFragment<SimpleTrack>({
-    id: `SimpleTrack:${trackId?.[0]}`,
+    id: `SimpleTrack:${activeTrack?.[0]}`,
     fragment: TrackDetailFragmentFragmentDoc,
   });
 

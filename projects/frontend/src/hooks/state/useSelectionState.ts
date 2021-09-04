@@ -2,9 +2,9 @@ import { makeVar } from '@apollo/client';
 import { useContext } from 'react';
 
 import { PlaylistConfigContext } from '../../context/playlistConfig.context';
+import { ListId } from '../../types/CompactTrack';
 import { Maybe } from '../../types/utility/maybe';
 import { reactiveSongLists } from './useGlobalPlaylistState/songLists.state';
-import { LocalSongId } from './usePlaylistsState/types';
 
 export const reactiveSelectedPlaylist = makeVar<Maybe<string>>(null);
 
@@ -15,9 +15,9 @@ export const useSelectionState = () => {
   // fixme handle copying
   const { name: playlistId } = useContext(PlaylistConfigContext);
 
-  const addSelected = (...ids: Array<LocalSongId>) => {
+  const addSelected = (...ids: Array<ListId>) => {
     const lists = reactiveSongLists();
-    const thisList = lists[playlistId];
+    const thisList = lists[playlistId]; // fixme replace with active list inferred by dragged items parent
     if (!thisList) {
       console.error(`Playlist '${playlistId}' not found, can't add selection`);
     } else {
@@ -29,7 +29,7 @@ export const useSelectionState = () => {
     }
   };
 
-  const removeSelected = (...ids: Array<LocalSongId>) => {
+  const removeSelected = (...ids: Array<ListId>) => {
     const lists = reactiveSongLists();
     const thisList = lists[playlistId];
     if (!thisList) {
@@ -45,7 +45,7 @@ export const useSelectionState = () => {
     }
   };
 
-  const selectionStatus = (id: LocalSongId): SelectionStatus => {
+  const selectionStatus = (id: ListId): SelectionStatus => {
     if (reactiveSongLists()[playlistId]?.selection.includes(id)) {
       if (reactiveSelectedPlaylist() === playlistId) {
         return 'focused';
@@ -55,7 +55,7 @@ export const useSelectionState = () => {
     return null;
   };
 
-  const replaceSelected = (id: LocalSongId) => {
+  const replaceSelected = (id: ListId) => {
     const lists = reactiveSongLists();
     const thisList = lists[playlistId];
     if (!thisList) {

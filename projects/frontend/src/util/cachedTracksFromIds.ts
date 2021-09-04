@@ -1,13 +1,14 @@
 import { ApolloClient } from '@apollo/client';
 
 import { TrackDetailFragmentFragmentDoc } from '../../generated/graphql';
-import { PlaylistTrack, TrackIdTuple } from '../hooks/state/usePlaylistsState/types';
+import { PlaylistTrack} from '../hooks/state/usePlaylistsState/types';
+import { CompactTrack } from '../types/CompactTrack';
 import { Maybe } from '../types/utility/maybe';
 
-const cachedTracksFromIds = (client: ApolloClient<unknown>, ids: Array<TrackIdTuple>): Array<PlaylistTrack> =>
-    ids.map(([id, localSongId]): Maybe<PlaylistTrack> => {
+const cachedTracksFromIds = (client: ApolloClient<unknown>, compactTracks: Array<CompactTrack>): Array<PlaylistTrack> =>
+    compactTracks.map(({trackId, listId}): Maybe<PlaylistTrack> => {
       const found = client.readFragment({
-        id: `SimpleTrack:${id}`,
+        id: `SimpleTrack:${trackId}`,
         fragment: TrackDetailFragmentFragmentDoc,
       });
 
@@ -17,7 +18,7 @@ const cachedTracksFromIds = (client: ApolloClient<unknown>, ids: Array<TrackIdTu
 
       return {
         ...found,
-        localSongId,
+        listId,
       };
     }).filter(track => !!track) as Array<PlaylistTrack> ?? [];
 

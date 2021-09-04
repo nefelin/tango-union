@@ -2,7 +2,7 @@ import React, {
   FunctionComponent,
   ReactNode,
   useEffect,
-  useReducer,
+  useReducer, useRef,
 } from 'react';
 
 import { Counter } from './Dragger/Counter/Counter';
@@ -10,6 +10,7 @@ import { Dragger } from './Dragger/Dragger';
 import { ActionType } from './store/actions';
 import { DndMonitorContext } from './store/context';
 import { initState, LifecycleHandlers, reducer } from './store/reducer';
+import { DragMode } from './store/types';
 
 interface DndContextProps {
   draggerElement?: ReactNode;
@@ -25,14 +26,17 @@ const DndContext: FunctionComponent<Props> = ({
   const [state, dispatch] = useReducer(reducer(handlers), undefined, initState);
   // general lifecycle of drag
   useEffect(() => {
-    const handleMouseUp = () => dispatch({ type: ActionType.DragEnd });
+    const handleMouseUp = () => {
+      dispatch({ type: ActionType.DragEnd });
+    }
     const handleKeyDown = ({ key }: KeyboardEvent) => {
       if (key === 'Escape') {
         dispatch({ type: ActionType.DragCancel });
       }
     };
 
-    if (state.dragMode) {
+    // fixme too many listeners, be more surgical about creating event listeners (use ref to track prev state and only add listener when we change from no drag mode to drag mode)
+    if (state.dragMode ) {
       window.addEventListener('mouseup', handleMouseUp);
       window.addEventListener('keydown', handleKeyDown);
 

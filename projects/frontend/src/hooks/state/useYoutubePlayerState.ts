@@ -1,7 +1,7 @@
 import { makeVar, useReactiveVar } from '@apollo/client';
 
-import { PlaylistTrack, TrackIdTuple } from './usePlaylistsState/types';
-import { sameId, tupleIdFromPlaylistTrack } from './usePlaylistsState/util';
+import { CompactTrack, compressTrack } from '../../types/CompactTrack';
+import { PlaylistTrack } from './usePlaylistsState/types';
 import {
   HookProps,
   TrackStatus,
@@ -9,7 +9,7 @@ import {
 } from './useYoutubePlayerState/types';
 
 const initYoutubePlayerState: YoutubePlayerState = {
-  trackId: null,
+  activeTrack: null,
   playState: 'stopped',
 };
 
@@ -36,27 +36,25 @@ export const useYoutubePlayerState = (): HookProps => {
       playState: 'playing',
     });
 
-  const play = (trackId: TrackIdTuple) => {
+  const play = (compactTrack: CompactTrack) => {
     const currentState = reactiveYoutubePlayerState();
-    const newTrack = !sameId(trackId, currentState.trackId);
+    const newTrack = compactTrack.listId !== currentState.activeTrack?.listId;
     const playState = newTrack ? 'loading' : 'playing';
 
     reactiveYoutubePlayerState({
       ...currentState,
       playState,
-      trackId,
+      activeTrack: compactTrack,
     });
   };
 
-  const trackStatus = (
-    track: PlaylistTrack,
-  ): TrackStatus => {
-    const id = tupleIdFromPlaylistTrack(track);
-    const { trackId, playState} = youtubePlayerState;
+  const trackStatus = (track: PlaylistTrack): TrackStatus => {
+    const compactTrack = compressTrack(track);
+    const { activeTrack, playState } = youtubePlayerState;
     let active = false;
     let playing = false;
 
-    if (trackId && sameId(id, trackId)) {
+    if (activeTrack && compactTrack.listId === activeTrack.listId) {
       active = true;
       if (playState === 'playing') {
         playing = true;
@@ -69,5 +67,13 @@ export const useYoutubePlayerState = (): HookProps => {
     };
   };
 
-  return { youtubePlayerState, currentTrack: youtubePlayerState.trackId, trackStatus, resume, pause, play, stop };
+  return {
+    youtubePlayerState,
+    currentTrack: youtubePlayerState.activeTrack,
+    trackStatus,
+    resume,
+    pause,
+    play,
+    stop,
+  };
 };
