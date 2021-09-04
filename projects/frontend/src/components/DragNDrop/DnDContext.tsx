@@ -5,6 +5,7 @@ import React, {
   useReducer,
 } from 'react';
 
+import { Counter } from './Dragger/Counter/Counter';
 import { Dragger } from './Dragger/Dragger';
 import { ActionType } from './store/actions';
 import { DndMonitorContext } from './store/context';
@@ -68,7 +69,9 @@ const DndContext: FunctionComponent<Props> = ({
   const value = { state, dispatch };
   return (
     <DndMonitorContext.Provider value={value}>
-      <Dragger />
+      <Dragger>
+        {draggerElement}
+      </Dragger>
       {children}
     </DndMonitorContext.Provider>
   );

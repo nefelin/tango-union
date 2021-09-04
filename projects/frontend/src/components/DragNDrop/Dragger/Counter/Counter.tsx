@@ -1,10 +1,9 @@
 import React from 'react';
 
-export const Counter = () => {
+export const Counter = ({count}: {count: number}) => {
     const baseSize = 22;
-    const selectionCount = 6
 
-    const SIZE = multiplierFromCharCount(selectionCount.toString().length) * baseSize;
+    const SIZE = multiplierFromCharCount(count.toString().length) * baseSize;
 
     return <div style={{
         borderRadius: SIZE / 2,
@@ -18,7 +17,7 @@ export const Counter = () => {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'
-    }}>{selectionCount}</div>
+    }}>{count}</div>
 }
 
 const multiplierFromCharCount = (count: number): number => {
