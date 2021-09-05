@@ -23,13 +23,11 @@ const ResultsTable = ({ loading = false, page, incPage }: Props) => {
   } = usePlaylistState(RESULTS_PLAYLIST_ID);
   const [tracks, tracksLoading] = useCacheStitchedIdFetch(playlistTracks);
   const [tableLoading] = useDebounce(loading || tracksLoading, 100);
-  const { dragging: lockScroll } = useContext(GlobalDragState);
 
   return (
     <StyledTableContainer>
       <PlaylistConfigContext.Provider value={{ name: RESULTS_PLAYLIST_ID }}>
         <ResultsTableBody
-          lockScroll={lockScroll}
           tracks={tracks}
           incPage={incPage}
           page={page}

@@ -27,7 +27,6 @@ interface Props {
   tracks: Maybe<Array<PlaylistTrack>>;
   page: number;
   loading: boolean;
-  lockScroll: boolean;
 }
 
 const ResultsTableBody = ({
@@ -35,16 +34,10 @@ const ResultsTableBody = ({
   incPage,
   page,
   loading,
-  lockScroll,
 }: Props) => {
   const [loadedTracks, setLoadedTracks] = useState<Array<PlaylistTrack>>([]);
   const tableRef = React.createRef<BaseTable<unknown>>();
   const { sort, setSort } = useSortState();
-
-  const lockedScrollTop = useRef<Maybe<number>>(null);
-  useEffect(() => {
-    if (lockScroll === false) lockedScrollTop.current = null;
-  }, [lockScroll]);
 
   useEffect(() => {
     if (tracks) {
@@ -76,30 +69,12 @@ const ResultsTableBody = ({
 
   const loadingMore = page > 0 && loading;
 
-  const handleScroll = ({
-    scrollTop,
-  }: {
-    scrollLeft: number;
-    scrollTop: number;
-    horizontalScrollDirection: 'forward' | 'backward';
-    verticalScrollDirection: 'forward' | 'backward';
-    scrollUpdateWasRequested: boolean;
-  }) => {
-    if (lockScroll) {
-      if (!lockedScrollTop.current) {
-        lockedScrollTop.current = scrollTop;
-      }
-      tableRef.current?.scrollToTop(lockedScrollTop.current);
-    }
-  };
-
   return (
     <Container>
       <AutoResizer>
         {({ width, height }) => {
           return (
             <BaseTable
-              onScroll={handleScroll}
               onRowsRendered={({ startIndex, stopIndex }) =>
                 reactiveTableRowsVisible([startIndex, stopIndex])
               }

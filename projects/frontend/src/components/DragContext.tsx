@@ -19,7 +19,7 @@ const DragContext: React.FunctionComponent = ({ children }) => {
   const [dragMode, setDragMode] = useState<CustomDragMode>('move');
   const { searchFromIds } = useSearchbarState();
 
-  const handleDragStart = () => setDragMode('move');
+  const handleDragStart = () => setDragging(true)
   const handleDragEnd = () => {
     if (dragMode === 'search') {
       const activeList = reactiveActivePlaylistId();
@@ -44,6 +44,7 @@ const DragContext: React.FunctionComponent = ({ children }) => {
     <DndContext
       onDragEnd={handleDragEnd}
       onDragOver={handleDragOver}
+      onDragStart={handleDragStart}
       draggerElement={
         dragMode === 'search' ? '?' : <Counter/>
       }
