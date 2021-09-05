@@ -11,6 +11,7 @@ export const initState = (): State => ({
 
 export interface LifecycleHandlers {
   onDragStart?: (e: DragStartEvent) => void;
+  onDragInit?: (e: DragStartEvent) => void;
   onDragEnd?: (e: DragEndEvent) => void;
   onDragOver?: (e: DragOverEvent) => void;
 }
@@ -18,14 +19,22 @@ export interface LifecycleHandlers {
 export const reducer =
   (handlers: LifecycleHandlers) =>
   (state: State, action: Action): State => {
-  // console.log({action})
-    const { onDragEnd, onDragOver } = handlers;
+    // console.log({action})
+    const { onDragEnd, onDragOver, onDragStart, onDragInit } = handlers;
     const thisReducer = reducer(handlers);
     switch (action.type) {
       case ActionType.DragInit:
         const { initCoordinates } = action;
-        return { ...state, overId: null, dragMode: 'preDrag', initCoordinates };
+        const newInitState: State = {
+          ...state,
+          overId: null,
+          dragMode: 'preDrag',
+          initCoordinates,
+        };
+        onDragInit?.(newInitState);
+        return newInitState;
       case ActionType.DragStart:
+        onDragStart?.(state);
         return { ...state, dragMode: 'dragging' };
 
       case ActionType.DragEnd:

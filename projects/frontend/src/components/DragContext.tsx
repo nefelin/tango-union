@@ -1,14 +1,12 @@
 import * as React from 'react';
 import { useState } from 'react';
+import { unstable_batchedUpdates } from 'react-dom';
 
 import GlobalDragState from '../context/globalDragState.context';
 import { reactiveSongLists } from '../hooks/state/useGlobalPlaylistState/songLists.state';
 import { selectedTracks } from '../hooks/state/usePlaylistsState/util';
 import { useSearchbarState } from '../hooks/state/useSearchbarState';
-import {
-  reactiveActivePlaylistId,
-  useSelectionState,
-} from '../hooks/state/useSelectionState';
+import { reactiveActivePlaylistId } from '../hooks/state/useSelectionState';
 import { CustomDragMode } from './DragContext/props';
 import DndContext from './DragNDrop/DnDContext';
 import { Counter } from './DragNDrop/Dragger/Counter/Counter';
@@ -19,7 +17,10 @@ const DragContext: React.FunctionComponent = ({ children }) => {
   const [dragMode, setDragMode] = useState<CustomDragMode>('move');
   const { searchFromIds } = useSearchbarState();
 
-  const handleDragStart = () => setDragging(true)
+  const handleDragStart = () => {
+    console.log('dragStart');
+    setDragging(true);
+  };
   const handleDragEnd = () => {
     if (dragMode === 'search') {
       const activeList = reactiveActivePlaylistId();
@@ -30,7 +31,10 @@ const DragContext: React.FunctionComponent = ({ children }) => {
         }
       }
     }
-    setDragMode('move');
+    unstable_batchedUpdates(() => {
+      setDragMode('move');
+      setDragging(false);
+    });
   };
   const handleDragOver = ({ overId }: DragOverEvent) => {
     if (overId === 'searchbar') {
@@ -40,18 +44,17 @@ const DragContext: React.FunctionComponent = ({ children }) => {
     }
   };
 
+  console.log(dragging);
   return (
     <DndContext
       onDragEnd={handleDragEnd}
       onDragOver={handleDragOver}
       onDragStart={handleDragStart}
-      draggerElement={
-        dragMode === 'search' ? '?' : <Counter/>
-      }
+      draggerElement={dragMode === 'search' ? '?' : <Counter />}
     >
-      <GlobalDragState.Provider value={{ dragging }}>
-        {children}
-      </GlobalDragState.Provider>
+      {/* <GlobalDragState.Provider value={{ dragging }}> */}
+      {children}
+      {/* </GlobalDragState.Provider> */}
     </DndContext>
   );
 };

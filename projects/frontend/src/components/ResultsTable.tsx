@@ -1,9 +1,8 @@
 import 'react-base-table/styles.css';
 
-import React, { useContext } from 'react';
+import React from 'react';
 import { useDebounce } from 'use-debounce';
 
-import GlobalDragState from '../context/globalDragState.context';
 import { PlaylistConfigContext } from '../context/playlistConfig.context';
 import { RESULTS_PLAYLIST_ID } from '../hooks/state/useGlobalPlaylistState/songLists.state';
 import { usePlaylistState } from '../hooks/state/usePlaylistState';

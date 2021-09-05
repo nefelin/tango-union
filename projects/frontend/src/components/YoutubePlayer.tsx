@@ -26,7 +26,7 @@ const YoutubePlayer = () => {
   const { activeTrack, playState } = youtubePlayerState;
 
   const { data } = useTrackDetailsBatchQuery({
-    variables: { ids: [activeTrack?.[0] ?? ''] }, // should never execute with empty string due to skip, will error
+    variables: { ids: [activeTrack?.trackId ?? ''] }, // should never execute with empty string due to skip, will error
     skip: activeTrack === null,
   });
 
