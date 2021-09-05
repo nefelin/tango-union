@@ -4,7 +4,7 @@ import { PlaylistConfigContext } from '../../context/playlistConfig.context';
 import { ListId } from '../../types/CompactTrack';
 import { reactiveSongLists } from './useGlobalPlaylistState/songLists.state';
 import {
-  reactiveSelectedPlaylist,
+  reactiveActivePlaylistId,
   useSelectionState,
 } from './useSelectionState';
 
@@ -16,7 +16,7 @@ export const useSelectionHandlers = (id: ListId) => {
 
   const handlers = {
     onMouseDown: (e: MouseEvent) => {
-      reactiveSelectedPlaylist(playlistId);
+      reactiveActivePlaylistId(playlistId);
       if (selectionStatus(id) === null) {
         setStartedSelected(false);
         if (e.metaKey) {
@@ -24,8 +24,8 @@ export const useSelectionHandlers = (id: ListId) => {
         } else if (e.shiftKey) {
           const playlist = reactiveSongLists()[playlistId];
           const tracks = playlist?.tracks ?? [];
-          const selection = playlist?.selection ?? [];
-          const tail = !!selection.length && selection[selection.length - 1];
+          const selection = playlist?.selection ?? new Set();
+          const tail = Array.from(selection).pop();
 
           if (tail) {
             const tailIndex = tracks.findIndex(({ listId }) => tail === listId);

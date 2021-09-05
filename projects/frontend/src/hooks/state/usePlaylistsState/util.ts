@@ -15,4 +15,4 @@
 import { CompactTrack } from '../../../types/CompactTrack';
 import { Playlist } from './types';
 
-export const selectedTracks = (playlist: Playlist): Array<CompactTrack> => playlist.tracks.filter(({listId}) => playlist.selection.includes(listId));
+export const selectedTracks = (playlist: Playlist): Array<CompactTrack> => playlist.tracks.filter(({listId}) => playlist.selection.has(listId));

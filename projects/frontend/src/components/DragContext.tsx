@@ -6,7 +6,7 @@ import { reactiveSongLists } from '../hooks/state/useGlobalPlaylistState/songLis
 import { selectedTracks } from '../hooks/state/usePlaylistsState/util';
 import { useSearchbarState } from '../hooks/state/useSearchbarState';
 import {
-  reactiveSelectedPlaylist,
+  reactiveActivePlaylistId,
   useSelectionState,
 } from '../hooks/state/useSelectionState';
 import { CustomDragMode } from './DragContext/props';
@@ -17,13 +17,12 @@ import { DragOverEvent } from './DragNDrop/store/types';
 const DragContext: React.FunctionComponent = ({ children }) => {
   const [dragging, setDragging] = useState(false);
   const [dragMode, setDragMode] = useState<CustomDragMode>('move');
-  const { selected } = useSelectionState();
   const { searchFromIds } = useSearchbarState();
 
   const handleDragStart = () => setDragMode('move');
   const handleDragEnd = () => {
     if (dragMode === 'search') {
-      const activeList = reactiveSelectedPlaylist();
+      const activeList = reactiveActivePlaylistId();
       if (activeList) {
         const thisList = reactiveSongLists()[activeList];
         if (thisList) {
@@ -46,7 +45,7 @@ const DragContext: React.FunctionComponent = ({ children }) => {
       onDragEnd={handleDragEnd}
       onDragOver={handleDragOver}
       draggerElement={
-        dragMode === 'search' ? '?' : <Counter count={selected.length} />
+        dragMode === 'search' ? '?' : <Counter/>
       }
     >
       <GlobalDragState.Provider value={{ dragging }}>

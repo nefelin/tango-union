@@ -1,6 +1,13 @@
+import { useReactiveVar } from '@apollo/client';
 import React from 'react';
 
-export const Counter = ({count}: {count: number}) => {
+import { reactiveSongLists } from '../../../../hooks/state/useGlobalPlaylistState/songLists.state';
+import { reactiveActivePlaylistId, useSelectionState } from '../../../../hooks/state/useSelectionState';
+
+export const Counter = () => {
+    const activePlaylistId = useReactiveVar(reactiveActivePlaylistId)
+    const songLists = useReactiveVar(reactiveSongLists)
+    const count = songLists[activePlaylistId ?? 'nope']?.selection.size ?? 0;
     const baseSize = 22;
 
     const SIZE = multiplierFromCharCount(count.toString().length) * baseSize;

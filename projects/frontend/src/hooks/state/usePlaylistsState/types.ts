@@ -5,7 +5,7 @@ export interface Playlist {
   id: PlaylistId;
   label?: string;
   tracks: TrackList;
-  selection: Array<ListId>;
+  selection: Set<ListId>;
 }
 
 export type PlaylistId = string;

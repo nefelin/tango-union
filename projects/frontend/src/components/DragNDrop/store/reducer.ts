@@ -18,7 +18,7 @@ export interface LifecycleHandlers {
 export const reducer =
   (handlers: LifecycleHandlers) =>
   (state: State, action: Action): State => {
-  console.log({action})
+  // console.log({action})
     const { onDragEnd, onDragOver } = handlers;
     const thisReducer = reducer(handlers);
     switch (action.type) {

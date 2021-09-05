@@ -6,7 +6,7 @@ import { ListId } from '../../types/CompactTrack';
 import { Maybe } from '../../types/utility/maybe';
 import { reactiveSongLists } from './useGlobalPlaylistState/songLists.state';
 
-export const reactiveSelectedPlaylist = makeVar<Maybe<string>>(null);
+export const reactiveActivePlaylistId = makeVar<Maybe<string>>(null);
 
 // focused is selected and on active list, selected is selected on passive list, null is no status
 export type SelectionStatus = 'focused' | 'selected' | null;
@@ -24,7 +24,7 @@ export const useSelectionState = () => {
       const newSelection = [...thisList.selection, ...ids];
       reactiveSongLists({
         ...lists,
-        [playlistId]: { ...thisList, selection: newSelection },
+        [playlistId]: { ...thisList, selection: new Set(newSelection) },
       });
     }
   };
@@ -35,19 +35,19 @@ export const useSelectionState = () => {
     if (!thisList) {
       console.error(`Playlist '${playlistId}' not found, can't add selection`);
     } else {
-      const newSelection = thisList.selection.filter(
+      const newSelection = [...thisList.selection].filter(
         (listId) => !ids.includes(listId),
       );
       reactiveSongLists({
         ...lists,
-        [playlistId]: { ...thisList, selection: newSelection },
+        [playlistId]: { ...thisList, selection: new Set(newSelection) },
       });
     }
   };
 
   const selectionStatus = (id: ListId): SelectionStatus => {
-    if (reactiveSongLists()[playlistId]?.selection.includes(id)) {
-      if (reactiveSelectedPlaylist() === playlistId) {
+    if (reactiveSongLists()[playlistId]?.selection.has(id)) {
+      if (reactiveActivePlaylistId() === playlistId) {
         return 'focused';
       }
       return 'selected';
@@ -63,7 +63,7 @@ export const useSelectionState = () => {
     } else {
       reactiveSongLists({
         ...lists,
-        [playlistId]: { ...thisList, selection: [id] },
+        [playlistId]: { ...thisList, selection: new Set([id]) },
       });
     }
   };
