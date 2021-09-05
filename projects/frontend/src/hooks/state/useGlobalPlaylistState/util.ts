@@ -6,7 +6,8 @@ import { PlayingContext } from './PlayingContext.type';
 export const newSongList = (id: string): Playlist => ({
   id,
   tracks: [],
-  selection: new Set()
+  selection: new Set(),
+  readOnly: false
 });
 
 export const generatePlaylistId = () => nanoid(8);

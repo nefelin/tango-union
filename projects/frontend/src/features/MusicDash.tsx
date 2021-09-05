@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDebounce } from 'use-debounce';
 
@@ -14,6 +13,7 @@ import ResultsTable from '../components/ResultsTable';
 import { useSortState } from '../components/ResultsTable/state/sort.state';
 import Searchbar from '../components/Searchbar';
 import TopBar from '../components/TopBar';
+import { RESULTS_PLAYLIST_ID } from '../hooks/state/useGlobalPlaylistState/songLists.state';
 import { usePlaylistState } from '../hooks/state/usePlaylistState';
 import { useSearchbarState } from '../hooks/state/useSearchbarState';
 
@@ -28,7 +28,7 @@ const MusicDash = () => {
   const [options, setOptions] = useState(emptyOptions);
   const { searchbarState } = useSearchbarState();
   const { sortInput, resetSort } = useSortState();
-  const { addTracks, replaceTracks } = usePlaylistState('results');
+  const { addTracks, replaceTracks } = usePlaylistState(RESULTS_PLAYLIST_ID);
   const [debouncedSearch] = useDebounce(searchbarState, 300, {
     equalityFn: objCompare,
   });
@@ -55,7 +55,7 @@ const MusicDash = () => {
   useEffect(() => {
     if (data?.compoundQuery) {
       setOptions(data.compoundQuery.counts);
-      replaceTracks(data?.compoundQuery.ids ?? [])
+      replaceTracks(data?.compoundQuery.ids ?? []);
     }
   }, [data?.compoundQuery]);
 
@@ -82,15 +82,15 @@ const MusicDash = () => {
       <TopBar />
       <MusicDashContainer>
         <DragContext>
-        <Searchbar selectOptions={options} />
-        <ActionRow>
-          <ResultsTable
-            loading={loading}
-            incPage={handlePageIncrement}
-            page={page}
-          />
-          <NowPlaying />
-        </ActionRow>
+          <Searchbar selectOptions={options} />
+          <ActionRow>
+            <ResultsTable
+              loading={loading}
+              incPage={handlePageIncrement}
+              page={page}
+            />
+            <NowPlaying />
+          </ActionRow>
         </DragContext>
       </MusicDashContainer>
       <Footer>

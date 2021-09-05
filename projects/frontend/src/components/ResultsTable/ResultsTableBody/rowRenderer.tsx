@@ -10,7 +10,7 @@ import { useSelectionHandlers } from '../../../hooks/state/useSelectionHandlers'
 import { useSelectionState } from '../../../hooks/state/useSelectionState';
 import { useYoutubePlayerState } from '../../../hooks/state/useYoutubePlayerState';
 import PlayableRow from '../../PlayableRow';
-import DraggableTrack from '../../Playlist/DraggableTrack';
+import SortableTrack from '../../Playlist/SortableTrack';
 
 const rowRenderer: BaseTableProps<PlaylistTrack>['rowRenderer'] = ({
   cells,
@@ -41,7 +41,7 @@ const CustomRow = ({ cells, rowData, rowIndex }: Props) => {
   //     {cells}
   //   </PlayableRow>
   // );
-  return <DraggableTrack cells={cells} rowData={rowData} rowIndex={rowIndex} />;
+  return <SortableTrack cells={cells} rowData={rowData} rowIndex={rowIndex} />;
 
 };
 

@@ -15,8 +15,6 @@ export const usePlaylistState = (playlistId: PlaylistId) => {
       listId: generateListId(),
     }));
 
-    console.log({ tracksWithLocalIds });
-
     const prevList = reactiveSongLists()[playlistId] || newSongList(playlistId);
     const newList: Playlist = {
       ...prevList,
@@ -71,11 +69,11 @@ export const usePlaylistState = (playlistId: PlaylistId) => {
   };
 
   return {
-    tracks: thisList.tracks,
     addTracks,
     removeTracks,
     loadTracks,
     replaceTracks,
     rearrangeTracks,
+    playlist: thisList,
   };
 };

@@ -9,9 +9,9 @@ import useCacheStitchedIdFetch from './ResultsTable/useCacheStitchedIdFetch';
 
 const Playlists = () => {
   const { name: playlistId } = useContext(PlaylistConfigContext);
-  const { tracks: ids, loadTracks } = usePlaylistState(playlistId);
+  const { playlist: {tracks: playlistTracks}, loadTracks } = usePlaylistState(playlistId);
   const { tracks: routedTracks } = useRoutedPlaylist();
-  const [tracks] = useCacheStitchedIdFetch(ids);
+  const [tracks] = useCacheStitchedIdFetch(playlistTracks);
 
   useEffect(() => {
     loadTracks(routedTracks.map(compactTrackFromString));

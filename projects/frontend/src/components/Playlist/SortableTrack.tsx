@@ -1,8 +1,11 @@
-import React from 'react';
+import { useReactiveVar } from '@apollo/client';
+import React, { useContext } from 'react';
 import { BaseTableProps } from 'react-base-table';
 
+import { PlaylistConfigContext } from '../../context/playlistConfig.context';
 import { useHoveredRowState } from '../../hooks/state/useHoveredRowState';
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
+import { usePlaylistState } from '../../hooks/state/usePlaylistState';
 import { useSelectionHandlers } from '../../hooks/state/useSelectionHandlers';
 import { useSelectionState } from '../../hooks/state/useSelectionState';
 import { useYoutubePlayerState } from '../../hooks/state/useYoutubePlayerState';
@@ -20,10 +23,15 @@ interface Props {
 export const playlistRowRenderer =
   (): BaseTableProps<PlaylistTrack>['rowRenderer'] =>
   ({ cells, rowData, rowIndex }) =>
-    <DraggableTrack cells={cells} rowData={rowData} rowIndex={rowIndex} />;
+    <SortableTrack cells={cells} rowData={rowData} rowIndex={rowIndex} />;
 
-const DraggableTrack = ({ rowData: track, cells, rowIndex }: Props) => {
+const SortableTrack = ({ rowData: track, cells, rowIndex }: Props) => {
   const id = track.listId;
+
+  const { name: playlistId } = useContext(PlaylistConfigContext);
+  const {
+    playlist: { readOnly },
+  } = usePlaylistState(playlistId);
 
   const { trackStatus, play } = useYoutubePlayerState();
   const { listeners: hoverListeners } = useHoveredRowState(rowIndex);
@@ -33,7 +41,7 @@ const DraggableTrack = ({ rowData: track, cells, rowIndex }: Props) => {
   const { selectionStatus } = useSelectionState();
   const { handlers } = useSelectionHandlers(track.listId);
 
-  const { listeners } = useSortable(id);
+  const { listeners, styles } = useSortable(id);
 
   const mergedListeners = mergeListenerMaps([
     listeners,
@@ -41,9 +49,11 @@ const DraggableTrack = ({ rowData: track, cells, rowIndex }: Props) => {
     hoverListeners,
   ]);
 
+  const readOnlyStyles = readOnly ? {} : styles; // only use track insert styles if readonly is false
   return (
     <>
       <PlayableRow
+        style={readOnlyStyles}
         status={status}
         selectionStatus={selectionStatus(track.listId)}
         onDoubleClick={() => play(compressTrack(track))}
@@ -55,4 +65,4 @@ const DraggableTrack = ({ rowData: track, cells, rowIndex }: Props) => {
   );
 };
 
-export default DraggableTrack;
+export default SortableTrack;

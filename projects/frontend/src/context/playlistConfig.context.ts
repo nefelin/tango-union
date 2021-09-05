@@ -5,5 +5,5 @@ interface PlaylistConfig {
 }
 
 export const PlaylistConfigContext = React.createContext<PlaylistConfig>({
-  name: '',
+  name: ''
 });

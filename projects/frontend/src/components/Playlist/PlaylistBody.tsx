@@ -2,19 +2,20 @@ import { useEffect, useState } from 'react';
 import * as React from 'react';
 import BaseTable, { AutoResizer } from 'react-base-table';
 
+import { QUICKLIST_PLAYLIST_ID } from '../../hooks/state/useGlobalPlaylistState/songLists.state';
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
 import { usePlaylistState } from '../../hooks/state/usePlaylistState';
 import { useSelectionState } from '../../hooks/state/useSelectionState';
 import useKeyboardShortcut from '../../hooks/useKeyboardShortcut';
 import { Maybe } from '../../types/utility/maybe';
-import { playlistRowRenderer } from './DraggableTrack';
 import { PlaylistContainer, TableContainer } from './PlaylistBody/styles';
 import { moveMany } from './PlaylistBody/util';
 import playlistColumns from './playlistColumns';
+import { playlistRowRenderer } from './SortableTrack';
 
 const PlaylistBody = ({ tracks }: { tracks: Maybe<Array<PlaylistTrack>> }) => {
   const { selectionStatus, selected, removeSelected } = useSelectionState();
-  const { rearrangeTracks, removeTracks } = usePlaylistState('quicklist');
+  const { rearrangeTracks, removeTracks } = usePlaylistState(QUICKLIST_PLAYLIST_ID);
   const [orderedTracks, setOrderedTracks] = useState(tracks ?? []);
 
   useKeyboardShortcut(['Backspace', 'Delete'], () => {

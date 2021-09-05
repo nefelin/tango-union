@@ -6,6 +6,7 @@ export interface Playlist {
   label?: string;
   tracks: TrackList;
   selection: Set<ListId>;
+  readOnly: boolean;
 }
 
 export type PlaylistId = string;
