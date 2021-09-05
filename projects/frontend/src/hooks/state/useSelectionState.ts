@@ -17,7 +17,7 @@ export const useSelectionState = () => {
 
   const addSelected = (...ids: Array<ListId>) => {
     const lists = reactiveSongLists();
-    const thisList = lists[playlistId]; // fixme replace with active list inferred by dragged items parent
+    const thisList = lists[playlistId];
     if (!thisList) {
       console.error(`Playlist '${playlistId}' not found, can't add selection`);
     } else {

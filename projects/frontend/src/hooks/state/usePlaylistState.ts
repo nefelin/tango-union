@@ -1,5 +1,4 @@
 import { useReactiveVar } from '@apollo/client';
-import * as r from 'ramda';
 
 import { CompactTrack, ListId, TrackId } from '../../types/CompactTrack';
 import { reactiveSongLists } from './useGlobalPlaylistState/songLists.state';
