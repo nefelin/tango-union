@@ -49,10 +49,21 @@ const DndContext: FunctionComponent<Props> = ({
       window.removeEventListener('keydown', handleKeyDown);
     };
 
-    removeListeners();
-    createListeners();
-    return removeListeners;
-  }, [dispatch]);
+    switch (state.dragMode) {
+      case 'preDrag':
+        createListeners();
+        return removeListeners;
+
+      case 'dragging':
+        createListeners();
+        return removeListeners;
+
+      case null:
+      default:
+        removeListeners();
+        return () => {}
+    }
+  }, [dispatch, state]);
 
   // specifically handle pre-drag to dragging transition
   useEffect(() => {

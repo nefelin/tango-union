@@ -22,7 +22,6 @@ const DragContext: React.FunctionComponent = ({ children }) => {
     // setDragging(true);
   };
   const handleDragEnd = (state: State) => {
-    console.log('handle drag end', state)
     const {overId, overPosition} = state;
 
     if (!overId) {
