@@ -1,12 +1,12 @@
-import {createContext } from "react";
-import {Maybe, Position, State} from "./types";
-import {initState} from "./reducer";
-import React from 'react';
-import {Action} from "./actions";
+import React, { createContext } from 'react';
+
+import { Action } from './actions';
+import { initState } from './reducer';
+import { State } from './types';
 
 interface Context {
-    state: State;
-    dispatch?: React.Dispatch<Action>;
+  state: State;
+  dispatch?: React.Dispatch<Action>;
 }
 
-export const DndMonitorContext = createContext<Context>({state: initState()});
+export const DndMonitorContext = createContext<Context>({ state: initState() });

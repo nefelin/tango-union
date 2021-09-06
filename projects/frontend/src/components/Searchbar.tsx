@@ -16,8 +16,10 @@ interface Props {
   selectOptions: FullCountFragmentFragment['counts'];
 }
 
+export const SEARCHBAR_DROPPABLE_ID = 'search';
+
 const Searchbar = ({ selectOptions }: Props) => {
-  const { listeners } = useDroppable('searchbar');
+  const { listeners } = useDroppable(SEARCHBAR_DROPPABLE_ID);
   const { setSearchbarState, searchbarState, resetSearchbar } =
     useSearchbarState();
 

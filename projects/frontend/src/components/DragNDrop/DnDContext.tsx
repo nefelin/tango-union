@@ -1,16 +1,16 @@
 import React, {
   FunctionComponent,
   ReactNode,
+  useCallback,
   useEffect,
-  useReducer, useRef,
+  useReducer,
 } from 'react';
 
-import { Counter } from './Dragger/Counter/Counter';
 import { Dragger } from './Dragger/Dragger';
 import { ActionType } from './store/actions';
 import { DndMonitorContext } from './store/context';
+import monitoredDispatch from './store/monitoredDispatch';
 import { initState, LifecycleHandlers, reducer } from './store/reducer';
-import { DragMode } from './store/types';
 
 interface DndContextProps {
   draggerElement?: ReactNode;
@@ -23,32 +23,36 @@ const DndContext: FunctionComponent<Props> = ({
   draggerElement,
   ...handlers
 }) => {
-  const [state, dispatch] = useReducer(reducer(handlers), undefined, initState);
+  const [state, rawDispatch] = useReducer(reducer, undefined, initState);
+  const dispatch = useCallback(
+    monitoredDispatch(rawDispatch, state, handlers),
+    [state],
+  );
+
   // general lifecycle of drag
   useEffect(() => {
     const handleMouseUp = () => {
       dispatch({ type: ActionType.DragEnd });
-    }
+    };
     const handleKeyDown = ({ key }: KeyboardEvent) => {
       if (key === 'Escape') {
         dispatch({ type: ActionType.DragCancel });
       }
     };
 
-    // fixme too many listeners, be more surgical about creating event listeners (use ref to track prev state and only add listener when we change from no drag mode to drag mode)
-    if (state.dragMode ) {
+    const createListeners = () => {
       window.addEventListener('mouseup', handleMouseUp);
       window.addEventListener('keydown', handleKeyDown);
+    };
+    const removeListeners = () => {
+      window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
 
-      return () => {
-        window.removeEventListener('mouseup', handleMouseUp);
-        window.removeEventListener('keydown', handleKeyDown);
-      };
-    }
-    window.removeEventListener('mouseup', handleMouseUp);
-    window.removeEventListener('keydown', handleKeyDown);
-    return () => {};
-  }, [state.dragMode]);
+    removeListeners();
+    createListeners();
+    return removeListeners;
+  }, [dispatch]);
 
   // specifically handle pre-drag to dragging transition
   useEffect(() => {
@@ -73,9 +77,7 @@ const DndContext: FunctionComponent<Props> = ({
   const value = { state, dispatch };
   return (
     <DndMonitorContext.Provider value={value}>
-      <Dragger>
-        {draggerElement}
-      </Dragger>
+      <Dragger>{draggerElement}</Dragger>
       {children}
     </DndMonitorContext.Provider>
   );

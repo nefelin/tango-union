@@ -1,4 +1,5 @@
 import { SimpleTrack } from '../../generated/graphql';
+import { generateListId } from '../hooks/state/useGlobalPlaylistState/util';
 import { PlaylistTrack } from '../hooks/state/usePlaylistsState/types';
 
 export type ListId = string;
@@ -51,6 +52,8 @@ export const compressTrack = ({
   trackId: id,
   videoId,
 });
+
+export const regenListIds = (track: CompactTrack) => ({...track, listId: generateListId()});
 
 export type TrackList = Array<CompactTrack>;
 

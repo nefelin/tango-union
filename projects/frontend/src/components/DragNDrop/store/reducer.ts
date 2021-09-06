@@ -17,11 +17,7 @@ export interface LifecycleHandlers {
 }
 
 export const reducer =
-  (handlers: LifecycleHandlers) =>
   (state: State, action: Action): State => {
-    // console.log({action})
-    const { onDragEnd, onDragOver, onDragStart, onDragInit } = handlers;
-    const thisReducer = reducer(handlers);
     switch (action.type) {
       case ActionType.DragInit:
         const { initCoordinates } = action;
@@ -31,14 +27,11 @@ export const reducer =
           dragMode: 'preDrag',
           initCoordinates,
         };
-        onDragInit?.(newInitState);
         return newInitState;
       case ActionType.DragStart:
-        onDragStart?.(state);
         return { ...state, dragMode: 'dragging' };
 
       case ActionType.DragEnd:
-        onDragEnd?.(state);
         return initState();
 
       case ActionType.DragCancel:
@@ -54,7 +47,7 @@ export const reducer =
             );
             const startDistance = 15;
             return distanceFromInit > startDistance
-              ? thisReducer(state, { type: ActionType.DragStart })
+              ? reducer(state, { type: ActionType.DragStart })
               : state;
           case 'dragging':
           default:
@@ -66,7 +59,7 @@ export const reducer =
         let newState: State;
         switch (state.dragMode) {
           case 'preDrag':
-            newState = thisReducer(
+            newState = reducer(
               { ...state, overId, overPosition },
               { type: ActionType.DragStart },
             ); // adding dragStart here means dragOver before init distance causes early init
@@ -79,7 +72,6 @@ export const reducer =
             newState = state;
             break;
         }
-        onDragOver?.(newState);
         return newState;
 
       default:
