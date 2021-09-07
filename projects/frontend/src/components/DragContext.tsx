@@ -1,21 +1,17 @@
 import * as React from 'react';
-import { useState } from 'react';
 
 import { playlistIdFromListId, reactiveSongLists } from '../hooks/state/useGlobalPlaylistState/songLists.state';
 import { selectedTracks } from '../hooks/state/usePlaylistsState/util';
 import { useSearchbarState } from '../hooks/state/useSearchbarState';
 import { reactiveActivePlaylistId } from '../hooks/state/useSelectionState';
 import { regenListIds } from '../types/CompactTrack';
-import { CustomDragMode } from './DragContext/props';
 import DndContext from './DragNDrop/DnDContext';
 import { Counter } from './DragNDrop/Dragger/Counter/Counter';
-import { DragOverEvent, State } from './DragNDrop/store/types';
+import { State } from './DragNDrop/store/types';
 import { moveMany } from './Playlist/PlaylistBody/util';
 import { SEARCHBAR_DROPPABLE_ID } from './Searchbar';
 
 const DragContext: React.FunctionComponent = ({ children }) => {
-  const [dragging, setDragging] = useState(false);
-  const [dragMode, setDragMode] = useState<CustomDragMode>('move');
   const { searchFromIds } = useSearchbarState();
 
   const handleDragStart = () => {
@@ -68,24 +64,13 @@ const DragContext: React.FunctionComponent = ({ children }) => {
     }
   };
 
-  const handleDragOver = ({ overId }: DragOverEvent) => {
-    // if (overId === 'searchbar') {
-    //   setDragMode('search');
-    // } else {
-    //   setDragMode('move');
-    // }
-  };
-
   return (
     <DndContext
       onDragEnd={handleDragEnd}
-      onDragOver={handleDragOver}
       onDragStart={handleDragStart}
-      draggerElement={dragMode === 'search' ? '?' : <Counter />}
+      draggerElement={<Counter />}
     >
-      {/* <GlobalDragState.Provider value={{ dragging }}> */}
       {children}
-      {/* </GlobalDragState.Provider> */}
     </DndContext>
   );
 };

@@ -63,7 +63,7 @@ const PlaylistBody = ({ tracks }: { tracks: Maybe<Array<PlaylistTrack>> }) => {
             return (
               <BaseTable
                 style={{ fontSize: 12 }}
-                rowKey="localSongId"
+                rowKey="listId"
                 data={tracks?.map((track, index) => ({
                   ...track,
                   fakeId: `${track.id}_${index}`, // gnarly way to allow duplicate rows
