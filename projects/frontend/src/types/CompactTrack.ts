@@ -1,4 +1,5 @@
 import { SimpleTrack } from '../../generated/graphql';
+import { reactiveSongLists } from '../hooks/state/useGlobalPlaylistState/songLists.state';
 import { generateListId } from '../hooks/state/useGlobalPlaylistState/util';
 import { PlaylistTrack } from '../hooks/state/usePlaylistsState/types';
 
@@ -54,6 +55,19 @@ export const compressTrack = ({
 });
 
 export const regenListIds = (track: CompactTrack) => ({...track, listId: generateListId()});
+
+export const compactTrackFromListId = (listId: ListId) => {
+  // eslint-disable-next-line no-restricted-syntax
+  for (const list of Object.values(reactiveSongLists())) {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const track of list.tracks) {
+      if (track.listId === listId) {
+        return track;
+      }
+    }
+  }
+  return null
+}
 
 export type TrackList = Array<CompactTrack>;
 

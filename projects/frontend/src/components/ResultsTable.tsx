@@ -17,6 +17,7 @@ interface Props {
 }
 
 const ResultsTable = ({ loading = false, page, incPage }: Props) => {
+
   const {
     playlist: { tracks: playlistTracks },
   } = usePlaylistState(RESULTS_PLAYLIST_ID);

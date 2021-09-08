@@ -1,5 +1,5 @@
 import * as r from 'ramda';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import BaseTable, {
   AutoResizer,
   BaseTableProps,
@@ -9,6 +9,8 @@ import styled from 'styled-components';
 
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
 import { Maybe } from '../../types/utility/maybe';
+import BaseTableStyleOverrides from '../BaseTableStyleOverrides/BaseTableStyleOverrides';
+import { DndMonitorContext } from '../DragNDrop/store/context';
 import { reactiveTableRowsVisible } from './resultsTable.state';
 import overlayRenderer from './ResultsTableBody/overlayRenderer';
 import rowRenderer from './ResultsTableBody/rowRenderer';
@@ -29,12 +31,10 @@ interface Props {
   loading: boolean;
 }
 
-const ResultsTableBody = ({
-  tracks,
-  incPage,
-  page,
-  loading,
-}: Props) => {
+const ResultsTableBody = ({ tracks, incPage, page, loading }: Props) => {
+  const {
+    state: { dragMode },
+  } = useContext(DndMonitorContext);
   const [loadedTracks, setLoadedTracks] = useState<Array<PlaylistTrack>>([]);
   const tableRef = React.createRef<BaseTable<unknown>>();
   const { sort, setSort } = useSortState();
@@ -74,25 +74,27 @@ const ResultsTableBody = ({
       <AutoResizer>
         {({ width, height }) => {
           return (
-            <BaseTable
-              onRowsRendered={({ startIndex, stopIndex }) =>
-                reactiveTableRowsVisible([startIndex, stopIndex])
-              }
-              ref={tableRef}
-              fixed
-              rowRenderer={rowRenderer}
-              data={loadedTracks}
-              width={width}
-              height={height + 8} // this is hacky fixme
-              onEndReached={handleLoadMore}
-              onEndReachedThreshold={30}
-              components={{ TableHeaderCell }}
-              columns={searchResultColumns(width)}
-              sortState={sort}
-              onColumnSort={handleColumnSort}
-              overlayRenderer={overlayRenderer(loading, loadingMore)}
-              loadingMore={loadingMore}
-            />
+            <BaseTableStyleOverrides dragging={!!dragMode}>
+              <BaseTable
+                onRowsRendered={({ startIndex, stopIndex }) =>
+                  reactiveTableRowsVisible([startIndex, stopIndex])
+                }
+                ref={tableRef}
+                fixed
+                rowRenderer={rowRenderer}
+                data={loadedTracks}
+                width={width}
+                height={height + 8} // this is hacky fixme
+                onEndReached={handleLoadMore}
+                onEndReachedThreshold={30}
+                components={{ TableHeaderCell }}
+                columns={searchResultColumns(width)}
+                sortState={sort}
+                onColumnSort={handleColumnSort}
+                overlayRenderer={overlayRenderer(loading, loadingMore)}
+                loadingMore={loadingMore}
+              />
+            </BaseTableStyleOverrides>
           );
         }}
       </AutoResizer>

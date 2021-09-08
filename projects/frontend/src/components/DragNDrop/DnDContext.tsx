@@ -61,7 +61,7 @@ const DndContext: FunctionComponent<Props> = ({
       case null:
       default:
         removeListeners();
-        return () => {}
+        return () => {};
     }
   }, [dispatch, state]);
 
