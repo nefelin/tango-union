@@ -4,7 +4,6 @@ import { PlaylistConfigContext } from '../context/playlistConfig.context';
 import { usePlaylistState } from '../hooks/state/usePlaylistState';
 import { useRoutedPlaylist } from '../hooks/state/useRoutedPlaylist';
 import { compactTrackFromString } from '../types/CompactTrack';
-import EmptyPlaylist from './Playlist/EmptyPlaylist';
 import PlaylistBody from './Playlist/PlaylistBody';
 import useCacheStitchedIdFetch from './ResultsTable/useCacheStitchedIdFetch';
 
@@ -21,7 +20,7 @@ const Playlists = () => {
     loadTracks(routedTracks.map(compactTrackFromString));
   }, []);
 
-  return  <PlaylistBody tracks={tracks} />
+  return <PlaylistBody tracks={tracks} />;
 };
 
 export default Playlists;

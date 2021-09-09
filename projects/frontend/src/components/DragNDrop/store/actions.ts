@@ -1,4 +1,4 @@
-import {Coordinates, DraggableId, DroppableId, Maybe, Position} from "./types";
+import {Coordinates, DraggableId, DroppableId, Maybe, Position} from './types';
 
 export enum ActionType {
     DragInit = 'dragInit',

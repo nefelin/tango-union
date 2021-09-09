@@ -7,11 +7,11 @@ export const newSongList = (id: string): Playlist => ({
   id,
   tracks: [],
   selection: new Set(),
-  readOnly: false
+  readOnly: false,
 });
 
 export const generatePlaylistId = () => nanoid(8);
-export const generateListId = () => nanoid(12);
+export const generateListId = () => nanoid(12).replace(/-/g, '');
 
 export const createContext = (
   { id, tracks }: Playlist,
