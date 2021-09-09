@@ -1,7 +1,7 @@
 import { MouseEvent, useContext, useState } from 'react';
 
 import { PlaylistConfigContext } from '../../context/playlistConfig.context';
-import { ListId } from '../../types/CompactTrack';
+import { ListId } from '../../types/compactTrack/types';
 import { reactiveSongLists } from './useGlobalPlaylistState/songLists.state';
 import {
   reactiveActivePlaylistId,

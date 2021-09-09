@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { CompactTrack, CompoundIdString, compoundIdStringFromCompactTrack } from '../../types/CompactTrack';
+import { CompactTrack, CompoundIdString, compoundIdStringFromCompactTrack } from '../../types/compactTrack/types';
 import { QUICKLIST_PLAYLIST_ID } from './useGlobalPlaylistState/songLists.state';
 import { usePlaylistState } from './usePlaylistState';
 import { useRoutedState } from './useRoutedState';

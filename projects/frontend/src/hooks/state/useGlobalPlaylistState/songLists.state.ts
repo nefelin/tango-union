@@ -1,6 +1,6 @@
 import { makeVar } from '@apollo/client';
 
-import { ListId } from '../../../types/CompactTrack';
+import { ListId } from '../../../types/compactTrack/types';
 import { Playlist, PlaylistId } from '../usePlaylistsState/types';
 import { newSongList } from './util';
 

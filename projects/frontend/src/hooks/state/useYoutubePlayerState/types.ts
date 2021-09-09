@@ -1,4 +1,4 @@
-import { CompactTrack } from '../../../types/CompactTrack';
+import { CompactTrack } from '../../../types/compactTrack/types';
 import { Maybe } from '../../../types/utility/maybe';
 import { PlaylistTrack } from '../usePlaylistsState/types';
 

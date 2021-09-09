@@ -2,7 +2,7 @@ import * as r from 'ramda';
 import { useHistory, useParams } from 'react-router';
 
 import { SearchbarState } from '../../components/Searchbar/types';
-import { CompoundIdString } from '../../types/CompactTrack';
+import { CompoundIdString } from '../../types/compactTrack/types';
 
 interface SavedState {
   tracks: Array<CompoundIdString>;

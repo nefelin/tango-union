@@ -12,7 +12,7 @@
 //
 // export const localSongIdFromTrackIdTuple = (tuple: TrackIdTuple) => tuple[1];
 //
-import { CompactTrack } from '../../../types/CompactTrack';
+import { CompactTrack } from '../../../types/compactTrack/types';
 import { Playlist } from './types';
 
 export const selectedTracks = (playlist: Playlist): Array<CompactTrack> => playlist.tracks.filter(({listId}) => playlist.selection.has(listId));

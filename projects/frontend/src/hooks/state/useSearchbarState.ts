@@ -5,7 +5,7 @@ import { useDebounce } from 'use-debounce';
 import { searchStateFromTracks } from '../../components/DragContext/searchStateFromTracks';
 import useCacheStitchedIdFetch from '../../components/ResultsTable/useCacheStitchedIdFetch';
 import { SearchbarState } from '../../components/Searchbar/types';
-import { CompactTrack } from '../../types/CompactTrack';
+import { CompactTrack } from '../../types/compactTrack/types';
 import cachedTracksFromIds from '../../util/cachedTracksFromIds';
 import { useRoutedState } from './useRoutedState';
 

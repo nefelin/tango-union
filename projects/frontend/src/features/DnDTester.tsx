@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 
 import DndContext from '../components/DragNDrop/DnDContext';
 import { useDroppable } from '../components/DragNDrop/hooks/useDroppable';
@@ -32,7 +32,7 @@ const DropBox = () => {
 const Sortable = ({ id }: { id: string }) => {
   const { listeners, isOver, styles } = useSortable(id);
   return useMemo(() => {
-    console.log('render');
+    // console.log('render');
     return (
       <div
         {...listeners}

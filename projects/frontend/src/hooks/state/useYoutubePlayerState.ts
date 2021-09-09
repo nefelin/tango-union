@@ -1,6 +1,6 @@
 import { makeVar, useReactiveVar } from '@apollo/client';
 
-import { CompactTrack, compressTrack } from '../../types/CompactTrack';
+import { CompactTrack, compressTrack } from '../../types/compactTrack/types';
 import { PlaylistTrack } from './usePlaylistsState/types';
 import {
   HookProps,

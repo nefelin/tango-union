@@ -1,4 +1,4 @@
-import { CompactTrack, ListId } from '../../../types/CompactTrack';
+import { CompactTrack, ListId } from '../../../types/compactTrack/types';
 
 // fixme generate new listIds if the track changes lists
 export function moveMany(

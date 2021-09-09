@@ -3,7 +3,7 @@ import React, { useContext, useEffect } from 'react';
 import { PlaylistConfigContext } from '../context/playlistConfig.context';
 import { usePlaylistState } from '../hooks/state/usePlaylistState';
 import { useRoutedPlaylist } from '../hooks/state/useRoutedPlaylist';
-import { compactTrackFromString } from '../types/CompactTrack';
+import { compactTrackFromString } from '../types/compactTrack/types';
 import PlaylistBody from './Playlist/PlaylistBody';
 import useCacheStitchedIdFetch from './ResultsTable/useCacheStitchedIdFetch';
 

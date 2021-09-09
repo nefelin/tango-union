@@ -7,7 +7,7 @@ import {
 import {
   PlaylistTrack,
 } from '../../hooks/state/usePlaylistsState/types';
-import { CompactTrack } from '../../types/CompactTrack';
+import { CompactTrack } from '../../types/compactTrack/types';
 import { Maybe } from '../../types/utility/maybe';
 
 // fixme would be nice to cut down on re-render

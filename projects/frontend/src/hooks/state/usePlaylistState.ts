@@ -1,6 +1,6 @@
 import { useReactiveVar } from '@apollo/client';
 
-import { CompactTrack, ListId, TrackId } from '../../types/CompactTrack';
+import { CompactTrack, ListId, TrackId } from '../../types/compactTrack/types';
 import { reactiveSongLists } from './useGlobalPlaylistState/songLists.state';
 import { generateListId, newSongList } from './useGlobalPlaylistState/util';
 import { Playlist, PlaylistId } from './usePlaylistsState/types';

@@ -9,7 +9,7 @@ import React from 'react';
 import { useHoveredRowState } from '../../../../hooks/state/useHoveredRowState';
 import { PlaylistTrack } from '../../../../hooks/state/usePlaylistsState/types';
 import { useYoutubePlayerState } from '../../../../hooks/state/useYoutubePlayerState';
-import { compressTrack } from '../../../../types/CompactTrack';
+import { compressTrack } from '../../../../types/compactTrack/types';
 import { Loader } from '../overlayRenderer/styled';
 import { StyledFakeButton } from './styles';
 import { CellProps } from './types';

@@ -1,4 +1,4 @@
-import { CompactTrack } from '../../../types/CompactTrack';
+import { CompactTrack } from '../../../types/compactTrack/types';
 import { PlaylistId } from '../usePlaylistsState/types';
 
 export interface PlayingContext {
