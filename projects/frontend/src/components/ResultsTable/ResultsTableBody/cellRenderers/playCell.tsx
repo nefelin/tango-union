@@ -9,7 +9,7 @@ import React from 'react';
 import { useHoveredRowState } from '../../../../hooks/state/useHoveredRowState';
 import { PlaylistTrack } from '../../../../hooks/state/usePlaylistsState/types';
 import { useYoutubePlayerState } from '../../../../hooks/state/useYoutubePlayerState';
-import { compressTrack } from '../../../../types/compactTrack/types';
+import { compressTrack } from '../../../../types/compactTrack/util';
 import { Loader } from '../overlayRenderer/styled';
 import { StyledFakeButton } from './styles';
 import { CellProps } from './types';
@@ -25,10 +25,7 @@ const PlayCell = ({ song, rowIndex }: CellProps) => {
   return showLoading ? (
     <Loader small color="black" />
   ) : (
-    <DynamicPlayButton
-      rowIndex={rowIndex}
-      track={song}
-    />
+    <DynamicPlayButton rowIndex={rowIndex} track={song} />
   );
 };
 

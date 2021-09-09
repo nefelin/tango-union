@@ -9,7 +9,7 @@ import { usePlaylistState } from '../../hooks/state/usePlaylistState';
 import { useSelectionHandlers } from '../../hooks/state/useSelectionHandlers';
 import { useSelectionState } from '../../hooks/state/useSelectionState';
 import { useYoutubePlayerState } from '../../hooks/state/useYoutubePlayerState';
-import { compressTrack } from '../../types/compactTrack/types';
+import { compressTrack } from '../../types/compactTrack/util';
 import mergeListenerMaps from '../../util/mergeListenerMaps';
 import { useSortable } from '../DragNDrop/hooks/useSortable';
 import PlayableRow from '../PlayableRow';

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import {
   playlistIdFromListId,
@@ -9,7 +9,7 @@ import { newSongList } from '../hooks/state/useGlobalPlaylistState/util';
 import { selectedTracks } from '../hooks/state/usePlaylistsState/util';
 import { useSearchbarState } from '../hooks/state/useSearchbarState';
 import { reactiveActivePlaylistId } from '../hooks/state/useSelectionState';
-import { compactTrackFromListId, regenListIds } from '../types/compactTrack/types';
+import { regenListIds } from '../types/compactTrack/util';
 import DndContext from './DragNDrop/DnDContext';
 import { Counter } from './DragNDrop/Dragger/Counter/Counter';
 import { State } from './DragNDrop/store/types';

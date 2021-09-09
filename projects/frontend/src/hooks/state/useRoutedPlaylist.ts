@@ -1,17 +1,20 @@
 import { useEffect } from 'react';
 
-import { CompactTrack, CompoundIdString, compoundIdStringFromCompactTrack } from '../../types/compactTrack/types';
+import { CompactTrack, CompoundIdString } from '../../types/compactTrack/types';
+import { compoundIdStringFromCompactTrack } from '../../types/compactTrack/util';
 import { QUICKLIST_PLAYLIST_ID } from './useGlobalPlaylistState/songLists.state';
 import { usePlaylistState } from './usePlaylistState';
 import { useRoutedState } from './useRoutedState';
 
 export const useRoutedPlaylist = () => {
   const { tracks, setTracks } = useRoutedState();
-  const { playlist: {tracks: stateTracks} } = usePlaylistState(QUICKLIST_PLAYLIST_ID);
+  const {
+    playlist: { tracks: stateTracks },
+  } = usePlaylistState(QUICKLIST_PLAYLIST_ID);
 
   useEffect(() => {
-    setTracks(stateTracks.map(compoundIdStringFromCompactTrack)) // pull song ids from idtuples
-  }, [stateTracks])
+    setTracks(stateTracks.map(compoundIdStringFromCompactTrack)); // pull song ids from idtuples
+  }, [stateTracks]);
 
   const addTrack = (track: CompactTrack) => {
     setTracks([...tracks, compoundIdStringFromCompactTrack(track)]);
