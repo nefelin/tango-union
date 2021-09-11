@@ -55,7 +55,7 @@ export const useSelectionState = () => {
     return null;
   };
 
-  const replaceSelected = (id: ListId) => {
+  const replaceSelected = (...ids: Array<ListId>) => {
     const lists = reactiveSongLists();
     const thisList = lists[playlistId];
     if (!thisList) {
@@ -63,7 +63,7 @@ export const useSelectionState = () => {
     } else {
       reactiveSongLists({
         ...lists,
-        [playlistId]: { ...thisList, selection: new Set([id]) },
+        [playlistId]: { ...thisList, selection: new Set(ids) },
       });
     }
   };

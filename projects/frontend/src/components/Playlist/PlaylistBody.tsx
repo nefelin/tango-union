@@ -2,10 +2,10 @@ import { useContext, useEffect, useState } from 'react';
 import * as React from 'react';
 import BaseTable, { AutoResizer } from 'react-base-table';
 
-import { QUICKLIST_PLAYLIST_ID } from '../../hooks/state/useGlobalPlaylistState/songLists.state';
-import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
+import { QUICKLIST_PLAYLIST_ID, reactiveSongLists } from '../../hooks/state/useGlobalPlaylistState/songLists.state';
+import { Playlist, PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
 import { usePlaylistState } from '../../hooks/state/usePlaylistState';
-import { useSelectionState } from '../../hooks/state/useSelectionState';
+import { reactiveActivePlaylistId, useSelectionState } from '../../hooks/state/useSelectionState';
 import useKeyboardShortcut from '../../hooks/useKeyboardShortcut';
 import { Maybe } from '../../types/utility/maybe';
 import BaseTableStyleOverrides from '../BaseTableStyleOverrides/BaseTableStyleOverrides';
@@ -19,7 +19,8 @@ const PlaylistBody = ({ tracks }: { tracks: Maybe<Array<PlaylistTrack>> }) => {
   const {
     state: { dragMode },
   } = useContext(DndMonitorContext);
-  const { selectionStatus, selected, removeSelected } = useSelectionState();
+  const { selectionStatus, selected, removeSelected, replaceSelected } =
+    useSelectionState();
   const { rearrangeTracks, removeTracks } = usePlaylistState(
     QUICKLIST_PLAYLIST_ID,
   );
@@ -29,6 +30,22 @@ const PlaylistBody = ({ tracks }: { tracks: Maybe<Array<PlaylistTrack>> }) => {
     removeTracks(...selected());
     removeSelected(...selected());
   }); // fixme will be problematic if rendering multiple playlists
+
+  useKeyboardShortcut(
+    ['a'],
+    () => {
+      const activeId = reactiveActivePlaylistId() ?? '';
+      const list = reactiveSongLists()[activeId];
+      if (!list) return
+
+      const replacementList: Playlist = {...list, selection: new Set(list.tracks.map(({listId}) => listId))};
+
+      reactiveSongLists({...reactiveSongLists(), [activeId]: replacementList})
+      // replaceSelected(...(tracks?.map(({ listId }) => listId) ?? []));
+    },
+    ['meta'],
+    true,
+  );
 
   useEffect(() => setOrderedTracks(tracks ?? []), [tracks]);
 
