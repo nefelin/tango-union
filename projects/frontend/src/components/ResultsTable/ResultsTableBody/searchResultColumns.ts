@@ -69,7 +69,7 @@ const searchResultColumns = (width: number): Array<ColumnShape> => {
       key: 'linkScore',
       dataKey: 'linkScore',
       title: 'Link Confidence',
-      width: widthRatio * 75,
+      width: widthRatio * 125,
       resizable: true,
       sortable: true,
       align: 'center'
@@ -78,21 +78,11 @@ const searchResultColumns = (width: number): Array<ColumnShape> => {
       key: 'secondsLong',
       dataKey: 'secondsLong',
       title: 'Length',
-      width: widthRatio * 50,
+      width: widthRatio * 75,
       resizable: true,
       sortable: true,
       cellRenderer: cellRenderComponent(LengthCell),
       align: 'center'
-    },
-    {
-      key: 'title-action',
-      dataKey: 'title',
-      title: '',
-      width: widthRatio * 125,
-      cellRenderer: cellRenderComponent(ActionCell),
-      resizable: true,
-      sortable: false,
-      align: 'right'
     },
   ];
 };

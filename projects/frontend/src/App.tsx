@@ -8,6 +8,7 @@ import * as React from 'react';
 import { Redirect, Route } from 'react-router';
 import { BrowserRouter, Switch } from 'react-router-dom';
 
+import Sandbox from './components/Sandbox/Sandbox';
 import DnDTester from './features/DnDTester';
 import MusicDash from './features/MusicDash';
 // import Playground from './features/Playground';
@@ -31,6 +32,13 @@ const App = () => (
           <Route exact path="/player" component={MusicDash} />
           <Route exact path="/player/:saved" component={MusicDash} />
           <Route exact path="/dndtester" component={DnDTester} />
+          <Route exact path="/sandbox" component={Sandbox} />
+          <Route
+            exact
+            path="/notFound"
+            component={() => <div>Not Found</div>}
+          />
+          <Route path="*" component={() => <Redirect to="/notFound" />} />
         </Switch>
       </React.Suspense>
     </BrowserRouter>

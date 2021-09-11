@@ -103,7 +103,7 @@ const ResultsTableBody = ({ tracks, incPage, page, loading }: Props) => {
 };
 
 const Container = styled.div`
-  width: calc(45vw + 220px);
+  width: calc(40vw + 220px);
   height: 100%;
 `;
 

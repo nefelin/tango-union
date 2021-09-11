@@ -16,7 +16,7 @@ const EmptyPlaylistStyled = styled.div<{isOver: boolean}>`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 30px;
+  font-size: 24px;
   color: grey;
   background-color:  ${({ isOver }) => isOver ? '#d7d7ef' : 'inherit'};
 `;
