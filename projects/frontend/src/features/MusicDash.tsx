@@ -18,6 +18,7 @@ import { usePlaylistState } from '../hooks/state/usePlaylistState';
 import { useSearchbarState } from '../hooks/state/useSearchbarState';
 
 const emptyOptions: FullCountFragmentFragment['counts'] = {
+  year: [],
   singer: [],
   orchestra: [],
   genre: [],

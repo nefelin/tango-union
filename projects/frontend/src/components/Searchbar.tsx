@@ -7,10 +7,12 @@ import { FullCountFragmentFragment } from '../../generated/graphql';
 import { useSearchbarState } from '../hooks/state/useSearchbarState';
 import { useDroppable } from './DragNDrop/hooks/useDroppable';
 import { optionsFromStrings } from './ResultsTable/ResultsTableBody/util';
+import { makeYearData } from './Sandbox/Sandbox';
 import CustomInput from './Searchbar/CustomInput';
 import CustomSelect from './Searchbar/CustomSelect';
 import { StyledCol, StyledRow } from './Searchbar/styles';
 import { SearchbarState } from './Searchbar/types';
+import YearGraph from './YearGraph/YearGraph';
 
 interface Props {
   selectOptions: FullCountFragmentFragment['counts'];
@@ -60,6 +62,7 @@ const Searchbar = ({ selectOptions }: Props) => {
         >
           Clear All Criteria
         </Button>
+        {/* <YearGraph data={makeYearData()}/> */}
       </StyledRow>
       <StyledRow>
         <CustomSelect
