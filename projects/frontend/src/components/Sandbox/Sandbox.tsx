@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
-import YearGraph from '../YearGraph/YearGraph';
+import YearGraph from '../BarGraph/BarGraph';
 
 const Sandbox = () => {
-  const [data, setData] = useState<Record<string, number>>(makeYearData());
+  const [data, setData] = useState(makeYearData());
   // console.log(data)
   return (
     <div>
-      Sandbox <YearGraph data={data} maxYear={2020} minYear={1900} />
+      Sandbox <YearGraph data={data} selected={data.map(({label}) => label).filter(() => Math.random() > .5)} />
       <button type="button" onClick={() => setData(makeYearData())}>
         One
       </button>
@@ -19,7 +19,7 @@ const Sandbox = () => {
 };
 
 export const makeYearData = () => {
-  const data: Record<string, number> = {};
+  const data: Array<Datum<number>> = [];
   const startYear = 1900;
   const endYear = 2016;
 
@@ -33,7 +33,7 @@ export const makeYearData = () => {
     // if (fakeCount < 30) {
     //   fakeCount = 0
     // }
-    data[year.toString()] = fakeCount;
+    data.push({label: year.toString(), value: fakeCount});
   }
 
   return data;
