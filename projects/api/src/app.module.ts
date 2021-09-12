@@ -7,7 +7,6 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { GraphQLModule } from '@nestjs/graphql';
 import * as path from 'path';
 import fs from 'fs';
-import { ServeStaticModule } from '@nestjs/serve-static';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 const TABS_PATH = path.resolve(__dirname, '../generated/tabs.json'); // fixme should be in config

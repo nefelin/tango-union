@@ -8,6 +8,10 @@ query CompoundQuery($criteria: CompoundQueryInput!) {
 
 fragment FullCountFragment on CompoundResults {
   counts {
+    year {
+      name
+      count
+    }
     singer {
       name
       count

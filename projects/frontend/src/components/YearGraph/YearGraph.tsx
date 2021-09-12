@@ -17,10 +17,23 @@ const YearGraph = ({ data }: Props) => {
   const yearDisplayRef = useRef<HTMLDivElement>(null);
 
   const maxCount = Math.max(...Object.values(data));
+
+  // eslint-disable-next-line no-plusplus
+  for (let year = 1830; year < 2020; year++){
+    if (data[year] === undefined) {
+      // eslint-disable-next-line no-param-reassign
+      data[year.toString()] = -1;
+    }
+  }
+
+  console.log(data)
+
   return (
     <YearGraphContainer ref={graphRef}>
       {Object.entries(data).map(([year, count]) => {
-        const group = Math.floor((parseInt(year, 10) - 1900) / 10);
+        const group = Math.floor((parseInt(year, 10) % 100) / 10);
+
+        const percent = count === -1 ? 0 : (count / maxCount) * 100;
         return (
           <YearBarContainer
             onMouseOver={(e) => {
@@ -35,9 +48,10 @@ const YearGraph = ({ data }: Props) => {
             }}
             onMouseOut={() => setHoveredYear(null)}
             key={year}
-            percent={(count / maxCount) * 100}
+            percent={percent}
             color={colors[group] || ''}
             hovered={hoveredYear === year}
+            flatten={count === -1}
           />
         );
       })}
@@ -52,6 +66,7 @@ const YearBarContainer = ({
   percent,
   color,
   hovered,
+  flatten,
   ...divProps
 }: HTMLAttributes<HTMLDivElement> & YearBarProps) => {
   return (
@@ -59,12 +74,14 @@ const YearBarContainer = ({
       style={{
         display: 'flex',
         alignItems: 'flex-end',
-        paddingRight: 1,
+        paddingRight: flatten ? 0 : 1,
         height: '100%',
+        width: flatten ? 0 : '4px',
+        transition: 'all 1s'
       }}
       {...divProps}
     >
-      <YearBar {...{hovered, percent, color }} />
+      <YearBar {...{hovered, percent, color, flatten }} />
     </div>
   );
 };
@@ -73,7 +90,7 @@ const randomColor = (seed: number) => {
   const even = seed % 2 === 0;
   const greenFloor = even ? 150 : 50;
 
-  const g = 150;
+  const g = 100;
   const r = 5 * seed + greenFloor;
   const b = 15 * seed + 100;
 
@@ -117,14 +134,15 @@ interface YearBarProps {
   percent: number;
   color: string;
   hovered: boolean;
+  flatten: boolean;
 }
 
 const YearBar = styled.div<YearBarProps>`
   box-sizing: border-box;
   height: ${({ percent }) => `${percent}%`};
   background-color: ${({ color, hovered }) => (hovered ? 'blueviolet' : color)};
-  width: 4px;
-  transition: height 1s;
+  width:  100%;
+  transition: all 1s;
   border-radius: 1px;
   min-height: ${({ percent }) => (percent === 0 ? 0 : '1px')};
 `;

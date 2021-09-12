@@ -96,6 +96,7 @@ export type RatedYoutube = {
 
 export type SelectIndexCount = {
   __typename?: 'SelectIndexCount';
+  year: Array<CountTuple>;
   singer: Array<CountTuple>;
   orchestra: Array<CountTuple>;
   genre: Array<CountTuple>;
@@ -154,7 +155,10 @@ export type FullCountFragmentFragment = (
   { __typename?: 'CompoundResults' }
   & { counts: (
     { __typename?: 'SelectIndexCount' }
-    & { singer: Array<(
+    & { year: Array<(
+      { __typename?: 'CountTuple' }
+      & Pick<CountTuple, 'name' | 'count'>
+    )>, singer: Array<(
       { __typename?: 'CountTuple' }
       & Pick<CountTuple, 'name' | 'count'>
     )>, orchestra: Array<(
@@ -187,6 +191,10 @@ export const TrackDetailFragmentFragmentDoc = gql`
 export const FullCountFragmentFragmentDoc = gql`
     fragment FullCountFragment on CompoundResults {
   counts {
+    year {
+      name
+      count
+    }
     singer {
       name
       count

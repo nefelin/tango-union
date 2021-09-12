@@ -1,6 +1,7 @@
 import { SimpleTrack } from './dto/simpletrack.entity';
 
 export interface FacetedResults {
+  yearCount?: EntityCount[] | null;
   singerCount?: EntityCount[] | null;
   orchestraCount?: EntityCount[] | null;
   genreCount?: EntityCount[] | null;

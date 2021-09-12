@@ -16,6 +16,7 @@ export class CountTuple {
 
 @ObjectType()
 export class SelectIndexCount {
+  year: Array<CountTuple>;
   singer: Array<CountTuple>;
   orchestra: Array<CountTuple>;
   genre: Array<CountTuple>;

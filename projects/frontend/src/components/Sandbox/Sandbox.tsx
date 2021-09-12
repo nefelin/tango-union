@@ -4,7 +4,7 @@ import YearGraph from '../YearGraph/YearGraph';
 
 const Sandbox = () => {
   const [data, setData] = useState<Record<string, number>>(makeData());
-  console.log(data)
+  // console.log(data)
   return (
     <div>
       Sandbox <YearGraph data={data} />
@@ -29,24 +29,4 @@ const makeData = () => {
 
   return data;
 };
-
-const data1 = makeData();
-const data2 = makeData();
-// const data1 = {
-//   1944: 20,
-//   1945: 30,
-//   1951: 15,
-//   1962: 0,
-//   1970: 34,
-// };
-// const data2 = {
-//   1935: 10,
-//   1943: 25,
-//   1950: 18,
-//   1964: 12,
-//   1968: 2,
-//   1977: 12,
-// };
-//
 export default Sandbox;
-//

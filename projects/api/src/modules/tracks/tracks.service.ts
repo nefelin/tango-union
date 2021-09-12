@@ -78,6 +78,7 @@ export class TracksService {
     const stripNil = r.reject(r.isNil);
 
     const singerCountMatches = stripNil([orchestraMatch, genreMatch, yearMatch]);
+    const yearCountMatches = stripNil([orchestraMatch, genreMatch, singerMatch]);
     const orchestraCountMatches = stripNil([singerMatch, genreMatch, yearMatch]);
     const genreCountMatches = stripNil([orchestraMatch, singerMatch, yearMatch]);
     const allMatches = stripNil([orchestraMatch, singerMatch, genreMatch, yearMatch]);
@@ -88,6 +89,13 @@ export class TracksService {
       textMatch,
       {
         $facet: {
+          yearCount: [
+            {
+              $match: yearCountMatches.length ? { $and: yearCountMatches } : {},
+            },
+            { $unwind: '$year' },
+            { $sortByCount: '$year' },
+          ],
           singerCount: [
             {
               $match: singerCountMatches.length ? { $and: singerCountMatches } : {},

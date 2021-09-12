@@ -23,19 +23,14 @@ describe('queryFromString should flatten object to an appropriate youtube search
       scrapedAt: new Date(),
       links: [],
     },
+    searchGrams: '',
   };
 
   const res = queryStringFromSong(song);
 
   console.log(res);
   it('should contain all expected fields', () => {
-    const expectToBePresent = [
-      '1931',
-      'besos de miel',
-      'francisco canaro',
-      'ada falcón',
-      'charlo',
-    ];
+    const expectToBePresent = ['1931', 'besos de miel', 'francisco canaro', 'ada falcón', 'charlo'];
 
     for (const str of expectToBePresent) {
       expect(res.match(new RegExp(str, 'i'))).toBeTruthy();
