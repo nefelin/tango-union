@@ -65,10 +65,17 @@ const Searchbar = ({ selectOptions }: Props) => {
         </Button>
         <BarGraph
           selected={
-            (new YearParser('?')
-              .yearsFromSearch(formik.values.text || '')
-              ?.filter((unk) => typeof unk === 'number')
-              .map((num) => num.toString()) as Array<string>) ?? []
+            (
+              new YearParser(null)
+                .yearsFromSearch(searchbarState.year ?? '')
+                ?.filter((x) => !!x) as Array<number>
+            )?.map((num) => num.toString()) ?? []
+          }
+          onSelect={(years) =>
+            setSearchbarState({
+              ...searchbarState,
+              year: years.join(','),
+            })
           }
           data={yearTableDataFromCompoundQueryCounts(selectOptions.year)}
         />

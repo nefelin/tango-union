@@ -7,9 +7,10 @@ const Bar = ({
   color,
   hovered,
   selected,
+  allSelected,
   ...divProps
 }: HTMLAttributes<HTMLDivElement> & YearBarProps) => {
-  const backgroundColor = selected ? 'inherit' : 'rgb(220,220,240)'
+  const backgroundColor = allSelected || selected ? 'inherit' : 'rgb(220,220,240)'
   return (
     <div
       onDragStart={(e) => e.preventDefault()}
@@ -29,7 +30,7 @@ const Bar = ({
       }}
       {...divProps}
     >
-      <BarFill {...{ selected, hovered, barHeight, color }} />
+      <BarFill {...{ allSelected, selected, hovered, barHeight, color }} />
     </div>
   );
 };

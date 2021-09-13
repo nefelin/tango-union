@@ -5,6 +5,7 @@ export class CompoundQueryInput {
   sort?: CompoundSortInput;
   pagination?: PaginationInput;
   text?: string;
+  year?: string;
   orchestras?: string[];
   singers?: string[];
   titles?: string[];

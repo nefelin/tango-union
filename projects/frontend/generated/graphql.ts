@@ -18,6 +18,7 @@ export type CompoundQueryInput = {
   sort?: Maybe<CompoundSortInput>;
   pagination?: Maybe<PaginationInput>;
   text?: Maybe<Scalars['String']>;
+  year?: Maybe<Scalars['String']>;
   orchestras?: Maybe<Array<Scalars['String']>>;
   singers?: Maybe<Array<Scalars['String']>>;
   titles?: Maybe<Array<Scalars['String']>>;

@@ -5,10 +5,11 @@ export interface YearBarProps {
   color: string;
   hovered: boolean;
   selected: boolean;
+  allSelected: boolean;
 }
 
-export const BarFill = ({ selected, barHeight, color, hovered }: YearBarProps) => {
-  const backgroundColor = selected || hovered ? color : 'black'
+export const BarFill = ({ selected, barHeight, color, hovered, allSelected}: YearBarProps) => {
+  const backgroundColor = allSelected || selected || hovered ? color : 'black'
 
   return (
     <div

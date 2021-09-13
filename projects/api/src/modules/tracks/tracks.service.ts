@@ -48,12 +48,12 @@ export class TracksService {
   }
 
   async compoundSearch(input: CompoundQueryInput) {
-    const { orchestras, singers, genres, text, sort: dirtySort = {}, pagination } = input;
+    const { orchestras, singers, genres, text, sort: dirtySort = {}, pagination, year } = input;
     const sort = cleanSort(dirtySort);
     // do year business on text input
     const yearParser = new YearParser(null);
-    const years = text ? yearParser.yearsFromSearch(text) : null;
-    const textWithoutYear = text ? yearParser.stripYearTerms(text) : text;
+    const years = year ? yearParser.yearsFromSearch(year) : null;
+    const textWithoutYear = text ? yearParser.stripYearTerms(text) : text; // fixme stripping not needed if we stick with split year term, maybe good for cleaning still?
 
     const preppedText = andifyMongoTextSearch(textWithoutYear);
 

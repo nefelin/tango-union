@@ -9,20 +9,23 @@ import React, {
 } from 'react';
 // eslint-disable-next-line camelcase
 import { unstable_batchedUpdates } from 'react-dom';
+import { useDebounce } from 'use-debounce';
 
 import useEnsureValue from '../../hooks/useEnsureValue';
 import { Maybe } from '../../types/utility/maybe';
+import { Unary } from '../../types/utility/unary';
 import Bar from './Bar';
 import BarGraphContainer from './BarGraphContainer';
 
 interface Props {
   data: Array<Datum<number>>;
   selected: Array<Datum<number>['label']>;
+  onSelect?: Unary<Array<string>>;
 }
 
 type DragMode = 'select' | 'deselect';
 
-const BarGraph = ({ data, selected }: Props) => {
+const BarGraph = ({ data, selected, onSelect }: Props) => {
   const [hoveredYear, setHoveredYear] = useState<Maybe<string>>(null);
   const displayYear = useEnsureValue(hoveredYear);
   const displayValue =
@@ -35,11 +38,49 @@ const BarGraph = ({ data, selected }: Props) => {
   const [gestureStart, setGestureStart] = useState(0);
 
   useEffect(() => {
-    const selectedWithFallback = selected.length
-      ? selected
-      : data.map(({ label }) => label);
-    setInnerSelected(new Set(selectedWithFallback));
-  }, [selected]);
+    setInnerSelected(new Set(selected));
+  }, [JSON.stringify(selected)]);
+
+  const commitSelection = () => {
+    onSelect?.([...innerSelected]);
+  };
+
+  const decadeFromYear = (year: string) => {
+    const checkYears: Array<string> = [];
+    const yearPreface = year.slice(0, 3);
+
+    for (let yearDigit = 0; yearDigit < 10; yearDigit += 1) {
+      checkYears.push(`${yearPreface}${yearDigit}`);
+    }
+
+    return checkYears;
+  };
+
+  const decadeSelected = (year: string) => {
+    const checkYears = decadeFromYear(year).filter(checkYear => checkYear !== year); // omitting the clicked year means clicked years status is ignored so double click logic is simpler
+    return checkYears.every((y) => selected.includes(y));
+  };
+
+  const handleDoubleClick = (year: string) => (e: MouseEvent) => {
+    e.preventDefault();
+    if (!decadeSelected(year)) {
+      setInnerSelected((prev) => {
+        decadeFromYear(year).forEach(y => prev.add(y))
+        return prev;
+      });
+    } else {
+      setInnerSelected((prev) => {
+        decadeFromYear(year).forEach(y => prev.delete(y))
+        return prev;
+      });
+    }
+    setTimeout(() => commitSelection(), 0);
+  };
+
+  const handleClick = (year: string) => () => {
+    toggleInnerSelected(year);
+    setTimeout(() => commitSelection(), 0);
+  };
 
   const maxCount = Math.max(...data.map(({ value }) => value));
   // console.log(data)
@@ -61,7 +102,9 @@ const BarGraph = ({ data, selected }: Props) => {
   const handleMouseDown = (year: string) => (e: MouseEvent) => {
     let newMode: DragMode | undefined;
     const indexOfStart = data.findIndex(({ label }) => label === year);
-    if (innerSelected.has(year)) {
+    if (innerSelected.size === 0) {
+      newMode = 'select';
+    } else if (innerSelected.has(year)) {
       newMode = 'deselect';
     } else {
       newMode = 'select';
@@ -69,31 +112,34 @@ const BarGraph = ({ data, selected }: Props) => {
     unstable_batchedUpdates(() => {
       setDragMode(newMode);
       setGestureStart(indexOfStart);
-      toggleInnerSelected(year);
     });
   };
 
   const handleMouseUp = (e: MouseEvent) => {
+    commitSelection();
     setDragMode(undefined);
   };
 
   const handleMouseOver = (year: string) => (e: MouseEvent) => {
     // handle selection
-    // const overIndex = data.findIndex(({label}) => label===year);
-    // const [start, end] = gestureStart < overIndex ? [gestureStart, overIndex] : [overIndex, gestureStart];
-    // const targets = data.slice(start, end+1).map(({label}) => label);
-    // if (dragMode === 'select') {
-    //   setInnerSelected((prev) => {
-    //     targets.forEach(label => prev.add(label))
-    //     return prev;
-    //   });
-    // }
-    // if (dragMode === 'deselect') {
-    //   setInnerSelected((prev) => {
-    //     targets.forEach(label => prev.delete(label))
-    //     return prev;
-    //   });
-    // }
+    const overIndex = data.findIndex(({ label }) => label === year);
+    const [start, end] =
+      gestureStart < overIndex
+        ? [gestureStart, overIndex]
+        : [overIndex, gestureStart];
+    const targets = data.slice(start, end + 1).map(({ label }) => label);
+    if (dragMode === 'select') {
+      setInnerSelected((prev) => {
+        targets.forEach((label) => prev.add(label));
+        return prev;
+      });
+    }
+    if (dragMode === 'deselect') {
+      setInnerSelected((prev) => {
+        targets.forEach((label) => prev.delete(label));
+        return prev;
+      });
+    }
 
     // handle hover stuff
     const rect = graphRef.current?.getBoundingClientRect();
@@ -114,19 +160,18 @@ const BarGraph = ({ data, selected }: Props) => {
         const floorHeightPx = 2;
         const containerHeight =
           (graphRef.current?.clientHeight ?? 0) - floorHeightPx;
-        const scale = (containerHeight / maxCount);
+        const scale = containerHeight / maxCount;
 
         const barHeight = scale * count + floorHeightPx;
         return (
           <Bar
-            // onDoubleClick={(e) => {
-            //   console.log('double');
-            //   e.preventDefault();
-            // }}
-            // onMouseDown={handleMouseDown(year)}
+            allSelected={innerSelected.size === 0}
+            onMouseDown={handleMouseDown(year)}
             onMouseOver={handleMouseOver(year)}
             onMouseOut={() => setHoveredYear(null)}
-            // onMouseUp={handleMouseUp}
+            onMouseUp={handleMouseUp}
+            onClick={handleClick(year)}
+            onDoubleClick={handleDoubleClick(year)}
             key={year}
             barHeight={barHeight}
             color={colors[group] || ''}
