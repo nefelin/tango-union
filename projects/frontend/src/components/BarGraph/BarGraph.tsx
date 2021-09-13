@@ -57,7 +57,9 @@ const BarGraph = ({ data, selected, onSelect }: Props) => {
   };
 
   const decadeSelected = (year: string) => {
-    const checkYears = decadeFromYear(year).filter(checkYear => checkYear !== year); // omitting the clicked year means clicked years status is ignored so double click logic is simpler
+    const checkYears = decadeFromYear(year).filter(
+      (checkYear) => checkYear !== year,
+    ); // omitting the clicked year means clicked years status is ignored so double click logic is simpler
     return checkYears.every((y) => selected.includes(y));
   };
 
@@ -65,12 +67,12 @@ const BarGraph = ({ data, selected, onSelect }: Props) => {
     e.preventDefault();
     if (!decadeSelected(year)) {
       setInnerSelected((prev) => {
-        decadeFromYear(year).forEach(y => prev.add(y))
+        decadeFromYear(year).forEach((y) => prev.add(y));
         return prev;
       });
     } else {
       setInnerSelected((prev) => {
-        decadeFromYear(year).forEach(y => prev.delete(y))
+        decadeFromYear(year).forEach((y) => prev.delete(y));
         return prev;
       });
     }
@@ -152,17 +154,17 @@ const BarGraph = ({ data, selected, onSelect }: Props) => {
     });
   };
 
+  const floorHeightPx = 2;
+  const containerHeight = graphRef.current?.getBoundingClientRect().height ?? 0;
+  const bufferedHeight = containerHeight - floorHeightPx;
+  const scale = bufferedHeight / maxCount;
+
   return (
     <BarGraphContainer ref={graphRef}>
       {data.map(({ label: year, value: count }) => {
         const group = Math.floor((parseInt(year, 10) % 100) / 10);
-
-        const floorHeightPx = 2;
-        const containerHeight =
-          (graphRef.current?.clientHeight ?? 0) - floorHeightPx;
-        const scale = containerHeight / maxCount;
-
         const barHeight = scale * count + floorHeightPx;
+
         return (
           <Bar
             allSelected={innerSelected.size === 0}
@@ -173,7 +175,7 @@ const BarGraph = ({ data, selected, onSelect }: Props) => {
             onClick={handleClick(year)}
             onDoubleClick={handleDoubleClick(year)}
             key={year}
-            barHeight={barHeight}
+            barHeight={Number.isNaN(barHeight) ? 0 : barHeight}
             color={colors[group] || ''}
             hovered={hoveredYear === year}
             selected={innerSelected.has(year)}
