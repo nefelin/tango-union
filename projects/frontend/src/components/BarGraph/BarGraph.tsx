@@ -25,6 +25,8 @@ type DragMode = 'select' | 'deselect';
 const BarGraph = ({ data, selected }: Props) => {
   const [hoveredYear, setHoveredYear] = useState<Maybe<string>>(null);
   const displayYear = useEnsureValue(hoveredYear);
+  const displayValue =
+    data.find(({ label }) => label === displayYear)?.value ?? null;
   const [displayX, setDisplayX] = useState(0);
   const graphRef = useRef<HTMLDivElement>(null);
   const yearDisplayRef = useRef<HTMLDivElement>(null);
@@ -33,7 +35,9 @@ const BarGraph = ({ data, selected }: Props) => {
   const [gestureStart, setGestureStart] = useState(0);
 
   useEffect(() => {
-    const selectedWithFallback = selected.length ? selected : data.map(({label}) => label)
+    const selectedWithFallback = selected.length
+      ? selected
+      : data.map(({ label }) => label);
     setInnerSelected(new Set(selectedWithFallback));
   }, [selected]);
 
@@ -65,7 +69,7 @@ const BarGraph = ({ data, selected }: Props) => {
     unstable_batchedUpdates(() => {
       setDragMode(newMode);
       setGestureStart(indexOfStart);
-      toggleInnerSelected(year)
+      toggleInnerSelected(year);
     });
   };
 
@@ -96,10 +100,10 @@ const BarGraph = ({ data, selected }: Props) => {
     const displRect = yearDisplayRef.current?.getBoundingClientRect();
     if (!rect || !displRect) return;
     const x = e.clientX - rect.left - displRect.width - 10;
-    // unstable_batchedUpdates(() => {
-    setDisplayX(x);
-    setHoveredYear(year);
-    // });
+    unstable_batchedUpdates(() => {
+      setDisplayX(x);
+      setHoveredYear(year);
+    });
   };
 
   return (
@@ -107,7 +111,12 @@ const BarGraph = ({ data, selected }: Props) => {
       {data.map(({ label: year, value: count }) => {
         const group = Math.floor((parseInt(year, 10) % 100) / 10);
 
-        const percent = Math.max((count / maxCount) * 100, 0.5);
+        const floorHeightPx = 2;
+        const containerHeight =
+          (graphRef.current?.clientHeight ?? 0) - floorHeightPx;
+        const scale = (containerHeight / maxCount);
+
+        const barHeight = scale * count + floorHeightPx;
         return (
           <Bar
             // onDoubleClick={(e) => {
@@ -119,7 +128,7 @@ const BarGraph = ({ data, selected }: Props) => {
             onMouseOut={() => setHoveredYear(null)}
             // onMouseUp={handleMouseUp}
             key={year}
-            percent={percent}
+            barHeight={barHeight}
             color={colors[group] || ''}
             hovered={hoveredYear === year}
             selected={innerSelected.has(year)}
@@ -132,6 +141,7 @@ const BarGraph = ({ data, selected }: Props) => {
         hide={hoveredYear === null}
       >
         {displayYear}
+        <span style={{ fontSize: 8 }}>{`(${displayValue})`}</span>
       </YearDisplay>
     </BarGraphContainer>
   );
@@ -161,9 +171,11 @@ const YearDisplay = forwardRef<
   <div
     ref={ref}
     style={{
+      boxShadow: '0px 1px 1px grey',
       userSelect: 'none',
       pointerEvents: 'none',
       display: 'flex',
+      flexFlow: 'column',
       justifyContent: 'center',
       alignItems: 'center',
       visibility: hide ? 'hidden' : 'visible',
@@ -173,9 +185,10 @@ const YearDisplay = forwardRef<
       left: `${x}px`,
       top: '0',
       width: '40px',
-      height: '20px',
+      // height: '20px',
       backgroundColor: 'white',
       fontWeight: 'bold',
+      fontSize: 12,
       borderRadius: '5px',
     }}
   >

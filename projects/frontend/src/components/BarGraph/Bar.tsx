@@ -3,25 +3,25 @@ import React, { HTMLAttributes } from 'react';
 import { BarFill, YearBarProps } from './BarFill';
 
 const Bar = ({
-  percent,
+  barHeight,
   color,
   hovered,
   selected,
   ...divProps
 }: HTMLAttributes<HTMLDivElement> & YearBarProps) => {
-  const backgroundColor = selected  ? 'inherit' : 'rgb(220,220,240)'
+  const backgroundColor = selected ? 'inherit' : 'rgb(220,220,240)'
   return (
     <div
       onDragStart={(e) => e.preventDefault()}
       style={{
-        // border: hovered ? '1px solid black' : 'none',
+        // borderTop: hovered ? '2px solid black' : 'none',
         backgroundColor,
         boxSizing: 'border-box',
-        paddingTop: '4px',
+        // paddingTop: '4px',
         display: 'flex',
         alignItems: 'flex-end',
         height: '100%',
-        width: '8px',
+        width: '1%',
         transition: 'all 1s, background-color 0s',
         marginRight: 1,
         borderRight: backgroundColor,
@@ -29,7 +29,7 @@ const Bar = ({
       }}
       {...divProps}
     >
-      <BarFill {...{ selected, hovered, percent, color }} />
+      <BarFill {...{ selected, hovered, barHeight, color }} />
     </div>
   );
 };

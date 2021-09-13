@@ -34,7 +34,7 @@ export const useHoveredRowState = (rowIndex: number) => {
   }
 
   return {
-    hovered: !dragMode && hovered,
+    hovered: dragMode !== 'dragging' && hovered, // disable hover behaviors once proper drag begins
     listeners
   };
 };

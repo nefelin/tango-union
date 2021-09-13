@@ -6,8 +6,8 @@ const BarGraphContainer = styled.div`
   display: inline-flex;
   flex-direction: row;
   align-items: flex-end;
-  //width: 300px;
-  height: 38px;
+  width: 70%;
+  height: 100%;
   padding: 1px;
   //border-bottom: 1px solid black;
   transition: all 400ms;
