@@ -5,11 +5,9 @@ import { useEffect } from 'react';
 
 import { FullCountFragmentFragment } from '../../generated/graphql';
 import { useSearchbarState } from '../hooks/state/useSearchbarState';
-import YearGraph from './BarGraph/BarGraph';
 import BarGraph from './BarGraph/BarGraph';
 import { useDroppable } from './DragNDrop/hooks/useDroppable';
 import { optionsFromStrings } from './ResultsTable/ResultsTableBody/util';
-import { makeYearData } from './Sandbox/Sandbox';
 import CustomInput from './Searchbar/CustomInput';
 import CustomSelect from './Searchbar/CustomSelect';
 import { StyledCol, StyledRow } from './Searchbar/styles';

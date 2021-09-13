@@ -1,4 +1,6 @@
-import { Barely, Maybe } from '../../types';
+/* eslint-disable */
+import { Barely } from '../../../types/utility/barely';
+import { Maybe } from '../../../types/utility/maybe';
 import {
   ParseResult,
   rangePostfixToken,
@@ -18,7 +20,7 @@ export class YearParser<T> {
     this.unknownYearValue = unknownYearValue;
   }
 
-  yearsFromSearch(term: string): ParseResult<T>{
+  yearsFromSearch(term: string): ParseResult<T> {
     const yearTerms = this.extractYearTerms(term);
     if (!yearTerms) {
       return null;
@@ -40,9 +42,9 @@ export class YearParser<T> {
   tokenFromString(year: string): YearToken | undefined {
     switch (year.length) {
       case 2:
-        return yearToken(parseInt(`19${year}`));
+        return yearToken(parseInt(`19${year}`, 10));
       case 4:
-        return yearToken(parseInt(year));
+        return yearToken(parseInt(year, 10));
       default:
         this.handleError(`'${year}': Years must be two or four digits`);
         return undefined;
@@ -57,7 +59,7 @@ export class YearParser<T> {
     while (true) {
       const c = query[pointer];
 
-      if (isNaN(parseInt(c))) {
+      if (Number.isNaN(parseInt(c || '', 10))) {
         if (buffer.length > 0) {
           const newToken = this.tokenFromString(buffer);
           if (newToken) {
@@ -88,12 +90,13 @@ export class YearParser<T> {
             throw new Error(`Unrecognized symbol: '${c}'`);
         }
 
-        pointer++;
+        pointer += 1;
+        // eslint-disable-next-line no-continue
         continue;
       }
 
       buffer += c;
-      pointer++;
+      pointer += 1;
     }
 
     return tokens;
@@ -101,7 +104,7 @@ export class YearParser<T> {
 
   private expandTokens(tokens: Array<Token>): Maybe<YearFilter<T>> {
     const years: YearFilter<T> = new Set();
-    for (let pointer = 0; pointer < tokens.length; pointer++) {
+    for (let pointer = 0; pointer < tokens.length; pointer += 1) {
       const token = tokens[pointer] as Token;
       switch (token.kind) {
         case 'YEAR':
@@ -147,7 +150,7 @@ export class YearParser<T> {
               for (
                 let thisYear = lastYear + 1;
                 thisYear < nextYear;
-                thisYear++
+                thisYear += 1
               ) {
                 years.add(thisYear);
               }
@@ -155,6 +158,7 @@ export class YearParser<T> {
           break;
 
         case 'INVALID':
+        default:
           this.handleError(`Invalid symbol ${token.value}`);
           return null;
       }

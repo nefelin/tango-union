@@ -2,7 +2,6 @@ import React, {
   forwardRef,
   memo,
   MouseEvent,
-  MouseEventHandler,
   PropsWithChildren,
   useEffect,
   useRef,
