@@ -61,7 +61,7 @@ const Searchbar = ({ selectOptions }: Props) => {
           type="button"
           onClick={resetSearchbar}
         >
-          Clear
+          Clear Search
         </Button>
         <BarGraph
           selected={

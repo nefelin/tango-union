@@ -18,7 +18,6 @@ export interface LifecycleHandlers {
 
 export const reducer =
   (state: State, action: Action): State => {
-  console.log(action)
     switch (action.type) {
       case ActionType.DragInit:
         const { initCoordinates } = action;
