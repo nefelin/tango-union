@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { FullCountFragmentFragment } from '../../generated/graphql';
 import { useSearchbarState } from '../hooks/state/useSearchbarState';
 import YearGraph from './BarGraph/BarGraph';
+import BarGraph from './BarGraph/BarGraph';
 import { useDroppable } from './DragNDrop/hooks/useDroppable';
 import { optionsFromStrings } from './ResultsTable/ResultsTableBody/util';
 import { makeYearData } from './Sandbox/Sandbox';
@@ -13,6 +14,8 @@ import CustomInput from './Searchbar/CustomInput';
 import CustomSelect from './Searchbar/CustomSelect';
 import { StyledCol, StyledRow } from './Searchbar/styles';
 import { SearchbarState } from './Searchbar/types';
+import { YearParser } from './Searchbar/yearParser/yearParser';
+import yearTableDataFromCompoundQueryCounts from './Searchbar/yearTableDataFromCompoundQueryCounts';
 
 interface Props {
   selectOptions: FullCountFragmentFragment['counts'];
@@ -60,9 +63,17 @@ const Searchbar = ({ selectOptions }: Props) => {
           type="button"
           onClick={resetSearchbar}
         >
-          Clear All Criteria
+          Clear
         </Button>
-        {/* <BarGraph data={makeYearData()}/> */}
+        <BarGraph
+          selected={
+            (new YearParser('?')
+              .yearsFromSearch(formik.values.text || '')
+              ?.filter((unk) => typeof unk === 'number')
+              .map((num) => num.toString()) as Array<string>) ?? []
+          }
+          data={yearTableDataFromCompoundQueryCounts(selectOptions.year)}
+        />
       </StyledRow>
       <StyledRow>
         <CustomSelect

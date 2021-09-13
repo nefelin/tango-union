@@ -34,14 +34,14 @@ const BarGraph = ({ data, selected }: Props) => {
   const [gestureStart, setGestureStart] = useState(0);
 
   useEffect(() => {
-    setInnerSelected(new Set(selected));
-  }, []);
+    const selectedWithFallback = selected.length ? selected : data.map(({label}) => label)
+    setInnerSelected(new Set(selectedWithFallback));
+  }, [selected]);
 
   const maxCount = Math.max(...data.map(({ value }) => value));
   // console.log(data)
 
   const toggleInnerSelected = (year: string) => {
-    console.log('toggle');
     if (innerSelected.has(year)) {
       setInnerSelected((prev) => {
         prev.delete(year);
@@ -76,21 +76,21 @@ const BarGraph = ({ data, selected }: Props) => {
 
   const handleMouseOver = (year: string) => (e: MouseEvent) => {
     // handle selection
-    const overIndex = data.findIndex(({label}) => label===year);
-    const [start, end] = gestureStart < overIndex ? [gestureStart, overIndex] : [overIndex, gestureStart];
-    const targets = data.slice(start, end+1).map(({label}) => label);
-    if (dragMode === 'select') {
-      setInnerSelected((prev) => {
-        targets.forEach(label => prev.add(label))
-        return prev;
-      });
-    }
-    if (dragMode === 'deselect') {
-      setInnerSelected((prev) => {
-        targets.forEach(label => prev.delete(label))
-        return prev;
-      });
-    }
+    // const overIndex = data.findIndex(({label}) => label===year);
+    // const [start, end] = gestureStart < overIndex ? [gestureStart, overIndex] : [overIndex, gestureStart];
+    // const targets = data.slice(start, end+1).map(({label}) => label);
+    // if (dragMode === 'select') {
+    //   setInnerSelected((prev) => {
+    //     targets.forEach(label => prev.add(label))
+    //     return prev;
+    //   });
+    // }
+    // if (dragMode === 'deselect') {
+    //   setInnerSelected((prev) => {
+    //     targets.forEach(label => prev.delete(label))
+    //     return prev;
+    //   });
+    // }
 
     // handle hover stuff
     const rect = graphRef.current?.getBoundingClientRect();
@@ -111,14 +111,14 @@ const BarGraph = ({ data, selected }: Props) => {
         const percent = Math.max((count / maxCount) * 100, 0.5);
         return (
           <Bar
-            onDoubleClick={(e) => {
-              console.log('double');
-              e.preventDefault();
-            }}
-            onMouseDown={handleMouseDown(year)}
+            // onDoubleClick={(e) => {
+            //   console.log('double');
+            //   e.preventDefault();
+            // }}
+            // onMouseDown={handleMouseDown(year)}
             onMouseOver={handleMouseOver(year)}
             onMouseOut={() => setHoveredYear(null)}
-            onMouseUp={handleMouseUp}
+            // onMouseUp={handleMouseUp}
             key={year}
             percent={percent}
             color={colors[group] || ''}
