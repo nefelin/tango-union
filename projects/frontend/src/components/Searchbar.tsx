@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { FullCountFragmentFragment } from '../../generated/graphql';
 import { useSearchbarState } from '../hooks/state/useSearchbarState';
 import BarGraph from './BarGraph/BarGraph';
+import yearsQueryFromYearsList from './BarGraph/yearsQueryFromYearsList';
 import { useDroppable } from './DragNDrop/hooks/useDroppable';
 import { optionsFromStrings } from './ResultsTable/ResultsTableBody/util';
 import CustomInput from './Searchbar/CustomInput';
@@ -74,7 +75,7 @@ const Searchbar = ({ selectOptions }: Props) => {
           onSelect={(years) =>
             setSearchbarState({
               ...searchbarState,
-              year: years.join(','),
+              year: yearsQueryFromYearsList(years.map(str => parseInt(str,10))),
             })
           }
           data={yearTableDataFromCompoundQueryCounts(selectOptions.year)}

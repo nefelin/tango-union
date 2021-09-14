@@ -1,6 +1,7 @@
 import React from 'react';
 
 export interface YearBarProps {
+  year: number;
   barHeight: number;
   color: string;
   hovered: boolean;

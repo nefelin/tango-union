@@ -35,6 +35,7 @@ module.exports = {
     'simple-import-sort/imports': 2,
     'import/prefer-default-export': 0,
 
+    'no-restricted-syntax': 0,
     'no-console': [2, { allow: ['error'] }],
     'object-curly-newline': 0,
     quotes: [2, 'single', { avoidEscape: true, allowTemplateLiterals: true }],

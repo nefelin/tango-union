@@ -16,6 +16,8 @@ import { Maybe } from '../../types/utility/maybe';
 import { Unary } from '../../types/utility/unary';
 import Bar from './Bar';
 import BarGraphContainer from './BarGraphContainer';
+import QueryPlan from './QueryPlan';
+import yearsQueryFromYearsList from './yearsQueryFromYearsList';
 
 interface Props {
   data: Array<Datum<number>>;
@@ -159,6 +161,8 @@ const BarGraph = ({ data, selected, onSelect }: Props) => {
   const bufferedHeight = containerHeight - floorHeightPx;
   const scale = bufferedHeight / maxCount;
 
+  const yearQueryPlan = yearsQueryFromYearsList(selected.map(syear => parseInt(syear, 10)));
+
   return (
     <BarGraphContainer ref={graphRef}>
       {data.map(({ label: year, value: count }) => {
@@ -167,6 +171,7 @@ const BarGraph = ({ data, selected, onSelect }: Props) => {
 
         return (
           <Bar
+            year={parseInt(year, 10)}
             allSelected={innerSelected.size === 0}
             onMouseDown={handleMouseDown(year)}
             onMouseOver={handleMouseOver(year)}
@@ -190,6 +195,7 @@ const BarGraph = ({ data, selected, onSelect }: Props) => {
         {displayYear}
         <span style={{ fontSize: 8 }}>{`(${displayValue})`}</span>
       </YearDisplay>
+      <QueryPlan plan={yearQueryPlan.length ? yearQueryPlan : 'All Years'} />
     </BarGraphContainer>
   );
 };
