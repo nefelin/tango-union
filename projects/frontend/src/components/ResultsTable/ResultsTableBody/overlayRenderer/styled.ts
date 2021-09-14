@@ -44,7 +44,9 @@ export const Loader = styled.div<{small?: boolean, color?: string}>`
   margin: 2px 2px 2px 4px;
   border: 2px solid ${({color}) => color || '#0696d7'};
   border-bottom-color: transparent;
-  width: ${props => (props.small ? 12 : 22)}px;
-  height: ${props => (props.small ? 12 : 22)}px;
+  min-width: ${props => (props.small ? 12 : 22)}px;
+  max-width: ${props => (props.small ? 12 : 22)}px;
+  min-height: ${props => (props.small ? 12 : 22)}px;
+  max-height: ${props => (props.small ? 12 : 22)}px;
   animation: ${rotate} 0.75s linear infinite;
 `
