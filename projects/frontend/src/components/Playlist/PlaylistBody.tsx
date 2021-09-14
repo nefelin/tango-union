@@ -35,10 +35,10 @@ const PlaylistBody = ({ tracks }: { tracks: Maybe<Array<PlaylistTrack>> }) => {
   );
   const [orderedTracks, setOrderedTracks] = useState(tracks ?? []);
 
-  useKeyboardShortcut(['Backspace', 'Delete'], () => {
-    removeTracks(...selected());
-    removeSelected(...selected());
-  }); // fixme will be problematic if rendering multiple playlists
+  // useKeyboardShortcut(['Backspace', 'Delete'], () => {
+  //   removeTracks(...selected());
+  //   removeSelected(...selected());
+  // }); // fixme will be problematic if rendering multiple playlists
 
   useKeyboardShortcut(
     ['a'],

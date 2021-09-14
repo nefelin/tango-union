@@ -1,11 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-const QueryPlan = ({ plan }: { plan: string }) => (
-  <PlanContainer>{plan}</PlanContainer>
-);
+import { useSearchbarState } from '../../hooks/state/useSearchbarState';
+
+const QueryPlan = ({ plan }: { plan: string }) => {
+  const { setSearchbarState, searchbarState } = useSearchbarState();
+  const [contents, setContents] = useState(plan); // fixme write usedSyncedState hook
+  useEffect(() => setContents(plan), [plan]);
+
+  const clearYears = () =>
+    setSearchbarState({ ...searchbarState, year: undefined });
+  return (
+    <PlanContainer
+      onMouseLeave={() => setContents(plan)}
+      onMouseEnter={() => setContents('Clear Years')}
+      onClick={() => clearYears()}
+    >
+      {contents}
+    </PlanContainer>
+  );
+};
 
 const PlanContainer = styled.div`
+  cursor: pointer;
   position: absolute;
   top: 0;
   left: 0;

@@ -149,7 +149,7 @@ const BarGraph = ({ data, selected, onSelect }: Props) => {
     const rect = graphRef.current?.getBoundingClientRect();
     const displRect = yearDisplayRef.current?.getBoundingClientRect();
     if (!rect || !displRect) return;
-    const x = e.clientX - rect.left - displRect.width - 10;
+    const x = e.clientX - rect.left + 10;
     unstable_batchedUpdates(() => {
       setDisplayX(x);
       setHoveredYear(year);
@@ -187,6 +187,7 @@ const BarGraph = ({ data, selected, onSelect }: Props) => {
           />
         );
       })}
+      <QueryPlan plan={yearQueryPlan.length ? yearQueryPlan : 'All Years'} />
       <YearDisplay
         ref={yearDisplayRef}
         x={displayX}
@@ -195,7 +196,6 @@ const BarGraph = ({ data, selected, onSelect }: Props) => {
         {displayYear}
         <span style={{ fontSize: 8 }}>{`(${displayValue})`}</span>
       </YearDisplay>
-      <QueryPlan plan={yearQueryPlan.length ? yearQueryPlan : 'All Years'} />
     </BarGraphContainer>
   );
 };
