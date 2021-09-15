@@ -39,7 +39,6 @@ export const useSelectAllShortcut = () => {
     const {key, metaKey} = e;
     if (key === 'a' && metaKey && focused) {
       const trackIds = reactiveSongLists()[focused || '']?.tracks.map(({listId}) => listId) ?? []
-      console.log('select all', trackIds)
       addSelected(...trackIds)
       e.preventDefault()
     }

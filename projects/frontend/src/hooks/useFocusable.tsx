@@ -71,7 +71,9 @@ export const FocusableContext: FunctionComponent = ({ children }) => {
     <FocusContext.Provider
       value={{
         setFocused,
-        setRefs: (newRefs) => (refs.current = newRefs),
+        setRefs: (newRefs) => {
+          refs.current = newRefs;
+        },
         focused,
         getRefs: () => refs.current,
       }}

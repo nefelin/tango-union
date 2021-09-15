@@ -9,7 +9,7 @@ import { newSongList } from '../hooks/state/useGlobalPlaylistState/util';
 import { selectedTracks } from '../hooks/state/usePlaylistsState/util';
 import { useSearchbarState } from '../hooks/state/useSearchbarState';
 import { FocusContext } from '../hooks/useFocusable';
-import { regenListIds } from '../types/compactTrack/util';
+import { compactTrackFromListId, regenListIds } from '../types/compactTrack/util';
 import DndContext from './DragNDrop/DnDContext';
 import { Counter } from './DragNDrop/Dragger/Counter/Counter';
 import { State } from './DragNDrop/store/types';
@@ -56,11 +56,15 @@ const DragContext: React.FunctionComponent = ({ children }) => {
       const thisList = reactiveSongLists()[focused ?? ''];
       if (thisList) {
         const tracks = selectedTracks(thisList).map(regenListIds);
+        const quickList =reactiveSongLists()[QUICKLIST_PLAYLIST_ID];
+        if (!quickList) {
+          return
+        }
         reactiveSongLists({
           ...reactiveSongLists(),
           [QUICKLIST_PLAYLIST_ID]: {
-            ...newSongList(QUICKLIST_PLAYLIST_ID),
-            tracks,
+            ...quickList,
+            tracks: [...quickList.tracks, ...tracks],
           },
         });
       }

@@ -72,6 +72,8 @@ const PlaylistBody = ({ tracks }: { tracks: Maybe<Array<PlaylistTrack>> }) => {
                   headerHeight={40}
                   rowHeight={30}
                   rowRenderer={playlistRowRenderer()}
+                  footerHeight={height - 40 - 30*(tracks?.length??0)}
+                  footerRenderer={<EmptyPlaylist/>}
                 />
               </BaseTableStyleOverrides>
             );

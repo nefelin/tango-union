@@ -7,7 +7,7 @@ export const NEW_PLAYLIST_ID = 'newPlaylistDroppable'
 const EmptyPlaylist = () => {
   const {listeners, isOver} = useDroppable(NEW_PLAYLIST_ID);
 
-  return <EmptyPlaylistStyled isOver={isOver} {...listeners}>Drag Songs to Start a Playlist</EmptyPlaylistStyled>;
+  return <EmptyPlaylistStyled isOver={isOver} {...listeners}>Drag Songs Here</EmptyPlaylistStyled>;
 };
 
 const EmptyPlaylistStyled = styled.div<{isOver: boolean}>`
