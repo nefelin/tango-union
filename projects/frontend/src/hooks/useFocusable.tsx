@@ -9,14 +9,12 @@ import React, {
 } from 'react';
 
 import { Unary } from '../types/utility/unary';
+import { reactiveSongLists } from './state/useGlobalPlaylistState/songLists.state';
 
 export const useFocusable = (ref: MutableRefObject<any>, id: string) => {
   const { getRefs, setRefs } = useContext(FocusContext);
   useEffect(() => {
-    console.log('register', id);
-    console.log(getRefs());
     const newRefs = [...getRefs().slice(), { id, ref }];
-    console.log({ newRefs });
     setRefs(newRefs);
     return () => {
       setRefs(getRefs().filter(({ id: registered }) => registered !== id));
@@ -69,7 +67,6 @@ export const FocusableContext: FunctionComponent = ({ children }) => {
     };
   });
 
-  console.log(focused, refs.current);
   return (
     <FocusContext.Provider
       value={{

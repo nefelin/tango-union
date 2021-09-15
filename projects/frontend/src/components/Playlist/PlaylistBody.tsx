@@ -3,21 +3,14 @@ import * as React from 'react';
 import BaseTable, { AutoResizer } from 'react-base-table';
 
 import { PlaylistConfigContext } from '../../context/playlistConfig.context';
+import { reactiveSongLists } from '../../hooks/state/useGlobalPlaylistState/songLists.state';
 import {
-  QUICKLIST_PLAYLIST_ID,
-  reactiveSongLists,
-} from '../../hooks/state/useGlobalPlaylistState/songLists.state';
-import {
-  Playlist,
   PlaylistTrack,
 } from '../../hooks/state/usePlaylistsState/types';
 import { usePlaylistState } from '../../hooks/state/usePlaylistState';
-import {
-  useSelectionState,
-} from '../../hooks/state/useSelectionState';
-import useClickAway from '../../hooks/useClickAway';
-import { useFocusable } from '../../hooks/useFocusable';
-import useKeyboardShortcut from '../../hooks/useKeyboardShortcut';
+import { useSelectionState } from '../../hooks/state/useSelectionState';
+import { FocusContext, useFocusable } from '../../hooks/useFocusable';
+import { useDeleteShortcut, useSelectAllShortcut } from '../../hooks/useKeyboardShortcut';
 import { Maybe } from '../../types/utility/maybe';
 import BaseTableStyleOverrides from '../BaseTableStyleOverrides/BaseTableStyleOverrides';
 import { DndMonitorContext } from '../DragNDrop/store/context';
@@ -31,39 +24,30 @@ const PlaylistBody = ({ tracks }: { tracks: Maybe<Array<PlaylistTrack>> }) => {
     state: { dragMode },
   } = useContext(DndMonitorContext);
   const { name: playlistId } = useContext(PlaylistConfigContext);
-  const { selectionStatus, selected, removeSelected, replaceSelected } =
-    useSelectionState();
-  const { rearrangeTracks, removeTracks } = usePlaylistState(playlistId);
   const [orderedTracks, setOrderedTracks] = useState(tracks ?? []);
   const playlistRef = useRef<HTMLDivElement>(null);
+  const {focused} = useContext(FocusContext);
+  const {removeSelected } = useSelectionState()
+  const {removeTracks} = usePlaylistState(playlistId)
   useFocusable(playlistRef, playlistId);
 
-  // useKeyboardShortcut(['Backspace', 'Delete'], () => {
-  //   removeTracks(...selected());
-  //   removeSelected(...selected());
-  // }); // fixme will be problematic if rendering multiple playlists
-  //
-  // useKeyboardShortcut(
-  //   ['a'],
-  //   () => {
-  //     const activeId = reactiveActivePlaylistId() ?? '';
-  //     const list = reactiveSongLists()[activeId];
-  //     if (!list) return;
-  //
-  //     const replacementList: Playlist = {
-  //       ...list,
-  //       selection: new Set(list.tracks.map(({ listId }) => listId)),
-  //     };
-  //
-  //     reactiveSongLists({
-  //       ...reactiveSongLists(),
-  //       [activeId]: replacementList,
-  //     });
-  //     // replaceSelected(...(tracks?.map(({ listId }) => listId) ?? []));
-  //   },
-  //   ['meta'],
-  //   true,
-  // );
+  const handleKeyDown = (e: KeyboardEvent) => {
+    const {key } = e;
+    const selection = reactiveSongLists()[focused || '']?.selection || new Set()
+    if (['Delete', 'Backspace'].includes(key) && focused && selection.size ) {
+      removeTracks(...selection)
+      removeSelected(...selection)
+      e.preventDefault();
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  });
 
   useEffect(() => setOrderedTracks(tracks ?? []), [tracks]);
 

@@ -1,26 +1,27 @@
-import { useEffect} from 'react';
+import { useContext, useEffect } from 'react';
 
-const useKeyboardShortcut = (keys: Array<string>, action: VoidFunction,  modifiers?: Array<'meta' | 'shiftKey'>, preventDefault?: boolean) => {
+import { PlaylistConfigContext } from '../context/playlistConfig.context';
+import { reactiveSongLists } from './state/useGlobalPlaylistState/songLists.state';
+import { usePlaylistState } from './state/usePlaylistState';
+import { useSelectionState } from './state/useSelectionState';
+import { FocusContext } from './useFocusable';
+
+export const useDeleteShortcut = () => {
+  const {focused} = useContext(FocusContext);
+  const {name: playlistId} = useContext(PlaylistConfigContext)
+  const {removeSelected, addSelected} = useSelectionState()
+  const {removeTracks} = usePlaylistState(playlistId)
 
   const handleKeyDown = (e: KeyboardEvent) => {
-    const {key, metaKey, shiftKey} = e;
-    let modifiersSatisfied = true;
-
-    if (modifiers?.includes('meta') && !metaKey) {
-      modifiersSatisfied = false;
-    }
-    if (modifiers?.includes('shiftKey') && !shiftKey) {
-      modifiersSatisfied = false;
-    }
-
-    if (keys.includes(key) && modifiersSatisfied) {
-      if (preventDefault) {
-        e.preventDefault()
-      }
-      action()
+    const {key} = e;
+    const selection = reactiveSongLists()[focused || '']?.selection || new Set()
+    if (['Delete', 'Backspace'].includes(key) && focused && selection.size ) {
+      removeTracks(...selection)
+      removeSelected(...selection)
+      e.preventDefault();
     }
   }
-  
+
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);
 
@@ -30,4 +31,25 @@ const useKeyboardShortcut = (keys: Array<string>, action: VoidFunction,  modifie
   })
 }
 
-export default useKeyboardShortcut;
+export const useSelectAllShortcut = () => {
+  const {focused} = useContext(FocusContext);
+  const { addSelected} = useSelectionState()
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    const {key, metaKey} = e;
+    if (key === 'a' && metaKey && focused) {
+      const trackIds = reactiveSongLists()[focused || '']?.tracks.map(({listId}) => listId) ?? []
+      console.log('select all', trackIds)
+      addSelected(...trackIds)
+      e.preventDefault()
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  })
+}
