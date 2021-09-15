@@ -120,8 +120,11 @@ const BarGraph = ({ data, selected, onSelect }: Props) => {
   };
 
   const handleMouseUp = (e: MouseEvent) => {
-    commitSelection();
-    setDragMode(undefined);
+    if (dragMode) {
+      commitSelection();
+      setDragMode(undefined);
+      e.preventDefault();
+    }
   };
 
   const handleMouseOver = (year: string) => (e: MouseEvent) => {

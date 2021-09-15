@@ -31,8 +31,11 @@ const DndContext: FunctionComponent<Props> = ({
 
   // general lifecycle of drag
   useEffect(() => {
-    const handleMouseUp = () => {
-      dispatch({ type: ActionType.DragEnd });
+    const handleMouseUp = (e: MouseEvent) => {
+      if (state.dragMode) {
+        dispatch({ type: ActionType.DragEnd });
+        e.preventDefault();
+      }
     };
     const handleKeyDown = ({ key }: KeyboardEvent) => {
       if (key === 'Escape') {
