@@ -4,9 +4,10 @@ import { useContext } from 'react';
 import { PlaylistConfigContext } from '../../context/playlistConfig.context';
 import { ListId } from '../../types/compactTrack/types';
 import { Maybe } from '../../types/utility/maybe';
+import { FocusableContext, FocusContext } from '../useFocusable';
 import { reactiveSongLists } from './useGlobalPlaylistState/songLists.state';
 
-export const reactiveActivePlaylistId = makeVar<Maybe<string>>(null);
+// export const reactiveActivePlaylistId = makeVar<Maybe<string>>(null);
 
 // focused is selected and on active list, selected is selected on passive list, null is no status
 export type SelectionStatus = 'focused' | 'selected' | null;
@@ -14,6 +15,7 @@ export type SelectionStatus = 'focused' | 'selected' | null;
 export const useSelectionState = () => {
   // fixme handle copying
   const { name: playlistId } = useContext(PlaylistConfigContext);
+  const { focused } = useContext(FocusContext);
 
   const addSelected = (...ids: Array<ListId>) => {
     const lists = reactiveSongLists();
@@ -47,7 +49,7 @@ export const useSelectionState = () => {
 
   const selectionStatus = (id: ListId): SelectionStatus => {
     if (reactiveSongLists()[playlistId]?.selection.has(id)) {
-      if (reactiveActivePlaylistId() === playlistId) {
+      if (focused === playlistId) {
         return 'focused';
       }
       return 'selected';

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import {
   playlistIdFromListId,
@@ -8,7 +8,7 @@ import {
 import { newSongList } from '../hooks/state/useGlobalPlaylistState/util';
 import { selectedTracks } from '../hooks/state/usePlaylistsState/util';
 import { useSearchbarState } from '../hooks/state/useSearchbarState';
-import { reactiveActivePlaylistId } from '../hooks/state/useSelectionState';
+import { FocusContext } from '../hooks/useFocusable';
 import { regenListIds } from '../types/compactTrack/util';
 import DndContext from './DragNDrop/DnDContext';
 import { Counter } from './DragNDrop/Dragger/Counter/Counter';
@@ -19,12 +19,13 @@ import { SEARCHBAR_DROPPABLE_ID } from './Searchbar';
 
 const DragContext: React.FunctionComponent = ({ children }) => {
   const { searchFromIds } = useSearchbarState();
+  const { focused } = useContext(FocusContext);
 
   const handleDragStart = () => {
     // setDragging(true);
   };
   const handleDragEnd = (state: State) => {
-    const { overId, overPosition } = state;
+    const { overId, overPosition } = state
 
     if (!overId) {
       return;
@@ -32,7 +33,7 @@ const DragContext: React.FunctionComponent = ({ children }) => {
 
     // over searchbar, search for similar
     if (overId === SEARCHBAR_DROPPABLE_ID) {
-      const activeList = reactiveActivePlaylistId();
+      const activeList = focused;
       if (activeList) {
         const thisList = reactiveSongLists()[activeList];
         if (thisList) {
@@ -43,7 +44,7 @@ const DragContext: React.FunctionComponent = ({ children }) => {
     }
 
     const lists = reactiveSongLists();
-    const sourcePlaylistId = reactiveActivePlaylistId();
+    const sourcePlaylistId = focused;
     const destPlaylistId = playlistIdFromListId(overId ?? '');
     const sourceList = lists[sourcePlaylistId ?? ''];
     const destList = lists[destPlaylistId ?? ''];
@@ -52,7 +53,7 @@ const DragContext: React.FunctionComponent = ({ children }) => {
 
     // over new playlist, start playlist;
     if (overId === NEW_PLAYLIST_ID) {
-      const thisList = reactiveSongLists()[reactiveActivePlaylistId() ?? ''];
+      const thisList = reactiveSongLists()[focused ?? ''];
       if (thisList) {
         const tracks = selectedTracks(thisList).map(regenListIds);
         reactiveSongLists({

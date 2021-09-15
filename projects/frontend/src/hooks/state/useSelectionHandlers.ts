@@ -4,7 +4,6 @@ import { PlaylistConfigContext } from '../../context/playlistConfig.context';
 import { ListId } from '../../types/compactTrack/types';
 import { reactiveSongLists } from './useGlobalPlaylistState/songLists.state';
 import {
-  reactiveActivePlaylistId,
   useSelectionState,
 } from './useSelectionState';
 
@@ -16,7 +15,6 @@ export const useSelectionHandlers = (id: ListId) => {
 
   const handlers = {
     onMouseDown: (e: MouseEvent) => {
-      reactiveActivePlaylistId(playlistId);
       if (selectionStatus(id) === null) {
         setStartedSelected(false);
         if (e.metaKey) {

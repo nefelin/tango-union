@@ -1,11 +1,11 @@
 import { useReactiveVar } from '@apollo/client';
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { reactiveSongLists } from '../../../../hooks/state/useGlobalPlaylistState/songLists.state';
-import { reactiveActivePlaylistId, useSelectionState } from '../../../../hooks/state/useSelectionState';
+import { FocusContext } from '../../../../hooks/useFocusable';
 
 export const Counter = () => {
-    const activePlaylistId = useReactiveVar(reactiveActivePlaylistId)
+    const {focused: activePlaylistId} = useContext(FocusContext);
     const songLists = useReactiveVar(reactiveSongLists)
     const count = songLists[activePlaylistId ?? 'nope']?.selection.size ?? 0;
     const baseSize = 22;

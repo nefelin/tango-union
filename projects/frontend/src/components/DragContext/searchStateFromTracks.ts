@@ -23,7 +23,7 @@ export const searchStateFromTracks = (
     )(tracks) as Array<string>;
 
   return {
-    text: yearTerms,
+    year: yearTerms,
     orchestras: aggregator('orchestra'),
     singers: aggregator('singer'),
     genres: aggregator('genre'),

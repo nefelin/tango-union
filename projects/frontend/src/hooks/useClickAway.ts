@@ -6,10 +6,10 @@ interface Props {
   onFocus?: VoidFunction;
 }
 
-const usePseudoFocus = ({ ref, onBlur, onFocus }: Props) => {
+const useClickAway = ({ ref, onBlur, onFocus }: Props) => {
   useEffect(() => {
     const handleMouseDown = (e: MouseEvent) => {
-      if (ref.current ) {
+      if (ref.current) {
         if (e.target instanceof Node && ref.current.contains(e.target)) {
           onFocus?.();
         } else {
@@ -25,4 +25,4 @@ const usePseudoFocus = ({ ref, onBlur, onFocus }: Props) => {
   });
 };
 
-export default usePseudoFocus;
+export default useClickAway;

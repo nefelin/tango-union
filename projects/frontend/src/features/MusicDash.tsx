@@ -16,6 +16,7 @@ import TopBar from '../components/TopBar';
 import { RESULTS_PLAYLIST_ID } from '../hooks/state/useGlobalPlaylistState/songLists.state';
 import { usePlaylistState } from '../hooks/state/usePlaylistState';
 import { useSearchbarState } from '../hooks/state/useSearchbarState';
+import { FocusableContext } from '../hooks/useFocusable';
 
 const emptyOptions: FullCountFragmentFragment['counts'] = {
   year: [],
@@ -82,17 +83,19 @@ const MusicDash = () => {
     <>
       <TopBar />
       <MusicDashContainer>
-        <DragContext>
-          <Searchbar selectOptions={options} />
-          <ActionRow>
-            <ResultsTable
-              loading={loading}
-              incPage={handlePageIncrement}
-              page={page}
-            />
-            <NowPlaying />
-          </ActionRow>
-        </DragContext>
+        <FocusableContext>
+          <DragContext>
+            <Searchbar selectOptions={options} />
+            <ActionRow>
+              <ResultsTable
+                loading={loading}
+                incPage={handlePageIncrement}
+                page={page}
+              />
+              <NowPlaying />
+            </ActionRow>
+          </DragContext>
+        </FocusableContext>
       </MusicDashContainer>
       <Footer>
         <FooterHeader>
