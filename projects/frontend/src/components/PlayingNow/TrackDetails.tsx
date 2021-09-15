@@ -27,7 +27,7 @@ const TrackDetails = ({ track }: { track: Maybe<SimpleTrack> }) => {
   return (
     <TrackDetailsContainer>
       <TrackScoreLabel>
-        Match score:{' '}
+        Match Score:{' '}
         {scoreJudgement && (
           <TrackScoreDatum
             rating={scoreJudgement}
