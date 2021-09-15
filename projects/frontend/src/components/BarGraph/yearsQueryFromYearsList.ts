@@ -31,7 +31,7 @@ const groupYears = (years: Array<number>) => {
 };
 
 const singleYearTerm = (year: number): string => {
-  if (year > 1919 && year < 2020) {
+  if (year > 1919 && year < 2000) {
     return (year - 1900).toString();
   }
   return year.toString();
