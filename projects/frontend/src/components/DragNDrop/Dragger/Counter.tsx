@@ -27,7 +27,7 @@ export const Counter = ({size = 'normal'}:{size?: 'normal'|'small'}) => {
         justifyContent: 'center',
         alignItems: 'center',
         transform: size === 'small' ? 'scale(.6)' : '',
-        transition: 'all 150ms ease-in-out'
+        transition: 'transform 150ms ease-in-out'
       }}
     >
       {count}
