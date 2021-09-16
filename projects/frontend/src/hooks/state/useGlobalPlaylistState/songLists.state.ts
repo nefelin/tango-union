@@ -22,3 +22,17 @@ export const playlistIdFromListId = (searchListId: ListId) => {
   }
   return null;
 };
+
+export const deleteSelectedTracks = (playListId: PlaylistId) => {
+  const playlist = reactiveSongLists()[playListId];
+  if (!playlist || playlist.readOnly) {
+    return;
+  }
+  reactiveSongLists({
+    ...reactiveSongLists(),
+    [QUICKLIST_PLAYLIST_ID]: {
+      ...playlist,
+      tracks: playlist.tracks.filter(({listId}) => !playlist.selection.has(listId)),
+    },
+  });
+}

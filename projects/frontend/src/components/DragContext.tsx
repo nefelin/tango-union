@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 
 import {
+  deleteSelectedTracks,
   playlistIdFromListId,
   QUICKLIST_PLAYLIST_ID,
   reactiveSongLists,
 } from '../hooks/state/useGlobalPlaylistState/songLists.state';
-import { newSongList } from '../hooks/state/useGlobalPlaylistState/util';
 import { selectedTracks } from '../hooks/state/usePlaylistsState/util';
 import { useSearchbarState } from '../hooks/state/useSearchbarState';
 import { FocusContext } from '../hooks/useFocusable';
@@ -55,17 +55,7 @@ const DragContext: React.FunctionComponent = ({ children }) => {
     const forward = overPosition?.[0] === 'bottom';
 
     if (overId === TRASH_DROPPABLE_ID) {
-      const quickList = reactiveSongLists()[QUICKLIST_PLAYLIST_ID];
-      if (focused !== QUICKLIST_PLAYLIST_ID || !quickList) {
-        return;
-      }
-      reactiveSongLists({
-        ...reactiveSongLists(),
-        [QUICKLIST_PLAYLIST_ID]: {
-          ...quickList,
-          tracks: quickList.tracks.filter(({listId}) => !quickList.selection.has(listId)),
-        },
-      });
+      deleteSelectedTracks(focused ?? '')
       return;
     }
 

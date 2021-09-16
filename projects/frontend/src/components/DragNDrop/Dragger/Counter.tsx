@@ -4,7 +4,7 @@ import React, { useContext } from 'react';
 import { reactiveSongLists } from '../../../hooks/state/useGlobalPlaylistState/songLists.state';
 import { FocusContext } from '../../../hooks/useFocusable';
 
-export const Counter = () => {
+export const Counter = ({size = 'normal'}:{size?: 'normal'|'small'}) => {
   const { focused: activePlaylistId } = useContext(FocusContext);
   const songLists = useReactiveVar(reactiveSongLists);
   const count = songLists[activePlaylistId ?? 'nope']?.selection.size ?? 0;
@@ -26,6 +26,8 @@ export const Counter = () => {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
+        transform: size === 'small' ? 'scale(.6)' : '',
+        transition: 'all 150ms ease-in-out'
       }}
     >
       {count}

@@ -1,4 +1,4 @@
-import { ClearAll, FindInPageOutlined } from '@material-ui/icons';
+import { Cancel, Clear, ClearAll, FindInPageOutlined } from '@material-ui/icons';
 import React, { useContext } from 'react';
 
 import { TRASH_DROPPABLE_ID } from '../../Playlist/TrashHeader';
@@ -15,7 +15,7 @@ const DraggerSwitcher = () => {
     case SEARCHBAR_DROPPABLE_ID:
       return <FindInPageOutlined />;
     case TRASH_DROPPABLE_ID:
-      return <ClearAll />;
+      return <Counter size='small' />;
     default:
       return <Counter />;
   }
