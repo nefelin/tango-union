@@ -46,7 +46,7 @@ const TrackDetails = ({ track }: { track: Maybe<SimpleTrack> }) => {
       <TrackDatum>{track?.orchestra?.join(', ')}</TrackDatum>
       <TrackDatumLabel>
         Singer
-        <FoundFlag found={found.singer} />
+        <FoundFlag found={found.singer} severity={track?.singer?.includes('Instrumental') ? 'warn': 'error'} />
       </TrackDatumLabel>
       <TrackDatum>{track?.singer?.join(', ')}</TrackDatum>
       <TrackDatumLabel>
@@ -54,11 +54,6 @@ const TrackDetails = ({ track }: { track: Maybe<SimpleTrack> }) => {
         <FoundFlag found={found.year} severity="warn" />
       </TrackDatumLabel>
       <TrackDatum>{track?.year}</TrackDatum>
-      <TrackDatumLabel>
-        Genre
-        <FoundFlag found={found.genre} severity="warn" />
-      </TrackDatumLabel>
-      <TrackDatum>{track?.genre}</TrackDatum>
     </TrackDetailsContainer>
   );
 };
