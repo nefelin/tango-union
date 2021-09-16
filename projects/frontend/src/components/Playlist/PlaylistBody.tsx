@@ -4,13 +4,14 @@ import BaseTable, { AutoResizer } from 'react-base-table';
 
 import { PlaylistConfigContext } from '../../context/playlistConfig.context';
 import { reactiveSongLists } from '../../hooks/state/useGlobalPlaylistState/songLists.state';
-import {
-  PlaylistTrack,
-} from '../../hooks/state/usePlaylistsState/types';
+import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
 import { usePlaylistState } from '../../hooks/state/usePlaylistState';
 import { useSelectionState } from '../../hooks/state/useSelectionState';
 import { FocusContext, useFocusable } from '../../hooks/useFocusable';
-import { useDeleteShortcut, useSelectAllShortcut } from '../../hooks/useKeyboardShortcut';
+import {
+  useDeleteShortcut,
+  useSelectAllShortcut,
+} from '../../hooks/useKeyboardShortcut';
 import { Maybe } from '../../types/utility/maybe';
 import BaseTableStyleOverrides from '../BaseTableStyleOverrides/BaseTableStyleOverrides';
 import { DndMonitorContext } from '../DragNDrop/store/context';
@@ -26,27 +27,28 @@ const PlaylistBody = ({ tracks }: { tracks: Maybe<Array<PlaylistTrack>> }) => {
   const { name: playlistId } = useContext(PlaylistConfigContext);
   const [orderedTracks, setOrderedTracks] = useState(tracks ?? []);
   const playlistRef = useRef<HTMLDivElement>(null);
-  const {focused} = useContext(FocusContext);
-  const {removeSelected } = useSelectionState()
-  const {removeTracks} = usePlaylistState(playlistId)
+  const { focused } = useContext(FocusContext);
+  const { removeSelected } = useSelectionState();
+  const { removeTracks } = usePlaylistState(playlistId);
   useFocusable(playlistRef, playlistId);
 
   const handleKeyDown = (e: KeyboardEvent) => {
-    const {key } = e;
-    const selection = reactiveSongLists()[focused || '']?.selection || new Set()
-    if (['Delete', 'Backspace'].includes(key) && focused && selection.size ) {
-      removeTracks(...selection)
-      removeSelected(...selection)
+    const { key } = e;
+    const selection =
+      reactiveSongLists()[focused || '']?.selection || new Set();
+    if (['Delete', 'Backspace'].includes(key) && focused && selection.size) {
+      removeTracks(...selection);
+      removeSelected(...selection);
       e.preventDefault();
     }
-  }
+  };
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown)
-    }
+      document.removeEventListener('keydown', handleKeyDown);
+    };
   });
 
   useEffect(() => setOrderedTracks(tracks ?? []), [tracks]);
@@ -59,7 +61,7 @@ const PlaylistBody = ({ tracks }: { tracks: Maybe<Array<PlaylistTrack>> }) => {
             return (
               <BaseTableStyleOverrides dragging={!!dragMode}>
                 <BaseTable
-                  emptyRenderer={() => <EmptyPlaylist />}
+                  // emptyRenderer={() => <EmptyPlaylist />}
                   style={{ fontSize: 12 }}
                   rowKey="listId"
                   data={tracks?.map((track, index) => ({
@@ -72,8 +74,10 @@ const PlaylistBody = ({ tracks }: { tracks: Maybe<Array<PlaylistTrack>> }) => {
                   headerHeight={40}
                   rowHeight={30}
                   rowRenderer={playlistRowRenderer()}
-                  footerHeight={height - 40 - 30*(tracks?.length??0)}
-                  footerRenderer={<EmptyPlaylist/>}
+                  footerHeight={height - 40 - 30 * (tracks?.length ?? 0)}
+                  footerRenderer={
+                    <EmptyPlaylist size={tracks?.length ? 'small' : 'large'} />
+                  }
                 />
               </BaseTableStyleOverrides>
             );
