@@ -3,7 +3,7 @@ import React, { FunctionComponent, useContext, useEffect, useRef, useState } fro
 import useMouseCoordinates from '../hooks/useMouseCoordinates';
 import { DndMonitorContext } from '../store/context';
 
-export const Dragger: FunctionComponent = ({children}) => {
+export const DraggerContainer: FunctionComponent = ({children}) => {
   const { state } = useContext(DndMonitorContext);
   const [renderOffset, setRenderOffset] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);

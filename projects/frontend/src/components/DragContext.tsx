@@ -9,12 +9,15 @@ import { newSongList } from '../hooks/state/useGlobalPlaylistState/util';
 import { selectedTracks } from '../hooks/state/usePlaylistsState/util';
 import { useSearchbarState } from '../hooks/state/useSearchbarState';
 import { FocusContext } from '../hooks/useFocusable';
-import { compactTrackFromListId, regenListIds } from '../types/compactTrack/util';
+import {
+  regenListIds,
+} from '../types/compactTrack/util';
 import DndContext from './DragNDrop/DnDContext';
-import { Counter } from './DragNDrop/Dragger/Counter/Counter';
+import DraggerSwitcher from './DragNDrop/Dragger/DraggerSwitcher';
 import { State } from './DragNDrop/store/types';
 import { NEW_PLAYLIST_ID } from './Playlist/EmptyPlaylist';
 import { moveMany } from './Playlist/PlaylistBody/util';
+import { TRASH_DROPPABLE_ID } from './Playlist/TrashHeader';
 import { SEARCHBAR_DROPPABLE_ID } from './Searchbar';
 
 const DragContext: React.FunctionComponent = ({ children }) => {
@@ -25,7 +28,7 @@ const DragContext: React.FunctionComponent = ({ children }) => {
     // setDragging(true);
   };
   const handleDragEnd = (state: State) => {
-    const { overId, overPosition } = state
+    const { overId, overPosition } = state;
 
     if (!overId) {
       return;
@@ -51,14 +54,29 @@ const DragContext: React.FunctionComponent = ({ children }) => {
 
     const forward = overPosition?.[0] === 'bottom';
 
-    // over new playlist, start playlist;
+    if (overId === TRASH_DROPPABLE_ID) {
+      const quickList = reactiveSongLists()[QUICKLIST_PLAYLIST_ID];
+      if (focused !== QUICKLIST_PLAYLIST_ID || !quickList) {
+        return;
+      }
+      reactiveSongLists({
+        ...reactiveSongLists(),
+        [QUICKLIST_PLAYLIST_ID]: {
+          ...quickList,
+          tracks: quickList.tracks.filter(({listId}) => !quickList.selection.has(listId)),
+        },
+      });
+      return;
+    }
+
+    // over new playlist big droppable, append to end;
     if (overId === NEW_PLAYLIST_ID) {
       const thisList = reactiveSongLists()[focused ?? ''];
       if (thisList) {
         const tracks = selectedTracks(thisList).map(regenListIds);
-        const quickList =reactiveSongLists()[QUICKLIST_PLAYLIST_ID];
+        const quickList = reactiveSongLists()[QUICKLIST_PLAYLIST_ID];
         if (!quickList) {
-          return
+          return;
         }
         reactiveSongLists({
           ...reactiveSongLists(),
@@ -79,7 +97,7 @@ const DragContext: React.FunctionComponent = ({ children }) => {
     const { tracks } = destList;
 
     // same playlist move tracks
-    if (destPlaylistId && sourcePlaylistId === destPlaylistId) {
+    if (destPlaylistId && sourcePlaylistId === destPlaylistId && !destList.readOnly) {
       const newTracks = moveMany(tracks, [...selection], overId, forward);
       reactiveSongLists({
         ...lists,
@@ -108,7 +126,7 @@ const DragContext: React.FunctionComponent = ({ children }) => {
     <DndContext
       onDragEnd={handleDragEnd}
       onDragStart={handleDragStart}
-      draggerElement={<Counter />}
+      draggerElement={<DraggerSwitcher />}
     >
       {children}
     </DndContext>

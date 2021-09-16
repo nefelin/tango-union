@@ -4,6 +4,7 @@ import { LengthCell } from '../ResultsTable/ResultsTableBody/cellRenderers/lengt
 import { ListCell } from '../ResultsTable/ResultsTableBody/cellRenderers/listCell';
 import PlayCell from '../ResultsTable/ResultsTableBody/cellRenderers/playCell';
 import { cellRenderComponent } from '../ResultsTable/ResultsTableBody/cellRenderers/types';
+import TrashHeader from './TrashHeader';
 
 const playlistColumns: Array<ColumnShape> = [
   {
@@ -13,7 +14,8 @@ const playlistColumns: Array<ColumnShape> = [
     width:  53,
     cellRenderer: cellRenderComponent(PlayCell),
     sortable: false,
-    style: { padding: '0 0 0 3px' }
+    style: { padding: '0 0 0 3px' },
+    headerRenderer: TrashHeader
   },
   {
     key: 'title',
@@ -60,6 +62,7 @@ const playlistColumns: Array<ColumnShape> = [
     width: 100,
     resizable: true,
   },
+
 ];
 
 export default playlistColumns;
