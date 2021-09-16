@@ -96,29 +96,30 @@ const DragContext: React.FunctionComponent = ({ children }) => {
     const { selection } = sourceList;
     const { tracks } = destList;
 
-    // same playlist move tracks
-    if (destPlaylistId && sourcePlaylistId === destPlaylistId && !destList.readOnly) {
-      const newTracks = moveMany(tracks, [...selection], overId, forward);
-      reactiveSongLists({
-        ...lists,
-        [destList.id]: { ...destList, tracks: newTracks },
-      });
-    } else {
-      const insertI =
-        tracks.findIndex(({ listId }) => listId === overId) + (forward ? 1 : 0);
-      // fixme need new ideas for these inserts
-      const insertTracks = sourceList.tracks
-        .filter(({ listId }) => selection.has(listId))
-        .map(regenListIds);
-      const newTracks = [
-        ...tracks.slice(0, insertI),
-        ...insertTracks,
-        ...tracks.slice(insertI, tracks.length),
-      ];
-      reactiveSongLists({
-        ...lists,
-        [destList.id]: { ...destList, tracks: newTracks },
-      });
+    if (!destList.readOnly) {
+      if (destPlaylistId && sourcePlaylistId === destPlaylistId) {
+        const newTracks = moveMany(tracks, [...selection], overId, forward);
+        reactiveSongLists({
+          ...lists,
+          [destList.id]: { ...destList, tracks: newTracks },
+        });
+      } else {
+        const insertI =
+          tracks.findIndex(({ listId }) => listId === overId) + (forward ? 1 : 0);
+        // fixme need new ideas for these inserts
+        const insertTracks = sourceList.tracks
+          .filter(({ listId }) => selection.has(listId))
+          .map(regenListIds);
+        const newTracks = [
+          ...tracks.slice(0, insertI),
+          ...insertTracks,
+          ...tracks.slice(insertI, tracks.length),
+        ];
+        reactiveSongLists({
+          ...lists,
+          [destList.id]: { ...destList, tracks: newTracks },
+        });
+      }
     }
   };
 
