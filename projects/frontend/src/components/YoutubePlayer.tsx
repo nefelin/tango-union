@@ -71,8 +71,8 @@ const YoutubePlayer = () => {
         onPause={handlePause}
         onEnd={handleEnd}
         onPlay={handlePlay}
-        videoId={videoId}
-        opts={opts(true)}
+        videoId={videoId || '-pHhb4biR9k'}
+        opts={opts(!!videoId)}
       />
       <VideoDescriptionContainer>
         <VideoDescriptionDatum>
