@@ -29,7 +29,7 @@ type DragMode = 'select' | 'deselect';
 
 const BarGraph = ({ data, selected, onSelect }: Props) => {
   const [hoveredYear, setHoveredYear] = useState<Maybe<string>>(null);
-  const displayYear = useEnsureValue(hoveredYear);
+  const displayYear = useEnsureValue(hoveredYear, null);
   const displayValue =
     data.find(({ label }) => label === displayYear)?.value ?? null;
   const [displayX, setDisplayX] = useState(0);
