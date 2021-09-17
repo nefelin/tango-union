@@ -5,6 +5,8 @@ import { TrackId } from '../../../types';
 export class CompoundResults {
   ids: Array<TrackId>;
   totalResults: number;
+  totalPages: number;
+  page: number;
   counts: SelectIndexCount;
 }
 

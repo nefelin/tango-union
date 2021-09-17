@@ -16,7 +16,9 @@ import TopBar from '../components/TopBar';
 import { RESULTS_PLAYLIST_ID } from '../hooks/state/useGlobalPlaylistState/songLists.state';
 import { usePlaylistState } from '../hooks/state/usePlaylistState';
 import { useSearchbarState } from '../hooks/state/useSearchbarState';
+import useEnsureValue from '../hooks/useEnsureValue';
 import { FocusableContext } from '../hooks/useFocusable';
+import { TrackId } from '../types/compactTrack/types';
 
 const emptyOptions: FullCountFragmentFragment['counts'] = {
   year: [],
@@ -30,7 +32,11 @@ const MusicDash = () => {
   const [options, setOptions] = useState(emptyOptions);
   const { searchbarState } = useSearchbarState();
   const { sortInput, resetSort } = useSortState();
-  const { addTracks, replaceTracks } = usePlaylistState(RESULTS_PLAYLIST_ID);
+  const {
+    addTracks,
+    replaceTracks,
+    playlist: { tracks },
+  } = usePlaylistState(RESULTS_PLAYLIST_ID);
   const [debouncedSearch] = useDebounce(searchbarState, 300, {
     equalityFn: objCompare,
   });
@@ -39,8 +45,8 @@ const MusicDash = () => {
   });
   const [page, setPage] = useState(0);
 
-  const pageSize = 40;
-  const pagination = { offset: 0, limit: pageSize * (page + 1) };
+  const pageSize = 20;
+  const pagination = { offset: pageSize * page, limit: pageSize };
 
   const { data, error, loading } = useCompoundQueryQuery({
     variables: {
@@ -50,22 +56,31 @@ const MusicDash = () => {
         pagination,
       },
     },
+    onCompleted: (res) => {
+      if (page === 0) {
+        replaceTracks(res.compoundQuery.ids);
+      } else {
+        addTracks(res.compoundQuery.ids);
+      }
+      setOptions(res.compoundQuery.counts);
+    },
   });
-
-  document.body.style.margin = '';
-
-  useEffect(() => {
-    if (data?.compoundQuery) {
-      setOptions(data.compoundQuery.counts);
-      replaceTracks(data?.compoundQuery.ids ?? []);
-    }
-  }, [data?.compoundQuery]);
+  const ensuredTotalPages = useEnsureValue(data?.compoundQuery.totalPages, 0);
+  const ensuredTotalResults = useEnsureValue(
+    data?.compoundQuery.totalResults,
+    0,
+  );
 
   const resetPageAndSort = () => {
     setPage(0);
     resetSort();
   };
   useEffect(resetPageAndSort, [debouncedSearch]);
+  useEffect(() => {
+    setPage(0);
+  }, [debouncedSort]);
+
+  document.body.style.margin = '';
 
   if (error) {
     console.error(error);
@@ -74,7 +89,7 @@ const MusicDash = () => {
 
   const handlePageIncrement = () => {
     const resultCount = data?.compoundQuery?.totalResults;
-    if (resultCount && pagination.limit < resultCount) {
+    if (resultCount && page+1 < ensuredTotalPages) {
       setPage((prev) => prev + 1);
     }
   };
@@ -90,7 +105,9 @@ const MusicDash = () => {
               <ResultsTable
                 loading={loading}
                 incPage={handlePageIncrement}
-                page={page}
+                page={page + 1}
+                totalResults={ensuredTotalResults}
+                totalPages={ensuredTotalPages}
               />
               <NowPlaying />
             </ActionRow>

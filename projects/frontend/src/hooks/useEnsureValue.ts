@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-function useEnsureValue<Value>(value: Value, fallback = undefined ){
-  const [retained, setRetained] = useState<Value | typeof fallback>(fallback);
+function useEnsureValue<Value, Fallback>(value: Value, fallback: Fallback ) : NonNullable<Value> | Fallback{
+  const [retained, setRetained] = useState<Value | Fallback>(fallback);
 
   useEffect(() => {
     if (value !== undefined && value !== null) {
@@ -9,7 +9,8 @@ function useEnsureValue<Value>(value: Value, fallback = undefined ){
     }
   }, [value])
 
-  return retained;
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+  return retained as NonNullable<Value> | Fallback;
 }
 
 export default useEnsureValue;

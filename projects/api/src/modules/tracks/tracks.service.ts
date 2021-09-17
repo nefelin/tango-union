@@ -83,7 +83,7 @@ export class TracksService {
     const genreCountMatches = stripNil([orchestraMatch, singerMatch, yearMatch]);
     const allMatches = stripNil([orchestraMatch, singerMatch, genreMatch, yearMatch]);
 
-    const sortWithDefault = sort && Object.keys(sort).length > 0 ? sort : { title: 1 };
+    const sortWithDefault = sort && Object.keys(sort).length > 0 ? { ...sort, id: 1 } : { title: 1, id: 1 }; // need to sort by id as a tie breaker for consistant pagination behavior
 
     const pipeline = [
       textMatch,
@@ -144,7 +144,7 @@ export class TracksService {
     ];
 
     const res = await this.trackModel.aggregate<FacetedResults>(stripNil(pipeline));
-    return compoundResultsFromFacetedResults(res[0]);
+    return compoundResultsFromFacetedResults(res[0], input.pagination);
   }
 
   async linksForTracks(ids: Array<string>): Promise<Track['youtube']['links']> {

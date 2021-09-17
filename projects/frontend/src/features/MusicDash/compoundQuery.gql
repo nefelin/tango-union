@@ -1,6 +1,8 @@
 query CompoundQuery($criteria: CompoundQueryInput!) {
   compoundQuery(query: $criteria) {
     ids
+    page
+    totalPages
     totalResults
     ...FullCountFragment
   }

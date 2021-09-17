@@ -3,7 +3,7 @@ import { EntityCount, FacetedResults } from './types';
 import { CompoundResults } from './dto/compoundResult.entity';
 import { TrackDocument } from '../../schemas/tracks.entity';
 import { SimpleTrack } from './dto/simpletrack.entity';
-import { CompoundSortInput } from './dto/compoundQuery.input';
+import { CompoundSortInput, PaginationInput } from './dto/compoundQuery.input';
 import { cleanSlop } from '../../util/slop';
 
 export const andifyMongoTextSearch = (text?: string) => {
@@ -17,7 +17,10 @@ export const andifyMongoTextSearch = (text?: string) => {
     .join(' ');
 };
 
-export const compoundResultsFromFacetedResults = (res: FacetedResults): CompoundResults => {
+export const compoundResultsFromFacetedResults = (
+  res: FacetedResults,
+  pagination: PaginationInput,
+): CompoundResults => {
   const pairsFromCounts = ({ _id: name, count }: EntityCount) => ({
     name,
     count,
@@ -31,6 +34,8 @@ export const compoundResultsFromFacetedResults = (res: FacetedResults): Compound
       orchestra: res.orchestraCount.map(pairsFromCounts),
       genre: res.genreCount.map(pairsFromCounts),
     },
+    page: pagination.offset / pagination.limit,
+    totalPages: Math.ceil((res.total[0]?.total ?? 0) / pagination.limit),
     totalResults: res.total[0]?.total ?? 0,
   };
 };

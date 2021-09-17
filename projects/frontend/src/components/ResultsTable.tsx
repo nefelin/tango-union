@@ -15,9 +15,11 @@ interface Props {
   loading?: boolean;
   incPage?: VoidFunction;
   page: number;
+  totalPages: number;
+  totalResults: number;
 }
 
-const ResultsTable = ({ loading = false, page, incPage }: Props) => {
+const ResultsTable = ({ loading = false, page, incPage, totalResults, totalPages }: Props) => {
   const tableRef = useRef<HTMLDivElement>(null);
   const {
     playlist: { tracks: playlistTracks },
@@ -33,6 +35,8 @@ const ResultsTable = ({ loading = false, page, incPage }: Props) => {
           tracks={tracks}
           incPage={incPage}
           page={page}
+          totalPages={totalPages}
+          totalResults={totalResults}
           loading={tableLoading}
         />
       </PlaylistConfigContext.Provider>

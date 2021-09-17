@@ -33,10 +33,12 @@ interface Props {
   incPage?: VoidFunction;
   tracks: Maybe<Array<PlaylistTrack>>;
   page: number;
+  totalPages: number;
+  totalResults: number;
   loading: boolean;
 }
 
-const ResultsTableBody = ({ tracks, incPage, page, loading }: Props) => {
+const ResultsTableBody = ({ tracks, incPage, page, totalResults, totalPages, loading }: Props) => {
   const {
     state: { dragMode },
   } = useContext(DndMonitorContext);
@@ -98,6 +100,21 @@ const ResultsTableBody = ({ tracks, incPage, page, loading }: Props) => {
                 onColumnSort={handleColumnSort}
                 overlayRenderer={overlayRenderer(loading, loadingMore)}
                 loadingMore={loadingMore}
+                footerHeight={30}
+                footerRenderer={() => (
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      height: '100%',
+                      backgroundColor: 'rgb(247,247,247)'
+                    }}
+                  >
+                    {`${totalResults.toLocaleString()} Results - Page ${page} of ${totalPages}`}
+                  </div>
+                )}
               />
             </BaseTableStyleOverrides>
           );
