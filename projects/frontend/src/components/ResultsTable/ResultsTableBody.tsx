@@ -38,7 +38,14 @@ interface Props {
   loading: boolean;
 }
 
-const ResultsTableBody = ({ tracks, incPage, page, totalResults, totalPages, loading }: Props) => {
+const ResultsTableBody = ({
+  tracks,
+  incPage,
+  page,
+  totalResults,
+  totalPages,
+  loading,
+}: Props) => {
   const {
     state: { dragMode },
   } = useContext(DndMonitorContext);
@@ -109,10 +116,13 @@ const ResultsTableBody = ({ tracks, incPage, page, totalResults, totalPages, loa
                       alignItems: 'center',
                       justifyContent: 'center',
                       height: '100%',
-                      backgroundColor: 'rgb(247,247,247)'
+                      backgroundColor: 'rgb(247,247,247)',
+                      gap: 14
                     }}
                   >
-                    {`${totalResults.toLocaleString()} Results - Page ${page} of ${totalPages}`}
+                    <span>{`${totalResults.toLocaleString()} Results`}</span>{' '}
+                    <span>•</span>
+                    <span>{`Showing ${page} of ${totalPages} pages`}</span>
                   </div>
                 )}
               />
