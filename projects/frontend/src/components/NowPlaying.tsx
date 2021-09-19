@@ -45,6 +45,7 @@ const NowPlaying = () => {
 
 const DetailsRow = styled.div`
   width: 100%;
+  height: 200px;
   display: flex;
   flex-direction: row;
 `;
