@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import YouTube from 'react-youtube';
 import { YouTubePlayer } from 'youtube-player/dist/types';
 
@@ -7,12 +7,7 @@ import { useTrackDetailsBatchQuery } from '../../generated/graphql';
 import { useGlobalPlaylistsState } from '../hooks/state/useGlobalPlaylistState';
 import { useYoutubePlayerState } from '../hooks/state/useYoutubePlayerState';
 import { Maybe } from '../types/utility/maybe';
-import {
-  VideoDescriptionContainer,
-  VideoDescriptionDatum,
-  VideoDescriptionLabel,
-  YoutubeContainer,
-} from './YoutubePlayer/styles';
+import { YoutubeContainer } from './YoutubePlayer/styles';
 import { opts } from './YoutubePlayer/util';
 
 const YoutubePlayer = () => {
@@ -29,6 +24,7 @@ const YoutubePlayer = () => {
     variables: { ids: [activeTrack?.trackId ?? ''] }, // should never execute with empty string due to skip, will error
     skip: activeTrack === null,
   });
+  const { videoId } = data?.tracksByIds[0]?.link ?? {};
 
   useEffect(() => {
     switch (playState) {
@@ -36,6 +32,9 @@ const YoutubePlayer = () => {
         player?.pauseVideo();
         break;
       case 'playing':
+        player?.playVideo();
+        break;
+      case 'loading':
         player?.playVideo();
         break;
       default:
@@ -55,35 +54,38 @@ const YoutubePlayer = () => {
     }
   };
 
+  const handleStateChange = (stateCode: number) => {
+    // fixme this can probably replace other handlers
+    // state codes https://developers.google.com/youtube/iframe_api_reference#Playback_status
+    switch (stateCode) {
+      case 5: // cued
+        if (playState === 'loading' || playState === 'playing') {
+          player?.playVideo();
+        }
+        break;
+      default:
+    }
+  };
+
   const handlePause = () => {
     if (playState !== 'loading') {
       pause();
     }
   };
-
-  const { videoId, description, title } = data?.tracksByIds[0]?.link ?? {};
+  // || '-pHhb4biR9k'}
   return (
     <YoutubeContainer>
       <YouTube
         onReady={(e) => {
           setPlayer(e.target);
         }}
+        onStateChange={({ data: stateCode }) => handleStateChange(stateCode)}
         onPause={handlePause}
         onEnd={handleEnd}
         onPlay={handlePlay}
-        videoId={videoId || '-pHhb4biR9k'}
-        opts={opts(!!videoId)}
+        videoId={videoId}
+        opts={opts(false)}
       />
-      <VideoDescriptionContainer>
-        <VideoDescriptionDatum>
-          <VideoDescriptionLabel>Title: </VideoDescriptionLabel>
-          {title}
-        </VideoDescriptionDatum>
-        <VideoDescriptionDatum>
-          <VideoDescriptionLabel>Description: </VideoDescriptionLabel>
-          {description}
-        </VideoDescriptionDatum>
-      </VideoDescriptionContainer>
     </YoutubeContainer>
   );
 };

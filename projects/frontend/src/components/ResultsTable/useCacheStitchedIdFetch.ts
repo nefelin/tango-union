@@ -12,10 +12,11 @@ import { Maybe } from '../../types/utility/maybe';
 
 // fixme would be nice to cut down on re-render
 const useCacheStitchedIdFetch = (
-  ids?: Array<CompactTrack>,
+  maybeIds?: Array<Maybe<CompactTrack>>,
 ): [Maybe<Array<PlaylistTrack>>, boolean] => {
   const client = useApolloClient();
 
+  const ids = maybeIds?.filter(compact => compact !== null) as Array<CompactTrack>
   const fetchIds =
     ids?.filter(
       ({trackId}) =>

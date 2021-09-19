@@ -2,6 +2,7 @@ import { makeVar, useReactiveVar } from '@apollo/client';
 
 import { CompactTrack } from '../../types/compactTrack/types';
 import { compressTrack } from '../../types/compactTrack/util';
+import { generateListId } from './useGlobalPlaylistState/util';
 import { PlaylistTrack } from './usePlaylistsState/types';
 import {
   HookProps,
@@ -31,6 +32,13 @@ export const useYoutubePlayerState = (): HookProps => {
       playState: 'stopped',
     });
 
+  const setTrack = (compact: CompactTrack) => {
+    reactiveYoutubePlayerState({
+      ...reactiveYoutubePlayerState(),
+      activeTrack: compact,
+    });
+  };
+
   const resume = () =>
     reactiveYoutubePlayerState({
       ...reactiveYoutubePlayerState(),
@@ -39,7 +47,7 @@ export const useYoutubePlayerState = (): HookProps => {
 
   const play = (compactTrack: CompactTrack) => {
     const currentState = reactiveYoutubePlayerState();
-    const newTrack = compactTrack.listId !== currentState.activeTrack?.listId;
+    const newTrack = compactTrack.trackId !== currentState.activeTrack?.trackId;
     const playState = newTrack ? 'loading' : 'playing';
 
     reactiveYoutubePlayerState({
@@ -75,6 +83,7 @@ export const useYoutubePlayerState = (): HookProps => {
     resume,
     pause,
     play,
+    setTrack,
     stop,
   };
 };

@@ -127,6 +127,7 @@ export class TracksService {
             },
             { $count: 'total' },
           ],
+          random: [{ $match: { 'youtube.linkScore': { $gte: 7 } } }, { $sample: { size: 1 } }, { $project: { id: 1 } }],
           tracks: [
             {
               $match: allMatches.length
@@ -138,6 +139,7 @@ export class TracksService {
             { $sort: sortWithDefault },
             pagination ? { $skip: pagination.offset } : { $skip: 0 },
             pagination ? { $limit: pagination.limit } : { $limit: 20 },
+            { $project: { id: 1 } },
           ],
         },
       },

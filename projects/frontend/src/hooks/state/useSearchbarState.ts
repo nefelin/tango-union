@@ -6,7 +6,6 @@ import { searchStateFromTracks } from '../../components/DragContext/searchStateF
 import useCacheStitchedIdFetch from '../../components/ResultsTable/useCacheStitchedIdFetch';
 import { SearchbarState } from '../../components/Searchbar/types';
 import { CompactTrack } from '../../types/compactTrack/types';
-import cachedTracksFromIds from '../../util/cachedTracksFromIds';
 import { useRoutedState } from './useRoutedState';
 
 const initSearchbarState: SearchbarState = {};
@@ -19,9 +18,17 @@ export const useSearchbarState = () => {
     useRoutedState();
   const [debouncedText] = useDebounce(searchbarState.text, 300);
   const apolloClient = useApolloClient();
+  const [idSources, setIdSources] = useState<Array<CompactTrack> | null>(null);
+  const [trackSources] = useCacheStitchedIdFetch(idSources || [])
+
+  useEffect(() => {
+    if (trackSources?.length) {
+      setSearchbarState(searchStateFromTracks(trackSources))
+    }
+  },[JSON.stringify(trackSources)])
 
   const searchFromIds = (ids: Array<CompactTrack>) => {
-        setSearchbarState(searchStateFromTracks(cachedTracksFromIds(apolloClient, ids)));
+    setIdSources(ids);
   }
 
   // stick search in the title, helpful juggling tabs

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useDebounce } from 'use-debounce';
 
@@ -16,9 +16,13 @@ import TopBar from '../components/TopBar';
 import { RESULTS_PLAYLIST_ID } from '../hooks/state/useGlobalPlaylistState/songLists.state';
 import { usePlaylistState } from '../hooks/state/usePlaylistState';
 import { useSearchbarState } from '../hooks/state/useSearchbarState';
+import { useYoutubePlayerState } from '../hooks/state/useYoutubePlayerState';
 import useEnsureValue from '../hooks/useEnsureValue';
 import { FocusableContext } from '../hooks/useFocusable';
-import { TrackId } from '../types/compactTrack/types';
+import {
+  compactTrackFromString,
+  compactTrackFromTrackId,
+} from '../types/compactTrack/util';
 
 const emptyOptions: FullCountFragmentFragment['counts'] = {
   year: [],
@@ -30,7 +34,7 @@ const objCompare = (a: any, b: any) => JSON.stringify(a) === JSON.stringify(b);
 
 const MusicDash = () => {
   const [options, setOptions] = useState(emptyOptions);
-  const { searchbarState } = useSearchbarState();
+  const { searchbarState, searchFromIds } = useSearchbarState();
   const { sortInput, resetSort } = useSortState();
   const {
     addTracks,
@@ -44,6 +48,8 @@ const MusicDash = () => {
     equalityFn: objCompare,
   });
   const [page, setPage] = useState(0);
+  const firstQuery = useRef(true);
+  const { setTrack, play, pause } = useYoutubePlayerState();
 
   const pageSize = 20;
   const pagination = { offset: pageSize * page, limit: pageSize };
@@ -57,6 +63,13 @@ const MusicDash = () => {
       },
     },
     onCompleted: (res) => {
+      if (firstQuery.current && res.compoundQuery.randomId) {
+        // randomize pre-loaded link
+        const compact = compactTrackFromTrackId(res.compoundQuery.randomId);
+        // const compact = compactTrackFromTrackId('9929');
+        firstQuery.current = false;
+        setTrack(compact);
+      }
       if (page === 0) {
         replaceTracks(res.compoundQuery.ids);
       } else {
@@ -89,7 +102,7 @@ const MusicDash = () => {
 
   const handlePageIncrement = () => {
     const resultCount = data?.compoundQuery?.totalResults;
-    if (resultCount && page+1 < ensuredTotalPages) {
+    if (resultCount && page + 1 < ensuredTotalPages) {
       setPage((prev) => prev + 1);
     }
   };

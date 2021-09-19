@@ -4,6 +4,7 @@ import { TrackId } from '../../../types';
 @ObjectType()
 export class CompoundResults {
   ids: Array<TrackId>;
+  randomId: TrackId;
   totalResults: number;
   totalPages: number;
   page: number;

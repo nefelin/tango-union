@@ -1,6 +1,7 @@
 query CompoundQuery($criteria: CompoundQueryInput!) {
   compoundQuery(query: $criteria) {
     ids
+    randomId
     page
     totalPages
     totalResults

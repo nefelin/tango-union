@@ -20,6 +20,7 @@ export interface HookProps {
   stop: VoidFunction;
   pause: VoidFunction;
   resume: VoidFunction;
+  setTrack: (id: CompactTrack) => void;
   play: (id: CompactTrack) => void;
   trackStatus: (track: PlaylistTrack) => TrackStatus;
 }

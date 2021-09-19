@@ -28,6 +28,7 @@ export const compoundResultsFromFacetedResults = (
 
   return {
     ids: res.tracks.map(({ id }) => id.toString()),
+    randomId: res.random[0]?.id ?? '0',
     counts: {
       year: res.yearCount.map(pairsFromCounts),
       singer: res.singerCount.map(pairsFromCounts),

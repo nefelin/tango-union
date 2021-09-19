@@ -28,6 +28,7 @@ export type CompoundQueryInput = {
 export type CompoundResults = {
   __typename?: 'CompoundResults';
   ids: Array<Scalars['String']>;
+  randomId: Scalars['String'];
   totalResults: Scalars['Float'];
   totalPages: Scalars['Float'];
   page: Scalars['Float'];
@@ -149,7 +150,7 @@ export type CompoundQueryQuery = (
   { __typename?: 'Query' }
   & { compoundQuery: (
     { __typename?: 'CompoundResults' }
-    & Pick<CompoundResults, 'ids' | 'page' | 'totalPages' | 'totalResults'>
+    & Pick<CompoundResults, 'ids' | 'randomId' | 'page' | 'totalPages' | 'totalResults'>
     & FullCountFragmentFragment
   ) }
 );
@@ -252,6 +253,7 @@ export const CompoundQueryDocument = gql`
     query CompoundQuery($criteria: CompoundQueryInput!) {
   compoundQuery(query: $criteria) {
     ids
+    randomId
     page
     totalPages
     totalResults

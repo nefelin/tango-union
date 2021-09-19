@@ -9,8 +9,10 @@ import {
 import { PlaylistConfigContext } from '../context/playlistConfig.context';
 import { QUICKLIST_PLAYLIST_ID } from '../hooks/state/useGlobalPlaylistState/songLists.state';
 import { useYoutubePlayerState } from '../hooks/state/useYoutubePlayerState';
+import SourceComparison from './PlayingNow/SourceComparison';
 import TrackDetails from './PlayingNow/TrackDetails';
 import Playlists from './Playlists';
+import Sandbox from './Sandbox/Sandbox';
 import YoutubePlayer from './YoutubePlayer';
 
 const NowPlaying = () => {
@@ -29,7 +31,8 @@ const NowPlaying = () => {
     <NowPlayingCard>
       <DetailsRow>
         <YoutubePlayer />
-        <TrackDetails track={track} />
+        <SourceComparison/>
+        {/* <TrackDetails track={track} /> */}
       </DetailsRow>
       <PlaylistConfigContext.Provider
         value={{ name: QUICKLIST_PLAYLIST_ID }}
