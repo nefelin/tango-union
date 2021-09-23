@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 import { useDebounce } from 'use-debounce';
 
@@ -8,6 +9,7 @@ import {
 } from '../../generated/graphql';
 import DragContext from '../components/DragContext';
 import { Footer, FooterFooter, FooterHeader } from '../components/Footer';
+import NotSupportedOverlay from '../components/NotSupportedOverlay';
 import NowPlaying from '../components/NowPlaying';
 import ResultsTable from '../components/ResultsTable';
 import { useSortState } from '../components/ResultsTable/state/sort.state';
@@ -33,6 +35,7 @@ const emptyOptions: FullCountFragmentFragment['counts'] = {
 const objCompare = (a: any, b: any) => JSON.stringify(a) === JSON.stringify(b);
 
 const MusicDash = () => {
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1024px)' });
   const [options, setOptions] = useState(emptyOptions);
   const { searchbarState, searchFromIds } = useSearchbarState();
   const { sortInput, resetSort } = useSortState();
@@ -136,6 +139,7 @@ const MusicDash = () => {
         </FooterHeader>
         <FooterFooter className="nameplate">by Eric Lindgren</FooterFooter>
       </Footer>
+      <NotSupportedOverlay active={isTabletOrMobile} />
     </>
   );
 };

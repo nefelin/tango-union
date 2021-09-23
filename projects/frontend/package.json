@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "cy": "./node_modules/.bin/cypress run",
     "build": "REACT_APP_ENV=prod webpack --mode production --progress",
     "start:dev": "webpack serve --mode development --env ESLINT_CACHE",
     "start:prod": "REACT_APP_ENV=prod webpack serve --mode development --env ESLINT_CACHE",
@@ -53,6 +54,7 @@
     "colors": "^1.4.0",
     "core-js": "^3.12.1",
     "css-loader": "^5.2.4",
+    "cypress": "^8.4.1",
     "eslint": "^7.26.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^8.3.0",
@@ -101,6 +103,7 @@
     "react": "^17.0.2",
     "react-base-table": "^1.12.0",
     "react-dom": "^17.0.2",
+    "react-responsive": "^9.0.0-beta.4",
     "react-router-dom": "5.2.0",
     "react-select": "^4.3.1",
     "react-select-virtualized": "^3.0.0",
