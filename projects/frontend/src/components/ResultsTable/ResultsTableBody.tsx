@@ -81,7 +81,7 @@ const ResultsTableBody = ({
     }
   };
 
-  const loadingMore = page > 0 && loading;
+  const loadingMore = page > 1 && loading;
 
   return (
     <Container>

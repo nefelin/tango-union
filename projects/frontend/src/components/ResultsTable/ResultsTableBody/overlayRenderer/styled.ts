@@ -14,7 +14,7 @@ export const LoadingMoreLayer = styled.div`
   pointer-events: none;
   background: rgba(32, 60, 94, 0.3);
   position: absolute;
-  bottom: 30px;
+  bottom: 45px;
   left: 50%;
   transform: translateX(-50%);
   padding: 5px 15px;
