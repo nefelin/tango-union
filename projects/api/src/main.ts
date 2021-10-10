@@ -14,6 +14,8 @@ const HTTPS_PORT = process.env.HTTPS_PORT;
 const CERT_FILE = process.env.SSL_CERT_FILE;
 const PRIV_KEY = process.env.SSL_PRIVATE_KEY;
 
+console.log('confirming updated cert path', CERT_FILE)
+
 const httpsOptions = !!CERT_FILE
   ? {
       key: fs.readFileSync(PRIV_KEY),
