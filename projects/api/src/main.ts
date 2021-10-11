@@ -1,10 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as fs from 'fs';
-import { ExpressAdapter } from '@nestjs/platform-express';
+import { ExpressAdapter, NestExpressApplication } from '@nestjs/platform-express';
 import * as http from 'http';
 import * as https from 'https';
 import express from 'express';
+import path from 'path';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const compression = require('compression');
@@ -13,8 +14,6 @@ const HTTPS_PORT = process.env.HTTPS_PORT;
 
 const CERT_FILE = process.env.SSL_CERT_FILE;
 const PRIV_KEY = process.env.SSL_PRIVATE_KEY;
-
-console.log(CERT_FILE);
 
 const httpsOptions = !!CERT_FILE
   ? {
@@ -34,11 +33,13 @@ async function bootstrap() {
   }
 
   const server = express();
-  const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, new ExpressAdapter(server));
+  const publicPath = path.join(__dirname, '../public');
+  app.useStaticAssets(publicPath);
   app.use(compression());
 
   // cors stuff
-  const whitelist = ['https://www.tangounion.net', 'https://tangounion.net', 'http://localhost:3000'];
+  const whitelist = ['https://www.tangounion.net', 'https://tangounion.net', 'http://localhost:3000', undefined];
   app.enableCors({
     origin: function (origin, callback) {
       if (whitelist.indexOf(origin) !== -1) {
