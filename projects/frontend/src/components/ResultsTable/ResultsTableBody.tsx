@@ -117,7 +117,7 @@ const ResultsTableBody = ({
                       justifyContent: 'center',
                       height: '100%',
                       backgroundColor: 'rgb(247,247,247)',
-                      gap: 14
+                      gap: 14,
                     }}
                   >
                     <span>{`${totalResults.toLocaleString()} Results`}</span>{' '}

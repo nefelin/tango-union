@@ -5,8 +5,8 @@ import {
   InMemoryCache,
 } from '@apollo/client';
 import * as React from 'react';
-import { Redirect, Route } from 'react-router';
-import { BrowserRouter, Switch } from 'react-router-dom';
+import { Navigate, Route } from 'react-router';
+import { BrowserRouter, Routes } from 'react-router-dom';
 
 import Sandbox from './components/Sandbox/Sandbox';
 import DnDTester from './features/DnDTester';
@@ -27,19 +27,18 @@ const App = () => (
   <ApolloProvider client={apolloClient}>
     <BrowserRouter basename="/">
       <React.Suspense fallback={Loading}>
-        <Switch>
-          <Route exact path="/" component={() => <Redirect to="/player" />} />
-          <Route exact path="/player" component={MusicDash} />
-          <Route exact path="/player/:saved" component={MusicDash} />
-          <Route exact path="/dndtester" component={DnDTester} />
-          <Route exact path="/sandbox" component={Sandbox} />
+        <Routes>
+             <Route path="/" element={<Navigate to="/player" />} />
+            <Route path="/player" element={<MusicDash/>} />
+            <Route path="/player/:saved" element={<MusicDash/>} />
+           {/* <Route path="/dndtester" element={<DnDTester/>} /> */}
+          <Route path="/sandbox" element={<Sandbox/>} />
           <Route
-            exact
             path="/notFound"
-            component={() => <div>Not Found</div>}
+            element={() => <div>Not Found</div>}
           />
-          <Route path="*" component={() => <Redirect to="/notFound" />} />
-        </Switch>
+          {/* <Route path="*" element={() => <Navigate to="/notFound" />} /> */}
+        </Routes>
       </React.Suspense>
     </BrowserRouter>
   </ApolloProvider>

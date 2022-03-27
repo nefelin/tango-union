@@ -1,5 +1,5 @@
 import * as r from 'ramda';
-import { useHistory, useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 
 import { SearchbarState } from '../../components/Searchbar/types';
 import { CompoundIdString } from '../../types/compactTrack/types';
@@ -11,7 +11,7 @@ interface SavedState {
 
 export const useRoutedState = () => {
   const { saved } = useParams<{ saved?: string }>();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   let paramObj: SavedState = {tracks: [], search: {}};
 
@@ -25,7 +25,7 @@ export const useRoutedState = () => {
 
   const replaceRoute = (newState: SavedState) => {
     const asString = JSON.stringify(newState);
-    history.replace(`/player/${asString}`);
+    navigate(`/player/${asString}`);
   };
 
   const setTracks = (newTracks: Array<CompoundIdString>) =>
