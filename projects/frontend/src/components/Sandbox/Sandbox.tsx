@@ -50,20 +50,23 @@ const Sandbox = () => {
     <>
       <TopBar />
       <PlaylistConfigContext.Provider value={{ name: 'MOBILE_PLAYLIST' }}>
-        {tracks?.map((track) => (
-          <SongCard
-            key={track.listId}
-            active={currentTrack?.trackId === track.id}
-            track={track}
-            onPlay={
-              () =>
-                playState === 'stopped'
-                  ? play(compactTrackFromTrackId(track.id))
-                  : pause() // TODO types are breaking somewhere
-            }
-            onMore={() => {}}
-          />
-        ))}
+        {tracks?.map((track) => {
+          const trackIsActive = currentTrack?.trackId === track.id;
+          return (
+            <SongCard
+              key={track.listId}
+              active={trackIsActive}
+              track={track}
+              onPlay={
+                () =>
+                  !trackIsActive || playState === 'stopped'
+                    ? play(compactTrackFromTrackId(track.id)) // TODO types are breaking somewhere, this is supposed to be a compactTrack already
+                    : pause()
+              }
+              onMore={() => {}}
+            />
+          );
+        })}
       </PlaylistConfigContext.Provider>
       <YoutubePlayer width="100%" />
     </>
