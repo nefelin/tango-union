@@ -45,8 +45,6 @@ module.exports = {
     'no-confusing-arrow': [0, {
       allowParens: false
     }],
-    'no-mixed-operators': 2,
-    // this might be annoying sometimes, fyi... https://github.com/prettier/eslint-config-prettier#no-mixed-operators
     'no-tabs': [2, {
       allowIndentationTabs: true
     }],

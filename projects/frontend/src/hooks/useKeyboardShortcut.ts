@@ -9,7 +9,7 @@ import { FocusContext } from './useFocusable';
 export const useDeleteShortcut = () => {
   const {focused} = useContext(FocusContext);
   const {name: playlistId} = useContext(PlaylistConfigContext)
-  const {removeSelected, addSelected} = useSelectionState()
+  const {removeSelected} = useSelectionState()
   const {removeTracks} = usePlaylistState(playlistId)
 
   const handleKeyDown = (e: KeyboardEvent) => {

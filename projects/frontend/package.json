@@ -13,6 +13,7 @@
     "test": "jest --config=./jest.config.js",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src",
+    "lint:errors": "eslint src --quiet",
     "lint:fix": "eslint --fix src",
     "lint:staged": "lint-staged",
     "generate": "graphql-codegen --config codegen.yml",

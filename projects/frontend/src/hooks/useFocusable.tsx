@@ -9,7 +9,6 @@ import React, {
 } from 'react';
 
 import { Unary } from '../types/utility/unary';
-import { reactiveSongLists } from './state/useGlobalPlaylistState/songLists.state';
 
 export const useFocusable = (ref: MutableRefObject<any>, id: string) => {
   const { getRefs, setRefs } = useContext(FocusContext);

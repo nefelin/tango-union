@@ -1,4 +1,3 @@
-import { useApolloClient } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 
@@ -17,7 +16,6 @@ export const useSearchbarState = () => {
   const { search: searchbarState, setSearch: setSearchbarState } =
     useRoutedState();
   const [debouncedText] = useDebounce(searchbarState.text, 300);
-  const apolloClient = useApolloClient();
   const [idSources, setIdSources] = useState<Array<CompactTrack> | null>(null);
   const [trackSources] = useCacheStitchedIdFetch(idSources || [])
 

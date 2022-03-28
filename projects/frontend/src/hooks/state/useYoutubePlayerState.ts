@@ -2,7 +2,6 @@ import { makeVar, useReactiveVar } from '@apollo/client';
 
 import { CompactTrack } from '../../types/compactTrack/types';
 import { compressTrack } from '../../types/compactTrack/util';
-import { generateListId } from './useGlobalPlaylistState/util';
 import { PlaylistTrack } from './usePlaylistsState/types';
 import {
   HookProps,

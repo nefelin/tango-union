@@ -21,10 +21,7 @@ import { useSearchbarState } from '../hooks/state/useSearchbarState';
 import { useYoutubePlayerState } from '../hooks/state/useYoutubePlayerState';
 import useEnsureValue from '../hooks/useEnsureValue';
 import { FocusableContext } from '../hooks/useFocusable';
-import {
-  compactTrackFromString,
-  compactTrackFromTrackId,
-} from '../types/compactTrack/util';
+import { compactTrackFromTrackId } from '../types/compactTrack/util';
 
 const emptyOptions: FullCountFragmentFragment['counts'] = {
   year: [],
@@ -37,13 +34,9 @@ const objCompare = (a: any, b: any) => JSON.stringify(a) === JSON.stringify(b);
 const MusicDash = () => {
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1024px)' });
   const [options, setOptions] = useState(emptyOptions);
-  const { searchbarState, searchFromIds } = useSearchbarState();
+  const { searchbarState } = useSearchbarState();
   const { sortInput, resetSort } = useSortState();
-  const {
-    addTracks,
-    replaceTracks,
-    playlist: { tracks },
-  } = usePlaylistState(RESULTS_PLAYLIST_ID);
+  const { addTracks, replaceTracks } = usePlaylistState(RESULTS_PLAYLIST_ID);
   const [debouncedSearch] = useDebounce(searchbarState, 300, {
     equalityFn: objCompare,
   });
@@ -52,7 +45,7 @@ const MusicDash = () => {
   });
   const [page, setPage] = useState(0);
   const firstQuery = useRef(true);
-  const { setTrack, play, pause } = useYoutubePlayerState();
+  const { setTrack } = useYoutubePlayerState();
 
   const pageSize = 20;
   const pagination = { offset: pageSize * page, limit: pageSize };

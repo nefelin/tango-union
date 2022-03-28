@@ -1,10 +1,8 @@
-import { makeVar } from '@apollo/client';
 import { useContext } from 'react';
 
 import { PlaylistConfigContext } from '../../context/playlistConfig.context';
 import { ListId } from '../../types/compactTrack/types';
-import { Maybe } from '../../types/utility/maybe';
-import { FocusableContext, FocusContext } from '../useFocusable';
+import {FocusContext } from '../useFocusable';
 import { reactiveSongLists } from './useGlobalPlaylistState/songLists.state';
 
 // export const reactiveActivePlaylistId = makeVar<Maybe<string>>(null);

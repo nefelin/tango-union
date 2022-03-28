@@ -10,6 +10,7 @@ import {
 } from './types';
 
 export const compactTrackFromString = (s: CompoundIdString): CompactTrack => {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   const [listId, trackId, videoId] = s.split(delimiter) as [
     string,
     string,

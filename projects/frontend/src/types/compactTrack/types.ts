@@ -8,8 +8,6 @@ export const delimiter = '-';
 type Delimiter = typeof delimiter;
 
 type MaybeVideoId = `${Delimiter}${VideoId}` | '';
-const maybeVideoId = (videoId?: string) =>
-  videoId ? `${delimiter}${videoId}` : '';
 
 export type CompoundIdString = `${ListId}${Delimiter}${TrackId}${MaybeVideoId}`;
 
