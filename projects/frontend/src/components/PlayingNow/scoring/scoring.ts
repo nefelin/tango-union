@@ -1,6 +1,6 @@
 import * as r from 'ramda';
 
-import { SimpleTrack } from '../../../../generated/graphql';
+import { SimpleTrack, TrackDetailFragmentFragment } from '../../../../generated/graphql';
 import { Maybe } from '../../../types/utility/maybe';
 import { cleanSlop } from '../../../util/cleanSlop';
 import { flagFields, flagWeights, TrackFlags } from './types';
@@ -19,7 +19,7 @@ export const scoreTrackMatch = (flags: TrackFlags): number => {
 
 export const flagMissing = (
   texts: Array<string>,
-  track: Maybe<SimpleTrack>,
+  track: Maybe<TrackDetailFragmentFragment>,
 ): TrackFlags => {
   const corpus = cleanSlop(texts.join(' '));
 

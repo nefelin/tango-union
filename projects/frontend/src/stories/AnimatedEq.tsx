@@ -83,7 +83,7 @@ const barAnimationMixin = css`
 `;
 
 const AnimationWrapper = styled.div<Props>`
-  width: 10px;
+  min-width: 10px;
 
   .eq-bar {
     fill: #231f20;

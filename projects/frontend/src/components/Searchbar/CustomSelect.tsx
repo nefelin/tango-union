@@ -56,7 +56,6 @@ const CustomSelect = ({ selectOptions, id, label, setter, value }: Props) => {
 
   const handleDispatchState = (newState?: SelectState) =>
   {
-    console.log('change', newState)
     setter(id, stringsFromOptions(newState || selection));
   }
 

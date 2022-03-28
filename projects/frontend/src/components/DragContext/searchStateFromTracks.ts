@@ -1,10 +1,10 @@
 import * as r from 'ramda';
 
-import { SimpleTrack } from '../../../generated/graphql';
+import { SimpleTrack, TrackDetailFragmentFragment } from '../../../generated/graphql';
 import { SearchbarState } from '../Searchbar/types';
 
 export const searchStateFromTracks = (
-  tracks: Array<SimpleTrack>
+  tracks: Array<TrackDetailFragmentFragment>
 ): SearchbarState => {
   const yearWindow = 2;
   const years = tracks

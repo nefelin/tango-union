@@ -1,14 +1,13 @@
-import { SimpleCacheConfigurator } from '@babel/core';
 import { Tooltip } from '@material-ui/core';
 import React from 'react';
 import styled from 'styled-components';
 
-import { SimpleTrack } from '../../../generated/graphql';
+import { TrackDetailFragmentFragment } from '../../../generated/graphql';
 
 const YoutubeSourceCard = ({
   track: { title, orchestra, singer, year },
 }: {
-  track: SimpleTrack;
+  track: TrackDetailFragmentFragment;
 }) => (
   <CardContainer>
     <Header>

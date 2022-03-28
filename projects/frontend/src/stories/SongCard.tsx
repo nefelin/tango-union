@@ -16,11 +16,11 @@ interface Props {
   track: PlaylistTrack;
   onPlay: Unary<TrackId>;
   onMore: Unary<TrackId>;
-  active?: boolean;
-  playing?: boolean;
+  active: boolean;
+  playing: boolean;
 }
 
-export const SongCard = ({ track, onPlay, onMore, active = false, playing = false }: Props) => {
+export const SongCard = ({ track, onPlay, onMore, active, playing }: Props) => {
   const { linkScore, trackId, title, singer, orchestra, year, genre } = track;
 
   const handleMoreKeyboard: KeyboardEventHandler = (e) => {
@@ -35,7 +35,7 @@ export const SongCard = ({ track, onPlay, onMore, active = false, playing = fals
     e.stopPropagation();
     onPlay(trackId);
   };
-  const handlePlayMouse: MouseEventHandler = (e) => {
+  const handlePlayMouse: MouseEventHandler = (e) =>  {
     e.stopPropagation();
     onPlay(trackId);
   };
@@ -63,13 +63,13 @@ export const SongCard = ({ track, onPlay, onMore, active = false, playing = fals
       onClick={handlePlayMouse}
     >
       <div className="col-span-6 flex flex-col">
-        <div className={titleClasses}>{active && <AnimatedEq playing={true}/>}{title}</div>
+        <div className={titleClasses}>{active && <AnimatedEq playing={playing}/>}{title}</div>
         <div className="text-xs truncate">{detailsText}</div>
       </div>
       <div className="col-span-1 flex flex-col justify-center text-xs items-center">
         <div>{linkScore}/10</div>
         <Link />
-      </div>,t
+      </div>
       <div
         className="col-span-1 flex justify-center items-center"
         tabIndex={0}

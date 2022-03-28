@@ -20,7 +20,6 @@ const SingleTemplate: ComponentStory<typeof CustomSelect> = (args) => {
     value: optionsFromStrings(selected),
     setter: (_, val) => {
       setSelected(val);
-      console.log({val, selected})
     },
   };
   return <CustomSelect {...mergedArgs} />;

@@ -56,6 +56,7 @@ const Sandbox = () => {
             <SongCard
               key={track.listId}
               active={trackIsActive}
+              playing={playState === 'playing' || playState === 'loading'}
               track={track}
               onPlay={
                 () =>
