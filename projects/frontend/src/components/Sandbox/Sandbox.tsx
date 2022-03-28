@@ -1,5 +1,16 @@
-import React from 'react';
-import Select from 'react-select';
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router';
+
+import { PlaylistConfigContext } from '../../context/playlistConfig.context';
+import { useYoutubePlayerState } from '../../hooks/state/useYoutubePlayerState';
+import { SongCard } from '../../stories/SongCard';
+import {
+  compactTrackFromString,
+  compactTrackFromTrackId,
+} from '../../types/compactTrack/util';
+import useCacheStitchedIdFetch from '../ResultsTable/useCacheStitchedIdFetch';
+import TopBar from '../TopBar';
+import YoutubePlayer from '../YoutubePlayer';
 
 interface ColourOption {
   readonly value: string;
@@ -23,32 +34,38 @@ const colourOptions: ReadonlyArray<ColourOption> = [
 ];
 
 const Sandbox = () => {
+  const { saved } = useParams<{ saved?: string }>();
+  const {
+    play,
+    pause,
+    currentTrack,
+    youtubePlayerState: { playState },
+  } = useYoutubePlayerState();
+  const { tracks: routedTracks } = JSON.parse(saved || '{"tracks": []}');
+  const [tracks] = useCacheStitchedIdFetch(
+    routedTracks.map(compactTrackFromString),
+  );
+
   return (
     <>
-      <Select
-        defaultValue={[colourOptions[2], colourOptions[3]]}
-        isMulti
-        name="colors"
-        options={colourOptions}
-        className="basic-multi-select"
-        classNamePrefix="select"
-        responsive={{
-          xsmall: {
-            display: 'bottom',
-            touchUi: true,
-          },
-          small: {
-            display: 'anchored',
-            touchUi: true,
-          },
-          custom: {
-            // Custom breakpoint
-            breakpoint: 800,
-            display: 'anchored',
-            touchUi: false,
-          },
-        }}
-      />
+      <TopBar />
+      <PlaylistConfigContext.Provider value={{ name: 'MOBILE_PLAYLIST' }}>
+        {tracks?.map((track) => (
+          <SongCard
+            key={track.listId}
+            active={currentTrack?.trackId === track.id}
+            track={track}
+            onPlay={
+              () =>
+                playState === 'stopped'
+                  ? play(compactTrackFromTrackId(track.id))
+                  : pause() // TODO types are breaking somewhere
+            }
+            onMore={() => {}}
+          />
+        ))}
+      </PlaylistConfigContext.Provider>
+      <YoutubePlayer width="100%" />
     </>
   );
 };

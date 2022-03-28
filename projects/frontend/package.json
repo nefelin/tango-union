@@ -110,6 +110,7 @@
     "@types/styled-components": "^5.1.9",
     "apollo-upload-client": "^15.0.0",
     "babel-merge": "^3.0.0",
+    "classnames": "^2.3.1",
     "formik": "^2.2.9",
     "history": "^5.0.0",
     "nanoid": "^3.1.23",

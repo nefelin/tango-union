@@ -32,7 +32,7 @@ const App = () => (
             <Route path="/player" element={<MusicDash/>} />
             <Route path="/player/:saved" element={<MusicDash/>} />
            {/* <Route path="/dndtester" element={<DnDTester/>} /> */}
-          <Route path="/sandbox" element={<Sandbox/>} />
+          <Route path="/sandbox/:saved" element={<Sandbox/>} />
           <Route
             path="/notFound"
             element={() => <div>Not Found</div>}

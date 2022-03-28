@@ -1,7 +1,9 @@
 import {
   Link,
   MoreHorizOutlined,
+  PlayCircleFilledWhiteOutlined,
 } from '@material-ui/icons';
+import classNames from 'classnames';
 import React, { KeyboardEventHandler, MouseEventHandler } from 'react';
 
 import { PlaylistTrack } from '../hooks/state/usePlaylistsState/types';
@@ -13,8 +15,10 @@ interface Props {
   track: PlaylistTrack;
   onPlay: Unary<TrackId>;
   onMore: Unary<TrackId>;
+  active?: boolean;
 }
-export const SongCard = ({ track, onPlay, onMore }: Props) => {
+
+export const SongCard = ({ track, onPlay, onMore, active = false }: Props) => {
   const { linkScore, trackId, title, singer, orchestra, year, genre } = track;
 
   const handleMoreKeyboard: KeyboardEventHandler = (e) => {
@@ -34,8 +38,19 @@ export const SongCard = ({ track, onPlay, onMore }: Props) => {
     onPlay(trackId);
   };
 
-  const detailsArray = [...orchestra || [], ...singer || [], year, capitalizeFirstLetter(genre)];
-  const detailsText = detailsArray.length ? detailsArray.join(', ') : 'No details...'
+  const detailsArray = [
+    ...(orchestra || []),
+    ...(singer || []),
+    year,
+    capitalizeFirstLetter(genre),
+  ];
+  const detailsText = detailsArray.length
+    ? detailsArray.join(', ')
+    : 'No details...';
+
+  const titleClasses = classNames('truncate', 'items-center', {
+    'font-bold': active,
+  });
 
   return (
     <div
@@ -45,24 +60,23 @@ export const SongCard = ({ track, onPlay, onMore }: Props) => {
       onKeyDown={handlePlayKeyboard}
       onClick={handlePlayMouse}
     >
-      {/*<div className="flex flex-col align-middle justify-center"><PlayCircleFilledWhiteOutlined/></div>*/}
       <div className="col-span-6 flex flex-col">
-        <div className="truncate">{title}</div>
+        <div className={titleClasses}>{title}</div>
         <div className="text-xs truncate">{detailsText}</div>
       </div>
-        <div className="col-span-1 flex flex-col justify-center text-xs items-center">
-          <div>{linkScore}/10</div>
-          <Link/>
-        </div>
-        <div
-          className="col-span-1 flex justify-center items-center"
-          tabIndex={0}
-          role="link"
-          onKeyPress={handleMoreKeyboard}
-          onClick={handleMoreMouse}
-        >
-          <MoreHorizOutlined />
-        </div>
+      <div className="col-span-1 flex flex-col justify-center text-xs items-center">
+        <div>{linkScore}/10</div>
+        <Link />
+      </div>
+      <div
+        className="col-span-1 flex justify-center items-center"
+        tabIndex={0}
+        role="link"
+        onKeyPress={handleMoreKeyboard}
+        onClick={handleMoreMouse}
+      >
+        <MoreHorizOutlined />
+      </div>
     </div>
   );
 };

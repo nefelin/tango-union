@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
-import YouTube from 'react-youtube';
+import YouTube, { Options } from 'react-youtube';
 import { YouTubePlayer } from 'youtube-player/dist/types';
 
 import { useTrackDetailsBatchQuery } from '../../generated/graphql';
@@ -10,7 +10,18 @@ import { Maybe } from '../types/utility/maybe';
 import { YoutubeContainer } from './YoutubePlayer/styles';
 import { opts } from './YoutubePlayer/util';
 
-const YoutubePlayer = () => {
+interface Props {
+  width?: string;
+  height?: string;
+}
+
+const YoutubePlayer = ({ width, height }: Props) => {
+  const optsWithProps: Options = {
+    ...opts(false),
+    ...(width ? { width } : {}),
+    ...(height ? { height } : {}),
+  };
+
   const { youtubePlayerState, play, stop, resume, pause } =
     useYoutubePlayerState();
   const {
@@ -84,7 +95,7 @@ const YoutubePlayer = () => {
         onEnd={handleEnd}
         onPlay={handlePlay}
         videoId={videoId}
-        opts={opts(false)}
+        opts={optsWithProps}
       />
     </YoutubeContainer>
   );

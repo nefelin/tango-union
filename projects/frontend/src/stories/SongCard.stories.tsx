@@ -1,6 +1,7 @@
 import faker from '@faker-js/faker';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import React from 'react';
+import { nanoid } from 'nanoid';
+import React, { useState } from 'react';
 
 import { PlaylistTrack } from '../hooks/state/usePlaylistsState/types';
 import { SongCard } from './SongCard';
@@ -14,33 +15,32 @@ export default {
   },
 } as ComponentMeta<typeof SongCard>;
 
-const Template: ComponentStory<typeof SongCard> = (args) => {
-  const paddedArgs = {
-    onMore: () => console.log('more'),
-    onPlay: () => console.log('press'),
-  };
+const SingleTemplate: ComponentStory<typeof SongCard> = (args) => {
+  return <SongCard {...args} />;
+};
+
+
+const BulkTemplate: ComponentStory<typeof SongCard> = (args) => {
+  const [active, setActive] = useState<string | null>(null);
+
   return (
     <div className="">
-      <SongCard track={mockTrack()} {...paddedArgs} />
-      <SongCard track={mockTrack()} {...paddedArgs} />
-      <SongCard track={mockTrack()} {...paddedArgs} />
-      <SongCard track={mockTrack()} {...paddedArgs} />
-      <SongCard track={mockTrack()} {...paddedArgs} />
-      <SongCard track={mockTrack()} {...paddedArgs} />
-      <SongCard track={mockTrack()} {...paddedArgs} />
-      <SongCard track={mockTrack()} {...paddedArgs} />
-      <SongCard track={mockTrack()} {...paddedArgs} />
-      <SongCard track={mockTrack()} {...paddedArgs} />
-      <SongCard track={mockTrack()} {...paddedArgs} />
-      <SongCard track={mockTrack()} {...paddedArgs} />
-      <SongCard track={mockTrack()} {...paddedArgs} />
+      {tracks.map((track) => (
+        <SongCard
+          key={track.id}
+          track={track}
+          onPlay={() => setActive(track.id)}
+          onMore={() => setActive(track.id)}
+          active={track.id === active}
+        />
+      ))}
     </div>
   );
 };
 
 const mockTrack = (): PlaylistTrack => ({
   listId: 'abcde',
-  id: '10698',
+  id: nanoid(4),
   trackId: '10698',
   title: faker.random.words(Math.ceil(Math.random() * 7)),
   genre: 'tango',
@@ -57,10 +57,16 @@ const mockTrack = (): PlaylistTrack => ({
   linkScore: 4,
   videoId: 'towG9esdSO0',
 });
+const tracks = Array.from(Array(20), mockTrack);
 
-export const Basic = Template.bind({});
+export const Bulk = BulkTemplate.bind({});
+Bulk.args = {};
 
-Basic.args = {};
+export const Single = SingleTemplate.bind({});
+Single.args = { track: mockTrack() };
+
+export const SingleActive = SingleTemplate.bind({});
+SingleActive.args = { track: mockTrack(), active: true };
 
 // export const LoggedIn = Template.bind({});
 
