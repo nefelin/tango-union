@@ -4,14 +4,14 @@ import { nanoid } from 'nanoid';
 import React, { useState } from 'react';
 
 import { PlaylistTrack } from '../hooks/state/usePlaylistsState/types';
+import { compactTrackFromTrackId } from '../types/compactTrack/util';
+import { trackDetailsBatch } from './queries/trackDetailsBatch';
 import { SongCard } from './SongCard';
 
 export default {
   title: 'Song Card',
   component: SongCard,
   parameters: {
-    // More on Story layout: https://storybook.js.org/docs/react/configure/story-layout
-    layout: 'fullscreen',
   },
 } as ComponentMeta<typeof SongCard>;
 
@@ -23,9 +23,10 @@ const SingleTemplate: ComponentStory<typeof SongCard> = (args) => {
 const BulkTemplate: ComponentStory<typeof SongCard> = (args) => {
   const [active, setActive] = useState<string | null>(null);
 
+  const playlistTracks = trackDetailsBatch.tracksByIds.map(track => ({...track, ...compactTrackFromTrackId(track.id)}));
   return (
     <div className="">
-      {tracks.map((track) => (
+      {playlistTracks.map((track) => (
         <SongCard
           key={track.id}
           track={track}

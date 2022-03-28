@@ -14,4 +14,18 @@ module.exports = {
     '@storybook/addon-interactions',
   ],
   framework: '@storybook/react',
+  webpackFinal: async (config, { configType }) => {
+    const file_loader_rule = config.module.rules.find(
+      (rule) => rule.test && rule.test.test('.svg')
+    );
+    file_loader_rule.exclude = /svg$/;
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    });
+
+    return {
+      ...config,
+    };
+  },
 };

@@ -55,7 +55,10 @@ const CustomSelect = ({ selectOptions, id, label, setter, value }: Props) => {
   const options = optionsFromSelectOptions(selectOptions, value);
 
   const handleDispatchState = (newState?: SelectState) =>
+  {
+    console.log('change', newState)
     setter(id, stringsFromOptions(newState || selection));
+  }
 
   return (
     <AutoSizer style={{ width: '100%' }}>
@@ -71,8 +74,8 @@ const CustomSelect = ({ selectOptions, id, label, setter, value }: Props) => {
             isMulti
             filterOption={customSearch}
             onChange={handleDispatchState}
-            onMenuClose={handleDispatchState}
-            onBlur={() => handleDispatchState()}
+            // onMenuClose={handleDispatchState}
+            // onBlur={() => handleDispatchState()}
             value={selection}
             inputId={id}
             options={options}

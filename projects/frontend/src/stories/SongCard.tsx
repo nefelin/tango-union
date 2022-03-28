@@ -10,15 +10,17 @@ import { PlaylistTrack } from '../hooks/state/usePlaylistsState/types';
 import { TrackId } from '../types/compactTrack/types';
 import { Unary } from '../types/utility/unary';
 import { capitalizeFirstLetter } from '../util/capitalizeFirst';
+import AnimatedEq from './AnimatedEq';
 
 interface Props {
   track: PlaylistTrack;
   onPlay: Unary<TrackId>;
   onMore: Unary<TrackId>;
   active?: boolean;
+  playing?: boolean;
 }
 
-export const SongCard = ({ track, onPlay, onMore, active = false }: Props) => {
+export const SongCard = ({ track, onPlay, onMore, active = false, playing = false }: Props) => {
   const { linkScore, trackId, title, singer, orchestra, year, genre } = track;
 
   const handleMoreKeyboard: KeyboardEventHandler = (e) => {
@@ -48,7 +50,7 @@ export const SongCard = ({ track, onPlay, onMore, active = false }: Props) => {
     ? detailsArray.join(', ')
     : 'No details...';
 
-  const titleClasses = classNames('truncate', 'items-center', {
+  const titleClasses = classNames('truncate', 'items-center', 'flex', 'flex-row', 'gap-1', {
     'font-bold': active,
   });
 
@@ -61,13 +63,13 @@ export const SongCard = ({ track, onPlay, onMore, active = false }: Props) => {
       onClick={handlePlayMouse}
     >
       <div className="col-span-6 flex flex-col">
-        <div className={titleClasses}>{title}</div>
+        <div className={titleClasses}>{active && <AnimatedEq playing={true}/>}{title}</div>
         <div className="text-xs truncate">{detailsText}</div>
       </div>
       <div className="col-span-1 flex flex-col justify-center text-xs items-center">
         <div>{linkScore}/10</div>
         <Link />
-      </div>
+      </div>,t
       <div
         className="col-span-1 flex justify-center items-center"
         tabIndex={0}

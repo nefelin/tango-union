@@ -1,4 +1,4 @@
-import { SimpleTrack } from '../../../../generated/graphql';
+import { SimpleTrack, TrackDetailFragmentFragment } from '../../../../generated/graphql';
 import { CompactTrack, ListId, TrackList } from '../../../types/compactTrack/types';
 
 export interface Playlist {
@@ -11,4 +11,4 @@ export interface Playlist {
 
 export type PlaylistId = string;
 
-export type PlaylistTrack = SimpleTrack & CompactTrack;
+export type PlaylistTrack = TrackDetailFragmentFragment & CompactTrack;
