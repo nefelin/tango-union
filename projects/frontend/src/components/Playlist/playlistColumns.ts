@@ -4,6 +4,7 @@ import { LengthCell } from '../ResultsTable/ResultsTableBody/cellRenderers/lengt
 import { ListCell } from '../ResultsTable/ResultsTableBody/cellRenderers/listCell';
 import PlayCell from '../ResultsTable/ResultsTableBody/cellRenderers/playCell';
 import { cellRenderComponent } from '../ResultsTable/ResultsTableBody/cellRenderers/types';
+import ShareHeader from './ShareHeader';
 import TrashHeader from './TrashHeader';
 
 const playlistColumns: Array<ColumnShape> = [
@@ -62,7 +63,15 @@ const playlistColumns: Array<ColumnShape> = [
     width: 100,
     resizable: true,
   },
-
+  {
+    key: 'share',
+    dataKey: '',
+    title: '',
+    width:  53,
+    sortable: false,
+    style: { padding: '0 0 0 3px' },
+    headerRenderer: ShareHeader
+  },
 ];
 
 export default playlistColumns;
