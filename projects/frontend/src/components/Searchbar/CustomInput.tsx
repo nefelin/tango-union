@@ -1,4 +1,4 @@
-import { Clear } from '@material-ui/icons';
+import { Clear } from '@mui/icons-material';
 import { ChangeEvent, useRef, useState } from 'react';
 import * as React from 'react';
 

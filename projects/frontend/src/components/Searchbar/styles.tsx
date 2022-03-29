@@ -1,5 +1,5 @@
-import { Button } from '@material-ui/core';
-import InputLabel from '@material-ui/core/InputLabel';
+import { Button } from '@mui/material';
+import InputLabel from '@mui/material/InputLabel';
 import styled from 'styled-components';
 
 export const StyledCol = styled.div`

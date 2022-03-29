@@ -1,5 +1,5 @@
-import { Tooltip } from '@material-ui/core';
-import { DeleteOutline } from '@material-ui/icons';
+import { DeleteOutline } from '@mui/icons-material';
+import { Tooltip } from '@mui/material';
 import React, { useContext } from 'react';
 
 import { PlaylistConfigContext } from '../../context/playlistConfig.context';

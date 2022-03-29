@@ -1,4 +1,4 @@
-import { Paper } from '@material-ui/core';
+import { Paper } from '@mui/material';
 import * as React from 'react';
 import styled from 'styled-components';
 

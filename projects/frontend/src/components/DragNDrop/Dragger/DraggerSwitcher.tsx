@@ -1,4 +1,4 @@
-import { Cancel, Clear, ClearAll, FindInPageOutlined } from '@material-ui/icons';
+import { Cancel, Clear, ClearAll, FindInPageOutlined } from '@mui/icons-material';
 import React, { useContext } from 'react';
 
 import { TRASH_DROPPABLE_ID } from '../../Playlist/TrashHeader';

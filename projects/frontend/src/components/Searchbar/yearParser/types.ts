@@ -29,7 +29,7 @@ export type Token = RangeToken | YearToken | UnknownToken | InvalidToken;
 // fixme examples of valid terms intent here?
 export const validYearTerms = /(\?|(?:(?:\d\d\d\d|\d\ds?)(?:-(?:\d\d\d\d|\d\ds?))?))[, ]*/ig
 
-export const yearToken = (year: InternalYear): YearToken => ({ kind: 'YEAR', value: year }) as const;
-export const unknownToken = (): UnknownToken => ({ kind: 'UNKNOWN' }) as const;
-export const rangePostfixToken = (): RangeToken => ({ kind: 'RANGE', value: 'SSUFFIX' }) as const;
-export const rangeSpanToken = (): RangeToken => ({ kind: 'RANGE', value: 'SPAN' }) as const;
+export const yearToken = (year: InternalYear): YearToken => ({ kind: 'YEAR', value: year } as const);
+export const unknownToken = (): UnknownToken => ({ kind: 'UNKNOWN' } as const);
+export const rangePostfixToken = (): RangeToken => ({ kind: 'RANGE', value: 'SSUFFIX' } as const);
+export const rangeSpanToken = (): RangeToken => ({ kind: 'RANGE', value: 'SPAN' } as const);

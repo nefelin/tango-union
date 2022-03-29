@@ -1,4 +1,4 @@
-import { Backdrop, Paper } from '@material-ui/core';
+import { Backdrop, Paper } from '@mui/material';
 import React from 'react';
 
 const NotSupportedOverlay = ({ active }: { active: boolean }) => (

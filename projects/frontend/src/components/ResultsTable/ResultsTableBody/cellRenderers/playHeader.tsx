@@ -1,5 +1,5 @@
 import { useReactiveVar } from '@apollo/client';
-import { HelpOutline, PlayCircleFilledWhiteOutlined } from '@material-ui/icons';
+import { HelpOutline, PlayCircleFilledWhiteOutlined } from '@mui/icons-material';
 import * as React from 'react';
 import { useContext } from 'react';
 import BaseTable, { ColumnShape } from 'react-base-table';

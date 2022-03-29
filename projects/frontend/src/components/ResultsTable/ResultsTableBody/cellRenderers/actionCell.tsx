@@ -1,6 +1,6 @@
 import {
   FormatListBulletedOutlined,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import React, { MouseEvent } from 'react';
 
 import { QUICKLIST_PLAYLIST_ID } from '../../../../hooks/state/useGlobalPlaylistState/songLists.state';

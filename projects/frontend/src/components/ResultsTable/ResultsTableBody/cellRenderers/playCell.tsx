@@ -3,7 +3,7 @@ import {
   PlayCircleFilledWhiteOutlined,
   VolumeMute,
   VolumeUp,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import React from 'react';
 
 import { useHoveredRowState } from '../../../../hooks/state/useHoveredRowState';

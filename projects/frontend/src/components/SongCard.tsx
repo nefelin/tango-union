@@ -2,7 +2,7 @@ import {
   Link,
   MoreHorizOutlined,
   PlayCircleFilledWhiteOutlined,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import classNames from 'classnames';
 import React, { KeyboardEventHandler, MouseEventHandler } from 'react';
 

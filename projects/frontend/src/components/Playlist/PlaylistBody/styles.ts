@@ -1,4 +1,4 @@
-import { Paper } from '@material-ui/core';
+import { Paper } from '@mui/material';
 import styled from 'styled-components';
 
 export const TableContainer = styled.div`
