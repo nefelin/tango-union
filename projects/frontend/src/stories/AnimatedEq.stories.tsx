@@ -1,5 +1,5 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import React, { useState } from 'react';
+import React from 'react';
 
 import AnimatedEq from '../components/AnimatedEq';
 
@@ -11,19 +11,18 @@ export default {
 
 const Template: ComponentStory<typeof AnimatedEq> = (args) => {
   return (
-    // <div style={{ width: 10 }}>
     <div>
-      <AnimatedEq {...args}/>
+      <AnimatedEq {...args} />
     </div>
   );
 };
 
 export const Playing = Template.bind({});
 Playing.args = {
-  playing: true
+  playing: true,
 };
 
 export const Stopped = Template.bind({});
 Stopped.args = {
-  playing: false
+  playing: false,
 };
