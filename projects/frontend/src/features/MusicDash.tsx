@@ -104,7 +104,7 @@ const MusicDash = () => {
   };
 
   return (
-    <>
+    <div className="overflow-hidden">
       <TopBar />
       <MusicDashContainer>
         <FocusableContext>
@@ -133,7 +133,7 @@ const MusicDash = () => {
         <FooterFooter className="nameplate">by Eric Lindgren</FooterFooter>
       </Footer>
       <NotSupportedOverlay active={isTabletOrMobile} />
-    </>
+    </div>
   );
 };
 

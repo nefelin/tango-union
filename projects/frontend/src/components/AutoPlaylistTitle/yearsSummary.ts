@@ -58,7 +58,7 @@ const judgeLateEarly = (year: number): YearDictKey => {
   return year;
 }
 
-const lastTwoDigits = (year: number): number => year > 1999 || year < 1910 ? year : year % 100; // we never want to abbreviate years from the 00's
+const lastTwoDigits = (year: number): string => year > 1999 || year < 1910 ? year.toString() : `'` + (year % 100).toString(); // we never want to abbreviate years from the 00's
 
 const decadeAndOnesFromYear= (year: number): [number, number] => {
   if (year > 1999) {

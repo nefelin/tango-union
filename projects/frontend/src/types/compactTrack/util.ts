@@ -1,3 +1,4 @@
+import { TrackDetailFragmentFragment } from '../../../generated/graphql';
 import { reactiveSongLists } from '../../hooks/state/useGlobalPlaylistState/songLists.state';
 import { generateListId } from '../../hooks/state/useGlobalPlaylistState/util';
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
@@ -26,6 +27,13 @@ export const compactTrackFromString = (s: CompoundIdString): CompactTrack => {
 export const compactTrackFromTrackId = (id: TrackId): CompactTrack => ({
   listId: generateListId(),
   trackId: id,
+});
+
+export const playlistTrackFromTrack = (
+  track: TrackDetailFragmentFragment,
+): PlaylistTrack => ({
+  ...track,
+  ...compactTrackFromTrackId(track.id),
 });
 
 export const compoundIdStringFromCompactTrack = ({

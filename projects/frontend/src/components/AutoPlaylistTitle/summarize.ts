@@ -1,4 +1,5 @@
 import { TrackDetailFragmentFragment } from '../../../generated/graphql';
+import { Maybe } from '../../types/utility/maybe';
 import yearsSummary from './yearsSummary';
 
 export interface OrchestraSummary {
@@ -44,11 +45,11 @@ export const summarize = (
 };
 
 export const summarizeByOrchestra = (
-  tracks: Array<TrackDetailFragmentFragment>,
+  tracks: Maybe<Array<TrackDetailFragmentFragment>>,
 ): Array<OrchestraSummary> => {
   const grouped: Record<string, Array<TrackDetailFragmentFragment>> = {};
 
-  for (const track of tracks) {
+  for (const track of tracks || []) {
     if (!track.orchestra) {
       continue;
     }
