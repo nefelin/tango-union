@@ -25,7 +25,9 @@ export const SongCard = ({ track, onPlay, onMore, active, playing }: Props) => {
 
   const handleMoreKeyboard: KeyboardEventHandler = (e) => {
     e.stopPropagation();
-    onMore(trackId);
+    if (e.key === ' ' || e.key === 'Enter' ) {
+      onMore(trackId);
+    }
   };
   const handleMoreMouse: MouseEventHandler = (e) => {
     e.stopPropagation();
@@ -33,7 +35,9 @@ export const SongCard = ({ track, onPlay, onMore, active, playing }: Props) => {
   };
   const handlePlayKeyboard: KeyboardEventHandler = (e) => {
     e.stopPropagation();
-    onPlay(trackId);
+    if (e.key === ' ' || e.key === 'Enter' ) {
+      onPlay(trackId);
+    }
   };
   const handlePlayMouse: MouseEventHandler = (e) =>  {
     e.stopPropagation();
