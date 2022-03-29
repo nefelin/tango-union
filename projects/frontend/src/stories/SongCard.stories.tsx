@@ -3,13 +3,13 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { nanoid } from 'nanoid';
 import React, { useState } from 'react';
 
+import { SongCard } from '../components/SongCard';
 import { PlaylistTrack } from '../hooks/state/usePlaylistsState/types';
 import { compactTrackFromTrackId } from '../types/compactTrack/util';
 import { trackDetailsBatch } from './queries/trackDetailsBatch';
-import { SongCard } from './SongCard';
 
 export default {
-  title: 'Song Card',
+  title: 'Components/Song Card',
   component: SongCard,
   parameters: {
   },
@@ -18,7 +18,6 @@ export default {
 const SingleTemplate: ComponentStory<typeof SongCard> = (args) => {
   return <SongCard {...args} />;
 };
-
 
 const BulkTemplate: ComponentStory<typeof SongCard> = (args) => {
   const [active, setActive] = useState<string | null>(null);

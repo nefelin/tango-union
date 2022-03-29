@@ -1,16 +1,20 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 import CloudLogo from '../../assets/CloudLogo';
 
-const TopBar = () => (
-  <TopBarContainer>
-    <LogoContainer>
-      <CloudLogo size="40px" />
-      <TitleSpan>Tango Union</TitleSpan>
-    </LogoContainer>
-  </TopBarContainer>
-);
+const TopBar = () => {
+  const navigate = useNavigate();
+  return (
+    <TopBarContainer>
+      <LogoContainer onClick={() => navigate('/')}>
+        <CloudLogo size="40px" />
+        <TitleSpan>Tango Union</TitleSpan>
+      </LogoContainer>
+    </TopBarContainer>
+  );
+}
 
 const TitleSpan = styled.span`
   color: white;
@@ -25,6 +29,7 @@ const LogoContainer = styled.div`
   left: 0;
   display: flex;
   align-items: center;
+  cursor: pointer;
 `;
 
 const TopBarContainer = styled.div`

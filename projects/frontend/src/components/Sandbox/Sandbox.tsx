@@ -3,12 +3,17 @@ import { useParams } from 'react-router';
 
 import { PlaylistConfigContext } from '../../context/playlistConfig.context';
 import { useYoutubePlayerState } from '../../hooks/state/useYoutubePlayerState';
-import { SongCard } from '../../stories/SongCard';
 import {
   compactTrackFromString,
   compactTrackFromTrackId,
 } from '../../types/compactTrack/util';
+import {
+  summarize,
+  summarizeByOrchestra,
+} from '../AutoPlaylistTitle/summarize';
+import PlaylistSummary from '../PlaylistSummary';
 import useCacheStitchedIdFetch from '../ResultsTable/useCacheStitchedIdFetch';
+import { SongCard } from '../SongCard';
 import TopBar from '../TopBar';
 import YoutubePlayer from '../YoutubePlayer';
 
@@ -58,11 +63,10 @@ const Sandbox = () => {
               active={trackIsActive}
               playing={playState === 'playing' || playState === 'loading'}
               track={track}
-              onPlay={
-                () =>
-                  !trackIsActive || playState === 'stopped'
-                    ? play(compactTrackFromTrackId(track.id)) // TODO types are breaking somewhere, this is supposed to be a compactTrack already
-                    : pause()
+              onPlay={() =>
+                !trackIsActive || playState === 'stopped'
+                  ? play(compactTrackFromTrackId(track.id)) // TODO types are breaking somewhere, this is supposed to be a compactTrack already
+                  : pause()
               }
               onMore={() => {}}
             />

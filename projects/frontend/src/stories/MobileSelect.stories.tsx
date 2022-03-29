@@ -7,7 +7,7 @@ import { optionsFromStrings } from '../components/ResultsTable/ResultsTableBody/
 import CustomSelect from '../components/Searchbar/CustomSelect';
 
 export default {
-  title: 'Mobile Select',
+  title: 'Components/Mobile Select',
   component: CustomSelect,
   parameters: {},
 } as ComponentMeta<typeof CustomSelect>;

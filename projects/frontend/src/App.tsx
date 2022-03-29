@@ -11,6 +11,7 @@ import { BrowserRouter, Routes } from 'react-router-dom';
 import Sandbox from './components/Sandbox/Sandbox';
 import DnDTester from './features/DnDTester';
 import MusicDash from './features/MusicDash';
+import StandalonePlaylist from './features/StandalonePlaylist';
 // import Playground from './features/Playground';
 const isProd = process.env['REACT_APP_ENV'] === 'prod';
 const host = isProd ? 'https://api.tangounion.net' : 'http://localhost';
@@ -32,7 +33,7 @@ const App = () => (
             <Route path="/player" element={<MusicDash/>} />
             <Route path="/player/:saved" element={<MusicDash/>} />
            {/* <Route path="/dndtester" element={<DnDTester/>} /> */}
-          <Route path="/sandbox/:saved" element={<Sandbox/>} />
+          <Route path="/playlist/:saved" element={<StandalonePlaylist/>} />
           <Route
             path="/notFound"
             element={() => <div>Not Found</div>}
