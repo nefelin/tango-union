@@ -1,9 +1,9 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React, { useState } from 'react';
 
-import { summarize } from '../components/AutoPlaylistTitle/summarize';
-import { darienzoLaborde } from '../components/AutoPlaylistTitle/summarize.test.data';
 import PlaylistSummary from '../components/PlaylistSummary';
+import { smartSummary, summarize } from '../components/PlaylistSummary/summarize';
+import { darienzoLaborde } from '../components/PlaylistSummary/summarize.test.data';
 
 export default {
   title: 'Components/PlaylistSummar',
@@ -21,5 +21,5 @@ const Template: ComponentStory<typeof PlaylistSummary> = (args) => {
 
 export const Simple = Template.bind({});
 Simple.args = {
-  summary: summarize(darienzoLaborde),
+  summary: smartSummary(darienzoLaborde),
 };

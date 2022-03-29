@@ -7,11 +7,11 @@ import {
   compactTrackFromString,
   compactTrackFromTrackId,
 } from '../../types/compactTrack/util';
+import PlaylistSummary from '../PlaylistSummary';
 import {
   summarize,
   summarizeByOrchestra,
-} from '../AutoPlaylistTitle/summarize';
-import PlaylistSummary from '../PlaylistSummary';
+} from '../PlaylistSummary/summarize';
 import useCacheStitchedIdFetch from '../ResultsTable/useCacheStitchedIdFetch';
 import { SongCard } from '../SongCard';
 import TopBar from '../TopBar';

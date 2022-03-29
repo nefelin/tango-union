@@ -1,10 +1,10 @@
-import { OrchestraSummary, summarize } from './summarize';
+import { PlaylistSummaryInterface, summarize } from './summarize';
 import { darienzoLaborde } from './summarize.test.data';
 
 it('Should summarize data as expected', () => {
-  const expectation: OrchestraSummary = {
+  const expectation: PlaylistSummaryInterface = {
     orchestras: [`Juan D'Arienzo`],
-    singer: ['Armando Laborde', 'Alberto Echagüe', 'Osvaldo Ramos'],
+    singers: ['Armando Laborde', 'Alberto Echagüe', 'Osvaldo Ramos'],
     years: ['late 30s', '40s', '50s', 'late 60s', '73'],
     genres: ['tango', 'milonga', 'vals'],
   };

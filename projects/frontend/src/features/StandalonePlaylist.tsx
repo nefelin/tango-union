@@ -2,8 +2,8 @@ import { sum } from 'ramda';
 import React from 'react';
 import { useParams } from 'react-router';
 
-import { summarizeByOrchestra } from '../components/AutoPlaylistTitle/summarize';
 import PlaylistSummary from '../components/PlaylistSummary';
+import { smartSummary, summarizeByOrchestra } from '../components/PlaylistSummary/summarize';
 import useCacheStitchedIdFetch from '../components/ResultsTable/useCacheStitchedIdFetch';
 import { SongCard } from '../components/SongCard';
 import TopBar from '../components/TopBar';
@@ -28,8 +28,7 @@ const StandalonePlaylist = () => {
     routedTracks.map(compactTrackFromString),
   );
 
-  const summaries = summarizeByOrchestra(tracks);
-  const summary = summaries.length === 1 ? summaries[0] : null;
+  const summary = smartSummary(tracks || []);
   return (
     <>
       <TopBar />

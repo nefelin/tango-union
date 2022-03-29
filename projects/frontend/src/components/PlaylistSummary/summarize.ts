@@ -2,16 +2,19 @@ import { TrackDetailFragmentFragment } from '../../../generated/graphql';
 import { Maybe } from '../../types/utility/maybe';
 import yearsSummary from './yearsSummary';
 
-export interface OrchestraSummary {
+export interface PlaylistSummaryInterface {
   orchestras: Array<string>;
   years: Array<string>;
-  singer: Array<string>;
+  singers: Array<string>;
   genres: Array<string>;
 }
 
+type SummaryCategory = keyof PlaylistSummaryInterface;
+export type SmartPlaylistSummary = PlaylistSummaryInterface & {dominantCategory: SummaryCategory}
+
 export const summarize = (
   tracks: Array<TrackDetailFragmentFragment>,
-): OrchestraSummary => {
+): PlaylistSummaryInterface => {
   const years: Set<number> = new Set();
   const singers: Set<string> = new Set();
   const orchestras: Set<string> = new Set();
@@ -39,14 +42,36 @@ export const summarize = (
   return {
     orchestras: [...orchestras],
     years: yearsSummary([...years]),
-    singer: [...singers],
+    singers: [...singers],
     genres: [...genres],
   };
 };
 
+export const categorizeSummary = (
+  summary: PlaylistSummaryInterface,
+): SmartPlaylistSummary => {
+  let dominantCategory: SummaryCategory = 'orchestras';
+
+  if (summary.orchestras.length === 1) {
+    dominantCategory = 'orchestras';
+  } else if (summary.singers.length === 1) {
+    dominantCategory = 'singers';
+  } else if (summary.years.length === 1) {
+    dominantCategory = 'years';
+  } else if (summary.genres.length === 1) {
+    dominantCategory = 'genres';
+  }
+
+  return { ...summary, dominantCategory };
+};
+
+export const smartSummary = (tracks: Array<TrackDetailFragmentFragment>) => {
+  return categorizeSummary(summarize(tracks))
+}
+
 export const summarizeByOrchestra = (
   tracks: Maybe<Array<TrackDetailFragmentFragment>>,
-): Array<OrchestraSummary> => {
+): Array<PlaylistSummaryInterface> => {
   const grouped: Record<string, Array<TrackDetailFragmentFragment>> = {};
 
   for (const track of tracks || []) {

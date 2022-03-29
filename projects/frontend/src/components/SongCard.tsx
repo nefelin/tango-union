@@ -56,7 +56,7 @@ export const SongCard = ({ track, onPlay, onMore, active, playing }: Props) => {
 
   return (
     <div
-      className="grid p-2 grid-cols-8 bg-gray-100 my-1"
+      className="grid p-2 grid-cols-8 bg-gray-100 my-0.5"
       tabIndex={0}
       role="link"
       onKeyDown={handlePlayKeyboard}
