@@ -1,4 +1,4 @@
-interface Datum<DataType> {
+export interface Datum<DataType> {
   label: string;
   value: DataType;
 }

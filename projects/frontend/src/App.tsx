@@ -9,6 +9,7 @@ import { Navigate, Route } from 'react-router';
 import { BrowserRouter, Routes } from 'react-router-dom';
 
 import Sandbox from './components/Sandbox/Sandbox';
+import Searchbar from './components/Searchbar';
 import DnDTester from './features/DnDTester';
 import MusicDash from './features/MusicDash';
 import StandalonePlaylist from './features/StandalonePlaylist';
@@ -33,6 +34,7 @@ const App = () => (
             <Route path="/player" element={<MusicDash/>} />
             <Route path="/player/:saved" element={<MusicDash/>} />
            {/* <Route path="/dndtester" element={<DnDTester/>} /> */}
+          {/*<Route path="/sandbox" element={<Searchbar />} />*/}
           <Route path="/playlist/:saved" element={<StandalonePlaylist/>} />
           <Route
             path="/notFound"

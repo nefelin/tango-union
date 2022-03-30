@@ -6,7 +6,7 @@ import { smartSummary, summarize } from '../components/PlaylistSummary/summarize
 import { darienzoLaborde } from '../components/PlaylistSummary/summarize.test.data';
 
 export default {
-  title: 'Components/PlaylistSummar',
+  title: 'Components/PlaylistSummary',
   component: PlaylistSummary,
   parameters: {},
 } as ComponentMeta<typeof PlaylistSummary>;

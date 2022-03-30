@@ -1,4 +1,5 @@
 import { CompoundQueryQuery, CountTuple } from '../../../generated/graphql';
+import { Datum } from '../BarGraph/types';
 
 const yearTableDataFromCompoundQueryCounts = (
   rawCounts: Array<CountTuple>,

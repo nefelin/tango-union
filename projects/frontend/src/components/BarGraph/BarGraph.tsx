@@ -9,7 +9,6 @@ import React, {
 } from 'react';
 // eslint-disable-next-line camelcase
 import { unstable_batchedUpdates } from 'react-dom';
-import { useDebounce } from 'use-debounce';
 
 import useEnsureValue from '../../hooks/useEnsureValue';
 import { Maybe } from '../../types/utility/maybe';
@@ -17,6 +16,7 @@ import { Unary } from '../../types/utility/unary';
 import Bar from './Bar';
 import BarGraphContainer from './BarGraphContainer';
 import QueryPlan from './QueryPlan';
+import { Datum } from './types';
 import yearsQueryFromYearsList from './yearsQueryFromYearsList';
 
 interface Props {
@@ -28,6 +28,7 @@ interface Props {
 type DragMode = 'select' | 'deselect';
 
 const BarGraph = ({ data, selected, onSelect }: Props) => {
+  console.log({data})
   const [hoveredYear, setHoveredYear] = useState<Maybe<string>>(null);
   const displayYear = useEnsureValue(hoveredYear, null);
   const displayValue =
@@ -164,7 +165,9 @@ const BarGraph = ({ data, selected, onSelect }: Props) => {
   const bufferedHeight = containerHeight - floorHeightPx;
   const scale = bufferedHeight / maxCount;
 
-  const yearQueryPlan = yearsQueryFromYearsList(selected.map(syear => parseInt(syear, 10)));
+  const yearQueryPlan = yearsQueryFromYearsList(
+    selected.map((syear) => parseInt(syear, 10)),
+  );
 
   return (
     <BarGraphContainer ref={graphRef}>
