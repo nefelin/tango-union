@@ -15155,13 +15155,6 @@ react-input-autosize@^2.1.2:
   dependencies:
     prop-types "^15.5.8"
 
-react-input-autosize@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/react-input-autosize/-/react-input-autosize-3.0.0.tgz#6b5898c790d4478d69420b55441fcc31d5c50a85"
-  integrity sha512-nL9uS7jEs/zu8sqwFE5MAPx6pPkNAriACQ2rGLlqmKr2sPGtN7TXTyDdQt4lbNXVx7Uzadb40x8qotIuru6Rhg==
-  dependencies:
-    prop-types "^15.5.8"
-
 react-inspector@^5.1.0:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/react-inspector/-/react-inspector-5.1.1.tgz#58476c78fde05d5055646ed8ec02030af42953c8"
@@ -15233,14 +15226,15 @@ react-router@6.2.2, react-router@^6.0.0:
   dependencies:
     history "^5.2.0"
 
-react-select-virtualized@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/react-select-virtualized/-/react-select-virtualized-3.0.0.tgz#3cd5ad3a423495f40c44225a79410472c2627e23"
-  integrity sha512-nLolqMiowlBLUo/c7sv7Rpj7ZJd/U3SqcFGCJ4S+JB4bPUvNfXnYFQSnaJKjtptPIZdZJp/m62JSUO8MMusi6A==
+react-select-virtualized@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/react-select-virtualized/-/react-select-virtualized-5.2.0.tgz#c3ecd1394f7936ba100158b31ca715cea348494f"
+  integrity sha512-KAZC4txfPofMZZYVh/P8EPKe7hjxjyb3+651EAFIzv+urAFXH8r/XeMETW+oYLDkRdQIE5g9H15DQCvAx+83gg==
   dependencies:
     lodash.debounce "4.0.8"
+    regenerator-runtime "^0.13.9"
 
-react-select@*:
+react-select@*, react-select@^5.2.2:
   version "5.2.2"
   resolved "https://registry.yarnpkg.com/react-select/-/react-select-5.2.2.tgz#3d5edf0a60f1276fd5f29f9f90a305f0a25a5189"
   integrity sha512-miGS2rT1XbFNjduMZT+V73xbJEeMzVkJOz727F6MeAr2hKE0uUSA8Ff7vD44H32x2PD3SRB6OXTY/L+fTV3z9w==
@@ -15261,19 +15255,6 @@ react-select@^1.0.0-rc.2:
     classnames "^2.2.4"
     prop-types "^15.5.8"
     react-input-autosize "^2.1.2"
-
-react-select@^4.3.1:
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/react-select/-/react-select-4.3.1.tgz#389fc07c9bc7cf7d3c377b7a05ea18cd7399cb81"
-  integrity sha512-HBBd0dYwkF5aZk1zP81Wx5UsLIIT2lSvAY2JiJo199LjoLHoivjn9//KsmvQMEFGNhe58xyuOITjfxKCcGc62Q==
-  dependencies:
-    "@babel/runtime" "^7.12.0"
-    "@emotion/cache" "^11.4.0"
-    "@emotion/react" "^11.1.1"
-    memoize-one "^5.0.0"
-    prop-types "^15.6.0"
-    react-input-autosize "^3.0.0"
-    react-transition-group "^4.3.0"
 
 react-sizeme@^3.0.1:
   version "3.0.2"
@@ -15508,7 +15489,7 @@ regenerator-runtime@^0.13.4:
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.7.tgz#cac2dacc8a1ea675feaabaeb8ae833898ae46f55"
   integrity sha512-a54FxoJDIr27pgf7IgeQGxmqUNYrcV338lf/6gH456HZ/PhX+5BcwHXG9ajESmwe6WRO0tAzRUrRmNONWgkrew==
 
-regenerator-runtime@^0.13.7:
+regenerator-runtime@^0.13.7, regenerator-runtime@^0.13.9:
   version "0.13.9"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.9.tgz#8925742a98ffd90814988d7566ad30ca3b263b52"
   integrity sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA==

@@ -1,6 +1,5 @@
 import * as r from 'ramda';
 import * as React from 'react';
-import { FormatOptionLabelMeta } from 'react-select';
 import { Option } from 'react-select/src/filters';
 
 import { cleanSlop } from '../../util/cleanSlop';
@@ -36,7 +35,7 @@ export const optionsFromSelectOptions = (
 
 export const formatOptionLabel = (
   { label, data }: Option,
-  { context }: FormatOptionLabelMeta<Option, true>,
+  { context }: any,
 ) => {
   return context === 'value' ? (
     <div>{label}</div>

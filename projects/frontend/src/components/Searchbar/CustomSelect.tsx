@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import Select, { ValueType } from 'react-select';
+import Select from 'react-select';
 import { Option } from 'react-select/src/filters';
 import { AutoSizer, List } from 'react-virtualized';
 
@@ -43,10 +43,10 @@ interface Props {
   setter: (field: string, value: Barely<Array<string>>) => void;
   selectOptions: MemberCountList;
 }
-type SelectState = ValueType<{ label: string; value: string; data: any }, true>;
+// type SelectState = { label: string; value: string; data: any };
 
 const CustomSelect = ({ selectOptions, id, label, setter, value }: Props) => {
-  const [selection, setSelection] = useState<SelectState>(value);
+  const [selection, setSelection] = useState<Array<Option>>(value);
 
   useEffect(() => {
     setSelection(value);
@@ -54,7 +54,7 @@ const CustomSelect = ({ selectOptions, id, label, setter, value }: Props) => {
 
   const options = optionsFromSelectOptions(selectOptions, value);
 
-  const handleDispatchState = (newState?: SelectState) =>
+  const handleDispatchState = (newState?:  ReadonlyArray<Option>) =>
   {
     setter(id, stringsFromOptions(newState || selection));
   }
