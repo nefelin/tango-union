@@ -28,7 +28,6 @@ interface Props {
 type DragMode = 'select' | 'deselect';
 
 const BarGraph = ({ data, selected, onSelect }: Props) => {
-  console.log({data})
   const [hoveredYear, setHoveredYear] = useState<Maybe<string>>(null);
   const displayYear = useEnsureValue(hoveredYear, null);
   const displayValue =
