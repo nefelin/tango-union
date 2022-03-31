@@ -1,10 +1,8 @@
 import { Button } from '@mui/material';
 import { useFormik } from 'formik';
 import * as React from 'react';
-import { useState } from 'react';
 
 import { CompoundQueryInput, CompoundQueryQuery, SelectIndexCount } from '../../generated/graphql';
-import { Datum } from './BarGraph/types';
 import MobileBarGraph from './MobileBarGraph';
 import decadeCountFromYears from './MobileSearch/decadeCountFromYears';
 import MobileSearchFooter from './MobileSearch/MobileSearchFooter';
@@ -20,7 +18,6 @@ interface Props {
 }
 
 const MobileSearch = ({ compoundQuery }: Props) => {
-  const [dummyYears, setDummyYears] = useState(randomData(10));
   const resetSearchbar = () => {};
   const handleClearTextSearch = () => {};
   const searchbarState: CompoundQueryInput = {};
@@ -123,13 +120,5 @@ const MobileSearch = ({ compoundQuery }: Props) => {
     </div>
   );
 };
-
-
-const randomData = (len: number): Array<Datum<number>> =>
-  Array.from(Array(len), (x, i) => ({
-    label: ((i * 10).toString() + `'s`).padStart(4, '0'),
-    value: Math.floor(Math.random() * 100),
-  }));
-const fakeData = randomData(10)
 
 export default MobileSearch;
