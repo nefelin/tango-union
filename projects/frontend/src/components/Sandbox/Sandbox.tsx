@@ -1,3 +1,4 @@
+import { Button } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
 
@@ -7,11 +8,6 @@ import {
   compactTrackFromString,
   compactTrackFromTrackId,
 } from '../../types/compactTrack/util';
-import PlaylistSummary from '../PlaylistSummary';
-import {
-  summarize,
-  summarizeByOrchestra,
-} from '../PlaylistSummary/summarize';
 import useCacheStitchedIdFetch from '../ResultsTable/useCacheStitchedIdFetch';
 import { SongCard } from '../SongCard';
 import TopBar from '../TopBar';
@@ -39,42 +35,20 @@ const colourOptions: ReadonlyArray<ColourOption> = [
 ];
 
 const Sandbox = () => {
-  const { saved } = useParams<{ saved?: string }>();
-  const {
-    play,
-    pause,
-    currentTrack,
-    youtubePlayerState: { playState },
-  } = useYoutubePlayerState();
-  const { tracks: routedTracks } = JSON.parse(saved || '{"tracks": []}');
-  const [tracks] = useCacheStitchedIdFetch(
-    routedTracks.map(compactTrackFromString),
-  );
-
   return (
-    <>
-      <TopBar />
-      <PlaylistConfigContext.Provider value={{ name: 'MOBILE_PLAYLIST' }}>
-        {tracks?.map((track) => {
-          const trackIsActive = currentTrack?.trackId === track.id;
-          return (
-            <SongCard
-              key={track.listId}
-              active={trackIsActive}
-              playing={playState === 'playing' || playState === 'loading'}
-              track={track}
-              onPlay={() =>
-                !trackIsActive || playState === 'stopped'
-                  ? play(compactTrackFromTrackId(track.id)) // TODO types are breaking somewhere, this is supposed to be a compactTrack already
-                  : pause()
-              }
-              onMore={() => {}}
-            />
-          );
-        })}
-      </PlaylistConfigContext.Provider>
-      <YoutubePlayer width="100%" />
-    </>
+    <div>
+      <Button
+        onClick={() =>
+          navigator.share({
+            title: 'Tango Union',
+            text: "Juan D'Arienzo - Armando Laborde",
+            url: window.location.href,
+          })
+        }
+      >
+        Share
+      </Button>
+    </div>
   );
 };
 

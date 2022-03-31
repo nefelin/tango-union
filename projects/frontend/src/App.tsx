@@ -30,16 +30,13 @@ const App = () => (
     <BrowserRouter basename="/">
       <React.Suspense fallback={Loading}>
         <Routes>
-             <Route path="/" element={<Navigate to="/player" />} />
-            <Route path="/player" element={<MusicDash/>} />
-            <Route path="/player/:saved" element={<MusicDash/>} />
-           {/* <Route path="/dndtester" element={<DnDTester/>} /> */}
-          {/*<Route path="/sandbox" element={<Searchbar />} />*/}
-          <Route path="/playlist/:saved" element={<StandalonePlaylist/>} />
-          <Route
-            path="/notFound"
-            element={() => <div>Not Found</div>}
-          />
+          <Route path="/" element={<Navigate to="/player" />} />
+          <Route path="/player" element={<MusicDash />} />
+          <Route path="/player/:saved" element={<MusicDash />} />
+          {/* <Route path="/dndtester" element={<DnDTester/>} /> */}
+          <Route path="/sandbox" element={<Sandbox />} />
+          <Route path="/playlist/:saved" element={<StandalonePlaylist />} />
+          <Route path="/notFound" element={() => <div>Not Found</div>} />
           {/* <Route path="*" element={() => <Navigate to="/notFound" />} /> */}
         </Routes>
       </React.Suspense>
