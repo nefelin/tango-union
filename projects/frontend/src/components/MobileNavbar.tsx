@@ -15,7 +15,7 @@ const MobileNavbar = ({ onNav }: Props) => {
 
   return (
     <div
-      className="fixed bottom-0 w-full flex flex-row justify-around items-center text-sm text-gray-400 font-bold"
+      className="fixed bottom-0 w-full flex flex-row justify-around items-center text-sm text-gray-400 font-bold bg-white"
       style={{ boxShadow: '0 -3px 10px rgb(240, 240, 240)' }}
     >
       {pages.map((page) => {
