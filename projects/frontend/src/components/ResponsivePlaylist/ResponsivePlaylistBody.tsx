@@ -2,7 +2,6 @@ import React from 'react';
 
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
 import { useYoutubePlayerState } from '../../hooks/state/useYoutubePlayerState';
-import { compactTrackFromTrackId } from '../../types/compactTrack/util';
 import PlaylistSummary from '../PlaylistSummary';
 import { smartSummary } from '../PlaylistSummary/summarize';
 import { SongCard } from '../SongCard';
@@ -48,7 +47,6 @@ const ResponsivePlaylistBody = ({ tracks }: Props) => {
             );
           })}
         </div>
-        <YoutubePlayer width="100%" height="20%" />
       </div>
     </>
   );
