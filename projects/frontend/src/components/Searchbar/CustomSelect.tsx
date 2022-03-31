@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import Select from 'react-select';
-import { Option } from 'react-select/src/filters';
 import { AutoSizer, List } from 'react-virtualized';
 
+import { Option } from '../../types/option';
 import { Barely } from '../../types/utility/barely';
 import { stringsFromOptions } from '../ResultsTable/ResultsTableBody/util';
 import {
@@ -46,7 +46,7 @@ interface Props {
 // type SelectState = { label: string; value: string; data: any };
 
 const CustomSelect = ({ selectOptions, id, label, setter, value }: Props) => {
-  const [selection, setSelection] = useState<Array<Option>>(value);
+  const [selection, setSelection] = useState<ReadonlyArray<Option>>(value);
 
   useEffect(() => {
     setSelection(value);
@@ -54,7 +54,7 @@ const CustomSelect = ({ selectOptions, id, label, setter, value }: Props) => {
 
   const options = optionsFromSelectOptions(selectOptions, value);
 
-  const handleDispatchState = (newState?:  ReadonlyArray<Option>) =>
+  const handleDispatchState = (newState?: ReadonlyArray<Option>) =>
   {
     setter(id, stringsFromOptions(newState || selection));
   }
@@ -71,10 +71,8 @@ const CustomSelect = ({ selectOptions, id, label, setter, value }: Props) => {
             isClearable
             isSearchable
             isMulti
-            filterOption={customSearch}
+            filterOption={customSearch as any}
             onChange={handleDispatchState}
-            // onMenuClose={handleDispatchState}
-            // onBlur={() => handleDispatchState()}
             value={selection}
             inputId={id}
             options={options}

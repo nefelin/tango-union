@@ -1,8 +1,8 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React, { useState } from 'react';
-import { Option } from 'react-select/src/filters';
 
 import YearSelect from '../components/YearSelect';
+import { Option } from '../types/option';
 
 export default {
   title: 'Components/Year Select',

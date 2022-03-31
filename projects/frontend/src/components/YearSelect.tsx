@@ -1,6 +1,7 @@
 import React from 'react';
 import Creatable, { CreatableProps } from 'react-select/creatable';
-import { Option } from 'react-select/src/filters';
+
+import { Option } from '../types/option';
 
 interface Props {
   onChange: CreatableProps<Option, true, any>['onChange'];
@@ -38,17 +39,7 @@ const createTermFromYearSearch = (yearTerm: string) => {
   }
 };
 
-const validYearTerms = /((?:\d\d\d\d|\d\d)-(?:\d\d\d\d|\d\d)|\d0s|(?:\d\d\d\d|\d\d))/gi;
-const defaultYearOptions: ReadonlyArray<Option> = Array.from(
-  Array(10),
-  (_, i) => {
-    const val = i + '0s';
-    return {
-      label: val,
-      value: val,
-      data: val,
-    };
-  },
-);
+const validYearTerms =
+  /((?:\d\d\d\d|\d\d)-(?:\d\d\d\d|\d\d)|\d0s|(?:\d\d\d\d|\d\d))/gi;
 
 export default YearSelect;

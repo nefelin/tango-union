@@ -1,11 +1,10 @@
 import * as r from 'ramda';
 import { ColumnShape } from 'react-base-table';
-import { Option } from 'react-select/src/filters';
 
-import { CompoundSortInput, SimpleTrack } from '../../../../generated/graphql';
+import { CompoundSortInput } from '../../../../generated/graphql';
+import { Option } from '../../../types/option';
 import { Barely } from '../../../types/utility/barely';
 import { Maybe } from '../../../types/utility/maybe';
-import { SearchbarState } from '../../Searchbar/types';
 
 export const timeStringFromSeconds = (secondsTotal: number) => {
   const minutes = Math.floor(secondsTotal / 60);
@@ -13,7 +12,7 @@ export const timeStringFromSeconds = (secondsTotal: number) => {
   return `${minutes}:${seconds.toString().padStart(2, '0')}`;
 };
 
-export const optionsFromStrings = (names: Barely<Array<string>>) =>
+export const optionsFromStrings = (names: Barely<Array<string>>): Array<Option<string>> =>
   names?.map((name) => ({
     label: name,
     value: name,

@@ -1,7 +1,7 @@
 import * as r from 'ramda';
 import * as React from 'react';
-import { Option } from 'react-select/src/filters';
 
+import { Option } from '../../types/option';
 import { cleanSlop } from '../../util/cleanSlop';
 import { StyledCount, StyledMenuOption } from './styles';
 
@@ -13,7 +13,7 @@ export type MemberCountList = Array<{ name: string; count: number }>;
 export const optionsFromSelectOptions = (
   op: MemberCountList,
   value: Array<Option>,
-) =>
+): ReadonlyArray<Option> =>
   r.pipe<
     MemberCountList,
     Array<[string, number]>,
@@ -25,9 +25,9 @@ export const optionsFromSelectOptions = (
     r.map((tupleObject) => [tupleObject.name, tupleObject.count]),
     r.reject(([_, count]) => count === 0),
     r.map(([name, count]) => ({
-      label: name, // `${name} ${value.length === 0 ? `(+${count})` : ""}`,
+      label: name,
       value: name,
-      data: count,
+      data: count.toString(),
     })),
     r.sortBy(r.prop('data')),
     r.reverse,
