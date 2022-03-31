@@ -1,5 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import React from 'react';
+import React, { useState } from 'react';
+import { Option } from 'react-select/src/filters';
 
 import YearSelect from '../components/YearSelect';
 
@@ -10,7 +11,8 @@ export default {
 } as ComponentMeta<typeof YearSelect>;
 
 const Template: ComponentStory<typeof YearSelect> = (args) => {
-  return <YearSelect {...args} />;
+  const [value, setValue] = useState<ReadonlyArray<Option>>([])
+  return <YearSelect value={value} onChange={(newVal) => setValue(newVal)}/>;
 };
 
 export const Blank = Template.bind({});

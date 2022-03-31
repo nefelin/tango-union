@@ -87,7 +87,6 @@ const BarGraph = ({ data, selected, onSelect }: Props) => {
   };
 
   const maxCount = Math.max(...data.map(({ value }) => value));
-  // console.log(data)
 
   const toggleInnerSelected = (year: string) => {
     if (innerSelected.has(year)) {

@@ -3,9 +3,11 @@ import { useFormik } from 'formik';
 import * as React from 'react';
 import { useState } from 'react';
 
-import { CompoundQueryInput, SelectIndexCount } from '../../generated/graphql';
+import { CompoundQueryInput, CompoundQueryQuery, SelectIndexCount } from '../../generated/graphql';
 import { Datum } from './BarGraph/types';
 import MobileBarGraph from './MobileBarGraph';
+import decadeCountFromYears from './MobileSearch/decadeCountFromYears';
+import MobileSearchFooter from './MobileSearch/MobileSearchFooter';
 import { optionsFromStrings } from './ResultsTable/ResultsTableBody/util';
 import CustomInput from './Searchbar/CustomInput';
 import CustomSelect from './Searchbar/CustomSelect';
@@ -14,10 +16,10 @@ import TopBar from './TopBar';
 import YearSelect from './YearSelect';
 
 interface Props {
-  selectOptions: SelectIndexCount;
+  compoundQuery: CompoundQueryQuery;
 }
 
-const MobileSearch = ({ selectOptions }: Props) => {
+const MobileSearch = ({ compoundQuery }: Props) => {
   const [dummyYears, setDummyYears] = useState(randomData(10));
   const resetSearchbar = () => {};
   const handleClearTextSearch = () => {};
@@ -28,6 +30,22 @@ const MobileSearch = ({ selectOptions }: Props) => {
     enableReinitialize: true,
     onSubmit: () => {},
   });
+
+  const handleGraphYearSelect = (yearRoot: number) => {
+    const newYearTerm = yearRoot + '0s';
+    const yearTerms = formik.values.year?.split(', ') ?? [];
+
+    const termExists = yearTerms.find((term) => term === newYearTerm);
+
+    const combinedOrFilteredTerms = termExists
+      ? yearTerms.filter((term) => term !== newYearTerm).join(', ')
+      : [...yearTerms, newYearTerm].join(', ');
+
+    formik.setFieldValue('year', combinedOrFilteredTerms);
+  };
+
+  const selectOptions = compoundQuery.compoundQuery.counts;
+  const decadeData = decadeCountFromYears(selectOptions.year)
 
   return (
     <div>
@@ -78,21 +96,40 @@ const MobileSearch = ({ selectOptions }: Props) => {
             />
           </div>
           <div className="h-[50px]">
-            <YearSelect onChange={() => setDummyYears(randomData(10))} />
+            <YearSelect
+              onChange={(e) => {
+                formik.setFieldValue(
+                  'year',
+                  e.map(({ label }) => label).join(', '),
+                  false,
+                );
+              }}
+              value={optionsFromStrings(
+                (formik.values.year || '')
+                  .split(', ')
+                  .filter((s) => s.length > 0),
+              )}
+            />
           </div>
           <div className="h-[25vh] my-4">
-            <MobileBarGraph data={dummyYears} />
+            <MobileBarGraph
+              data={decadeData}
+              onSelect={handleGraphYearSelect}
+            />
           </div>
         </div>
+        <MobileSearchFooter count={compoundQuery.compoundQuery.totalResults} onClear={resetSearchbar} />
       </div>
     </div>
   );
 };
+
 
 const randomData = (len: number): Array<Datum<number>> =>
   Array.from(Array(len), (x, i) => ({
     label: ((i * 10).toString() + `'s`).padStart(4, '0'),
     value: Math.floor(Math.random() * 100),
   }));
+const fakeData = randomData(10)
 
 export default MobileSearch;

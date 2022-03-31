@@ -2,6 +2,7 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
 
 import MobileSearch from '../components/MobileSearch';
+import { compoundQuery } from './queries/compoundQuery';
 import { selectOptions } from './queries/selectOptions';
 import MockProvider from './util/MockProvider';
 
@@ -23,5 +24,5 @@ const Template: ComponentStory<typeof MobileSearch> = (args) => {
 
 export const Init = Template.bind({});
 Init.args = {
-  selectOptions: selectOptions,
+  compoundQuery,
 };
