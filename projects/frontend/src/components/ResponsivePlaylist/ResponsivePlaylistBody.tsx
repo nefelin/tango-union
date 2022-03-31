@@ -20,7 +20,6 @@ const ResponsivePlaylistBody = ({ tracks }: Props) => {
     youtubePlayerState: { playState },
   } = useYoutubePlayerState();
 
-  console.log({currentTrack})
   const summary = smartSummary(tracks || []);
   return (
     <>
