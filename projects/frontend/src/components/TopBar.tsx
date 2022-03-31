@@ -37,7 +37,6 @@ const TopBarContainer = styled.div`
   width: 100%;
   display: flex;
   padding-left: 20px;
-  margin-bottom: 5px;
   background-color: #0606b9;
   align-items: center;
 `;

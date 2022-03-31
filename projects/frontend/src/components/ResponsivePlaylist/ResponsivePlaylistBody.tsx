@@ -20,6 +20,7 @@ const ResponsivePlaylistBody = ({ tracks }: Props) => {
     youtubePlayerState: { playState },
   } = useYoutubePlayerState();
 
+  console.log({currentTrack})
   const summary = smartSummary(tracks || []);
   return (
     <>
@@ -28,24 +29,28 @@ const ResponsivePlaylistBody = ({ tracks }: Props) => {
           <PlaylistSummary summary={summary} />
         </div>
       )}
-      {tracks?.map((track) => {
-        const trackIsActive = currentTrack?.trackId === track.id;
-        return (
-          <SongCard
-            key={track.listId}
-            active={trackIsActive}
-            playing={playState === 'playing' || playState === 'loading'}
-            track={track}
-            onPlay={() =>
-              !trackIsActive || playState === 'stopped'
-                ? play(compactTrackFromTrackId(track.id)) // TODO types are breaking somewhere, this is supposed to be a compactTrack already
-                : pause()
-            }
-            onMore={() => {}}
-          />
-        );
-      })}
-      <YoutubePlayer width="100%" />
+      <div>
+        <div className="overflow-y-scroll max-h-[80%]">
+          {tracks?.map((track) => {
+            const trackIsActive = currentTrack?.listId === track.listId;
+            return (
+              <SongCard
+                key={track.listId}
+                active={trackIsActive}
+                playing={playState === 'playing' || playState === 'loading'}
+                track={track}
+                onPlay={() =>
+                  !trackIsActive || playState === 'stopped'
+                    ? play(track)
+                    : pause()
+                }
+                onMore={() => {}}
+              />
+            );
+          })}
+        </div>
+        <YoutubePlayer width="100%" height="20%" />
+      </div>
     </>
   );
 };
