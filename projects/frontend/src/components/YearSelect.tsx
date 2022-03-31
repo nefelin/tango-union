@@ -34,7 +34,7 @@ const createTermFromYearSearch = (yearTerm: string) => {
 };
 
 const validYearTerms =
-  /(\?|(?:(?:\d\d\d\d|\d\ds?)(?:-(?:\d\d\d\d|\d\ds?))?))[, ]*/gi;
+  /(\d{2,4}-\d{2,4}|\d{2}s|\d{2,4})/gi;
 const defaultYearOptions: ReadonlyArray<Option> = Array.from(
   Array(10),
   (_, i) => {

@@ -1,10 +1,16 @@
-import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client';
+import {
+  ApolloClient,
+  ApolloProvider,
+  createHttpLink,
+  InMemoryCache,
+} from '@apollo/client';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React, { useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import BarGraph from '../components/BarGraph/BarGraph';
 import { Datum } from '../components/BarGraph/types';
+import MockProvider from './util/MockProvider';
 
 export default {
   title: 'Components/Bar Graph',
@@ -21,13 +27,11 @@ const apolloClient = new ApolloClient({
 
 const Template: ComponentStory<typeof BarGraph> = (args) => {
   return (
-    <div style={{height: 50}}>
-      <ApolloProvider client={apolloClient}>
-      <BrowserRouter basename="/">
+    <MockProvider>
+      <div style={{ height: 50 }}>
         <BarGraph {...args} />
-      </BrowserRouter>
-      </ApolloProvider>
-    </div>
+      </div>
+    </MockProvider>
   );
 };
 

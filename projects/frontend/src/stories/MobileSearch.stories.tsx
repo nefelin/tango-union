@@ -3,6 +3,7 @@ import React from 'react';
 
 import MobileSearch from '../components/MobileSearch';
 import { selectOptions } from './queries/selectOptions';
+import MockProvider from './util/MockProvider';
 
 export default {
   title: 'Pages/Mobile/Search',
@@ -12,13 +13,15 @@ export default {
 
 const Template: ComponentStory<typeof MobileSearch> = (args) => {
   return (
-    <div>
-      <MobileSearch {...args}/>
-    </div>
+    <MockProvider>
+      <div>
+        <MobileSearch {...args} />
+      </div>
+    </MockProvider>
   );
 };
 
 export const Init = Template.bind({});
 Init.args = {
- selectOptions: selectOptions
+  selectOptions: selectOptions,
 };
