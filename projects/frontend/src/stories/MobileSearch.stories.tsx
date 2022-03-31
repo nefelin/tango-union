@@ -1,9 +1,10 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
 
+import MobileNavbar from '../components/MobileNavbar';
 import MobileSearch from '../components/MobileSearch';
+import TopBar from '../components/TopBar';
 import { compoundQuery } from './queries/compoundQuery';
-import { selectOptions } from './queries/selectOptions';
 import MockProvider from './util/MockProvider';
 
 export default {
@@ -15,9 +16,9 @@ export default {
 const Template: ComponentStory<typeof MobileSearch> = (args) => {
   return (
     <MockProvider>
-      <div>
-        <MobileSearch {...args} />
-      </div>
+      <TopBar />
+      <MobileSearch {...args} />
+      <MobileNavbar onNav={() => {}} />
     </MockProvider>
   );
 };

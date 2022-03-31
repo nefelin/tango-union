@@ -17,8 +17,8 @@ const Template: ComponentStory<typeof AnimatedEq> = (args) => {
 
   return (
     <div className="h-[6em] p-1">
-      <MobileBarGraph data={values} />
-      <br/>
+      <MobileBarGraph data={values} onSelect={() => {}} />
+      <br />
       <Button variant="outlined" onClick={() => setValues(randomData(10))}>
         Change
       </Button>
@@ -26,12 +26,8 @@ const Template: ComponentStory<typeof AnimatedEq> = (args) => {
   );
 };
 
-const randomData = (len: number): Array<Datum<number>> =>
-  Array.from(Array(len), (x, i) => ({
-    label: ((i * 10).toString() + `'s`).padStart(4, '0'),
-    value: Math.floor(Math.random() * 100),
-  }));
+const randomData = (len: number): Array<number> =>
+  Array.from(Array(len), (_, i) => Math.floor(Math.random() * 100));
 
 export const Graph = Template.bind({});
-Graph.args = {
-};
+Graph.args = {};
