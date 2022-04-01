@@ -2,7 +2,7 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
 
 import MobileNavbar from '../components/MobileNavbar';
-import MobileSearch from '../components/MobileSearch';
+import MobileSearch, { MobileSearchProps } from '../components/MobileSearch';
 import TopBar from '../components/TopBar';
 import { compoundQuery } from './queries/compoundQuery';
 import MockProvider from './util/MockProvider';
@@ -24,6 +24,10 @@ const Template: ComponentStory<typeof MobileSearch> = (args) => {
 };
 
 export const Init = Template.bind({});
-Init.args = {
-  compoundQuery,
+const args: MobileSearchProps = {
+  compoundQuery: compoundQuery,
+  resetSearch: () => {},
+  setSearch: () => {},
+  initSearchState: {},
 };
+Init.args = args;
