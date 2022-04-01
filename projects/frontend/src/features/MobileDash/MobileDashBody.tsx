@@ -1,19 +1,30 @@
 import { Button, Fade, Slide } from '@mui/material';
 import React, { useState } from 'react';
 
-import MobileNavbar from '../components/MobileNavbar';
-import MobileSearch from '../components/MobileSearch';
-import { darienzoLaborde } from '../components/PlaylistSummary/summarize.test.data';
-import ResponsivePlaylistBody from '../components/ResponsivePlaylist/ResponsivePlaylistBody';
-import SongCardList from '../components/ResponsivePlaylist/SongCardList';
-import TopBar from '../components/TopBar';
-import YoutubePlayer from '../components/YoutubePlayer';
-import { compoundQuery } from '../stories/queries/compoundQuery';
-import { playlistTrackFromTrack } from '../types/compactTrack/util';
+import MobileNavbar from '../../components/MobileNavbar';
+import MobileSearch, { MobileSearchProps } from '../../components/MobileSearch';
+import { darienzoLaborde } from '../../components/PlaylistSummary/summarize.test.data';
+import ResponsivePlaylistBody from '../../components/ResponsivePlaylist/ResponsivePlaylistBody';
+import SongCardList from '../../components/ResponsivePlaylist/SongCardList';
+import TopBar from '../../components/TopBar';
+import YoutubePlayer from '../../components/YoutubePlayer';
+import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
+import { playlistTrackFromTrack } from '../../types/compactTrack/util';
 
-const dummyTracks = darienzoLaborde.map(playlistTrackFromTrack);
+interface InternalProps {
+  playlistTracks: Array<PlaylistTrack>;
+  resultsTracks: Array<PlaylistTrack>;
+}
+type Props = MobileSearchProps & InternalProps;
 
-const MobileDash = () => {
+const MobileDashBody = ({
+  resetSearch,
+  setSearch,
+  compoundQuery,
+  playlistTracks,
+  resultsTracks,
+  initSearchState,
+}: Props) => {
   const [showPanel, setShowPanel] = useState('Search');
 
   return (
@@ -38,7 +49,7 @@ const MobileDash = () => {
               right: 0,
             }}
           >
-            <MobileSearch compoundQuery={compoundQuery} />
+            <MobileSearch {...{ resetSearch, setSearch, compoundQuery, initSearchState }} />
           </div>
         </Slide>
         <Slide
@@ -58,18 +69,7 @@ const MobileDash = () => {
               right: 0,
             }}
           >
-            <SongCardList tracks={dummyTracks} />
-            <Button
-              onClick={() =>
-                navigator.share({
-                  text: 'Playlist Title',
-                  title: 'Text vs Title?',
-                  url: window.location.href,
-                })
-              }
-            >
-              Share
-            </Button>
+            <SongCardList tracks={resultsTracks} />
           </div>
         </Slide>
         <Slide
@@ -89,7 +89,7 @@ const MobileDash = () => {
               right: 0,
             }}
           >
-            <ResponsivePlaylistBody tracks={dummyTracks} />
+            <ResponsivePlaylistBody tracks={playlistTracks} />
           </div>
         </Slide>
         <Fade in={showPanel === 'Player'}>
@@ -113,4 +113,4 @@ const MobileDash = () => {
   );
 };
 
-export default MobileDash;
+export default MobileDashBody;
