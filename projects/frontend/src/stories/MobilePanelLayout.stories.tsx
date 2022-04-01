@@ -2,7 +2,7 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
 
 import AnimatedEq from '../components/AnimatedEq';
-import MobileDash from '../features/MobileDash';
+import MobileDashBody from '../features/MobileDash/MobileDashBody';
 import MockProvider from './util/MockProvider';
 
 export default {
@@ -14,7 +14,7 @@ export default {
 const Template: ComponentStory<typeof AnimatedEq> = (args) => {
   return (
     <MockProvider>
-      <MobileDash />
+      {/*<MobileDashBody />*/}
     </MockProvider>
   );
 };
