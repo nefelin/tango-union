@@ -27,14 +27,14 @@ const MobileDashBody = ({
 
   return (
     <>
-      <TopBar height='7vh' fixed />
+      <TopBar height="7vh" fixed />
       <div className="flex flex-row relative mt-[7vh] h-[93vh] w-[100vw]">
-        <Slide
-          mountOnEnter
-          unmountOnExit
-          appear={showPanel === 'Search'}
-          in={showPanel === 'Search'}
-          direction="left"
+        <div
+          style={{
+            opacity: showPanel === 'Search' ? 1 : 0,
+            transition: 'all 300ms',
+            pointerEvents: showPanel === 'Search' ? undefined : 'none',
+          }}
         >
           <div
             style={{
@@ -51,12 +51,13 @@ const MobileDashBody = ({
               {...{ resetSearch, setSearch, compoundQuery, initSearchState }}
             />
           </div>
-        </Slide>
-        <Slide
-          mountOnEnter
-          unmountOnExit
-          in={showPanel === 'Results'}
-          direction="left"
+        </div>
+        <div
+          style={{
+            opacity: showPanel === 'Results' ? 1 : 0,
+            transition: 'all 300ms',
+            pointerEvents: showPanel === 'Results' ? undefined : 'none',
+          }}
         >
           <div
             style={{
@@ -71,12 +72,13 @@ const MobileDashBody = ({
           >
             <SongCardList tracks={resultsTracks} />
           </div>
-        </Slide>
-        <Slide
-          mountOnEnter
-          unmountOnExit
-          in={showPanel === 'Playlist'}
-          direction="left"
+        </div>
+        <div
+          style={{
+            opacity: showPanel === 'Playlist' ? 1 : 0,
+            transition: 'all 300ms',
+            pointerEvents: showPanel === 'Playlist' ? undefined : 'none',
+          }}
         >
           <div
             style={{
@@ -91,8 +93,14 @@ const MobileDashBody = ({
           >
             <ResponsivePlaylistBody tracks={playlistTracks} />
           </div>
-        </Slide>
-        <div style={{ opacity: showPanel === 'Player' ? 1 : 0, transition: 'all 300ms', pointerEvents: showPanel === 'Player' ? undefined : 'none'}}>
+        </div>
+        <div
+          style={{
+            opacity: showPanel === 'Player' ? 1 : 0,
+            transition: 'all 300ms',
+            pointerEvents: showPanel === 'Player' ? undefined : 'none',
+          }}
+        >
           <div
             style={{
               width: '100%',
