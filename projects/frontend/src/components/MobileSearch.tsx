@@ -58,7 +58,7 @@ const MobileSearch = ({ initSearchState, resetSearch, setSearch, compoundQuery }
   const decadeData = decadeCountFromYears(selectOptions.year);
 
   return (
-    <div className="p-4">
+    <div className="p-4 pt-6">
       <div className="flex flex-row gap-2 justify-between mb-3">
         <CustomInput
           onChange={formik.handleChange}

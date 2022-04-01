@@ -45,6 +45,8 @@ const TopBarContainer = styled.div`
   padding-left: 20px;
   background-color: #0606b9;
   align-items: center;
+  top: 0;
+  z-index: 100;
 `;
 
 export default TopBar;
