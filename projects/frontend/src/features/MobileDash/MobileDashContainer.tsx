@@ -65,11 +65,13 @@ const MobileDashContainer = () => {
       setOptions(res.compoundQuery.counts);
     },
   });
+
   const ensuredTotalPages = useEnsureValue(data?.compoundQuery.totalPages, 0);
   const ensuredTotalResults = useEnsureValue(
     data?.compoundQuery.totalResults,
     0,
   );
+  const ensuredCompoundQuery = useEnsureValue(data, compoundQuery);
 
   const resetPageAndSort = () => {
     setPage(0);
@@ -95,7 +97,7 @@ const MobileDashContainer = () => {
   const [resultTracks] = useCacheStitchedIdFetch(searchResultList.tracks);
   return (
     <MobileDashBody
-      compoundQuery={data || compoundQuery}
+      compoundQuery={ensuredCompoundQuery}
       initSearchState={searchbarState}
       setSearch={setSearchbarState}
       resetSearch={resetSearchbar}
