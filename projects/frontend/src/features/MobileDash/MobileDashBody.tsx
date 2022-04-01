@@ -1,15 +1,13 @@
-import { Button, Fade, Slide } from '@mui/material';
+import { Slide } from '@mui/material';
 import React, { useState } from 'react';
 
 import MobileNavbar from '../../components/MobileNavbar';
 import MobileSearch, { MobileSearchProps } from '../../components/MobileSearch';
-import { darienzoLaborde } from '../../components/PlaylistSummary/summarize.test.data';
 import ResponsivePlaylistBody from '../../components/ResponsivePlaylist/ResponsivePlaylistBody';
 import SongCardList from '../../components/ResponsivePlaylist/SongCardList';
 import TopBar from '../../components/TopBar';
 import YoutubePlayer from '../../components/YoutubePlayer';
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
-import { playlistTrackFromTrack } from '../../types/compactTrack/util';
 
 interface InternalProps {
   playlistTracks: Array<PlaylistTrack>;
@@ -30,13 +28,13 @@ const MobileDashBody = ({
   return (
     <>
       <TopBar />
-      <div className="flex flex-row relative h-[100vh] w-[100vw]">
+      <div className="flex flex-row relative mt-[7vh] h-[93vh] w-[100vw]">
         <Slide
           mountOnEnter
           unmountOnExit
           appear={showPanel === 'Search'}
           in={showPanel === 'Search'}
-          direction="right"
+          direction="left"
         >
           <div
             style={{
@@ -49,7 +47,9 @@ const MobileDashBody = ({
               right: 0,
             }}
           >
-            <MobileSearch {...{ resetSearch, setSearch, compoundQuery, initSearchState }} />
+            <MobileSearch
+              {...{ resetSearch, setSearch, compoundQuery, initSearchState }}
+            />
           </div>
         </Slide>
         <Slide
@@ -92,7 +92,7 @@ const MobileDashBody = ({
             <ResponsivePlaylistBody tracks={playlistTracks} />
           </div>
         </Slide>
-        <Fade in={showPanel === 'Player'}>
+        <div style={{ opacity: showPanel === 'Player' ? 1 : 0, transition: 'all 300ms', pointerEvents: showPanel === 'Player' ? undefined : 'none'}}>
           <div
             style={{
               width: '100%',
@@ -106,7 +106,7 @@ const MobileDashBody = ({
           >
             <YoutubePlayer />
           </div>
-        </Fade>
+        </div>
       </div>
       <MobileNavbar onNav={(newLoc) => setShowPanel(newLoc)} />
     </>
