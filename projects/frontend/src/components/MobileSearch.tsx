@@ -1,12 +1,12 @@
 import { Button } from '@mui/material';
 import { useFormik } from 'formik';
 import * as React from 'react';
+import { useEffect } from 'react';
 
 import {
-  CompoundQueryInput,
   CompoundQueryQuery,
-  SelectIndexCount,
 } from '../../generated/graphql';
+import { Unary } from '../types/utility/unary';
 import MobileBarGraph from './MobileBarGraph';
 import decadeCountFromYears from './MobileSearch/decadeCountFromYears';
 import MobileSearchFooter from './MobileSearch/MobileSearchFooter';
@@ -14,23 +14,32 @@ import { optionsFromStrings } from './ResultsTable/ResultsTableBody/util';
 import CustomInput from './Searchbar/CustomInput';
 import CustomSelect from './Searchbar/CustomSelect';
 import { SearchbarState } from './Searchbar/types';
-import TopBar from './TopBar';
 import YearSelect from './YearSelect';
 
-interface Props {
+export interface MobileSearchProps {
   compoundQuery: CompoundQueryQuery;
+  setSearch: Unary<SearchbarState>;
+  resetSearch: VoidFunction;
+  initSearchState: SearchbarState;
 }
 
-const MobileSearch = ({ compoundQuery }: Props) => {
-  const resetSearchbar = () => {};
-  const handleClearTextSearch = () => {};
-  const searchbarState: CompoundQueryInput = {};
+const MobileSearch = ({ initSearchState, resetSearch, setSearch, compoundQuery }: MobileSearchProps) => {
 
   const formik = useFormik<SearchbarState>({
-    initialValues: searchbarState,
+    initialValues: initSearchState,
     enableReinitialize: true,
     onSubmit: () => {},
   });
+
+  const { values } = formik;
+
+  const handleClearTextSearch = () => {
+    setSearch({ ...initSearchState, text: '' });
+  };
+
+  useEffect(() => {
+    setSearch(values);
+  }, [values]);
 
   const handleGraphYearSelect = (yearRoot: number) => {
     const newYearTerm = yearRoot + '0s';
@@ -61,7 +70,7 @@ const MobileSearch = ({ compoundQuery }: Props) => {
           variant="outlined"
           color="primary"
           type="button"
-          onClick={resetSearchbar}
+          onClick={resetSearch}
         >
           Clear
         </Button>
@@ -116,7 +125,7 @@ const MobileSearch = ({ compoundQuery }: Props) => {
       </div>
       <MobileSearchFooter
         count={compoundQuery.compoundQuery.totalResults}
-        onClear={resetSearchbar}
+        onClear={resetSearch}
       />
     </div>
   );
