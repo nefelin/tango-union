@@ -4,17 +4,24 @@ import styled from 'styled-components';
 
 import CloudLogo from '../../assets/CloudLogo';
 
-const TopBar = () => {
+interface Props {
+  height?: string;
+  fixed?: boolean;
+}
+
+const TopBar = ({ height = '55px', fixed = false }: Props) => {
   const navigate = useNavigate();
   return (
-    <TopBarContainer>
+    <TopBarContainer
+      style={{ height, position: fixed ? 'fixed' : 'inherit' }}
+    >
       <LogoContainer onClick={() => navigate('/')}>
         <CloudLogo size="40px" />
         <TitleSpan>Tango Union</TitleSpan>
       </LogoContainer>
     </TopBarContainer>
   );
-}
+};
 
 const TitleSpan = styled.span`
   color: white;
@@ -33,7 +40,6 @@ const LogoContainer = styled.div`
 `;
 
 const TopBarContainer = styled.div`
-  height: 55px;
   width: 100%;
   display: flex;
   padding-left: 20px;

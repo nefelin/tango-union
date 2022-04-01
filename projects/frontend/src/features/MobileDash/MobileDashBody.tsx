@@ -27,7 +27,7 @@ const MobileDashBody = ({
 
   return (
     <>
-      <TopBar />
+      <TopBar height='7vh' fixed />
       <div className="flex flex-row relative mt-[7vh] h-[93vh] w-[100vw]">
         <Slide
           mountOnEnter
