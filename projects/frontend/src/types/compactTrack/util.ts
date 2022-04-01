@@ -32,8 +32,8 @@ export const compactTrackFromTrackId = (id: TrackId): CompactTrack => ({
 export const playlistTrackFromTrack = (
   track: TrackDetailFragmentFragment,
 ): PlaylistTrack => ({
-  ...track,
   ...compactTrackFromTrackId(track.id),
+  ...track,
 });
 
 export const compoundIdStringFromCompactTrack = ({

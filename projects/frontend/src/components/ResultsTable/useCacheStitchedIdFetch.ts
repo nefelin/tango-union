@@ -45,6 +45,7 @@ const useCacheStitchedIdFetch = (
       return {
         ...found,
         listId,
+        trackId
       };
     }) ?? [];
   return [
