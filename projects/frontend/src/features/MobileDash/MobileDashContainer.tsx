@@ -22,7 +22,11 @@ const MobileDashContainer = () => {
   // const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1024px)' });
   const [options, setOptions] = useState(compoundQuery.compoundQuery.counts);
   // const { sortInput, resetSort } = useSortState();
-  const { addTracks, replaceTracks } = usePlaylistState(RESULTS_PLAYLIST_ID);
+  const {
+    addTracks,
+    replaceTracks,
+    playlist: searchResultList,
+  } = usePlaylistState(RESULTS_PLAYLIST_ID);
   const [debouncedSearch] = useDebounce(searchbarState, 300, {
     equalityFn: objCompare,
   });
@@ -45,10 +49,11 @@ const MobileDashContainer = () => {
       },
     },
     onCompleted: (res) => {
-      console.log({ res });
       if (firstQuery.current && res.compoundQuery.randomId) {
         // randomize pre-loaded link
-        const compact = compactTrackFromTrackId(res.compoundQuery.randomId);
+        const compact = compactTrackFromTrackId(
+          res.compoundQuery.ids[0] || '1',
+        );
         firstQuery.current = false;
         setTrack(compact);
       }
@@ -64,11 +69,6 @@ const MobileDashContainer = () => {
   const ensuredTotalResults = useEnsureValue(
     data?.compoundQuery.totalResults,
     0,
-  );
-  const trackIds = useEnsureValue(data?.compoundQuery.ids, []);
-
-  const [tracks] = useCacheStitchedIdFetch(
-    trackIds.map(compactTrackFromTrackId),
   );
 
   const resetPageAndSort = () => {
@@ -92,14 +92,15 @@ const MobileDashContainer = () => {
     }
   };
 
+  const [resultTracks] = useCacheStitchedIdFetch(searchResultList.tracks);
   return (
     <MobileDashBody
       compoundQuery={data || compoundQuery}
       initSearchState={searchbarState}
       setSearch={setSearchbarState}
       resetSearch={resetSearchbar}
-      playlistTracks={[]}
-      resultsTracks={tracks || []}
+      playlistTracks={resultTracks || []}
+      resultsTracks={resultTracks || []}
     />
   );
 };
