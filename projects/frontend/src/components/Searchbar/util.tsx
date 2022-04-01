@@ -29,7 +29,7 @@ export const optionsFromSelectOptions = (
       value: name,
       data: count.toString(),
     })),
-    r.sortBy(r.prop('data')),
+    r.sortBy(({ data }) => parseInt(data)),
     r.reverse,
   )(op);
 
