@@ -11,11 +11,13 @@ interface Props {
   summary: SmartPlaylistSummary;
 }
 
-const PlaylistSummary = ({ summary: {orchestras, singers, years, genres, dominantCategory} }: Props) => {
+const PlaylistSummary = ({
+  summary: { orchestras, singers, years, genres, dominantCategory },
+}: Props) => {
   const genreString = genres.map(capitalizeFirstLetter).join(', ');
   const yearString = years.map(capitalizeFirstLetter).join(', ');
-  
-  let [headline, subOne, subTwo ] = [
+
+  let [headline, subOne, subTwo] = [
     orchestras.join(', '),
     `${yearString} - ${genreString} `,
     singers.join(', '),
@@ -25,21 +27,21 @@ const PlaylistSummary = ({ summary: {orchestras, singers, years, genres, dominan
     case 'orchestras':
       break;
     case 'singers':
-      [headline, subOne, subTwo ] = [
+      [headline, subOne, subTwo] = [
         singers.join(', '),
         orchestras.join(', '),
         `${yearString} - ${genreString} `,
       ];
       break;
     case 'years':
-      [headline, subOne, subTwo ] = [
+      [headline, subOne, subTwo] = [
         `${yearString} - ${genreString} `,
         orchestras.join(', '),
         singers.join(', '),
       ];
       break;
     case 'genres':
-      [headline, subOne, subTwo ] = [
+      [headline, subOne, subTwo] = [
         `${capitalizeFirstLetter(genres.join(', '))} - ${yearString}`,
         orchestras.join(', '),
         singers.join(', '),
@@ -49,13 +51,9 @@ const PlaylistSummary = ({ summary: {orchestras, singers, years, genres, dominan
 
   return (
     <div>
-      {headline}
-      <div className="text-xs text-gray-600 truncate">
-        {subOne}
-      </div>
-      <div className="text-xs text-gray-600 truncate">
-        {subTwo}
-      </div>
+      <div className="truncate">{headline}</div>
+      <div className="text-xs text-gray-600 truncate">{subOne}</div>
+      <div className="text-xs text-gray-600 truncate">{subTwo}</div>
     </div>
   );
 };

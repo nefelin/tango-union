@@ -1,5 +1,6 @@
 import { Slide } from '@mui/material';
 import React, { useState } from 'react';
+import styled from 'styled-components';
 
 import MobileNavbar from '../../components/MobileNavbar';
 import MobileSearch, { MobileSearchProps } from '../../components/MobileSearch';
@@ -28,7 +29,7 @@ const MobileDashBody = ({
   return (
     <>
       <TopBar height="7vh" fixed />
-      <div className="flex flex-row relative mt-[7vh] h-[93vh] w-[100vw]">
+      <div className="flex flex-row relative mt-[7vh] h-[93vh] w-[100vw] overflow-y-hidden">
         <div
           style={{
             opacity: showPanel === 'Search' ? 1 : 0,
@@ -36,21 +37,11 @@ const MobileDashBody = ({
             pointerEvents: showPanel === 'Search' ? undefined : 'none',
           }}
         >
-          <div
-            style={{
-              width: '100%',
-              height: '100%',
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              bottom: 0,
-              right: 0,
-            }}
-          >
+          <DashPanel>
             <MobileSearch
               {...{ resetSearch, setSearch, compoundQuery, initSearchState }}
             />
-          </div>
+          </DashPanel>
         </div>
         <div
           style={{
@@ -59,19 +50,9 @@ const MobileDashBody = ({
             pointerEvents: showPanel === 'Results' ? undefined : 'none',
           }}
         >
-          <div
-            style={{
-              width: '100%',
-              height: '100%',
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              bottom: 0,
-              right: 0,
-            }}
-          >
+          <DashPanel>
             <SongCardList tracks={resultsTracks} />
-          </div>
+          </DashPanel>
         </div>
         <div
           style={{
@@ -80,19 +61,9 @@ const MobileDashBody = ({
             pointerEvents: showPanel === 'Playlist' ? undefined : 'none',
           }}
         >
-          <div
-            style={{
-              width: '100%',
-              height: '100%',
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              bottom: 0,
-              right: 0,
-            }}
-          >
+          <DashPanel>
             <ResponsivePlaylistBody tracks={playlistTracks} />
-          </div>
+          </DashPanel>
         </div>
         <div
           style={{
@@ -101,24 +72,25 @@ const MobileDashBody = ({
             pointerEvents: showPanel === 'Player' ? undefined : 'none',
           }}
         >
-          <div
-            style={{
-              width: '100%',
-              height: '100%',
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              bottom: 0,
-              right: 0,
-            }}
-          >
+          <DashPanel>
             <YoutubePlayer />
-          </div>
+          </DashPanel>
         </div>
       </div>
       <MobileNavbar onNav={(newLoc) => setShowPanel(newLoc)} />
     </>
   );
 };
+
+const DashPanel = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow-y: scroll;
+`;
 
 export default MobileDashBody;

@@ -25,7 +25,7 @@ export const SongCard = ({ track, onPlay, onMore, active, playing }: Props) => {
 
   const handleMoreKeyboard: KeyboardEventHandler = (e) => {
     e.stopPropagation();
-    if (e.key === ' ' || e.key === 'Enter' ) {
+    if (e.key === ' ' || e.key === 'Enter') {
       onMore(trackId);
     }
   };
@@ -35,28 +35,35 @@ export const SongCard = ({ track, onPlay, onMore, active, playing }: Props) => {
   };
   const handlePlayKeyboard: KeyboardEventHandler = (e) => {
     e.stopPropagation();
-    if (e.key === ' ' || e.key === 'Enter' ) {
+    if (e.key === ' ' || e.key === 'Enter') {
       onPlay(trackId);
     }
   };
-  const handlePlayMouse: MouseEventHandler = (e) =>  {
+  const handlePlayMouse: MouseEventHandler = (e) => {
     e.stopPropagation();
     onPlay(trackId);
   };
 
-  const detailsArray = [
-    ...(orchestra || []),
-    ...(singer || []),
-    year,
-    capitalizeFirstLetter(genre),
-  ];
-  const detailsText = detailsArray.length
-    ? detailsArray.join(', ')
-    : 'No details...';
+  const singerOrchDetails = [...(orchestra || []), ...(singer || [])];
+  const orchSingerText = singerOrchDetails.length
+    ? singerOrchDetails.join(', ')
+    : 'Missing Orchestra and Singer';
 
-  const titleClasses = classNames('truncate', 'items-center', 'flex', 'flex-row', 'gap-1', {
-    'font-bold': active,
-  });
+  const yearGenreDetails = [year, capitalizeFirstLetter(genre)];
+  const yearGenreText = yearGenreDetails.length
+    ? yearGenreDetails.join(', ')
+    : 'Missing Year and Genre';
+
+  const titleClasses = classNames(
+    'truncate',
+    'items-center',
+    'flex',
+    'flex-row',
+    'gap-1',
+    {
+      'font-bold': active,
+    },
+  );
 
   return (
     <div
@@ -67,8 +74,12 @@ export const SongCard = ({ track, onPlay, onMore, active, playing }: Props) => {
       onClick={handlePlayMouse}
     >
       <div className="col-span-6 flex flex-col">
-        <div className={titleClasses}>{active && <AnimatedEq playing={playing}/>}{title}</div>
-        <div className="text-xs truncate">{detailsText}</div>
+        <div className={titleClasses}>
+          {active && <AnimatedEq playing={playing} />}
+          {title}
+        </div>
+        <div className="text-xs truncate">{yearGenreText}</div>
+        <div className="text-xs truncate">{orchSingerText}</div>
       </div>
       <div className="col-span-1 flex flex-col justify-center text-xs items-center">
         <div>{linkScore}/10</div>

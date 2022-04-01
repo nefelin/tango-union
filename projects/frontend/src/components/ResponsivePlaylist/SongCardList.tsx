@@ -13,7 +13,7 @@ const SongCardList = ({ tracks }: { tracks: Array<PlaylistTrack> }) => {
   } = useYoutubePlayerState();
 
   return (
-    <div className="">
+    <>
       {tracks?.map((track) => {
         const trackIsActive = currentTrack?.listId === track.listId;
         return (
@@ -29,7 +29,7 @@ const SongCardList = ({ tracks }: { tracks: Array<PlaylistTrack> }) => {
           />
         );
       })}
-    </div>
+    </>
   );
 };
 
