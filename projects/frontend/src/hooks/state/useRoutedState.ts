@@ -25,7 +25,8 @@ export const useRoutedState = () => {
 
   const replaceRoute = (newState: SavedState) => {
     const asString = JSON.stringify(newState);
-    navigate(`/player/${asString}`);
+    const urlBase = window.location.href.match('mobile') ? 'mobile' : 'player'; // todo hacky fix, you can do better :|
+    navigate(`/${urlBase}/${asString}`);
   };
 
   const setTracks = (newTracks: Array<CompoundIdString>) =>
