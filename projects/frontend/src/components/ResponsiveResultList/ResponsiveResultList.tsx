@@ -15,7 +15,7 @@ const ResponsiveResultList = ({ trackTotal, pageTotal, page, tracks }: Props) =>
   return (
     <>
         <div
-          className="p-3 bg-white w-[100vw] flex flex-row items-center justify-center shadow-lg text-xs"
+          className="p-3 bg-white w-[100vw] flex flex-row items-center justify-center shadow-md text-xs font-bold"
           style={{
             height: asVh(layout.resultsHeader),
             position: 'fixed',

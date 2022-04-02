@@ -15,7 +15,7 @@ const ResponsivePlaylistBody = ({ tracks }: Props) => {
   return (
     <>
       <div
-        className="p-3 bg-white w-[100vw] flex flex-col justify-center"
+        className="p-3 bg-white w-[100vw] flex flex-col justify-center shadow-md"
         style={{
           height: asVh(layout.playlistHeader),
           position: 'fixed',
