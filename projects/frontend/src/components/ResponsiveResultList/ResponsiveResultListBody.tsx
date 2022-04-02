@@ -1,5 +1,6 @@
 import { MenuItem, Slide } from '@mui/material';
 import React, { useState } from 'react';
+import { useThrottledCallback } from 'use-debounce';
 
 import { asVh, layout } from '../../features/MobileDash/layout';
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
@@ -31,11 +32,12 @@ const ResponsiveResultListBody = ({
   addPlaylistTrack,
 }: ResponsiveResultListProps) => {
   const [moreId, setMoreId] = useState<Maybe<string>>();
+  const throttledScrollHandler = useThrottledCallback(onScrollEnd, 300)
   const onScroll = (e) => {
     const endScrollBuffer = 0;
     const { scrollTop, scrollHeight, clientHeight } = e.target;
     if (scrollTop + clientHeight >= scrollHeight - endScrollBuffer) {
-      onScrollEnd();
+      throttledScrollHandler();
     }
   };
 
