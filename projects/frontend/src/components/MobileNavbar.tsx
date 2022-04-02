@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { asVh, layout } from '../features/MobileDash/layout';
 import { Unary } from '../types/utility/unary';
 
 const pages = ['Search', 'Results', 'Playlist', 'Player'] as const;
@@ -16,7 +17,7 @@ const MobileNavbar = ({ onNav }: Props) => {
   return (
     <div
       className="fixed bottom-0 w-full flex flex-row justify-around items-center text-sm text-gray-400 font-bold bg-white"
-      style={{ boxShadow: '0 -3px 10px rgb(240, 240, 240)' }}
+      style={{ boxShadow: '0 -3px 10px rgb(240, 240, 240)', height: asVh(layout.navbar) }}
     >
       {pages.map((page) => {
         const active = page === current;

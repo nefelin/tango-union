@@ -1,12 +1,10 @@
 import React from 'react';
 
+import { asVh, layout } from '../../features/MobileDash/layout';
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
-import { useYoutubePlayerState } from '../../hooks/state/useYoutubePlayerState';
 import PlaylistSummary from '../PlaylistSummary';
 import { smartSummary } from '../PlaylistSummary/summarize';
-import { SongCard } from '../SongCard';
-import YoutubePlayer from '../YoutubePlayer';
-import SongCardList from './SongCardList';
+import SongCardList from '../SongCardList/SongCardList';
 
 interface Props {
   tracks: Array<PlaylistTrack>;
@@ -16,12 +14,22 @@ const ResponsivePlaylistBody = ({ tracks }: Props) => {
   const summary = smartSummary(tracks || []);
   return (
     <>
-      {summary && (
-        <div className="p-2">
-          <PlaylistSummary summary={summary} />
-        </div>
-      )}
-      <SongCardList tracks={tracks}/>
+      <div
+        className="p-3 bg-white w-[100vw] flex flex-col justify-center"
+        style={{
+          height: asVh(layout.playlistHeader),
+          position: 'fixed',
+        }}
+      >
+        <PlaylistSummary summary={summary} />
+      </div>
+      <div
+        style={{
+          marginTop: asVh(layout.playlistHeader),
+        }}
+      >
+        <SongCardList tracks={tracks} />
+      </div>
     </>
   );
 };

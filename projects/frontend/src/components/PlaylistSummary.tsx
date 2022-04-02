@@ -50,11 +50,11 @@ const PlaylistSummary = ({
   }
 
   return (
-    <div>
+    <>
       <div className="truncate">{headline}</div>
       <div className="text-xs text-gray-600 truncate">{subOne}</div>
       <div className="text-xs text-gray-600 truncate">{subTwo}</div>
-    </div>
+    </>
   );
 };
 

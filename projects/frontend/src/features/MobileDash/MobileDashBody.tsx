@@ -5,10 +5,12 @@ import styled from 'styled-components';
 import MobileNavbar from '../../components/MobileNavbar';
 import MobileSearch, { MobileSearchProps } from '../../components/MobileSearch';
 import ResponsivePlaylistBody from '../../components/ResponsivePlaylist/ResponsivePlaylistBody';
-import SongCardList from '../../components/ResponsivePlaylist/SongCardList';
+import ResponsiveResultList from '../../components/ResponsiveResultList/ResponsiveResultList';
+import SongCardList from '../../components/SongCardList/SongCardList';
 import TopBar from '../../components/TopBar';
 import YoutubePlayer from '../../components/YoutubePlayer';
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
+import { asVh, layout } from './layout';
 
 interface InternalProps {
   playlistTracks: Array<PlaylistTrack>;
@@ -28,8 +30,14 @@ const MobileDashBody = ({
 
   return (
     <>
-      <TopBar height="7vh" fixed />
-      <div className="flex flex-row relative mt-[7vh] h-[93vh] w-[100vw] overflow-y-hidden">
+      <TopBar height={asVh(layout.topbar)} fixed />
+      <div
+        className="flex flex-row relative w-[100vw] overflow-y-hidden"
+        style={{
+          marginTop: asVh(layout.topbar),
+          height: asVh(100 - layout.topbar - layout.navbar),
+        }}
+      >
         <div
           style={{
             opacity: showPanel === 'Search' ? 1 : 0,
@@ -51,7 +59,7 @@ const MobileDashBody = ({
           }}
         >
           <DashPanel>
-            <SongCardList tracks={resultsTracks} />
+            <ResponsiveResultList tracks={resultsTracks} />
           </DashPanel>
         </div>
         <div
@@ -73,7 +81,7 @@ const MobileDashBody = ({
           }}
         >
           <DashPanel>
-            <YoutubePlayer />
+            <YoutubePlayer width="100%" />
           </DashPanel>
         </div>
       </div>
