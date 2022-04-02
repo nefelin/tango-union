@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { RESULTS_PLAYLIST_ID } from '../../hooks/state/useGlobalPlaylistState/songLists.state';
 import { usePaginationState } from '../../hooks/state/usePaginationState';
@@ -15,16 +15,17 @@ const ResponsiveResultList = () => {
 
   const handleIncrement = () => {
     if (!loading && playlist.tracks.length < totalResults) {
-      // setLoading(true);
+      setLoading(true);
       setPage(page + 1);
     }
   };
+
 
   return (
     <ResponsiveResultListBody
       onScrollEnd={handleIncrement}
       loading={loading}
-      tracks={hydratedTracks || []}
+      tracks={hydratedTracks}
       trackTotal={totalResults}
       pageTotal={totalPages}
       page={page + 1}

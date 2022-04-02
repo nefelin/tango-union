@@ -47,6 +47,7 @@ const MobileDashContainer = () => {
     },
     onCompleted: (res) => {
       setResults(res.compoundQuery.totalResults);
+      setLoading(false) // this is based on the assumption that pagination triggerer will set loading to true when loadmore flow begins
       if (firstQuery.current && res.compoundQuery.randomId) {
         // randomize pre-loaded link
         const compact = compactTrackFromTrackId(
@@ -63,11 +64,6 @@ const MobileDashContainer = () => {
       setOptions(res.compoundQuery.counts);
     },
   });
-  useEffect(() => {
-    setLoading(loading);
-  }, [loading]);
-
-  console.log({page, loading})
 
   const ensuredCompoundQuery = useEnsureValue(data, compoundQuery);
 

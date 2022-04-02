@@ -1,11 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { InfiniteLoader } from 'react-virtualized';
 
 import { asVh, layout } from '../../features/MobileDash/layout';
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
+import useEnsureValue from '../../hooks/useEnsureValue';
+import { Maybe } from '../../types/utility/maybe';
+import { Loader } from '../ResultsTable/ResultsTableBody/overlayRenderer/styled';
 import SongCardList from '../SongCardList/SongCardList';
 
 export interface ResponsiveResultListProps {
-  tracks: Array<PlaylistTrack>;
+  tracks: Maybe<Array<PlaylistTrack>>;
   trackTotal: number;
   page: number;
   loading: boolean;
@@ -25,9 +30,12 @@ const ResponsiveResultListBody = ({
     const endScrollBuffer = 50;
     const { scrollTop, scrollHeight, clientHeight } = e.target;
     if (scrollTop + clientHeight >= scrollHeight - endScrollBuffer) {
-      onScrollEnd()
+      onScrollEnd();
     }
   };
+
+  const noFn = useCallback(() => {}, []);
+  const ensuredTracks = useEnsureValue(tracks, []);
 
   return (
     <>
@@ -49,9 +57,18 @@ const ResponsiveResultListBody = ({
           height: '100%',
         }}
       >
-        <SongCardList tracks={tracks} />
+        <InfiniteScroll
+          dataLength={ensuredTracks.length} //This is important field to render the next data
+          next={onScrollEnd}
+          hasMore={ensuredTracks.length !== trackTotal}
+          loader={
+              <Loader />
+          }
+          scrollThreshold={0.5}
+        >
+          <SongCardList tracks={ensuredTracks} />
+        </InfiniteScroll>
       </div>
-      {loading && `LOADING`}
     </>
   );
 };
