@@ -1,4 +1,3 @@
-import { Slide } from '@mui/material';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
@@ -6,7 +5,6 @@ import MobileNavbar from '../../components/MobileNavbar';
 import MobileSearch, { MobileSearchProps } from '../../components/MobileSearch';
 import ResponsivePlaylistBody from '../../components/ResponsivePlaylist/ResponsivePlaylistBody';
 import ResponsiveResultList from '../../components/ResponsiveResultList/ResponsiveResultList';
-import SongCardList from '../../components/SongCardList/SongCardList';
 import TopBar from '../../components/TopBar';
 import YoutubePlayer from '../../components/YoutubePlayer';
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
@@ -14,7 +12,6 @@ import { asVh, layout } from './layout';
 
 interface InternalProps {
   playlistTracks: Array<PlaylistTrack>;
-  resultsTracks: Array<PlaylistTrack>;
 }
 type Props = MobileSearchProps & InternalProps;
 
@@ -23,7 +20,6 @@ const MobileDashBody = ({
   setSearch,
   compoundQuery,
   playlistTracks,
-  resultsTracks,
   initSearchState,
 }: Props) => {
   const [showPanel, setShowPanel] = useState('Search');
@@ -59,7 +55,7 @@ const MobileDashBody = ({
           }}
         >
           <DashPanel>
-            <ResponsiveResultList tracks={resultsTracks} />
+            <ResponsiveResultList />
           </DashPanel>
         </div>
         <div
@@ -98,7 +94,6 @@ const DashPanel = styled.div`
   left: 0;
   bottom: 0;
   right: 0;
-  overflow-y: scroll;
 `;
 
 export default MobileDashBody;

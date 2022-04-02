@@ -1,36 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { asVh, layout } from '../../features/MobileDash/layout';
-import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
-import SongCardList from '../SongCardList/SongCardList';
+import { RESULTS_PLAYLIST_ID } from '../../hooks/state/useGlobalPlaylistState/songLists.state';
+import { usePaginationState } from '../../hooks/state/usePaginationState';
+import { usePlaylistState } from '../../hooks/state/usePlaylistState';
+import useCacheStitchedIdFetch from '../ResultsTable/useCacheStitchedIdFetch';
+import ResponsiveResultListBody from './ResponsiveResultListBody';
 
-interface Props {
-  tracks: Array<PlaylistTrack>;
-  trackTotal: number;
-  page: number;
-  pageTotal: number;
-}
+const ResponsiveResultList = () => {
+  const { playlist } = usePlaylistState(RESULTS_PLAYLIST_ID);
+  const { totalResults, totalPages, page, setPage, loading, setLoading } =
+    usePaginationState();
 
-const ResponsiveResultList = ({ trackTotal, pageTotal, page, tracks }: Props) => {
+  const [hydratedTracks] = useCacheStitchedIdFetch(playlist.tracks);
+
+  const handleIncrement = () => {
+    if (!loading && playlist.tracks.length < totalResults) {
+      // setLoading(true);
+      setPage(page + 1);
+    }
+  };
+
   return (
-    <>
-        <div
-          className="p-3 bg-white w-[100vw] flex flex-row items-center justify-center shadow-md text-xs font-bold"
-          style={{
-            height: asVh(layout.resultsHeader),
-            position: 'fixed',
-          }}
-        >
-          {trackTotal} total results - Page {page} of {pageTotal} loaded
-        </div>
-      <div
-        style={{
-          marginTop: asVh(layout.resultsHeader),
-        }}
-      >
-        <SongCardList tracks={tracks} />
-      </div>
-    </>
+    <ResponsiveResultListBody
+      onScrollEnd={handleIncrement}
+      loading={loading}
+      tracks={hydratedTracks || []}
+      trackTotal={totalResults}
+      pageTotal={totalPages}
+      page={page + 1}
+    />
   );
 };
 

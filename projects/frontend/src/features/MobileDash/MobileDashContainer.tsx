@@ -5,6 +5,7 @@ import { useCompoundQueryQuery } from '../../../generated/graphql';
 import { useSortState } from '../../components/ResultsTable/state/sort.state';
 import useCacheStitchedIdFetch from '../../components/ResultsTable/useCacheStitchedIdFetch';
 import { RESULTS_PLAYLIST_ID } from '../../hooks/state/useGlobalPlaylistState/songLists.state';
+import { usePaginationState } from '../../hooks/state/usePaginationState';
 import { usePlaylistState } from '../../hooks/state/usePlaylistState';
 import { useSearchbarState } from '../../hooks/state/useSearchbarState';
 import { useYoutubePlayerState } from '../../hooks/state/useYoutubePlayerState';
@@ -22,23 +23,19 @@ const MobileDashContainer = () => {
   // const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1024px)' });
   const [options, setOptions] = useState(compoundQuery.compoundQuery.counts);
   // const { sortInput, resetSort } = useSortState();
-  const {
-    addTracks,
-    replaceTracks,
-    playlist: searchResultList,
-  } = usePlaylistState(RESULTS_PLAYLIST_ID);
+  const { addTracks, replaceTracks } = usePlaylistState(RESULTS_PLAYLIST_ID);
   const [debouncedSearch] = useDebounce(searchbarState, 300, {
     equalityFn: objCompare,
   });
   // const [debouncedSort] = useDebounce(sortInput, 300, {
   //   equalityFn: objCompare,
   // });
-  const [page, setPage] = useState(0);
+  const { page, setResults, setPage, setLoading, pageSize, offset } =
+    usePaginationState();
   const firstQuery = useRef(true);
   const { setTrack } = useYoutubePlayerState();
 
-  const pageSize = 20;
-  const pagination = { offset: pageSize * page, limit: pageSize };
+  const pagination = { offset, limit: pageSize };
 
   const { data, error, loading } = useCompoundQueryQuery({
     variables: {
@@ -49,6 +46,7 @@ const MobileDashContainer = () => {
       },
     },
     onCompleted: (res) => {
+      setResults(res.compoundQuery.totalResults);
       if (firstQuery.current && res.compoundQuery.randomId) {
         // randomize pre-loaded link
         const compact = compactTrackFromTrackId(
@@ -65,12 +63,12 @@ const MobileDashContainer = () => {
       setOptions(res.compoundQuery.counts);
     },
   });
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
 
-  const ensuredTotalPages = useEnsureValue(data?.compoundQuery.totalPages, 0);
-  const ensuredTotalResults = useEnsureValue(
-    data?.compoundQuery.totalResults,
-    0,
-  );
+  console.log({page, loading})
+
   const ensuredCompoundQuery = useEnsureValue(data, compoundQuery);
 
   const resetPageAndSort = () => {
@@ -87,22 +85,13 @@ const MobileDashContainer = () => {
     return <div>Error!</div>;
   }
 
-  const handlePageIncrement = () => {
-    const resultCount = data?.compoundQuery?.totalResults;
-    if (resultCount && page + 1 < ensuredTotalPages) {
-      setPage((prev) => prev + 1);
-    }
-  };
-
-  const [resultTracks] = useCacheStitchedIdFetch(searchResultList.tracks);
   return (
     <MobileDashBody
       compoundQuery={ensuredCompoundQuery}
       initSearchState={searchbarState}
       setSearch={setSearchbarState}
       resetSearch={resetSearchbar}
-      playlistTracks={resultTracks || []}
-      resultsTracks={resultTracks || []}
+      playlistTracks={[]}
     />
   );
 };
