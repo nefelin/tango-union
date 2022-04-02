@@ -24,7 +24,7 @@ const Template: ComponentStory<typeof MobileDashBody> = (args) => {
 
 export const Default = Template.bind({});
 Default.args = {
-  counts: compoundQuery,
+  counts: compoundQuery.compoundQuery.counts,
   resetSearch: () => {},
   setSearch: () => {},
   initSearchState: {},

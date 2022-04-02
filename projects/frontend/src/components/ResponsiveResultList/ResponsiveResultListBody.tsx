@@ -4,7 +4,10 @@ import React, { useState } from 'react';
 import { asVh, layout } from '../../features/MobileDash/layout';
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
 import useEnsureValue from '../../hooks/useEnsureValue';
+import { CompactTrack } from '../../types/compactTrack/types';
+import { compactTrackFromTrackId } from '../../types/compactTrack/util';
 import { Maybe } from '../../types/utility/maybe';
+import { Unary } from '../../types/utility/unary';
 import { Loader } from '../ResultsTable/ResultsTableBody/overlayRenderer/styled';
 import SongCardList from '../SongCardList/SongCardList';
 
@@ -15,6 +18,7 @@ export interface ResponsiveResultListProps {
   loading: boolean;
   pageTotal: number;
   onScrollEnd: VoidFunction;
+  addPlaylistTrack: Unary<CompactTrack>;
 }
 
 const ResponsiveResultListBody = ({
@@ -24,6 +28,7 @@ const ResponsiveResultListBody = ({
   pageTotal,
   page,
   tracks,
+  addPlaylistTrack,
 }: ResponsiveResultListProps) => {
   const [moreId, setMoreId] = useState<Maybe<string>>();
   const onScroll = (e) => {
@@ -35,6 +40,12 @@ const ResponsiveResultListBody = ({
   };
 
   const handleMore = (trackId: string) => setMoreId(trackId);
+  const handleAddToPlaylist = () => {
+    if (moreId) {
+      addPlaylistTrack(compactTrackFromTrackId(moreId));
+      setMoreId(null);
+    }
+  };
 
   const ensuredTracks = useEnsureValue(tracks, []);
 
@@ -67,7 +78,9 @@ const ResponsiveResultListBody = ({
       </div>
       <Slide unmountOnExit mountOnEnter in={!!moreId} direction="up">
         <div className="bg-white w-full h-full backdrop-blur-md absolute top-0">
-          <MenuItem>Add to playlist</MenuItem>
+          <MenuItem onClick={handleAddToPlaylist}>Add to playlist</MenuItem>
+          <MenuItem>Share Search</MenuItem>
+          <MenuItem>Share Song</MenuItem>
           <MenuItem>Search similar</MenuItem>
           <MenuItem>Sort results...</MenuItem>
           <MenuItem onClick={() => setMoreId(null)}>Close</MenuItem>

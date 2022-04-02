@@ -25,7 +25,7 @@ const Template: ComponentStory<typeof MobileSearch> = (args) => {
 
 export const Init = Template.bind({});
 const args: MobileSearchProps = {
-  counts: compoundQuery,
+  counts: compoundQuery.compoundQuery.counts,
   resetSearch: () => {},
   setSearch: () => {},
   initSearchState: {},

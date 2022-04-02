@@ -13,7 +13,7 @@ interface Props {
 }
 
 const ResponsivePlaylistBody = ({ tracks }: Props) => {
-  const [moreId, setMoreId] = useState<Maybe<string>>();
+  const [moreId, setMoreId] = useState<Maybe<string>>(null);
   const summary = smartSummary(tracks || []);
   return (
     <>
@@ -32,7 +32,7 @@ const ResponsivePlaylistBody = ({ tracks }: Props) => {
           boxSizing: 'border-box',
         }}
       >
-        <SongCardList tracks={tracks} onMore={() => {}} />
+        <SongCardList tracks={tracks} onMore={(id) => setMoreId(id)} />
       </div>
       <Slide unmountOnExit mountOnEnter in={!!moreId} direction="up">
         <div className="bg-white w-full h-full backdrop-blur-md absolute top-0">
