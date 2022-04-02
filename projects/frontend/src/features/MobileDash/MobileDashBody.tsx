@@ -18,7 +18,7 @@ type Props = MobileSearchProps & InternalProps;
 const MobileDashBody = ({
   resetSearch,
   setSearch,
-  compoundQuery,
+  counts,
   playlistTracks,
   initSearchState,
 }: Props) => {
@@ -43,7 +43,7 @@ const MobileDashBody = ({
         >
           <DashPanel>
             <MobileSearch
-              {...{ resetSearch, setSearch, compoundQuery, initSearchState }}
+              {...{ resetSearch, setSearch, counts, initSearchState }}
             />
           </DashPanel>
         </div>

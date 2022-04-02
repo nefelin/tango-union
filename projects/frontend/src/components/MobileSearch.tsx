@@ -3,9 +3,8 @@ import { useFormik } from 'formik';
 import * as React from 'react';
 import { useEffect } from 'react';
 
-import {
-  CompoundQueryQuery,
-} from '../../generated/graphql';
+import { SelectIndexCount } from '../../generated/graphql';
+import { usePaginationState } from '../hooks/state/usePaginationState';
 import { Unary } from '../types/utility/unary';
 import MobileBarGraph from './MobileBarGraph';
 import decadeCountFromYears from './MobileSearch/decadeCountFromYears';
@@ -17,14 +16,19 @@ import { SearchbarState } from './Searchbar/types';
 import YearSelect from './YearSelect';
 
 export interface MobileSearchProps {
-  compoundQuery: CompoundQueryQuery;
+  counts: SelectIndexCount;
   setSearch: Unary<SearchbarState>;
   resetSearch: VoidFunction;
   initSearchState: SearchbarState;
 }
 
-const MobileSearch = ({ initSearchState, resetSearch, setSearch, compoundQuery }: MobileSearchProps) => {
-
+const MobileSearch = ({
+  initSearchState,
+  resetSearch,
+  setSearch,
+  counts,
+}: MobileSearchProps) => {
+  const { totalResults } = usePaginationState();
   const formik = useFormik<SearchbarState>({
     initialValues: initSearchState,
     enableReinitialize: true,
@@ -54,7 +58,7 @@ const MobileSearch = ({ initSearchState, resetSearch, setSearch, compoundQuery }
     formik.setFieldValue('year', combinedOrFilteredTerms);
   };
 
-  const selectOptions = compoundQuery.compoundQuery.counts;
+  const selectOptions = counts;
   const decadeData = decadeCountFromYears(selectOptions.year);
 
   return (
@@ -123,10 +127,7 @@ const MobileSearch = ({ initSearchState, resetSearch, setSearch, compoundQuery }
           <MobileBarGraph data={decadeData} onSelect={handleGraphYearSelect} />
         </div>
       </div>
-      <MobileSearchFooter
-        count={compoundQuery.compoundQuery.totalResults}
-        onClear={resetSearch}
-      />
+      <MobileSearchFooter count={totalResults} onClear={resetSearch} />
     </div>
   );
 };

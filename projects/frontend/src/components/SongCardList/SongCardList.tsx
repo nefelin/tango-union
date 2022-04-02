@@ -2,9 +2,14 @@ import React from 'react';
 
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
 import { useYoutubePlayerState } from '../../hooks/state/useYoutubePlayerState';
+import { Unary } from '../../types/utility/unary';
 import { SongCard } from '../SongCard';
 
-const SongCardList = ({ tracks }: { tracks: Array<PlaylistTrack> }) => {
+interface Props {
+  tracks: Array<PlaylistTrack>;
+  onMore: Unary<string>;
+}
+const SongCardList = ({ tracks, onMore }: Props) => {
   const {
     play,
     pause,
@@ -25,7 +30,7 @@ const SongCardList = ({ tracks }: { tracks: Array<PlaylistTrack> }) => {
             onPlay={() =>
               !trackIsActive || playState === 'stopped' ? play(track) : pause()
             }
-            onMore={() => {}}
+            onMore={onMore}
           />
         );
       })}

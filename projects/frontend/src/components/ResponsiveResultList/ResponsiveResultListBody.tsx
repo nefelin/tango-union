@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect } from 'react';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import { InfiniteLoader } from 'react-virtualized';
+import { MenuItem, Slide } from '@mui/material';
+import React, { useState } from 'react';
 
 import { asVh, layout } from '../../features/MobileDash/layout';
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
@@ -26,6 +25,7 @@ const ResponsiveResultListBody = ({
   page,
   tracks,
 }: ResponsiveResultListProps) => {
+  const [moreId, setMoreId] = useState<Maybe<string>>();
   const onScroll = (e) => {
     const endScrollBuffer = 0;
     const { scrollTop, scrollHeight, clientHeight } = e.target;
@@ -33,6 +33,8 @@ const ResponsiveResultListBody = ({
       onScrollEnd();
     }
   };
+
+  const handleMore = (trackId: string) => setMoreId(trackId);
 
   const ensuredTracks = useEnsureValue(tracks, []);
 
@@ -56,9 +58,21 @@ const ResponsiveResultListBody = ({
           height: '100%',
         }}
       >
-        <SongCardList tracks={ensuredTracks} />
-        {loading && <div className="flex flex-row w-full justify-center absolute p-6 bottom-0"><Loader /></div>}
+        <SongCardList tracks={ensuredTracks} onMore={handleMore} />
+        {loading && (
+          <div className="flex flex-row w-full justify-center absolute p-6 bottom-0">
+            <Loader />
+          </div>
+        )}
       </div>
+      <Slide unmountOnExit mountOnEnter in={!!moreId} direction="up">
+        <div className="bg-white w-full h-full backdrop-blur-md absolute top-0">
+          <MenuItem>Add to playlist</MenuItem>
+          <MenuItem>Search similar</MenuItem>
+          <MenuItem>Sort results...</MenuItem>
+          <MenuItem onClick={() => setMoreId(null)}>Close</MenuItem>
+        </div>
+      </Slide>
     </>
   );
 };

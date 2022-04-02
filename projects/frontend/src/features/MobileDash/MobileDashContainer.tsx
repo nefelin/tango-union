@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 
-import { useCompoundQueryQuery } from '../../../generated/graphql';
-import { useSortState } from '../../components/ResultsTable/state/sort.state';
-import useCacheStitchedIdFetch from '../../components/ResultsTable/useCacheStitchedIdFetch';
+import {
+  SelectIndexCount,
+  useCompoundQueryQuery,
+} from '../../../generated/graphql';
 import { RESULTS_PLAYLIST_ID } from '../../hooks/state/useGlobalPlaylistState/songLists.state';
 import { usePaginationState } from '../../hooks/state/usePaginationState';
 import { usePlaylistState } from '../../hooks/state/usePlaylistState';
@@ -15,13 +16,18 @@ import { compactTrackFromTrackId } from '../../types/compactTrack/util';
 import MobileDashBody from './MobileDashBody';
 
 const objCompare = (a: any, b: any) => JSON.stringify(a) === JSON.stringify(b);
+const emptyCounts: SelectIndexCount = {
+  year: [],
+  singer: [],
+  orchestra: [],
+  genre: [],
+};
 
 const MobileDashContainer = () => {
   const { setSearchbarState, searchbarState, resetSearchbar } =
     useSearchbarState();
 
   // const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1024px)' });
-  const [options, setOptions] = useState(compoundQuery.compoundQuery.counts);
   // const { sortInput, resetSort } = useSortState();
   const { addTracks, replaceTracks } = usePlaylistState(RESULTS_PLAYLIST_ID);
   const [debouncedSearch] = useDebounce(searchbarState, 300, {
@@ -47,7 +53,7 @@ const MobileDashContainer = () => {
     },
     onCompleted: (res) => {
       setResults(res.compoundQuery.totalResults);
-      setLoading(false) // this is based on the assumption that pagination triggerer will set loading to true when loadmore flow begins
+      setLoading(false); // this is based on the assumption that pagination triggerer will set loading to true when loadmore flow begins
       if (firstQuery.current && res.compoundQuery.randomId) {
         // randomize pre-loaded link
         const compact = compactTrackFromTrackId(
@@ -61,11 +67,10 @@ const MobileDashContainer = () => {
       } else {
         addTracks(res.compoundQuery.ids);
       }
-      setOptions(res.compoundQuery.counts);
     },
   });
 
-  const ensuredCompoundQuery = useEnsureValue(data, compoundQuery);
+  const ensuredCounts = useEnsureValue(data?.compoundQuery.counts, emptyCounts);
 
   const resetPageAndSort = () => {
     setPage(0);
@@ -83,7 +88,7 @@ const MobileDashContainer = () => {
 
   return (
     <MobileDashBody
-      compoundQuery={ensuredCompoundQuery}
+      counts={ensuredCounts}
       initSearchState={searchbarState}
       setSearch={setSearchbarState}
       resetSearch={resetSearchbar}
