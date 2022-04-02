@@ -19,7 +19,7 @@ export interface ResponsiveResultListProps {
   loading: boolean;
   pageTotal: number;
   onScrollEnd: VoidFunction;
-  addPlaylistTrack: Unary<CompactTrack>;
+  addPlaylistTrack: Unary<Array<string>>;
 }
 
 const ResponsiveResultListBody = ({
@@ -44,7 +44,7 @@ const ResponsiveResultListBody = ({
   const handleMore = (trackId: string) => setMoreId(trackId);
   const handleAddToPlaylist = () => {
     if (moreId) {
-      addPlaylistTrack(compactTrackFromTrackId(moreId));
+      addPlaylistTrack([moreId]);
       setMoreId(null);
     }
   };

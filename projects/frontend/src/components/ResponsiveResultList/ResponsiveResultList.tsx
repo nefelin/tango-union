@@ -3,13 +3,12 @@ import React from 'react';
 import { QUICKLIST_PLAYLIST_ID, RESULTS_PLAYLIST_ID } from '../../hooks/state/useGlobalPlaylistState/songLists.state';
 import { usePaginationState } from '../../hooks/state/usePaginationState';
 import { usePlaylistState } from '../../hooks/state/usePlaylistState';
-import { useRoutedPlaylist } from '../../hooks/state/useRoutedPlaylist';
 import useCacheStitchedIdFetch from '../ResultsTable/useCacheStitchedIdFetch';
 import ResponsiveResultListBody from './ResponsiveResultListBody';
 
 const ResponsiveResultList = () => {
   const { playlist: resultsList } = usePlaylistState(RESULTS_PLAYLIST_ID);
-  const {addTrack: addPlaylistTrack} = useRoutedPlaylist();
+  const {addTracks: addPlaylistTrack} = usePlaylistState(QUICKLIST_PLAYLIST_ID);
   const { totalResults, totalPages, page, setPage, loading, setLoading } =
     usePaginationState();
 

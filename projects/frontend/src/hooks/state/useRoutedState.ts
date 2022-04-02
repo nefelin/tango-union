@@ -13,7 +13,7 @@ export const useRoutedState = () => {
   const { saved } = useParams<{ saved?: string }>();
   const navigate = useNavigate();
 
-  let paramObj: SavedState = {tracks: [], search: {}};
+  let paramObj: SavedState = { tracks: [], search: {} };
 
   if (!r.isNil(saved)) {
     try {
@@ -29,11 +29,13 @@ export const useRoutedState = () => {
     navigate(`/${urlBase}/${asString}`);
   };
 
-  const setTracks = (newTracks: Array<CompoundIdString>) =>
+  const setTracks = (newTracks: Array<CompoundIdString>) => {
     replaceRoute({ ...paramObj, tracks: newTracks });
+  };
 
-  const setSearch = (newSearch: SearchbarState) =>
+  const setSearch = (newSearch: SearchbarState) => {
     replaceRoute({ ...paramObj, search: newSearch });
+  };
 
   return {
     tracks: paramObj.tracks,
