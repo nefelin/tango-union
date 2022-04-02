@@ -7,6 +7,7 @@ import { Maybe } from '../../types/utility/maybe';
 import PlaylistSummary from '../PlaylistSummary';
 import { smartSummary } from '../PlaylistSummary/summarize';
 import SongCardList from '../SongCardList/SongCardList';
+import EmptyState from './EmptyState';
 
 interface Props {
   tracks: Array<PlaylistTrack>;
@@ -17,7 +18,7 @@ interface Props {
 const ResponsivePlaylistBody = ({ tracks, clearPlaylist }: Props) => {
   const [moreId, setMoreId] = useState<Maybe<string>>(null);
   const summary = smartSummary(tracks || []);
-  return (
+  return tracks.length ? (
     <>
       <div
         className="p-3 bg-white w-[100vw] flex flex-col justify-center shadow-md"
@@ -38,10 +39,14 @@ const ResponsivePlaylistBody = ({ tracks, clearPlaylist }: Props) => {
       </div>
       <Slide unmountOnExit mountOnEnter in={!!moreId} direction="up">
         <div className="bg-white w-full h-full backdrop-blur-md absolute top-0">
-          <MenuItem onClick={() => {
-            clearPlaylist();
-            setMoreId(null);
-          }}>Clear playlist</MenuItem>
+          <MenuItem
+            onClick={() => {
+              clearPlaylist();
+              setMoreId(null);
+            }}
+          >
+            Clear playlist
+          </MenuItem>
           <MenuItem disabled>Remove from playlist</MenuItem>
           <MenuItem disabled>Share playlist</MenuItem>
           <MenuItem disabled>Share song</MenuItem>
@@ -50,6 +55,8 @@ const ResponsivePlaylistBody = ({ tracks, clearPlaylist }: Props) => {
         </div>
       </Slide>
     </>
+  ) : (
+    <EmptyState />
   );
 };
 
