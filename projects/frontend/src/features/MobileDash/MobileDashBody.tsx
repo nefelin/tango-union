@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import MobileNavbar from '../../components/MobileNavbar';
 import MobileSearch, { MobileSearchProps } from '../../components/MobileSearch';
-import ResponsivePlaylistBody from '../../components/ResponsivePlaylist/ResponsivePlaylistBody';
 import ResponsivePlaylistContainer from '../../components/ResponsivePlaylist/ResponsivePlaylistContainer';
 import ResponsiveResultList from '../../components/ResponsiveResultList/ResponsiveResultList';
 import TopBar from '../../components/TopBar';
@@ -20,7 +19,6 @@ const MobileDashBody = ({
   resetSearch,
   setSearch,
   counts,
-  playlistTracks,
   initSearchState,
 }: Props) => {
   const [showPanel, setShowPanel] = useState('Search');

@@ -71,7 +71,8 @@ const ResponsiveResultListBody = ({
       >
         <SongCardList tracks={ensuredTracks} onMore={handleMore} />
         {loading && (
-          <div className="flex flex-row w-full justify-center absolute p-6 bottom-0">
+          <div className="flex flex-row w-full h-full justify-center items-center absolute p-6 bottom-0">
+            <div className="h-full w-full bg-white opacity-70 absolute top-0" />
             <Loader />
           </div>
         )}
@@ -79,10 +80,10 @@ const ResponsiveResultListBody = ({
       <Slide unmountOnExit mountOnEnter in={!!moreId} direction="up">
         <div className="bg-white w-full h-full backdrop-blur-md absolute top-0">
           <MenuItem onClick={handleAddToPlaylist}>Add to playlist</MenuItem>
-          <MenuItem>Share Search</MenuItem>
-          <MenuItem>Share Song</MenuItem>
-          <MenuItem>Search similar</MenuItem>
-          <MenuItem>Sort results...</MenuItem>
+          <MenuItem disabled>Share Search</MenuItem>
+          <MenuItem disabled>Share Song</MenuItem>
+          <MenuItem disabled>Search similar</MenuItem>
+          <MenuItem disabled>Sort results...</MenuItem>
           <MenuItem onClick={() => setMoreId(null)}>Close</MenuItem>
         </div>
       </Slide>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDebounce } from 'use-debounce';
 
 import {
@@ -11,7 +11,6 @@ import { usePlaylistState } from '../../hooks/state/usePlaylistState';
 import { useSearchbarState } from '../../hooks/state/useSearchbarState';
 import { useYoutubePlayerState } from '../../hooks/state/useYoutubePlayerState';
 import useEnsureValue from '../../hooks/useEnsureValue';
-import { compoundQuery } from '../../stories/queries/compoundQuery';
 import { compactTrackFromTrackId } from '../../types/compactTrack/util';
 import MobileDashBody from './MobileDashBody';
 

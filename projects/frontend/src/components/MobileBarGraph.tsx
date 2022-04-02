@@ -19,15 +19,16 @@ const MobileBarGraph = ({ onSelect, data }: Props) => {
   const floorHeightPx = 4;
   const textSvgBoxHeight = 18;
   const bufferedHeight = containerHeight - floorHeightPx - textSvgBoxHeight * 2;
-  const scale = bufferedHeight / maxVal;
+  const scale = bufferedHeight / (maxVal || 1); // when maxval is 0 (i.e. init), we divide by 0 and things break
 
   return (
     <>
       <div ref={graphRef} className="flex flex-row h-full items-end w-full">
-        {data.map((value , i) => {
+        {data.map((value, i) => {
           const label = i + `0's`;
           const barHeight = scale * value + floorHeightPx;
           const bgColor = `rgb(${i * 25}, ${i * 10}, 255)`;
+
           return (
             <div key={label} className="flex flex-col mx-0.5 w-full">
               <svg className="mb-1" viewBox={`0 0 50 ${textSvgBoxHeight}`}>
@@ -37,7 +38,7 @@ const MobileBarGraph = ({ onSelect, data }: Props) => {
               </svg>
               <div
                 tabIndex={0}
-                role='button'
+                role="button"
                 style={{ height: barHeight, backgroundColor: bgColor }}
                 className="focus-visible:outline-0 bg-black border border-black rounded-t-sm transition-all duration-500 ease-out w-full cursor-pointer"
                 onClick={() => onSelect(i)}

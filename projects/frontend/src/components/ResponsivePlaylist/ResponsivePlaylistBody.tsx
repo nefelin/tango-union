@@ -10,9 +10,11 @@ import SongCardList from '../SongCardList/SongCardList';
 
 interface Props {
   tracks: Array<PlaylistTrack>;
+  clearPlaylist: VoidFunction;
+  // removeFromPlaylist: Unary<CompactTrack>
 }
 
-const ResponsivePlaylistBody = ({ tracks }: Props) => {
+const ResponsivePlaylistBody = ({ tracks, clearPlaylist }: Props) => {
   const [moreId, setMoreId] = useState<Maybe<string>>(null);
   const summary = smartSummary(tracks || []);
   return (
@@ -36,10 +38,14 @@ const ResponsivePlaylistBody = ({ tracks }: Props) => {
       </div>
       <Slide unmountOnExit mountOnEnter in={!!moreId} direction="up">
         <div className="bg-white w-full h-full backdrop-blur-md absolute top-0">
-          <MenuItem>Remove from playlist</MenuItem>
-          <MenuItem>Share playlist</MenuItem>
-          <MenuItem>Share song</MenuItem>
-          <MenuItem>Search similar</MenuItem>
+          <MenuItem onClick={() => {
+            clearPlaylist();
+            setMoreId(null);
+          }}>Clear playlist</MenuItem>
+          <MenuItem disabled>Remove from playlist</MenuItem>
+          <MenuItem disabled>Share playlist</MenuItem>
+          <MenuItem disabled>Share song</MenuItem>
+          <MenuItem disabled>Search similar</MenuItem>
           <MenuItem onClick={() => setMoreId(null)}>Close</MenuItem>
         </div>
       </Slide>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router';
 
+import { useRoutedPlaylist } from '../../hooks/state/useRoutedPlaylist';
 import {
   compactTrackFromString,
   playlistTrackFromTrack,
@@ -9,15 +10,19 @@ import useCacheStitchedIdFetch from '../ResultsTable/useCacheStitchedIdFetch';
 import ResponsivePlaylistBody from './ResponsivePlaylistBody';
 
 const ResponsivePlaylistContainer = () => {
-  const { saved } = useParams<{ saved?: string }>();
-  const { tracks: routedTracks } = JSON.parse(saved || '{"tracks": []}');
+  const {tracks: routedTracks, replaceTracks} = useRoutedPlaylist();
   const [tracks] = useCacheStitchedIdFetch(
     routedTracks.map(compactTrackFromString),
   );
 
+  const clearPlaylist = () => {
+    replaceTracks([])
+  }
+
   return (
     <ResponsivePlaylistBody
       tracks={tracks?.map(playlistTrackFromTrack) ?? []}
+      clearPlaylist={clearPlaylist}
     />
   );
 };
