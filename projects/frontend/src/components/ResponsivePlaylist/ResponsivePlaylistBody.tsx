@@ -25,7 +25,8 @@ const ResponsivePlaylistBody = ({ tracks }: Props) => {
       </div>
       <div
         style={{
-          marginTop: asVh(layout.playlistHeader),
+          paddingTop: asVh(layout.playlistHeader),
+          boxSizing: 'border-box'
         }}
       >
         <SongCardList tracks={tracks} />
