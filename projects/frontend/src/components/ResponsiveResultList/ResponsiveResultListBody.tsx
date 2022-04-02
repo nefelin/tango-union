@@ -27,14 +27,13 @@ const ResponsiveResultListBody = ({
   tracks,
 }: ResponsiveResultListProps) => {
   const onScroll = (e) => {
-    const endScrollBuffer = 50;
+    const endScrollBuffer = 0;
     const { scrollTop, scrollHeight, clientHeight } = e.target;
     if (scrollTop + clientHeight >= scrollHeight - endScrollBuffer) {
       onScrollEnd();
     }
   };
 
-  const noFn = useCallback(() => {}, []);
   const ensuredTracks = useEnsureValue(tracks, []);
 
   return (
@@ -57,17 +56,8 @@ const ResponsiveResultListBody = ({
           height: '100%',
         }}
       >
-        <InfiniteScroll
-          dataLength={ensuredTracks.length} //This is important field to render the next data
-          next={onScrollEnd}
-          hasMore={ensuredTracks.length !== trackTotal}
-          loader={
-              <Loader />
-          }
-          scrollThreshold={0.5}
-        >
-          <SongCardList tracks={ensuredTracks} />
-        </InfiniteScroll>
+        <SongCardList tracks={ensuredTracks} />
+        {loading && <div className="flex flex-row w-full justify-center absolute p-6 bottom-0"><Loader /></div>}
       </div>
     </>
   );
