@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useThrottledCallback } from 'use-debounce';
 
 import { asVh, layout } from '../../features/MobileDash/layout';
+import { reactiveMoreState } from '../../features/MobileDash/reactiveMoreState';
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
 import useEnsureValue from '../../hooks/useEnsureValue';
 import { CompactTrack } from '../../types/compactTrack/types';
@@ -41,7 +42,7 @@ const ResponsiveResultListBody = ({
     }
   };
 
-  const handleMore = (trackId: string) => setMoreId(trackId);
+  const handleMore = (track: CompactTrack) => reactiveMoreState({track, songSource: 'results'});
   const handleAddToPlaylist = () => {
     if (moreId) {
       addPlaylistTrack([moreId]);

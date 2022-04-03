@@ -14,7 +14,6 @@ const ResponsivePlaylistContainer = () => {
   const {
     playlist: { tracks: playlistTracks },
     loadTracks,
-    replaceTracks,
   } = usePlaylistState(QUICKLIST_PLAYLIST_ID);
   const { tracks: routedTracks } = useRoutedPlaylist();
   const [tracks] = useCacheStitchedIdFetch(playlistTracks);
@@ -23,14 +22,9 @@ const ResponsivePlaylistContainer = () => {
     loadTracks(routedTracks.map(compactTrackFromString));
   }, []);
 
-  const clearPlaylist = () => {
-    replaceTracks([])
-  }
-
   return (
     <ResponsivePlaylistBody
       tracks={tracks?.map(playlistTrackFromTrack) ?? []}
-      clearPlaylist={clearPlaylist}
     />
   );
 };

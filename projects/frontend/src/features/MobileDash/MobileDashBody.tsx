@@ -1,6 +1,9 @@
+import { useReactiveVar } from '@apollo/client';
+import { MenuItem, Slide } from '@mui/material';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+import MobileMoreMenu from '../../components/MobileMoreMenu/MobileMoreMenu';
 import MobileNavbar from '../../components/MobileNavbar';
 import MobileSearch, { MobileSearchProps } from '../../components/MobileSearch';
 import ResponsivePlaylistContainer from '../../components/ResponsivePlaylist/ResponsivePlaylistContainer';
@@ -9,6 +12,7 @@ import TopBar from '../../components/TopBar';
 import YoutubePlayer from '../../components/YoutubePlayer';
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
 import { asVh, layout } from './layout';
+import { reactiveMoreState } from './reactiveMoreState';
 
 interface InternalProps {
   playlistTracks: Array<PlaylistTrack>;
@@ -22,6 +26,7 @@ const MobileDashBody = ({
   initSearchState,
 }: Props) => {
   const [showPanel, setShowPanel] = useState('Search');
+  const moreState = useReactiveVar(reactiveMoreState);
 
   return (
     <>
@@ -81,6 +86,7 @@ const MobileDashBody = ({
         </div>
       </div>
       <MobileNavbar onNav={(newLoc) => setShowPanel(newLoc)} />
+      <MobileMoreMenu />
     </>
   );
 };

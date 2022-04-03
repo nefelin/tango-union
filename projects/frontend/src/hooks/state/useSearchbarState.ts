@@ -25,8 +25,8 @@ export const useSearchbarState = () => {
     }
   },[JSON.stringify(trackSources)])
 
-  const searchFromIds = (ids: Array<CompactTrack>) => {
-    setIdSources(ids);
+  const searchFromIds = (tracks: Array<CompactTrack>) => {
+    setIdSources(tracks);
   }
 
   // stick search in the title, helpful juggling tabs

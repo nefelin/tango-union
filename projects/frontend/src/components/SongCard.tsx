@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import React, { KeyboardEventHandler, MouseEventHandler } from 'react';
 
 import { PlaylistTrack } from '../hooks/state/usePlaylistsState/types';
-import { TrackId } from '../types/compactTrack/types';
+import { CompactTrack, TrackId } from '../types/compactTrack/types';
 import { Unary } from '../types/utility/unary';
 import { capitalizeFirstLetter } from '../util/capitalizeFirst';
 import AnimatedEq from './AnimatedEq';
@@ -15,7 +15,7 @@ import AnimatedEq from './AnimatedEq';
 interface Props {
   track: PlaylistTrack;
   onPlay: Unary<TrackId>;
-  onMore: Unary<TrackId>;
+  onMore: Unary<CompactTrack>;
   active: boolean;
   playing: boolean;
 }
@@ -26,12 +26,12 @@ export const SongCard = ({ track, onPlay, onMore, active, playing }: Props) => {
   const handleMoreKeyboard: KeyboardEventHandler = (e) => {
     e.stopPropagation();
     if (e.key === ' ' || e.key === 'Enter') {
-      onMore(trackId);
+      onMore(track);
     }
   };
   const handleMoreMouse: MouseEventHandler = (e) => {
     e.stopPropagation();
-    onMore(trackId);
+    onMore(track);
   };
   const handlePlayKeyboard: KeyboardEventHandler = (e) => {
     e.stopPropagation();

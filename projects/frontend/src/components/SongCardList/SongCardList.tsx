@@ -2,12 +2,13 @@ import React from 'react';
 
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
 import { useYoutubePlayerState } from '../../hooks/state/useYoutubePlayerState';
+import { CompactTrack } from '../../types/compactTrack/types';
 import { Unary } from '../../types/utility/unary';
 import { SongCard } from '../SongCard';
 
 interface Props {
   tracks: Array<PlaylistTrack>;
-  onMore: Unary<string>;
+  onMore: Unary<CompactTrack>;
 }
 const SongCardList = ({ tracks, onMore }: Props) => {
   const {

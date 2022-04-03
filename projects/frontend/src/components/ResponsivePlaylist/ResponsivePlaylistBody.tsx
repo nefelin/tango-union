@@ -2,6 +2,7 @@ import { MenuItem, Slide } from '@mui/material';
 import React, { useState } from 'react';
 
 import { asVh, layout } from '../../features/MobileDash/layout';
+import { reactiveMoreState } from '../../features/MobileDash/reactiveMoreState';
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
 import { Maybe } from '../../types/utility/maybe';
 import { useIsMobile } from '../../util/isMobile';
@@ -12,13 +13,11 @@ import EmptyState from './EmptyState';
 
 interface Props {
   tracks: Array<PlaylistTrack>;
-  clearPlaylist: VoidFunction;
   // removeFromPlaylist: Unary<CompactTrack>
 }
 
-const ResponsivePlaylistBody = ({ tracks, clearPlaylist }: Props) => {
+const ResponsivePlaylistBody = ({ tracks }: Props) => {
   const isMobile = useIsMobile();
-  const [moreId, setMoreId] = useState<Maybe<string>>(null);
   const summary = smartSummary(tracks || []);
   return tracks.length ? (
     <>
@@ -37,25 +36,13 @@ const ResponsivePlaylistBody = ({ tracks, clearPlaylist }: Props) => {
           boxSizing: 'border-box',
         }}
       >
-        <SongCardList tracks={tracks} onMore={(id) => setMoreId(id)} />
+        <SongCardList
+          tracks={tracks}
+          onMore={(track) =>
+            reactiveMoreState({ track, songSource: 'playlist' })
+          }
+        />
       </div>
-      <Slide unmountOnExit mountOnEnter in={!!moreId} direction="up">
-        <div className="bg-white w-full h-full backdrop-blur-md absolute top-0">
-          <MenuItem
-            onClick={() => {
-              clearPlaylist();
-              setMoreId(null);
-            }}
-          >
-            Clear playlist
-          </MenuItem>
-          <MenuItem disabled>Remove from playlist</MenuItem>
-          <MenuItem disabled>Share playlist</MenuItem>
-          <MenuItem disabled>Share song</MenuItem>
-          <MenuItem disabled>Search similar</MenuItem>
-          <MenuItem onClick={() => setMoreId(null)}>Close</MenuItem>
-        </div>
-      </Slide>
     </>
   ) : (
     <EmptyState />
