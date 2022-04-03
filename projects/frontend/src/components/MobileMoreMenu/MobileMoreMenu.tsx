@@ -1,23 +1,25 @@
 import { useReactiveVar } from '@apollo/client';
-import { MenuItem, Slide } from '@mui/material';
+import { Slide } from '@mui/material';
 import React from 'react';
 
 import { asVh, layout } from '../../features/MobileDash/layout';
-import { reactiveMoreState } from '../../features/MobileDash/reactiveMoreState';
+import {
+  fallbackMoreState,
+  reactiveMoreState,
+} from '../../features/MobileDash/reactiveMoreState';
+import useEnsureValue from '../../hooks/useEnsureValue';
 import PlaylistMenu from './PlaylistMenu';
 import ResultsMenu from './ResultsMenu';
+
 const MobileMoreMenu = () => {
   const moreState = useReactiveVar(reactiveMoreState);
 
-  if (!moreState) {
-    return <>More menu error</>; // this should never be rendered
-  }
-
+  const ensuredMoreState = useEnsureValue(moreState, fallbackMoreState);
   const menuContent =
-    moreState?.songSource === 'playlist' ? (
-      <PlaylistMenu track={moreState.track} />
+    ensuredMoreState.songSource === 'playlist' ? (
+      <PlaylistMenu track={ensuredMoreState.track} />
     ) : (
-      <ResultsMenu track={moreState.track} />
+      <ResultsMenu track={ensuredMoreState.track} />
     );
 
   return (

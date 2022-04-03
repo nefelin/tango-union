@@ -9,14 +9,13 @@ import ResponsiveResultListBody from './ResponsiveResultListBody';
 const ResponsiveResultList = () => {
   const { playlist: resultsList } = usePlaylistState(RESULTS_PLAYLIST_ID);
   const {addTracks: addPlaylistTrack} = usePlaylistState(QUICKLIST_PLAYLIST_ID);
-  const { totalResults, totalPages, page, setPage, loading, setLoading } =
+  const { totalResults, totalPages, page, setPage, loading} =
     usePaginationState();
 
   const [hydratedTracks] = useCacheStitchedIdFetch(resultsList.tracks);
 
   const handleIncrement = () => {
     if (!loading && resultsList.tracks.length < totalResults) {
-      setLoading(true);
       setPage(page + 1);
     }
   };

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router';
 import { useDebounce } from 'use-debounce';
 
 import {
@@ -12,6 +13,7 @@ import { useSearchbarState } from '../../hooks/state/useSearchbarState';
 import { useYoutubePlayerState } from '../../hooks/state/useYoutubePlayerState';
 import useEnsureValue from '../../hooks/useEnsureValue';
 import { compactTrackFromTrackId } from '../../types/compactTrack/util';
+import { useIsMobile } from '../../util/isMobile';
 import MobileDashBody from './MobileDashBody';
 
 const objCompare = (a: any, b: any) => JSON.stringify(a) === JSON.stringify(b);
@@ -23,6 +25,9 @@ const emptyCounts: SelectIndexCount = {
 };
 
 const MobileDashContainer = () => {
+  const isMobile = useIsMobile()
+  const navigate = useNavigate();
+
   const { setSearchbarState, searchbarState, resetSearchbar } =
     useSearchbarState();
 
@@ -52,7 +57,6 @@ const MobileDashContainer = () => {
     },
     onCompleted: (res) => {
       setResults(res.compoundQuery.totalResults);
-      setLoading(false); // this is based on the assumption that pagination triggerer will set loading to true when loadmore flow begins
       if (firstQuery.current && res.compoundQuery.randomId) {
         // randomize pre-loaded link
         const compact = compactTrackFromTrackId(
@@ -70,6 +74,11 @@ const MobileDashContainer = () => {
   });
 
   const ensuredCounts = useEnsureValue(data?.compoundQuery.counts, emptyCounts);
+
+
+  useEffect(() => {
+    setLoading(loading)
+  }, [loading])
 
   const resetPageAndSort = () => {
     setPage(0);
