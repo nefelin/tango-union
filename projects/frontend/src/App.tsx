@@ -27,7 +27,10 @@ const App = () => (
     <BrowserRouter basename="/">
       <React.Suspense fallback={Loading}>
         <Routes>
-          <Route path="/" element={<Navigate to="/player" />} />
+          <Route path="/" element={<MobileDashContainer />} />
+          <Route path="/:saved" element={<MobileDashContainer />} />
+          <Route path="/desktop" element={<MusicDash />} />
+          <Route path="/desktop/:saved" element={<MusicDash />} />
           <Route path="/mobile" element={<MobileDashContainer />} />
           <Route path="/mobile/:saved" element={<MobileDashContainer />} />
           <Route path="/player" element={<MusicDash />} />

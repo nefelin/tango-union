@@ -12,6 +12,7 @@ import { usePlaylistState } from '../../hooks/state/usePlaylistState';
 import { useSearchbarState } from '../../hooks/state/useSearchbarState';
 import { useYoutubePlayerState } from '../../hooks/state/useYoutubePlayerState';
 import useEnsureValue from '../../hooks/useEnsureValue';
+import useNavigateWithParamState from '../../hooks/useNavigateWithParamState';
 import { compactTrackFromTrackId } from '../../types/compactTrack/util';
 import { useIsMobile } from '../../util/isMobile';
 import MobileDashBody from './MobileDashBody';
@@ -79,6 +80,13 @@ const MobileDashContainer = () => {
   useEffect(() => {
     setLoading(loading)
   }, [loading])
+
+  const paramNavigate = useNavigateWithParamState()
+  useEffect(() => {
+    if (!isMobile) {
+      paramNavigate('/desktop')
+    }
+  }, [isMobile])
 
   const resetPageAndSort = () => {
     setPage(0);

@@ -21,7 +21,9 @@ import { useSearchbarState } from '../hooks/state/useSearchbarState';
 import { useYoutubePlayerState } from '../hooks/state/useYoutubePlayerState';
 import useEnsureValue from '../hooks/useEnsureValue';
 import { FocusableContext } from '../hooks/useFocusable';
+import useNavigateWithParamState from '../hooks/useNavigateWithParamState';
 import { compactTrackFromTrackId } from '../types/compactTrack/util';
+import { useIsMobile } from '../util/isMobile';
 
 const emptyOptions: FullCountFragmentFragment['counts'] = {
   year: [],
@@ -32,7 +34,7 @@ const emptyOptions: FullCountFragmentFragment['counts'] = {
 const objCompare = (a: any, b: any) => JSON.stringify(a) === JSON.stringify(b);
 
 const MusicDash = () => {
-  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1024px)' });
+  const isMobile = useIsMobile();
   const [options, setOptions] = useState(emptyOptions);
   const { searchbarState } = useSearchbarState();
   const { sortInput, resetSort } = useSortState();
@@ -88,6 +90,12 @@ const MusicDash = () => {
   useEffect(() => {
     setPage(0);
   }, [debouncedSort]);
+  const paramNavigate = useNavigateWithParamState();
+  useEffect(() => {
+    if (isMobile) {
+      paramNavigate('/mobile');
+    }
+  }, [isMobile]);
 
   document.body.style.margin = '';
 
@@ -132,7 +140,6 @@ const MusicDash = () => {
         </FooterHeader>
         <FooterFooter className="nameplate">by Eric Lindgren</FooterFooter>
       </Footer>
-      <NotSupportedOverlay active={isTabletOrMobile} />
     </div>
   );
 };
