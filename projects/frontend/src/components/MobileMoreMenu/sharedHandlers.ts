@@ -25,7 +25,7 @@ export const handleShare =
         addSnack({ content: 'Link copied to clipboard', severity: 'info' }),
       onError: () =>
         addSnack({
-          content: 'Error copying link to clipboard',
+          content: 'Error sharing link',
           severity: 'error',
         }),
     });
