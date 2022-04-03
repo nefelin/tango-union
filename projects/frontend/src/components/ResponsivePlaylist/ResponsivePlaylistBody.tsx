@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { asVh, layout } from '../../features/MobileDash/layout';
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
 import { Maybe } from '../../types/utility/maybe';
+import { useIsMobile } from '../../util/isMobile';
 import PlaylistSummary from '../PlaylistSummary';
 import { smartSummary } from '../PlaylistSummary/summarize';
 import SongCardList from '../SongCardList/SongCardList';
@@ -16,22 +17,23 @@ interface Props {
 }
 
 const ResponsivePlaylistBody = ({ tracks, clearPlaylist }: Props) => {
+  const isMobile = useIsMobile();
   const [moreId, setMoreId] = useState<Maybe<string>>(null);
   const summary = smartSummary(tracks || []);
   return tracks.length ? (
     <>
       <div
-        className="p-3 bg-white w-[100vw] flex flex-col justify-center shadow-md"
+        className="p-3 bg-white w-full flex flex-col justify-center shadow-md"
         style={{
           height: asVh(layout.playlistHeader),
-          position: 'fixed',
+          position: isMobile ? 'fixed' : 'inherit',
         }}
       >
         <PlaylistSummary summary={summary} />
       </div>
       <div
         style={{
-          paddingTop: asVh(layout.playlistHeader),
+          paddingTop: isMobile ? asVh(layout.playlistHeader) : 0,
           boxSizing: 'border-box',
         }}
       >
