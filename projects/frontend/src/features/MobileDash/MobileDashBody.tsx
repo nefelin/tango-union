@@ -1,5 +1,4 @@
 import { useReactiveVar } from '@apollo/client';
-import { MenuItem, Slide } from '@mui/material';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
@@ -11,6 +10,7 @@ import ResponsiveResultList from '../../components/ResponsiveResultList/Responsi
 import TopBar from '../../components/TopBar';
 import YoutubePlayer from '../../components/YoutubePlayer';
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
+import useSnackbars from '../../hooks/useSnackbars';
 import { asVh, layout } from './layout';
 import { reactiveMoreState } from './reactiveMoreState';
 
@@ -26,7 +26,7 @@ const MobileDashBody = ({
   initSearchState,
 }: Props) => {
   const [showPanel, setShowPanel] = useState('Search');
-  const moreState = useReactiveVar(reactiveMoreState);
+  const { snackStack } = useSnackbars();
 
   return (
     <>
@@ -87,6 +87,7 @@ const MobileDashBody = ({
       </div>
       <MobileNavbar onNav={(newLoc) => setShowPanel(newLoc)} />
       <MobileMoreMenu />
+      {snackStack}
     </>
   );
 };
