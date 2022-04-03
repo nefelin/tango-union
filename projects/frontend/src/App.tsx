@@ -5,12 +5,13 @@ import {
   InMemoryCache,
 } from '@apollo/client';
 import * as React from 'react';
-import { Navigate, Route } from 'react-router';
+import { Route } from 'react-router';
 import { BrowserRouter, Routes } from 'react-router-dom';
 
 import Sandbox from './components/Sandbox/Sandbox';
 import MobileDashContainer from './features/MobileDash/MobileDashContainer';
 import MusicDash from './features/MusicDash';
+import RootRedirect from './features/RootRedirect';
 import StandalonePlaylist from './features/StandalonePlaylist';
 const isProd = process.env['REACT_APP_ENV'] === 'prod';
 const host = isProd ? 'https://api.tangounion.net' : 'http://localhost';
@@ -27,8 +28,8 @@ const App = () => (
     <BrowserRouter basename="/">
       <React.Suspense fallback={Loading}>
         <Routes>
-          <Route path="/" element={<MobileDashContainer />} />
-          <Route path="/:saved" element={<MobileDashContainer />} />
+          <Route path="/" element={<RootRedirect />} />
+          <Route path="/:saved" element={<RootRedirect />} />
           <Route path="/desktop" element={<MusicDash />} />
           <Route path="/desktop/:saved" element={<MusicDash />} />
           <Route path="/mobile" element={<MobileDashContainer />} />
