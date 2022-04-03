@@ -25,7 +25,7 @@ export const useRoutedState = () => {
 
   const replaceRoute = (newState: SavedState) => {
     const asString = JSON.stringify(newState);
-    const urlBase = window.location.href.match('mobile') ? 'mobile' : 'player'; // todo hacky fix, you can do better :|
+    const urlBase = window.location.pathname.split('/')[1] ?? 'mobile'; // todo hacky fix
     navigate(`/${urlBase}/${asString}`);
   };
 
