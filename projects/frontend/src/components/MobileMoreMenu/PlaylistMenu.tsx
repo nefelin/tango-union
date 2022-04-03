@@ -7,10 +7,14 @@ import { usePlaylistState } from '../../hooks/state/usePlaylistState';
 import { useSearchbarState } from '../../hooks/state/useSearchbarState';
 import useSnackbars from '../../hooks/useSnackbars';
 import { CompactTrack } from '../../types/compactTrack/types';
+import { urlTrackParams } from '../../util/urlParams';
+import { handleSearchSimilar, handleShare } from './sharedHandlers';
 const PlaylistMenu = ({ track }: { track: CompactTrack }) => {
-  const { replaceTracks, removeTracks } = usePlaylistState(QUICKLIST_PLAYLIST_ID);
+  const { replaceTracks, removeTracks, playlist } = usePlaylistState(
+    QUICKLIST_PLAYLIST_ID,
+  );
   const { searchFromIds } = useSearchbarState();
-  const {addSnack} = useSnackbars();
+  const { addSnack } = useSnackbars();
 
   const closeMore = () => reactiveMoreState(null);
 
@@ -19,24 +23,43 @@ const PlaylistMenu = ({ track }: { track: CompactTrack }) => {
     closeMore();
   };
 
-  const handleSearchSimilar = () => {
-    searchFromIds([track]);
-    addSnack({severity: 'info', content: 'Search filters updated'})
-    closeMore();
-  };
-
   const handleRemoveTrack = () => {
     removeTracks(track.listId);
     closeMore();
-  }
+  };
 
   return (
     <>
       <MenuItem onClick={handleClearPlaylist}>Clear playlist</MenuItem>
       <MenuItem onClick={handleRemoveTrack}>Remove from playlist</MenuItem>
-      <MenuItem disabled>Share playlist</MenuItem>
-      <MenuItem disabled>Share song</MenuItem>
-      <MenuItem onClick={handleSearchSimilar}>Search similar</MenuItem>
+      <MenuItem
+        onClick={handleShare({
+          params: JSON.stringify(urlTrackParams(playlist.tracks)),
+          closeMore,
+          addSnack,
+        })}
+      >
+        Share playlist
+      </MenuItem>
+      <MenuItem
+        onClick={handleShare({
+          params: JSON.stringify(urlTrackParams([track])),
+          closeMore,
+          addSnack,
+        })}
+      >
+        Share song
+      </MenuItem>
+      <MenuItem
+        onClick={handleSearchSimilar({
+          track,
+          closeMore,
+          searchFromIds,
+          addSnack,
+        })}
+      >
+        Search similar
+      </MenuItem>
       <MenuItem onClick={closeMore}>Close</MenuItem>
     </>
   );
