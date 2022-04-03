@@ -25,8 +25,11 @@ const MobileMoreMenu = () => {
   return (
     <Slide unmountOnExit mountOnEnter in={!!moreState} direction="up">
       <div
-        className="bg-white w-full h-full backdrop-blur-md absolute top-0"
-        style={{ paddingTop: asVh(layout.topbar) }}
+        className="bg-white w-full backdrop-blur-md absolute bottom-0 overflow-hidden"
+        style={{
+          boxShadow: '0 0 10px rgba(0, 0, 0, .15)',
+          height: asVh(100 - layout.topbar),
+        }}
       >
         {menuContent}
       </div>

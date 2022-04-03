@@ -1,5 +1,5 @@
 import { useReactiveVar } from '@apollo/client';
-import { MenuItem } from '@mui/material';
+import { Alert, MenuItem, Snackbar } from '@mui/material';
 import React from 'react';
 
 import { reactiveMoreState } from '../../features/MobileDash/reactiveMoreState';
@@ -31,6 +31,15 @@ const ResultsMenu = ({ track }: { track: CompactTrack }) => {
       <MenuItem onClick={handleSearchSimilar}>Search similar</MenuItem>
       <MenuItem disabled>Sort results...</MenuItem>
       <MenuItem onClick={closeMore}>Close</MenuItem>
+      <Snackbar
+        open={true}
+        autoHideDuration={5000}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <Alert severity="success" variant="filled" onClose={() => {}}>
+          Playlist Link Copied to Clipboard!
+        </Alert>
+      </Snackbar>
     </>
   );
 };
