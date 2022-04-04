@@ -24,7 +24,7 @@ export const SongCard = ({
   onMore,
   active,
   playing,
-  simpleCards = true,
+  simpleCards = false,
 }: Props) => {
   const { linkScore, trackId, title, singer, orchestra, year, genre } = track;
 
