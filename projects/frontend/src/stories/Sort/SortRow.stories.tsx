@@ -20,5 +20,5 @@ const Template: ComponentStory<typeof SortRow> = (args) => {
 export const Default = Template.bind({});
 Default.args = {
   text: 'Singers',
-  onChange: (newSort) => console.log(newSort),
+  onChange: () => {},
 };
