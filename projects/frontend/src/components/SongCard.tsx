@@ -1,6 +1,8 @@
 import { Link, MoreHorizOutlined } from '@mui/icons-material';
 import { Tooltip } from '@mui/material';
 import classNames from 'classnames';
+import * as r from 'ramda';
+import { sort } from 'ramda';
 import React, { KeyboardEventHandler, MouseEventHandler } from 'react';
 
 import { PlaylistTrack } from '../hooks/state/usePlaylistsState/types';
@@ -17,6 +19,8 @@ interface Props {
   playing: boolean;
   simpleCards?: boolean;
 }
+
+const localeCompare = (a: string, b: string) => a.localeCompare(b);
 
 export const SongCard = ({
   track,
@@ -49,12 +53,18 @@ export const SongCard = ({
     onPlay(trackId);
   };
 
-  const singerOrchDetails = [...(orchestra || []), ...(singer || [])];
+
+  const sortedSinger = singer ? [...singer].sort(localeCompare) : [];
+  const sortedOrchestra = orchestra ? [...orchestra].sort(localeCompare) : [];
+
+  const singerOrchDetails = [...sortedOrchestra, ...sortedSinger];
   const orchSingerText = singerOrchDetails.length
     ? singerOrchDetails.join(', ')
     : 'Missing Orchestra and Singer';
 
-  const yearGenreDetails = [year, capitalizeFirstLetter(genre)];
+  const yearGenreDetails = [year, capitalizeFirstLetter(genre)].filter(
+    (val) => !!val,
+  );
   const yearGenreText = yearGenreDetails.length
     ? yearGenreDetails.join(', ')
     : 'Missing Year and Genre';

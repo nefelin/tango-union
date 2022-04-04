@@ -6,6 +6,7 @@ import {
   SelectIndexCount,
   useCompoundQueryQuery,
 } from '../../../generated/graphql';
+import { useSortState } from '../../components/ResultsTable/state/sort.state';
 import { RESULTS_PLAYLIST_ID } from '../../hooks/state/useGlobalPlaylistState/songLists.state';
 import { usePaginationState } from '../../hooks/state/usePaginationState';
 import { usePlaylistState } from '../../hooks/state/usePlaylistState';
@@ -32,15 +33,14 @@ const MobileDashContainer = () => {
   const { setSearchbarState, searchbarState, resetSearchbar } =
     useSearchbarState();
 
-  // const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1024px)' });
-  // const { sortInput, resetSort } = useSortState();
+  const { sortInput, resetSort } = useSortState();
   const { addTracks, replaceTracks } = usePlaylistState(RESULTS_PLAYLIST_ID);
   const [debouncedSearch] = useDebounce(searchbarState, 300, {
     equalityFn: objCompare,
   });
-  // const [debouncedSort] = useDebounce(sortInput, 300, {
-  //   equalityFn: objCompare,
-  // });
+  const [debouncedSort] = useDebounce(sortInput, 300, {
+    equalityFn: objCompare,
+  });
   const { page, setResults, setPage, setLoading, pageSize, offset } =
     usePaginationState();
   const firstQuery = useRef(true);
@@ -52,7 +52,7 @@ const MobileDashContainer = () => {
     variables: {
       criteria: {
         ...debouncedSearch,
-        // sort: debouncedSort,
+        sort: debouncedSort,
         pagination,
       },
     },
@@ -90,12 +90,12 @@ const MobileDashContainer = () => {
 
   const resetPageAndSort = () => {
     setPage(0);
-    // resetSort();
+    resetSort();
   };
   useEffect(resetPageAndSort, [debouncedSearch]);
-  // useEffect(() => {
-  //   setPage(0);
-  // }, [debouncedSort]);
+  useEffect(() => {
+    setPage(0);
+  }, [debouncedSort]);
 
   if (error) {
     console.error(error);
