@@ -103,6 +103,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.3.19",
+    "@dnd-kit/core": "^5.0.3",
     "@faker-js/faker": "^6.0.0",
     "@mui/icons-material": "^5.5.1",
     "@mui/material": "^5.5.3",
