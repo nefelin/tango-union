@@ -1,8 +1,8 @@
 import {
   Link,
   MoreHorizOutlined,
-  PlayCircleFilledWhiteOutlined,
 } from '@mui/icons-material';
+import { Tooltip } from '@mui/material';
 import classNames from 'classnames';
 import React, { KeyboardEventHandler, MouseEventHandler } from 'react';
 
@@ -81,10 +81,18 @@ export const SongCard = ({ track, onPlay, onMore, active, playing }: Props) => {
         <div className="text-xs truncate">{yearGenreText}</div>
         <div className="text-xs truncate">{orchSingerText}</div>
       </div>
-      <div className="col-span-1 flex flex-col justify-center text-xs items-center">
-        <div>{linkScore}/10</div>
-        <Link />
-      </div>
+      <Tooltip
+        title="Tango Union tries to match tango metadata to Youtube videos. This rating is an estimate of how good a match we found. Six or greater is likely a match."
+        enterTouchDelay={0}
+        leaveTouchDelay={8000}
+        onClick={(e) => e.stopPropagation()}
+
+      >
+        <div className="col-span-1 flex flex-col justify-center text-xs items-center">
+          <div>{linkScore}/10</div>
+          <Link />
+        </div>
+      </Tooltip>
       <div
         className="col-span-1 flex justify-center items-center"
         tabIndex={0}
