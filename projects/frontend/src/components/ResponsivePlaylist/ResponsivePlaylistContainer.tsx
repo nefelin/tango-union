@@ -10,7 +10,11 @@ import {
 import useCacheStitchedIdFetch from '../ResultsTable/useCacheStitchedIdFetch';
 import ResponsivePlaylistBody from './ResponsivePlaylistBody';
 
-const ResponsivePlaylistContainer = () => {
+const ResponsivePlaylistContainer = ({
+  simpleCards,
+}: {
+  simpleCards?: boolean;
+}) => {
   const {
     playlist: { tracks: playlistTracks },
     loadTracks,
@@ -24,6 +28,7 @@ const ResponsivePlaylistContainer = () => {
 
   return (
     <ResponsivePlaylistBody
+      simpleCards={simpleCards}
       tracks={tracks?.map(playlistTrackFromTrack) ?? []}
     />
   );

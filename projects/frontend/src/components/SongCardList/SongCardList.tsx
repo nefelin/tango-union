@@ -9,8 +9,9 @@ import { SongCard } from '../SongCard';
 interface Props {
   tracks: Array<PlaylistTrack>;
   onMore: Unary<CompactTrack>;
+  simpleCards?: boolean;
 }
-const SongCardList = ({ tracks, onMore }: Props) => {
+const SongCardList = ({ simpleCards, tracks, onMore }: Props) => {
   const {
     play,
     pause,
@@ -24,6 +25,7 @@ const SongCardList = ({ tracks, onMore }: Props) => {
         const trackIsActive = currentTrack?.listId === track.listId;
         return (
           <SongCard
+            simpleCards={simpleCards}
             key={track.listId}
             active={trackIsActive}
             playing={playState === 'playing' || playState === 'loading'}

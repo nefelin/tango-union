@@ -1,5 +1,6 @@
 import React, { CSSProperties } from 'react';
 
+import MobileMoreMenu from '../components/MobileMoreMenu/MobileMoreMenu';
 import ResponsivePlaylistContainer from '../components/ResponsivePlaylist/ResponsivePlaylistContainer';
 import StandaloneFraming from '../components/ResponsivePlaylist/StandaloneFraming';
 import TopBar from '../components/TopBar';
@@ -14,9 +15,10 @@ const StandalonePlaylist = () => {
   return (
     <>
       <TopBar fixed={isMobile} />
-      <div style={{...mobileLayoutAdjustments}}>
+      <div style={{ ...mobileLayoutAdjustments }}>
         <StandaloneFraming>
-          <ResponsivePlaylistContainer />
+          <ResponsivePlaylistContainer simpleCards={true} />
+          <MobileMoreMenu />
         </StandaloneFraming>
       </div>
     </>
