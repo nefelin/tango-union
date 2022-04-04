@@ -33,7 +33,7 @@ const ResponsiveResultListBody = ({
   addPlaylistTrack,
 }: ResponsiveResultListProps) => {
   const [moreId, setMoreId] = useState<Maybe<string>>();
-  const throttledScrollHandler = useThrottledCallback(onScrollEnd, 300)
+  const throttledScrollHandler = useThrottledCallback(onScrollEnd, 1500, {leading: true, trailing: false})
   const onScroll = (e) => {
     const endScrollBuffer = 0;
     const { scrollTop, scrollHeight, clientHeight } = e.target;
