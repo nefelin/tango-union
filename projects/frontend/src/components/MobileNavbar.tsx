@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
-import { asVh, layout } from '../features/MobileDash/layout';
+import { layout } from '../features/MobileDash/layout';
+import useViewport, { asVh } from '../hooks/useViewport';
 import { Unary } from '../types/utility/unary';
 
 const pages = ['Search', 'Results', 'Playlist', 'Player'] as const;
@@ -13,7 +14,6 @@ interface Props {
 
 const MobileNavbar = ({ onNav }: Props) => {
   const [current, setCurrent] = useState('Search');
-
   return (
     <div
       className="fixed bottom-0 w-full flex flex-row justify-around items-center text-sm text-gray-400 font-bold bg-white"

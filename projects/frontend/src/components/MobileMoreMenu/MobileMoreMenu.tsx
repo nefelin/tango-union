@@ -2,12 +2,13 @@ import { useReactiveVar } from '@apollo/client';
 import { Slide } from '@mui/material';
 import React from 'react';
 
-import { asVh, layout } from '../../features/MobileDash/layout';
+import { layout } from '../../features/MobileDash/layout';
 import {
   fallbackMoreState,
   reactiveMoreState,
 } from '../../features/MobileDash/reactiveMoreState';
 import useEnsureValue from '../../hooks/useEnsureValue';
+import useViewport, { asVh } from '../../hooks/useViewport';
 import PlaylistMenu from './PlaylistMenu';
 import ResultsMenu from './ResultsMenu';
 

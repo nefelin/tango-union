@@ -1,4 +1,3 @@
-import { useReactiveVar } from '@apollo/client';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
@@ -11,7 +10,8 @@ import TopBar from '../../components/TopBar';
 import YoutubePlayer from '../../components/YoutubePlayer';
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
 import useSnackbars from '../../hooks/useSnackbars';
-import { asVh, layout } from './layout';
+import { asVh } from '../../hooks/useViewport';
+import { layout } from './layout';
 import { reactiveMoreState } from './reactiveMoreState';
 
 interface InternalProps {

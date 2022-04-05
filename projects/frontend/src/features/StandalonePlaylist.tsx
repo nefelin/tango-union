@@ -4,8 +4,9 @@ import MobileMoreMenu from '../components/MobileMoreMenu/MobileMoreMenu';
 import ResponsivePlaylistContainer from '../components/ResponsivePlaylist/ResponsivePlaylistContainer';
 import StandaloneFraming from '../components/ResponsivePlaylist/StandaloneFraming';
 import TopBar from '../components/TopBar';
+import { asVh } from '../hooks/useViewport';
 import { useIsMobile } from '../util/isMobile';
-import { asVh, layout } from './MobileDash/layout';
+import { layout } from './MobileDash/layout';
 
 const StandalonePlaylist = () => {
   const isMobile = useIsMobile();

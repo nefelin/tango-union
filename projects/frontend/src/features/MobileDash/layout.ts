@@ -4,5 +4,3 @@ export const layout = {
   resultsHeader: 6,
   navbar: 5.5
 } as const
-
-export const asVh = (n: number) => n + 'vh';

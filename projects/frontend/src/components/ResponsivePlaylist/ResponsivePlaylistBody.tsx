@@ -1,10 +1,9 @@
-import { MenuItem, Slide } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 
-import { asVh, layout } from '../../features/MobileDash/layout';
+import { layout } from '../../features/MobileDash/layout';
 import { reactiveMoreState } from '../../features/MobileDash/reactiveMoreState';
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
-import { Maybe } from '../../types/utility/maybe';
+import { asVh } from '../../hooks/useViewport';
 import { useIsMobile } from '../../util/isMobile';
 import PlaylistSummary from '../PlaylistSummary';
 import { smartSummary } from '../PlaylistSummary/summarize';
@@ -20,6 +19,7 @@ interface Props {
 const ResponsivePlaylistBody = ({ sortable, simpleCards, tracks }: Props) => {
   const isMobile = useIsMobile();
   const summary = smartSummary(tracks || []);
+
   return tracks.length ? (
     <>
       <div

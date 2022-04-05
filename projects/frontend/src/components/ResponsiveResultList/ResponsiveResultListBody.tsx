@@ -2,12 +2,12 @@ import { MenuItem, Slide } from '@mui/material';
 import React, { useState } from 'react';
 import { useThrottledCallback } from 'use-debounce';
 
-import { asVh, layout } from '../../features/MobileDash/layout';
+import { layout } from '../../features/MobileDash/layout';
 import { reactiveMoreState } from '../../features/MobileDash/reactiveMoreState';
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
 import useEnsureValue from '../../hooks/useEnsureValue';
+import useViewport from '../../hooks/useViewport';
 import { CompactTrack } from '../../types/compactTrack/types';
-import { compactTrackFromTrackId } from '../../types/compactTrack/util';
 import { Maybe } from '../../types/utility/maybe';
 import { Unary } from '../../types/utility/unary';
 import { Loader } from '../ResultsTable/ResultsTableBody/overlayRenderer/styled';
@@ -33,6 +33,7 @@ const ResponsiveResultListBody = ({
   addPlaylistTrack,
 }: ResponsiveResultListProps) => {
   const [moreId, setMoreId] = useState<Maybe<string>>();
+  const {asVh} = useViewport()
   const throttledScrollHandler = useThrottledCallback(onScrollEnd, 1500, {leading: true, trailing: false})
   const onScroll = (e) => {
     const endScrollBuffer = 0;
