@@ -11,8 +11,9 @@ import YoutubePlayer from './YoutubePlayer';
 
 const MobilePlayingPanel = () => {
   const {
-    context: { nextTrack, currentTrack, previousTrack },
+    context: { nextTrack, previousTrack },
   } = useGlobalPlaylistsState();
+  const { currentTrack } = useYoutubePlayerState();
 
   const [tracks] = useCacheStitchedIdFetch(currentTrack ? [currentTrack] : []);
   const track = tracks?.[0];
@@ -38,10 +39,10 @@ const MobilePlayingPanel = () => {
     <div className="flex flex-col p-4 items-center justify-around h-full">
       <YoutubePlayer width="300px" height="300px" />
       {track && (
-        <div className='flex flex-col items-center'>
-          <div className='text-lg font-bold'>{`${track.title} - ${track.year}`}</div>
-          <div className='text-sm'>{track.orchestra?.join(', ')}</div>
-          <div className='text-sm'>{track.singer?.join(', ')}</div>
+        <div className="flex flex-col items-center">
+          <div className="text-lg font-bold">{`${track.title} - ${track.year}`}</div>
+          <div className="text-sm">{track.orchestra?.join(', ')}</div>
+          <div className="text-sm">{track.singer?.join(', ')}</div>
         </div>
       )}
       <TrackControls />
