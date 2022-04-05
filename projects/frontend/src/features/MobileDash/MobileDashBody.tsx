@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import MobileMoreMenu from '../../components/MobileMoreMenu/MobileMoreMenu';
 import MobileNavbar from '../../components/MobileNavbar';
+import MobilePlayingPanel from '../../components/MobilePlayingPanel';
 import MobileSearch, { MobileSearchProps } from '../../components/MobileSearch';
 import ResponsivePlaylistContainer from '../../components/ResponsivePlaylist/ResponsivePlaylistContainer';
 import ResponsiveResultList from '../../components/ResponsiveResultList/ResponsiveResultList';
@@ -81,7 +82,7 @@ const MobileDashBody = ({
           }}
         >
           <DashPanel>
-            <YoutubePlayer width="100%" />
+            <MobilePlayingPanel />
           </DashPanel>
         </div>
       </div>
