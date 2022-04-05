@@ -82,7 +82,7 @@ export const SongCard = ({
 
   return (
     <div
-      className="grid p-2 grid-cols-8 bg-gray-100 my-0.5"
+      className="grid p-2 grid-cols-8 bg-gray-100 my-0.5 w-full"
       tabIndex={0}
       role="link"
       onKeyDown={handlePlayKeyboard}
