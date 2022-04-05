@@ -1,8 +1,9 @@
-import { Divider, MenuItem } from '@mui/material';
+import { ExpandMore, RestartAlt } from '@mui/icons-material';
+import { MenuItem } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
 import { reactiveMoreState } from '../../features/MobileDash/reactiveMoreState';
-import { Unary } from '../../types/utility/unary';
+import IconSpacer from '../MobileMoreMenu/IconSpacer';
 import { useSortState } from '../ResultsTable/state/sort.state';
 import { SortState } from '../ResultsTable/types/sortState';
 import SortRow from './SortRow';
@@ -25,19 +26,22 @@ const SortPanel = () => {
   const handleSortToggle = (fieldName: string) => () => {
     setTempSortState((prev) => {
       switch (prev[fieldName]) {
+        case null:
         case undefined:
           return { ...prev, [fieldName]: 'desc' };
         case 'desc':
           return { ...prev, [fieldName]: 'asc' };
         case 'asc':
-          delete prev[fieldName];
-          return prev;
+          return { ...prev, [fieldName]: null };
       }
     });
   };
 
   return (
     <>
+      <MenuItem onClick={handleClose}>
+        <ExpandMore />
+      </MenuItem>
       <SortRow
         value={tempSortState['title']}
         onClick={handleSortToggle('title')}
@@ -68,9 +72,14 @@ const SortPanel = () => {
         onClick={handleSortToggle('linkScore')}
         text={'Link Rating'}
       />
-      <Divider />
-      <MenuItem onClick={handleReset}>Reset</MenuItem>
-      <MenuItem onClick={handleClose}>Close</MenuItem>
+      <MenuItem onClick={handleReset}>
+        <div className="flex justify-center">
+          <IconSpacer>
+            <RestartAlt />
+          </IconSpacer>
+          Reset Filters
+        </div>
+      </MenuItem>
     </>
   );
 };

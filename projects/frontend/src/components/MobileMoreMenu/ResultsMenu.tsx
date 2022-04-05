@@ -1,4 +1,12 @@
 import { MissingFieldError } from '@apollo/client';
+import {
+  ExpandMore,
+  ManageSearch,
+  PlaylistAdd,
+  ReplyAllOutlined,
+  ReplyOutlined,
+  Sort,
+} from '@mui/icons-material';
 import { Divider, MenuItem, Slide, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
@@ -11,6 +19,7 @@ import { CompactTrack } from '../../types/compactTrack/types';
 import { urlSearchParams, urlTrackParams } from '../../util/urlParams';
 import SortPanel from '../MobileSort/SortPanel';
 import SortRow from '../MobileSort/SortRow';
+import IconSpacer from './IconSpacer';
 import { handleShare } from './sharedHandlers';
 const ResultsMenu = ({ track }: { track: CompactTrack }) => {
   const { addTracks } = usePlaylistState(QUICKLIST_PLAYLIST_ID);
@@ -34,7 +43,15 @@ const ResultsMenu = ({ track }: { track: CompactTrack }) => {
 
   return (
     <>
-      <MenuItem onClick={handleAddToPlaylist}>Add to playlist</MenuItem>
+      <MenuItem onClick={closeMore}>
+        <ExpandMore />
+      </MenuItem>
+      <MenuItem onClick={handleAddToPlaylist}>
+        <IconSpacer>
+          <PlaylistAdd />
+        </IconSpacer>
+        Add to playlist
+      </MenuItem>
       <MenuItem
         onClick={handleShare({
           rootPath: '',
@@ -43,6 +60,9 @@ const ResultsMenu = ({ track }: { track: CompactTrack }) => {
           params: JSON.stringify(urlSearchParams(searchbarState)),
         })}
       >
+        <IconSpacer>
+          <ReplyAllOutlined />
+        </IconSpacer>
         Share Search
       </MenuItem>
       <MenuItem
@@ -52,11 +72,23 @@ const ResultsMenu = ({ track }: { track: CompactTrack }) => {
           params: JSON.stringify(urlTrackParams([track])),
         })}
       >
+        <IconSpacer>
+          <ReplyOutlined />
+        </IconSpacer>
         Share Song
       </MenuItem>
-      <MenuItem onClick={handleSearchSimilar}>Search similar</MenuItem>
-      <MenuItem onClick={() => setSortOpen(true)}>Sort results...</MenuItem>
-      <MenuItem onClick={closeMore}>Close</MenuItem>
+      <MenuItem onClick={handleSearchSimilar}>
+        <IconSpacer>
+          <ManageSearch />
+        </IconSpacer>
+        Search similar
+      </MenuItem>
+      <MenuItem onClick={() => setSortOpen(true)}>
+        <IconSpacer>
+          <Sort />
+        </IconSpacer>
+        Sort results...
+      </MenuItem>
       <Slide unmountOnExit mountOnEnter in={!!sortOpen} direction="up">
         <div className="absolute top-0 bg-white w-full">
           <SortPanel />

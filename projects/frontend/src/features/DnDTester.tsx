@@ -32,7 +32,6 @@ const DropBox = () => {
 const Sortable = ({ id }: { id: string }) => {
   const { listeners, isOver, styles } = useSortable(id);
   return useMemo(() => {
-    // console.log('render');
     return (
       <div
         {...listeners}

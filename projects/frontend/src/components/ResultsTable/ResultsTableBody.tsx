@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import BaseTable, {
   AutoResizer,
   BaseTableProps,
+  SortOrder,
   TableComponents,
 } from 'react-base-table';
 import styled from 'styled-components';
@@ -20,6 +21,7 @@ import { reactiveTableRowsVisible } from './resultsTable.state';
 import overlayRenderer from './ResultsTableBody/overlayRenderer';
 import rowRenderer from './ResultsTableBody/rowRenderer';
 import searchResultColumns from './ResultsTableBody/searchResultColumns';
+import { sanitizeSort } from './state/sanitizeSort';
 import { useSortState } from './state/sort.state';
 
 const TableHeaderCell: TableComponents['TableHeaderCell'] = ({
@@ -103,7 +105,7 @@ const ResultsTableBody = ({
                 onEndReachedThreshold={30}
                 components={{ TableHeaderCell }}
                 columns={searchResultColumns(width)}
-                sortState={sort}
+                sortState={sanitizeSort(sort)}
                 onColumnSort={handleColumnSort}
                 overlayRenderer={overlayRenderer(loading, loadingMore)}
                 loadingMore={loadingMore}

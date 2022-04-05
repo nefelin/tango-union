@@ -3,6 +3,7 @@ import * as r from 'ramda';
 
 import { CompoundSortInput } from '../../../../generated/graphql';
 import { SortState } from '../types/sortState';
+import { sanitizeSort } from './sanitizeSort';
 
 const initSortState: SortState = {};
 
@@ -19,9 +20,10 @@ export const useSortState = () => {
     reactiveSortState(initSortState);
   };
 
+  const sanitized = sanitizeSort(sort); // removes nullish values
   const sortInput: CompoundSortInput = r.mapObjIndexed(
     (sortOrder) => (sortOrder === 'asc' ? 1 : -1),
-    sort,
+    sanitized,
   );
 
   return {

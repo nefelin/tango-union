@@ -1,4 +1,9 @@
-import { ArrowDropDown, ArrowDropUp, ArrowRight } from '@mui/icons-material';
+import {
+  ArrowDropDown,
+  ArrowDropUp,
+  ArrowRight,
+  CircleOutlined,
+} from '@mui/icons-material';
 import { MenuItem } from '@mui/material';
 import React from 'react';
 import { SortOrder } from 'react-base-table';
@@ -12,12 +17,12 @@ interface Props {
 }
 
 const SortRow = ({ onClick, text, value }: Props) => {
-  let sortIcon = <ArrowRight />;
+  let sortIcon = <CircleOutlined className="scale-50" fontSize='large'/>;
 
   if (value === 'asc') {
-    sortIcon = <ArrowDropUp />;
+    sortIcon = <ArrowDropUp fontSize="large" />;
   } else if (value === 'desc') {
-    sortIcon = <ArrowDropDown />;
+    sortIcon = <ArrowDropDown fontSize="large" />;
   }
 
   return (
