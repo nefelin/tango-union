@@ -1,7 +1,6 @@
 import {
   closestCenter,
   DndContext,
-  KeyboardSensor,
   PointerSensor,
   TouchSensor,
   useSensor,
@@ -10,7 +9,6 @@ import {
 import {
   arrayMove,
   SortableContext,
-  sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { useSortable } from '@dnd-kit/sortable';
@@ -18,6 +16,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { DragIndicator } from '@mui/icons-material';
 import React, { useState } from 'react';
 
+import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
 import { playlistTrackFromTrack } from '../../types/compactTrack/util';
 import { useIsMobile } from '../../util/isMobile';
 import { darienzoLaborde } from '../PlaylistSummary/summarize.test.data';
@@ -25,7 +24,7 @@ import { SongCard } from '../SongCard';
 
 const playlistTracks = darienzoLaborde.map(playlistTrackFromTrack);
 const Sandbox = () => {
-  const [items, setItems] = useState(['1', '2', '3']);
+  const [items, setItems] = useState(playlistTracks);
   const isMobile = useIsMobile();
   const sensors = useSensors(
     isMobile ? useSensor(TouchSensor) : useSensor(PointerSensor),
@@ -37,9 +36,9 @@ const Sandbox = () => {
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
     >
-      <SortableContext items={items} strategy={verticalListSortingStrategy}>
-        {items.map((id) => (
-          <SortableItem key={id} id={id} />
+      <SortableContext items={items.map(item => ({...item, id: item.listId}))} strategy={verticalListSortingStrategy}>
+        {items.map((track) => (
+          <SortableItem key={track.listId} track={track} />
         ))}
       </SortableContext>
     </DndContext>
@@ -47,11 +46,12 @@ const Sandbox = () => {
 
   function handleDragEnd(event) {
     const { active, over } = event;
+    console.log({active, over})
 
-    if (active.id !== over.id) {
+    if (active.id !== over.id){
       setItems((prevItems) => {
-        const oldIndex = prevItems.indexOf(active.id);
-        const newIndex = prevItems.indexOf(over.id);
+        const oldIndex = prevItems.findIndex(({listId}) => listId === active.id);
+        const newIndex = prevItems.findIndex(({listId}) => listId === over.id);
 
         return arrayMove(prevItems, oldIndex, newIndex);
       });
@@ -59,9 +59,9 @@ const Sandbox = () => {
   }
 };
 
-export function SortableItem(props) {
+export function SortableItem({track}: {track: PlaylistTrack}) {
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: props.id });
+    useSortable({ id: track.listId });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -80,9 +80,7 @@ export function SortableItem(props) {
           <DragIndicator color="disabled" />
         </div>
         <SongCard
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          track={playlistTracks[0]}
+          track={track}
           onPlay={() => console.log('play')}
           onMore={noFn}
           active={false}
