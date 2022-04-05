@@ -1,6 +1,6 @@
 import { makeVar, useReactiveVar } from '@apollo/client';
 
-const DEFAULT_PAGE_SIZE = 20;
+const DEFAULT_PAGE_SIZE = 40;
 
 interface PaginationState {
   page: number;
