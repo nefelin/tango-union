@@ -14,9 +14,10 @@ import EmptyState from './EmptyState';
 interface Props {
   tracks: Array<PlaylistTrack>;
   simpleCards?: boolean;
+  sortable?: boolean;
 }
 
-const ResponsivePlaylistBody = ({ simpleCards, tracks }: Props) => {
+const ResponsivePlaylistBody = ({ sortable, simpleCards, tracks }: Props) => {
   const isMobile = useIsMobile();
   const summary = smartSummary(tracks || []);
   return tracks.length ? (
@@ -38,6 +39,7 @@ const ResponsivePlaylistBody = ({ simpleCards, tracks }: Props) => {
       >
         <SongCardList
           simpleCards={simpleCards}
+          sortable={sortable}
           tracks={tracks}
           onMore={(track) =>
             reactiveMoreState({ track, songSource: 'playlist' })

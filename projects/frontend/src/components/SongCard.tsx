@@ -1,8 +1,8 @@
-import { Link, MoreHorizOutlined } from '@mui/icons-material';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import { DragIndicator, Link, MoreHorizOutlined } from '@mui/icons-material';
 import { Tooltip } from '@mui/material';
 import classNames from 'classnames';
-import * as r from 'ramda';
-import { sort } from 'ramda';
 import React, { KeyboardEventHandler, MouseEventHandler } from 'react';
 
 import { PlaylistTrack } from '../hooks/state/usePlaylistsState/types';
@@ -18,6 +18,7 @@ interface Props {
   active: boolean;
   playing: boolean;
   simpleCards?: boolean;
+  sortable?: boolean;
 }
 
 const localeCompare = (a: string, b: string) => a.localeCompare(b);
@@ -29,7 +30,17 @@ export const SongCard = ({
   active,
   playing,
   simpleCards = false,
+  sortable = false,
 }: Props) => {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: track.listId });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    touchAction: 'manipulation',
+  };
+
   const { linkScore, trackId, title, singer, orchestra, year, genre } = track;
 
   const handleMoreKeyboard: KeyboardEventHandler = (e) => {
@@ -52,7 +63,6 @@ export const SongCard = ({
     e.stopPropagation();
     onPlay(trackId);
   };
-
 
   const sortedSinger = singer ? [...singer].sort(localeCompare) : [];
   const sortedOrchestra = orchestra ? [...orchestra].sort(localeCompare) : [];
@@ -81,45 +91,54 @@ export const SongCard = ({
   );
 
   return (
-    <div
-      className="grid p-2 grid-cols-8 bg-gray-100 my-0.5 w-full"
-      tabIndex={0}
-      role="link"
-      onKeyDown={handlePlayKeyboard}
-      onClick={handlePlayMouse}
-    >
-      <div className="col-span-6 flex flex-col">
-        <div className={titleClasses}>
-          {active && <AnimatedEq playing={playing} />}
-          {title}
-        </div>
-        <div className="text-xs truncate">{yearGenreText}</div>
-        <div className="text-xs truncate">{orchSingerText}</div>
-      </div>
-      {!simpleCards && (
-        <Tooltip
-          title="How likely it is that we have the right video for this song"
-          enterTouchDelay={0}
-          leaveTouchDelay={4000}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="col-span-1 flex flex-col justify-center text-xs items-center">
-            <div>{linkScore}/10</div>
-            <Link />
+    <div ref={setNodeRef} style={style} {...attributes}>
+      <div className="flex h-full items-center bg-gray-100 my-0.5">
+        {sortable && (
+          <div className="border-r-white border-r h-full" {...listeners}>
+            <DragIndicator color="disabled" />
           </div>
-        </Tooltip>
-      )}
-      {!simpleCards && (
+        )}
         <div
-          className="col-span-1 flex justify-center items-center"
+          className="grid p-2 grid-cols-8 bg-gray-100 my-0.5 w-full"
           tabIndex={0}
           role="link"
-          onKeyPress={handleMoreKeyboard}
-          onClick={handleMoreMouse}
+          onKeyDown={handlePlayKeyboard}
+          onClick={handlePlayMouse}
         >
-          <MoreHorizOutlined />
+          <div className="col-span-6 flex flex-col">
+            <div className={titleClasses}>
+              {active && <AnimatedEq playing={playing} />}
+              {title}
+            </div>
+            <div className="text-xs truncate">{yearGenreText}</div>
+            <div className="text-xs truncate">{orchSingerText}</div>
+          </div>
+          {!simpleCards && (
+            <Tooltip
+              title="How likely it is that we have the right video for this song"
+              enterTouchDelay={0}
+              leaveTouchDelay={4000}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="col-span-1 flex flex-col justify-center text-xs items-center">
+                <div>{linkScore}/10</div>
+                <Link />
+              </div>
+            </Tooltip>
+          )}
+          {!simpleCards && (
+            <div
+              className="col-span-1 flex justify-center items-center"
+              tabIndex={0}
+              role="link"
+              onKeyPress={handleMoreKeyboard}
+              onClick={handleMoreMouse}
+            >
+              <MoreHorizOutlined />
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };

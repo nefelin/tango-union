@@ -10,8 +10,9 @@ interface Props {
   tracks: Array<PlaylistTrack>;
   onMore: Unary<CompactTrack>;
   simpleCards?: boolean;
+  sortable?: boolean;
 }
-const SongCardList = ({ simpleCards, tracks, onMore }: Props) => {
+const SongCardList = ({ sortable, simpleCards, tracks, onMore }: Props) => {
   const {
     play,
     pause,
@@ -26,6 +27,7 @@ const SongCardList = ({ simpleCards, tracks, onMore }: Props) => {
         return (
           <SongCard
             simpleCards={simpleCards}
+            sortable={sortable}
             key={track.listId}
             active={trackIsActive}
             playing={playState === 'playing' || playState === 'loading'}

@@ -70,7 +70,7 @@ const MobileDashBody = ({
           }}
         >
           <DashPanel>
-            <ResponsivePlaylistContainer />
+            <ResponsivePlaylistContainer sortable />
           </DashPanel>
         </div>
         <div
