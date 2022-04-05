@@ -94,7 +94,7 @@ export const SongCard = ({
     <div ref={setNodeRef} style={style} {...attributes}>
       <div className="flex h-full items-center bg-gray-100 my-0.5">
         {sortable && (
-          <div className="border-r-white border-r h-full" {...listeners}>
+          <div className="border-r-white border-r h-full px-2" {...listeners}>
             <DragIndicator color="disabled" />
           </div>
         )}

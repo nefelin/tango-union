@@ -18,7 +18,6 @@ import { usePlaylistState } from '../../hooks/state/usePlaylistState';
 import { useRoutedPlaylist } from '../../hooks/state/useRoutedPlaylist';
 import {
   compactTrackFromString,
-  playlistTrackFromTrack,
 } from '../../types/compactTrack/util';
 import { useIsMobile } from '../../util/isMobile';
 import useCacheStitchedIdFetch from '../ResultsTable/useCacheStitchedIdFetch';
@@ -34,7 +33,7 @@ const ResponsivePlaylistContainer = ({
   const {
     playlist: { tracks: playlistTracks },
     loadTracks,
-    replaceTracks,
+    rearrangeTracks,
   } = usePlaylistState(QUICKLIST_PLAYLIST_ID);
   const { tracks: routedTracks } = useRoutedPlaylist();
   const [tracks] = useCacheStitchedIdFetch(playlistTracks);
@@ -52,7 +51,7 @@ const ResponsivePlaylistContainer = ({
       const newIndex =
         tracks?.findIndex(({ listId }) => listId === over.id) ?? 0;
       const newTracks = arrayMove(playlistTracks, oldIndex, newIndex);
-      replaceTracks(newTracks.map(({ trackId }) => trackId));
+      rearrangeTracks(newTracks);
     }
   }
 
