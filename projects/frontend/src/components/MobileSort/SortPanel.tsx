@@ -73,7 +73,7 @@ const SortPanel = () => {
         text={'Link Rating'}
       />
       <MenuItem onClick={handleReset}>
-        <div className="flex justify-center">
+        <div className="flex justify-center w-full">
           <IconSpacer>
             <RestartAlt />
           </IconSpacer>
