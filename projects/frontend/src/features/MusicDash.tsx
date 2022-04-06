@@ -19,6 +19,7 @@ import { RESULTS_PLAYLIST_ID } from '../hooks/state/useGlobalPlaylistState/songL
 import { usePlaylistState } from '../hooks/state/usePlaylistState';
 import { useSearchbarState } from '../hooks/state/useSearchbarState';
 import { useYoutubePlayerState } from '../hooks/state/useYoutubePlayerState';
+import useDynamicPageTitle from '../hooks/useDynamicPageTitle';
 import useEnsureValue from '../hooks/useEnsureValue';
 import { FocusableContext } from '../hooks/useFocusable';
 import useNavigateWithParamState from '../hooks/useNavigateWithParamState';
@@ -34,6 +35,7 @@ const emptyOptions: FullCountFragmentFragment['counts'] = {
 const objCompare = (a: any, b: any) => JSON.stringify(a) === JSON.stringify(b);
 
 const MusicDash = () => {
+  useDynamicPageTitle();
   const isMobile = useIsMobile();
   const [options, setOptions] = useState(emptyOptions);
   const { searchbarState } = useSearchbarState();

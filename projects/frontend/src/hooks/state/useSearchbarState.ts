@@ -9,9 +9,6 @@ import { useRoutedState } from './useRoutedState';
 
 const initSearchbarState: SearchbarState = {};
 
-const DEFAULT_PAGE_TITLE = 'Tango Union - Explore Argentine Tango Music';
-const DYNAMIC_TITLE_SUFFIX = 'Argentine Tango';
-
 export const useSearchbarState = () => {
   const { search: searchbarState, setSearch: setSearchbarState } =
     useRoutedState();
@@ -28,11 +25,6 @@ export const useSearchbarState = () => {
   const searchFromIds = (tracks: Array<CompactTrack>) => {
     setIdSources(tracks);
   }
-
-  // stick search in the title, helpful juggling tabs
-  document.title = debouncedText?.length
-    ? `${debouncedText} - ${DYNAMIC_TITLE_SUFFIX}`
-    : DEFAULT_PAGE_TITLE;
 
   const resetSearchbar = () => setSearchbarState(initSearchbarState);
 

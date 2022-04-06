@@ -12,6 +12,7 @@ import { usePaginationState } from '../../hooks/state/usePaginationState';
 import { usePlaylistState } from '../../hooks/state/usePlaylistState';
 import { useSearchbarState } from '../../hooks/state/useSearchbarState';
 import { useYoutubePlayerState } from '../../hooks/state/useYoutubePlayerState';
+import useDynamicPageTitle from '../../hooks/useDynamicPageTitle';
 import useEnsureValue from '../../hooks/useEnsureValue';
 import useNavigateWithParamState from '../../hooks/useNavigateWithParamState';
 import { compactTrackFromTrackId } from '../../types/compactTrack/util';
@@ -27,6 +28,7 @@ const emptyCounts: SelectIndexCount = {
 };
 
 const MobileDashContainer = () => {
+  useDynamicPageTitle();
   const isMobile = useIsMobile()
   const navigate = useNavigate();
 

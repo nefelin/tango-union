@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
-import prioritizeSummary from '../components/PlaylistSummary/prioritizeSummary';
 import { smartSummary } from '../components/PlaylistSummary/summarize';
+import textualizeSmartSummary from '../components/PlaylistSummary/textualizeSmartSummary';
 import useCacheStitchedIdFetch from '../components/ResultsTable/useCacheStitchedIdFetch';
 import { CompactTrack } from '../types/compactTrack/types';
 import {
@@ -9,7 +9,7 @@ import {
   RESULTS_PLAYLIST_ID,
 } from './state/useGlobalPlaylistState/songLists.state';
 import { usePlaylistState } from './state/usePlaylistState';
-import useEnsureValue, { useEnsureValueNonReactive } from './useEnsureValue';
+import { useEnsureValueNonReactive } from './useEnsureValue';
 
 const DEFAULT_TITLE = 'Tango Union - Explore Argentine Tango Music';
 
@@ -32,8 +32,7 @@ const useDynamicPageTitle = () => {
 
   const ensuredTracks = useEnsureValueNonReactive(hydratedTracks, []);
 
-  console.log({ensuredTracks})
-  const [headline, subtitle] = prioritizeSummary(smartSummary(hydratedTracks || []));
+  const [headline, subtitle] = textualizeSmartSummary(smartSummary(ensuredTracks));
 
   useEffect(() => {
     const newTitle = headline ? `${headline} - ${subtitle}` : DEFAULT_TITLE;
