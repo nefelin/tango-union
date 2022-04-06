@@ -83,7 +83,14 @@ export class TracksService {
     const genreCountMatches = stripNil([orchestraMatch, singerMatch, yearMatch]);
     const allMatches = stripNil([orchestraMatch, singerMatch, genreMatch, yearMatch]);
 
-    const sortWithDefault = sort && Object.keys(sort).length > 0 ? { ...sort, id: 1 } : { title: 1, id: 1 }; // need to sort by id as a tie breaker for consistant pagination behavior
+    const { singer, orchestra, ...rest } = sort;
+    const sortFixedArrays = {
+      ...rest,
+      ...(singer ? { flatSinger: singer } : {}),
+      ...(orchestra ? { flatOrchestra: orchestra } : {}),
+    }; // to avoid sorting on multiple arrays, we need to transition these sort goals to the pre-sorted, flattened fields
+    const sortWithDefault =
+      sort && Object.keys(sortFixedArrays).length > 0 ? { ...sortFixedArrays, id: 1 } : { title: 1, id: 1 }; // need to sort by id as a tie breaker for consistant pagination behavior
 
     const pipeline = [
       textMatch,
