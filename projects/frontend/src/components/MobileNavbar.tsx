@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 
 import { layout } from '../features/MobileDash/layout';
-import useViewport, { asVh } from '../hooks/useViewport';
+import { asVh } from '../hooks/useViewport';
 import { Unary } from '../types/utility/unary';
 
-const pages = ['Search', 'Results', 'Playlist', 'Player'] as const;
+export type PanelOption = 'search' | 'results' | 'playlist' | 'player'
+const allPages: ReadonlyArray<PanelOption> = ['search', 'results', 'playlist', 'player'] as const;
 const highlightColor = 'rgb(122,190,246)';
 const borderWidth = '.2rem';
 
 interface Props {
-  onNav: Unary<string>;
+  onNav: Unary<PanelOption>;
+  current: PanelOption;
 }
 
-const MobileNavbar = ({ onNav }: Props) => {
-  const [current, setCurrent] = useState('Search');
+const MobileNavbar = ({ onNav, current }: Props) => {
   return (
     <div
       className="fixed bottom-0 w-full flex flex-row justify-around items-center text-sm text-gray-400 font-bold bg-white"
@@ -22,7 +23,7 @@ const MobileNavbar = ({ onNav }: Props) => {
         height: asVh(layout.navbar),
       }}
     >
-      {pages.map((page) => {
+      {allPages.map((page) => {
         const active = page === current;
         const borderBottom = active
           ? `${borderWidth} solid ${highlightColor}`
@@ -40,12 +41,10 @@ const MobileNavbar = ({ onNav }: Props) => {
             className="w-full h-full flex justify-center items-center"
             style={{ borderBottom, color, padding }}
             onClick={() => {
-              setCurrent(page);
               onNav(page);
             }}
             onKeyDown={({ key }) => {
               if (key === ' ' || key === 'Enter') {
-                setCurrent(page);
                 onNav(page);
               }
             }}

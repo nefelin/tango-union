@@ -28,5 +28,5 @@ Default.args = {
   resetSearch: () => {},
   setSearch: () => {},
   initSearchState: {},
-  playlistTracks: darienzoLaborde.map(playlistTrackFromTrack),
+  playlistTracks: darienzoLaborde.map(playlistTrackFromTrack()),
 };

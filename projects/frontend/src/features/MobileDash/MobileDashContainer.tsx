@@ -8,6 +8,7 @@ import {
 } from '../../../generated/graphql';
 import { useSortState } from '../../components/ResultsTable/state/sort.state';
 import { RESULTS_PLAYLIST_ID } from '../../hooks/state/useGlobalPlaylistState/songLists.state';
+import { generateListIdZeroRepeats } from '../../hooks/state/useGlobalPlaylistState/util';
 import { usePaginationState } from '../../hooks/state/usePaginationState';
 import { usePlaylistState } from '../../hooks/state/usePlaylistState';
 import { useSearchbarState } from '../../hooks/state/useSearchbarState';
@@ -29,7 +30,7 @@ const emptyCounts: SelectIndexCount = {
 
 const MobileDashContainer = () => {
   useDynamicPageTitle();
-  const isMobile = useIsMobile()
+  const isMobile = useIsMobile();
   const navigate = useNavigate();
 
   const { setSearchbarState, searchbarState, resetSearchbar } =
@@ -61,34 +62,32 @@ const MobileDashContainer = () => {
     onCompleted: (res) => {
       setResults(res.compoundQuery.totalResults);
       if (firstQuery.current && res.compoundQuery.randomId) {
-        // randomize pre-loaded link
-        const compact = compactTrackFromTrackId(
+        const compact = compactTrackFromTrackId(generateListIdZeroRepeats)(
           res.compoundQuery.ids[0] || '1',
         );
         firstQuery.current = false;
         setTrack(compact);
       }
       if (page === 0) {
-        replaceTracks(res.compoundQuery.ids);
+        replaceTracks(res.compoundQuery.ids, generateListIdZeroRepeats);
       } else {
-        addTracks(res.compoundQuery.ids);
+        addTracks(res.compoundQuery.ids, generateListIdZeroRepeats);
       }
     },
   });
 
   const ensuredCounts = useEnsureValue(data?.compoundQuery.counts, emptyCounts);
 
-
   useEffect(() => {
-    setLoading(loading)
-  }, [loading])
+    setLoading(loading);
+  }, [loading]);
 
-  const paramNavigate = useNavigateWithParamState()
+  const paramNavigate = useNavigateWithParamState();
   useEffect(() => {
     if (!isMobile) {
-      paramNavigate('/desktop')
+      paramNavigate('/desktop');
     }
-  }, [isMobile])
+  }, [isMobile]);
 
   const resetPageAndSort = () => {
     setPage(0);

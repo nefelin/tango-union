@@ -27,5 +27,5 @@ const Template: ComponentStory<typeof ResponsivePlaylistBody> = (args) => {
 
 export const Default = Template.bind({});
 Default.args = {
-  tracks: darienzoLaborde.map(playlistTrackFromTrack),
+  tracks: darienzoLaborde.map(playlistTrackFromTrack()),
 };

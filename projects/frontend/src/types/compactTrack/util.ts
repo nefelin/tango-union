@@ -1,6 +1,9 @@
 import { TrackDetailFragmentFragment } from '../../../generated/graphql';
 import { reactiveSongLists } from '../../hooks/state/useGlobalPlaylistState/songLists.state';
-import { generateListId } from '../../hooks/state/useGlobalPlaylistState/util';
+import {
+  generateListId,
+  ListIdGenerator,
+} from '../../hooks/state/useGlobalPlaylistState/util';
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
 import {
   CompactTrack,
@@ -24,15 +27,17 @@ export const compactTrackFromString = (s: CompoundIdString): CompactTrack => {
   };
 };
 
-export const compactTrackFromTrackId = (id: TrackId): CompactTrack => ({
-  listId: generateListId(),
-  trackId: id,
-});
+export const compactTrackFromTrackId =
+  (listIdGenerator = generateListId) =>
+  (id: TrackId): CompactTrack => ({
+    listId: listIdGenerator(id),
+    trackId: id,
+  });
 
-export const playlistTrackFromTrack = (
+export const playlistTrackFromTrack = (listIdGenerator = generateListId) => (
   track: TrackDetailFragmentFragment,
 ): PlaylistTrack => ({
-  ...compactTrackFromTrackId(track.id),
+  ...compactTrackFromTrackId(listIdGenerator)(track.id),
   ...track,
 });
 
@@ -57,7 +62,7 @@ export const compressTrack = ({
 
 export const regenListIds = (track: CompactTrack) => ({
   ...track,
-  listId: generateListId(),
+  listId: generateListId(track.trackId),
 });
 
 export const compactTrackFromListId = (listId: ListId) => {

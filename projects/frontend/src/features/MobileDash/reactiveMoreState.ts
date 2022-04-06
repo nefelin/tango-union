@@ -12,7 +12,7 @@ interface MoreState {
 }
 
 export const fallbackMoreState: MoreState = {
-  track: compactTrackFromTrackId('0'),
+  track: compactTrackFromTrackId()('0'),
   songSource: 'playlist',
 };
 

@@ -23,7 +23,7 @@ const BulkTemplate: ComponentStory<typeof SongCard> = (args) => {
   const [active, setActive] = useState<string | null>(null);
   const [playing, setPlaying] = useState(false);
 
-  const playlistTracks = trackDetailsBatch.tracksByIds.map(track => ({...track, ...compactTrackFromTrackId(track.id)}));
+  const playlistTracks = trackDetailsBatch.tracksByIds.map(track => ({...track, ...compactTrackFromTrackId()(track.id)}));
   return (
     <div className="">
       {playlistTracks.map((track) => (

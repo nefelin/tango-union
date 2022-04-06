@@ -2,18 +2,17 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import MobileMoreMenu from '../../components/MobileMoreMenu/MobileMoreMenu';
-import MobileNavbar from '../../components/MobileNavbar';
+import MobileNavbar, { PanelOption } from '../../components/MobileNavbar';
 import MobilePlayingPanel from '../../components/MobilePlayingPanel';
 import MobileSearch, { MobileSearchProps } from '../../components/MobileSearch';
 import ResponsivePlaylistContainer from '../../components/ResponsivePlaylist/ResponsivePlaylistContainer';
 import ResponsiveResultList from '../../components/ResponsiveResultList/ResponsiveResultList';
 import TopBar from '../../components/TopBar';
-import YoutubePlayer from '../../components/YoutubePlayer';
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
+import { useRoutedState } from '../../hooks/state/useRoutedState';
 import useSnackbars from '../../hooks/useSnackbars';
 import { asVh } from '../../hooks/useViewport';
 import { layout } from './layout';
-import { reactiveMoreState } from './reactiveMoreState';
 
 interface InternalProps {
   playlistTracks: Array<PlaylistTrack>;
@@ -26,8 +25,9 @@ const MobileDashBody = ({
   counts,
   initSearchState,
 }: Props) => {
-  const [showPanel, setShowPanel] = useState('Search');
+  // const [panel, setShowPanel] = useState<PanelOption>('search');
   const { snackStack } = useSnackbars();
+  const { setPanel, panel } = useRoutedState();
 
   return (
     <>
@@ -41,9 +41,9 @@ const MobileDashBody = ({
       >
         <div
           style={{
-            opacity: showPanel === 'Search' ? 1 : 0,
+            opacity: panel === 'search' ? 1 : 0,
             transition: 'all 300ms',
-            pointerEvents: showPanel === 'Search' ? undefined : 'none',
+            pointerEvents: panel === 'search' ? undefined : 'none',
           }}
         >
           <DashPanel>
@@ -54,9 +54,9 @@ const MobileDashBody = ({
         </div>
         <div
           style={{
-            opacity: showPanel === 'Results' ? 1 : 0,
+            opacity: panel === 'results' ? 1 : 0,
             transition: 'all 300ms',
-            pointerEvents: showPanel === 'Results' ? undefined : 'none',
+            pointerEvents: panel === 'results' ? undefined : 'none',
           }}
         >
           <DashPanel>
@@ -65,9 +65,9 @@ const MobileDashBody = ({
         </div>
         <div
           style={{
-            opacity: showPanel === 'Playlist' ? 1 : 0,
+            opacity: panel === 'playlist' ? 1 : 0,
             transition: 'all 300ms',
-            pointerEvents: showPanel === 'Playlist' ? undefined : 'none',
+            pointerEvents: panel === 'playlist' ? undefined : 'none',
           }}
         >
           <DashPanel>
@@ -76,9 +76,9 @@ const MobileDashBody = ({
         </div>
         <div
           style={{
-            opacity: showPanel === 'Player' ? 1 : 0,
+            opacity: panel === 'player' ? 1 : 0,
             transition: 'all 300ms',
-            pointerEvents: showPanel === 'Player' ? undefined : 'none',
+            pointerEvents: panel === 'player' ? undefined : 'none',
           }}
         >
           <DashPanel>
@@ -86,7 +86,7 @@ const MobileDashBody = ({
           </DashPanel>
         </div>
       </div>
-      <MobileNavbar onNav={(newLoc) => setShowPanel(newLoc)} />
+      <MobileNavbar current={panel} onNav={(newLoc) => setPanel(newLoc)} />
       <MobileMoreMenu />
       {snackStack}
     </>

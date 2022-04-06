@@ -1,23 +1,25 @@
 import * as r from 'ramda';
 import { useNavigate, useParams } from 'react-router';
 
+import { PanelOption } from '../../components/MobileNavbar';
 import { SearchbarState } from '../../components/Searchbar/types';
 import { CompoundIdString } from '../../types/compactTrack/types';
 
 interface SavedState {
   tracks: Array<CompoundIdString>;
   search: SearchbarState;
+  panel: PanelOption;
 }
 
 export const useRoutedState = () => {
   const { saved } = useParams<{ saved?: string }>();
   const navigate = useNavigate();
 
-  let paramObj: SavedState = { tracks: [], search: {} };
+  let paramObj: SavedState = { tracks: [], search: {}, panel: 'search' };
 
   if (!r.isNil(saved)) {
     try {
-      paramObj = JSON.parse(saved);
+      paramObj = {...paramObj, ...JSON.parse(saved)};
     } catch (e: unknown) {
       console.error('bad save data');
     }
@@ -37,10 +39,17 @@ export const useRoutedState = () => {
     replaceRoute({ ...paramObj, search: newSearch });
   };
 
+  const setPanel = (newPanel: PanelOption) => {
+    replaceRoute({ ...paramObj, panel: newPanel });
+  };
+
+
   return {
     tracks: paramObj.tracks,
     search: paramObj.search,
+    panel: paramObj.panel,
     setTracks,
     setSearch,
+    setPanel
   };
 };

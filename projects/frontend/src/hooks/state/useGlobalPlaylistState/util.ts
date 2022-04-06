@@ -11,7 +11,11 @@ export const newSongList = (id: string): Playlist => ({
 });
 
 export const generatePlaylistId = () => nanoid(8);
-export const generateListId = () => nanoid(12).replace(/-/g, '');
+
+export type ListIdGenerator = (trackId: string) => string;
+export const generateListId: ListIdGenerator = () =>
+  nanoid(12).replace(/-/g, '');
+export const generateListIdZeroRepeats: ListIdGenerator = (id) => 'l' + id;
 
 export const createContext = (
   { id, tracks }: Playlist,

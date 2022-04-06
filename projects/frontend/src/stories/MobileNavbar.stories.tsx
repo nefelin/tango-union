@@ -10,7 +10,7 @@ export default {
 } as ComponentMeta<typeof MobileNavbar>;
 
 const Template: ComponentStory<typeof MobileNavbar> = (args) => {
-  return <MobileNavbar onNav={() => {}} />;
+  return <MobileNavbar current='search' onNav={() => {}} />;
 };
 
 export const Basic = Template.bind({});

@@ -18,7 +18,7 @@ const Template: ComponentStory<typeof MobileSearch> = (args) => {
     <MockProvider>
       <TopBar />
       <MobileSearch {...args} />
-      <MobileNavbar onNav={() => {}} />
+      <MobileNavbar current="search" onNav={() => {}} />
     </MockProvider>
   );
 };

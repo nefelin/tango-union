@@ -10,8 +10,8 @@ export const usePlaylistState = (playlistId: PlaylistId) => {
   const lists = useReactiveVar(reactiveSongLists);
   const thisList = reactiveSongLists()[playlistId] || newSongList(playlistId); // this is okay for returning tracks but cannot be used in functions as it can lead to race conditions
 
-  const addTracks = (newIds: Array<string>) => {
-    const tracksWithLocalIds: Array<CompactTrack> = newIds.map(compactTrackFromTrackId);
+  const addTracks = (newIds: Array<string>, listIdGenerator = generateListId) => {
+    const tracksWithLocalIds: Array<CompactTrack> = newIds.map(compactTrackFromTrackId(listIdGenerator));
 
     const prevList = reactiveSongLists()[playlistId] || newSongList(playlistId);
     const newList: Playlist = {
@@ -43,12 +43,12 @@ export const usePlaylistState = (playlistId: PlaylistId) => {
     });
   };
 
-  const replaceTracks = (ids: Array<TrackId>) => {
+  const replaceTracks = (ids: Array<TrackId>, listIdGenerator = generateListId) => {
     const prevList = reactiveSongLists()[playlistId] || newSongList(playlistId);
 
     const tracksWithLocalIds: Array<CompactTrack> = ids.map((trackId) => ({
       trackId,
-      listId: generateListId(),
+      listId: listIdGenerator(trackId),
     }));
 
     reactiveSongLists({

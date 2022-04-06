@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 import { useDebounce } from 'use-debounce';
 
@@ -9,13 +8,13 @@ import {
 } from '../../generated/graphql';
 import DragContext from '../components/DragContext';
 import { Footer, FooterFooter, FooterHeader } from '../components/Footer';
-import NotSupportedOverlay from '../components/NotSupportedOverlay';
 import NowPlaying from '../components/NowPlaying';
 import ResultsTable from '../components/ResultsTable';
 import { useSortState } from '../components/ResultsTable/state/sort.state';
 import Searchbar from '../components/Searchbar';
 import TopBar from '../components/TopBar';
 import { RESULTS_PLAYLIST_ID } from '../hooks/state/useGlobalPlaylistState/songLists.state';
+import { generateListIdZeroRepeats } from '../hooks/state/useGlobalPlaylistState/util';
 import { usePlaylistState } from '../hooks/state/usePlaylistState';
 import { useSearchbarState } from '../hooks/state/useSearchbarState';
 import { useYoutubePlayerState } from '../hooks/state/useYoutubePlayerState';
@@ -65,15 +64,17 @@ const MusicDash = () => {
     onCompleted: (res) => {
       if (firstQuery.current && res.compoundQuery.randomId) {
         // randomize pre-loaded link
-        const compact = compactTrackFromTrackId(res.compoundQuery.randomId);
+        const compact = compactTrackFromTrackId(generateListIdZeroRepeats)(
+          res.compoundQuery.randomId,
+        );
         // const compact = compactTrackFromTrackId('9929');
         firstQuery.current = false;
         setTrack(compact);
       }
       if (page === 0) {
-        replaceTracks(res.compoundQuery.ids);
+        replaceTracks(res.compoundQuery.ids, generateListIdZeroRepeats);
       } else {
-        addTracks(res.compoundQuery.ids);
+        addTracks(res.compoundQuery.ids, generateListIdZeroRepeats);
       }
       setOptions(res.compoundQuery.counts);
     },
