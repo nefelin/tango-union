@@ -52,14 +52,11 @@ export const categorizeSummary = (
 ): SmartPlaylistSummary => {
   let dominantCategory: SummaryCategory = 'orchestras';
 
-  if (summary.orchestras.length === 1) {
-    dominantCategory = 'orchestras';
-  } else if (summary.singers.length === 1) {
-    dominantCategory = 'singers';
-  } else if (summary.years.length === 1) {
-    dominantCategory = 'years';
-  } else if (summary.genres.length === 1) {
-    dominantCategory = 'genres';
+  const prioritizedCategories: Array<SummaryCategory> = ['orchestras', 'singers', 'years', 'genres'];
+  for (const cat of prioritizedCategories) {
+    if (summary[cat].length < summary[dominantCategory].length) {
+      dominantCategory = cat
+    }
   }
 
   return { ...summary, dominantCategory };
