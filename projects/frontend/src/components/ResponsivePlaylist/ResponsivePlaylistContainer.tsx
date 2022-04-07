@@ -16,6 +16,7 @@ import React, { useEffect, useState } from 'react';
 import { QUICKLIST_PLAYLIST_ID } from '../../hooks/state/useGlobalPlaylistState/songLists.state';
 import { usePlaylistState } from '../../hooks/state/usePlaylistState';
 import { useRoutedPlaylist } from '../../hooks/state/useRoutedPlaylist';
+import { useYoutubePlayerState } from '../../hooks/state/useYoutubePlayerState';
 import {
   compactTrackFromString,
 } from '../../types/compactTrack/util';
@@ -41,6 +42,13 @@ const ResponsivePlaylistContainer = ({
   const sensors = useSensors(
     isMobile ? useSensor(TouchSensor) : useSensor(PointerSensor),
   );
+  const {setTrack, currentTrack} = useYoutubePlayerState();
+
+  useEffect(() => {
+    if (!currentTrack && playlistTracks[0]) {
+      setTrack(playlistTracks[0])
+    }
+  }, [playlistTracks, currentTrack])
 
   function handleDragEnd(event) {
     const { active, over } = event;
