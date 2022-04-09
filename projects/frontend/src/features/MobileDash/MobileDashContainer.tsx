@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useDebounce } from 'use-debounce';
 
@@ -12,11 +12,10 @@ import { generateListIdZeroRepeats } from '../../hooks/state/useGlobalPlaylistSt
 import { usePaginationState } from '../../hooks/state/usePaginationState';
 import { usePlaylistState } from '../../hooks/state/usePlaylistState';
 import { useSearchbarState } from '../../hooks/state/useSearchbarState';
-import { useYoutubePlayerState } from '../../hooks/state/useYoutubePlayerState';
 import useDynamicPageTitle from '../../hooks/useDynamicPageTitle';
 import useEnsureValue from '../../hooks/useEnsureValue';
+import useInitPlayerTrack from '../../hooks/useInitPlayerTrack';
 import useNavigateWithParamState from '../../hooks/useNavigateWithParamState';
-import { compactTrackFromTrackId } from '../../types/compactTrack/util';
 import { useIsMobile } from '../../util/isMobile';
 import MobileDashBody from './MobileDashBody';
 
@@ -29,6 +28,7 @@ const emptyCounts: SelectIndexCount = {
 };
 
 const MobileDashContainer = () => {
+  useInitPlayerTrack();
   useDynamicPageTitle();
   const isMobile = useIsMobile();
   const navigate = useNavigate();
@@ -46,8 +46,6 @@ const MobileDashContainer = () => {
   });
   const { page, setResults, setPage, setLoading, pageSize, offset } =
     usePaginationState();
-  const firstQuery = useRef(true);
-  const { setTrack } = useYoutubePlayerState();
 
   const pagination = { offset, limit: pageSize };
 
@@ -61,13 +59,6 @@ const MobileDashContainer = () => {
     },
     onCompleted: (res) => {
       setResults(res.compoundQuery.totalResults);
-      if (firstQuery.current && res.compoundQuery.randomId) {
-        const compact = compactTrackFromTrackId(generateListIdZeroRepeats)(
-          res.compoundQuery.ids[0] || '1',
-        );
-        firstQuery.current = false;
-        setTrack(compact);
-      }
       if (page === 0) {
         replaceTracks(res.compoundQuery.ids, generateListIdZeroRepeats);
       } else {

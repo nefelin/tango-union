@@ -6,6 +6,7 @@ import { YouTubePlayer } from 'youtube-player/dist/types';
 import { useTrackDetailsBatchQuery } from '../../generated/graphql';
 import { useGlobalPlaylistsState } from '../hooks/state/useGlobalPlaylistState';
 import { useYoutubePlayerState } from '../hooks/state/useYoutubePlayerState';
+import useInitPlayerTrack from '../hooks/useInitPlayerTrack';
 import { Maybe } from '../types/utility/maybe';
 import { YoutubeContainer } from './YoutubePlayer/styles';
 import { opts } from './YoutubePlayer/util';
@@ -21,6 +22,7 @@ const YoutubePlayer = ({ width, height }: Props) => {
     ...(width ? { width } : {}),
     ...(height ? { height } : {}),
   };
+  const {playedTrack} = useInitPlayerTrack();
 
   const { youtubePlayerState, play, stop, resume, pause } =
     useYoutubePlayerState();
@@ -44,6 +46,7 @@ const YoutubePlayer = ({ width, height }: Props) => {
         break;
       case 'playing':
         player?.playVideo();
+        playedTrack();
         break;
       case 'loading':
         player?.playVideo();
