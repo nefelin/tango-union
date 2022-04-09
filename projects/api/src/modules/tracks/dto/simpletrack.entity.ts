@@ -11,6 +11,6 @@ export class SimpleTrack {
   secondsLong?: number;
   year?: number;
   link?: RatedYoutube;
-  linkScore?: number;
+  linkScore: number;
 }
 

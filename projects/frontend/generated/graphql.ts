@@ -116,7 +116,7 @@ export type SimpleTrack = {
   secondsLong?: Maybe<Scalars['Float']>;
   year?: Maybe<Scalars['Float']>;
   link?: Maybe<RatedYoutube>;
-  linkScore?: Maybe<Scalars['Float']>;
+  linkScore: Scalars['Float'];
 };
 
 export type TrackDetailsBatchQueryVariables = Exact<{
