@@ -16,10 +16,10 @@ const LinkQualityWarning = ({ track: { linkScore } }: Props) => {
 
   return show ? (
     <Alert severity={severity}>
-      It's likely this YouTube video doesn't match the song you're trying to
-      play. The link linkScore on this video is <strong>{linkScore}</strong>. A
-      link quality of 7 or greater is likely good, 6 is borderline, and 5 and
-      below are likely not a match.
+      It&apos;s likely this YouTube video doesn&apos;t match the song
+      you&apos;re trying to play. The link linkScore on this video is{' '}
+      <strong>{linkScore}</strong>. A link quality of 7 or greater is likely
+      good, 6 is borderline, and 5 and below are likely not a match.
     </Alert>
   ) : null;
 };

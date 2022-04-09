@@ -18,7 +18,12 @@ import useSnackbars from '../../hooks/useSnackbars';
 import { CompactTrack } from '../../types/compactTrack/types';
 import { urlTrackParams } from '../../util/urlParams';
 import IconSpacer from './IconSpacer';
-import { handleSearchSimilar, handleShare } from './sharedHandlers';
+import {
+  composeSharePlaylistParams,
+  composeShareSongParams,
+  handleSearchSimilar,
+  handleShare,
+} from './sharedHandlers';
 const PlaylistMenu = ({ track }: { track: CompactTrack }) => {
   const { replaceTracks, removeTracks, playlist } = usePlaylistState(
     QUICKLIST_PLAYLIST_ID,
@@ -57,7 +62,7 @@ const PlaylistMenu = ({ track }: { track: CompactTrack }) => {
       </MenuItem>
       <MenuItem
         onClick={handleShare({
-          params: JSON.stringify(urlTrackParams(playlist.tracks)),
+          params: composeSharePlaylistParams(playlist.tracks),
           closeMore,
           addSnack,
         })}
@@ -69,7 +74,20 @@ const PlaylistMenu = ({ track }: { track: CompactTrack }) => {
       </MenuItem>
       <MenuItem
         onClick={handleShare({
-          params: JSON.stringify(urlTrackParams([track])),
+          params: composeSharePlaylistParams(playlist.tracks),
+          rootPath: 'playlist/',
+          closeMore,
+          addSnack,
+        })}
+      >
+        <IconSpacer>
+          <ReplyAllOutlined />
+        </IconSpacer>
+        Share standalone playlist
+      </MenuItem>
+      <MenuItem
+        onClick={handleShare({
+          params: composeShareSongParams(track),
           closeMore,
           addSnack,
         })}

@@ -1,21 +1,15 @@
 import { useNavigate } from 'react-router';
 
-import { compoundIdStringFromCompactTrack } from '../types/compactTrack/util';
-import { urlSearchParams, urlTrackParams } from '../util/urlParams';
-import { QUICKLIST_PLAYLIST_ID } from './state/useGlobalPlaylistState/songLists.state';
-import { usePlaylistState } from './state/usePlaylistState';
-import { useSearchbarState } from './state/useSearchbarState';
+import { useRoutedState } from './state/useRoutedState';
 
 const useNavigateWithParamState = () => {
   const navigate = useNavigate();
-  const {
-    playlist: { tracks },
-  } = usePlaylistState(QUICKLIST_PLAYLIST_ID);
-  const { searchbarState } = useSearchbarState();
+  const { panel, tracks, search } = useRoutedState();
 
   const params = JSON.stringify({
-    ...urlSearchParams(searchbarState),
-    ...urlTrackParams(tracks),
+    search,
+    tracks,
+    panel,
   });
   return (newPath: string) => navigate([newPath, params].join('/'));
 };

@@ -2,13 +2,14 @@ import { SnackbarMessage } from '../../hooks/useSnackbars';
 import { CompactTrack } from '../../types/compactTrack/types';
 import { Unary } from '../../types/utility/unary';
 import { smartShare } from '../../util/smartShare';
+import { urlTrackParams } from '../../util/urlParams';
 
 export const handleShare =
   ({
     closeMore,
     addSnack,
     params,
-    rootPath = 'playlist/', // most uses are for playlists
+    rootPath = '',
   }: {
     addSnack: Unary<SnackbarMessage>;
     closeMore: VoidFunction;
@@ -54,3 +55,17 @@ export const handleSearchSimilar =
     addSnack({ severity: 'info', content: 'Search filters updated' });
     closeMore();
   };
+
+export const composeShareSongParams = (track: CompactTrack): string => {
+  const tracks = urlTrackParams([track]);
+  const panel = {panel: 'player'};
+
+  return JSON.stringify({...tracks, ...panel})
+}
+
+export const composeSharePlaylistParams = (tracksToShare: Array<CompactTrack>): string => {
+  const tracks = urlTrackParams(tracksToShare);
+  const panel = {panel: 'playlist'};
+
+  return JSON.stringify({...tracks, ...panel})
+}

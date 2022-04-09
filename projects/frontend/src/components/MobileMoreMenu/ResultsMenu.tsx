@@ -7,7 +7,7 @@ import {
   ReplyOutlined,
   Sort,
 } from '@mui/icons-material';
-import { Divider, MenuItem, Slide, Typography } from '@mui/material';
+import {  MenuItem, Slide, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
 import { reactiveMoreState } from '../../features/MobileDash/reactiveMoreState';
@@ -20,7 +20,7 @@ import { urlSearchParams, urlTrackParams } from '../../util/urlParams';
 import SortPanel from '../MobileSort/SortPanel';
 import SortRow from '../MobileSort/SortRow';
 import IconSpacer from './IconSpacer';
-import { handleShare } from './sharedHandlers';
+import { composeShareSongParams, handleShare } from './sharedHandlers';
 const ResultsMenu = ({ track }: { track: CompactTrack }) => {
   const { addTracks } = usePlaylistState(QUICKLIST_PLAYLIST_ID);
   const { searchbarState, searchFromIds } = useSearchbarState();
@@ -69,7 +69,7 @@ const ResultsMenu = ({ track }: { track: CompactTrack }) => {
         onClick={handleShare({
           closeMore,
           addSnack,
-          params: JSON.stringify(urlTrackParams([track])),
+          params: composeShareSongParams(track),
         })}
       >
         <IconSpacer>
