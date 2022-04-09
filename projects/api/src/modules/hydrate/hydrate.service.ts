@@ -68,6 +68,7 @@ export class HydrateService {
           youtube: {
             scrapedAt: new Date(),
             links: res,
+            linkScore: 0 // initial value before scoring links
           },
         },
       })
