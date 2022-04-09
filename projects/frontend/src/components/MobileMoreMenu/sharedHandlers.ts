@@ -2,7 +2,6 @@ import { SnackbarMessage } from '../../hooks/useSnackbars';
 import { CompactTrack } from '../../types/compactTrack/types';
 import { Unary } from '../../types/utility/unary';
 import { smartShare } from '../../util/smartShare';
-import { urlTrackParams } from '../../util/urlParams';
 
 export const handleShare =
   ({
@@ -28,7 +27,12 @@ export const handleShare =
           content: 'Error sharing link',
           severity: 'error',
         }),
-    });
+    }).then(() =>
+      addSnack({
+        content: 'Link shared!',
+        severity: 'success',
+      }),
+    );
 
     closeMore();
   };
