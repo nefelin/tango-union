@@ -60,7 +60,7 @@ const CustomSelect = ({ selectOptions, id, label, setter, value }: Props) => {
   }
 
   return (
-    <AutoSizer style={{ width: '100%' }}>
+    <AutoSizer style={{ width: '100%', height: '100%' }}>
       {({ width, height }) => {
         return (
           <Select
