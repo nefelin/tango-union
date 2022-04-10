@@ -1,3 +1,4 @@
+import { CircularProgress } from '@mui/material';
 import React from 'react';
 
 import { useYoutubePlayerState } from '../hooks/state/useYoutubePlayerState';
@@ -13,7 +14,11 @@ const MobilePlayingPanel = () => {
   const track = tracks?.[0];
 
   if (!track) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex flex-col justify-center items-center text-lg font-bold w-full h-full">
+        <CircularProgress />
+      </div>
+    );
   }
 
   return (
