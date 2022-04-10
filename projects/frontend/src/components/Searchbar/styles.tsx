@@ -36,9 +36,10 @@ export const SearchInputContainer = styled.div<{ focus: boolean }>`
   display: flex;
   padding-left: ${({ focus }) => (focus ? '9px' : '10px')};;;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   box-sizing: border-box;
   transition: all 100ms;
+  width: 100%;
 
   & input {
     border: none;

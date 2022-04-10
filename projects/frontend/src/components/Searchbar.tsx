@@ -50,6 +50,7 @@ const Searchbar = ({ selectOptions }: Props) => {
   return (
     <StyledCol {...listeners}>
       <StyledRow>
+        <div className='w-1/3 flex flex-row gap-4'>
         <CustomInput
           onChange={formik.handleChange}
           value={formik.values.text || ''}
@@ -62,8 +63,9 @@ const Searchbar = ({ selectOptions }: Props) => {
           type="button"
           onClick={resetSearchbar}
         >
-          Clear Search
+        Reset
         </Button>
+        </div>
         <BarGraph
           selected={
             (
