@@ -5,7 +5,7 @@ import {
   ExpandMore,
   ManageSearch,
   ReplyAllOutlined,
-  ReplyOutlined,
+  ReplyOutlined, VolunteerActivismOutlined,
 } from '@mui/icons-material';
 import { MenuItem } from '@mui/material';
 import React from 'react';
@@ -81,7 +81,7 @@ const PlaylistMenu = ({ track }: { track: CompactTrack }) => {
         })}
       >
         <IconSpacer>
-          <ReplyAllOutlined />
+          <VolunteerActivismOutlined />
         </IconSpacer>
         Share standalone playlist
       </MenuItem>
