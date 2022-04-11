@@ -3,6 +3,7 @@ import { CompactTrack } from '../../types/compactTrack/types';
 import { Unary } from '../../types/utility/unary';
 import { smartShare } from '../../util/smartShare';
 import { urlTrackParams } from '../../util/urlParams';
+import { PanelOption } from '../MobileNavbar';
 
 export const handleShare =
   ({
@@ -58,14 +59,17 @@ export const handleSearchSimilar =
 
 export const composeShareSongParams = (track: CompactTrack): string => {
   const tracks = urlTrackParams([track]);
-  const panel = {panel: 'player'};
+  const panel: PanelOption = 'playlist';
+  const player = true;
 
-  return JSON.stringify({...tracks, ...panel})
-}
+  return JSON.stringify({ ...tracks, panel, player });
+};
 
-export const composeSharePlaylistParams = (tracksToShare: Array<CompactTrack>): string => {
+export const composeSharePlaylistParams = (
+  tracksToShare: Array<CompactTrack>,
+): string => {
   const tracks = urlTrackParams(tracksToShare);
-  const panel = {panel: 'playlist'};
+  const panel = { panel: 'playlist' };
 
-  return JSON.stringify({...tracks, ...panel})
-}
+  return JSON.stringify({ ...tracks, ...panel });
+};

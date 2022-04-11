@@ -9,19 +9,25 @@ interface SavedState {
   tracks: Array<CompoundIdString>;
   search: SearchbarState;
   panel: PanelOption;
+  player: boolean;
 }
 
 export const useRoutedState = () => {
   const { saved } = useParams<{ saved?: string }>();
   const navigate = useNavigate();
 
-  let paramObj: SavedState = { tracks: [], search: {}, panel: 'search' };
+  let paramObj: SavedState = {
+    tracks: [],
+    search: {},
+    panel: 'search',
+    player: false,
+  };
 
   if (!r.isNil(saved)) {
     try {
-      paramObj = {...paramObj, ...JSON.parse(saved)};
+      paramObj = { ...paramObj, ...JSON.parse(saved) };
     } catch (e: unknown) {
-      console.error('bad save data');
+      console.error('bad route parameter');
     }
   }
 
@@ -43,13 +49,18 @@ export const useRoutedState = () => {
     replaceRoute({ ...paramObj, panel: newPanel });
   };
 
+  const setPlayer = (newPlayer: boolean) => {
+    replaceRoute({ ...paramObj, player: newPlayer });
+  };
 
   return {
     tracks: paramObj.tracks,
     search: paramObj.search,
     panel: paramObj.panel,
+    player: paramObj.player,
     setTracks,
     setSearch,
-    setPanel
+    setPanel,
+    setPlayer,
   };
 };

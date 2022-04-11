@@ -1,5 +1,4 @@
-import { MenuItem, Slide } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 import { useThrottledCallback } from 'use-debounce';
 
 import { layout } from '../../features/MobileDash/layout';
@@ -9,7 +8,6 @@ import useEnsureValue from '../../hooks/useEnsureValue';
 import useViewport from '../../hooks/useViewport';
 import { CompactTrack } from '../../types/compactTrack/types';
 import { Maybe } from '../../types/utility/maybe';
-import { Unary } from '../../types/utility/unary';
 import { Loader } from '../ResultsTable/ResultsTableBody/overlayRenderer/styled';
 import SongCardList from '../SongCardList/SongCardList';
 
@@ -20,7 +18,6 @@ export interface ResponsiveResultListProps {
   loading: boolean;
   pageTotal: number;
   onScrollEnd: VoidFunction;
-  addPlaylistTrack: Unary<Array<string>>;
 }
 
 const ResponsiveResultListBody = ({
@@ -30,9 +27,7 @@ const ResponsiveResultListBody = ({
   pageTotal,
   page,
   tracks,
-  addPlaylistTrack,
 }: ResponsiveResultListProps) => {
-  const [moreId, setMoreId] = useState<Maybe<string>>();
   const {asVh} = useViewport()
   const throttledScrollHandler = useThrottledCallback(onScrollEnd, 1500, {leading: true, trailing: false})
   const onScroll = (e) => {
@@ -44,13 +39,6 @@ const ResponsiveResultListBody = ({
   };
 
   const handleMore = (track: CompactTrack) => reactiveMoreState({track, songSource: 'results'});
-  const handleAddToPlaylist = () => {
-    if (moreId) {
-      addPlaylistTrack([moreId]);
-      setMoreId(null);
-    }
-  };
-
   const ensuredTracks = useEnsureValue(tracks, []);
 
   return (
@@ -81,16 +69,6 @@ const ResponsiveResultListBody = ({
           </div>
         )}
       </div>
-      <Slide unmountOnExit mountOnEnter in={!!moreId} direction="up">
-        <div className="bg-white w-full h-full backdrop-blur-md absolute top-0">
-          <MenuItem onClick={handleAddToPlaylist}>Add to playlist</MenuItem>
-          <MenuItem disabled>Share Search</MenuItem>
-          <MenuItem disabled>Share Song</MenuItem>
-          <MenuItem disabled>Search similar</MenuItem>
-          <MenuItem disabled>Sort results...</MenuItem>
-          <MenuItem onClick={() => setMoreId(null)}>Close</MenuItem>
-        </div>
-      </Slide>
     </>
   );
 };

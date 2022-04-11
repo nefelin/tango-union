@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import MobileMoreMenu from '../../components/MobileMoreMenu/MobileMoreMenu';
 import MobileNavbar, { PanelOption } from '../../components/MobileNavbar';
+import MobilePlayerBar from '../../components/MobilePlayerBar';
 import MobilePlayingPanel from '../../components/MobilePlayingPanel';
 import MobileSearch, { MobileSearchProps } from '../../components/MobileSearch';
 import ResponsivePlaylistContainer from '../../components/ResponsivePlaylist/ResponsivePlaylistContainer';
@@ -25,9 +26,15 @@ const MobileDashBody = ({
   counts,
   initSearchState,
 }: Props) => {
-  // const [panel, setShowPanel] = useState<PanelOption>('search');
   const { snackStack } = useSnackbars();
-  const { setPanel, panel } = useRoutedState();
+  const { setPanel, panel, player, setPlayer } = useRoutedState();
+
+  const handleNav = (newLoc: PanelOption) => {
+    setPanel(newLoc);
+    if (player) {
+      setPlayer(false);
+    }
+  };
 
   return (
     <>
@@ -36,7 +43,7 @@ const MobileDashBody = ({
         className="flex flex-row relative w-[100vw] overflow-y-hidden"
         style={{
           marginTop: asVh(layout.topbar),
-          height: asVh(100 - layout.topbar - layout.navbar),
+          height: asVh(100 - layout.topbar - layout.navbar - layout.playerBar),
         }}
       >
         <div
@@ -76,9 +83,9 @@ const MobileDashBody = ({
         </div>
         <div
           style={{
-            opacity: panel === 'player' ? 1 : 0,
+            opacity: player ? 1 : 0,
             transition: 'all 300ms',
-            pointerEvents: panel === 'player' ? undefined : 'none',
+            pointerEvents: player ? undefined : 'none',
           }}
         >
           <DashPanel>
@@ -86,7 +93,8 @@ const MobileDashBody = ({
           </DashPanel>
         </div>
       </div>
-      <MobileNavbar current={panel} onNav={(newLoc) => setPanel(newLoc)} />
+      {!player && <MobilePlayerBar onClick={() => setPlayer(true)} />}
+      <MobileNavbar current={panel} onNav={handleNav} />
       <MobileMoreMenu />
       {snackStack}
     </>

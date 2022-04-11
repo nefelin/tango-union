@@ -22,7 +22,7 @@ const MobileSearchFooter = ({ count, onClear }: Props) => {
     );
 
   return (
-    <div className="flex flex-col justify-center items-center w-full p-4 text-xs font-bold">
+    <div className="flex flex-col justify-center items-center w-full text-xs font-bold">
       {content}
     </div>
   );

@@ -1,10 +1,11 @@
-import { Alert, Button } from '@mui/material';
+import { Button } from '@mui/material';
 import { useFormik } from 'formik';
 import * as React from 'react';
 import { useEffect } from 'react';
 
 import { SelectIndexCount } from '../../generated/graphql';
 import { usePaginationState } from '../hooks/state/usePaginationState';
+import { asVh } from '../hooks/useViewport';
 import { Unary } from '../types/utility/unary';
 import MobileBarGraph from './MobileBarGraph';
 import decadeCountFromYears from './MobileSearch/decadeCountFromYears';
@@ -114,7 +115,7 @@ const MobileSearch = ({
           (formik.values.year || '').split(', ').filter((s) => s.length > 0),
         )}
       />
-      <div className="h-[25vh] my-6">
+      <div className="mt-4 mb-2" style={{height: asVh(23)}}>
         <MobileBarGraph data={decadeData} onSelect={handleGraphYearSelect} />
       </div>
       <MobileSearchFooter count={totalResults} onClear={resetSearch} />

@@ -13,7 +13,7 @@ const SearchIntroModal = () => {
 
   return !shown ? (
     <div className="w-full h-full flex items-center justify-center absolute top-0 left-0 p-6 z-10 text-xs">
-      <Alert severity="info" onClose={handleClose}>
+      <Alert sx={{fontSize: 'x-small'}} severity="info"  onClose={handleClose}>
         <p className="mb-2">
           Welcome to <strong>Tango Union!</strong> Tango Union is a tool for
           exploring and sharing Argentine Tango music in new ways.

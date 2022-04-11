@@ -4,8 +4,8 @@ import { layout } from '../features/MobileDash/layout';
 import { asVh } from '../hooks/useViewport';
 import { Unary } from '../types/utility/unary';
 
-export type PanelOption = 'search' | 'results' | 'playlist' | 'player'
-const allPages: ReadonlyArray<PanelOption> = ['search', 'results', 'playlist', 'player'] as const;
+export type PanelOption = 'search' | 'results' | 'playlist';
+const allPages: ReadonlyArray<PanelOption> = ['search', 'results', 'playlist' ] as const;
 const highlightColor = 'rgb(122,190,246)';
 const borderWidth = '.2rem';
 
@@ -19,7 +19,7 @@ const MobileNavbar = ({ onNav, current }: Props) => {
     <div
       className="fixed bottom-0 w-full flex flex-row justify-around items-center text-sm text-gray-400 font-bold bg-white"
       style={{
-        boxShadow: '0 0 10px rgba(0, 0, 0, .15)',
+        // borderTop: 'rgb(122,122,122)',
         height: asVh(layout.navbar),
       }}
     >
