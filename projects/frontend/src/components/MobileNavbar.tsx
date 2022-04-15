@@ -20,7 +20,7 @@ const MobileNavbar = ({ onNav, current }: Props) => {
       className="fixed bottom-0 w-full flex flex-row justify-around items-center text-sm text-gray-400 font-bold bg-white"
       style={{
         // borderTop: 'rgb(122,122,122)',
-        height: asVh(layout.navbar),
+        height: asVh(layout.navBar),
       }}
     >
       {allPages.map((page) => {

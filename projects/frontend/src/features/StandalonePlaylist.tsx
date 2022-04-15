@@ -11,7 +11,7 @@ import { layout } from './MobileDash/layout';
 const StandalonePlaylist = () => {
   const isMobile = useIsMobile();
   const mobileLayoutAdjustments: CSSProperties = isMobile
-    ? { paddingTop: asVh(layout.topbar), boxSizing: 'border-box' }
+    ? { paddingTop: asVh(layout.topBar), boxSizing: 'border-box' }
     : {};
   return (
     <>

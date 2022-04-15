@@ -61,7 +61,7 @@ const MobilePlayerBar = ({ onClick }: Props) => {
       style={{
         boxShadow: '0 0 10px rgba(0, 0, 0, .15)',
         height: asVh(layout.playerBar),
-        bottom: asVh(layout.navbar),
+        bottom: asVh(layout.navBar),
         borderBottom: '1px solid #e1e1e1',
         // background:
         //   'linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,239,254,1) 36%, rgba(255,239,254,1) 100%)',
