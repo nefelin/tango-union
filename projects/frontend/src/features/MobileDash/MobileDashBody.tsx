@@ -37,6 +37,8 @@ const MobileDashBody = ({
     }
   };
 
+  const maybePlayerBarSpace = player ? 0 : layout.playerBar; // todo does not make space for playerBar when player is showing (cause playerbar is hidden) this is a hacky fix and layout could use a revamp
+
   return (
     <>
       <TopBar height={asVh(layout.topBar)} fixed />
@@ -44,7 +46,9 @@ const MobileDashBody = ({
         className="flex flex-row relative w-[100vw] overflow-y-hidden"
         style={{
           marginTop: asVh(layout.topBar),
-          height: asVh(100 - layout.topBar - layout.navBar - layout.playerBar),
+          height: asVh(
+            100 - layout.topBar - layout.navBar - maybePlayerBarSpace,
+          ),
         }}
       >
         <div

@@ -25,11 +25,11 @@ const MobilePlayingPanel = () => {
   }
 
   return (
-    <div className="bg-white h-full">
+    <div className="bg-white h-full flex flex-col w-full">
       <MenuItem onClick={() => setPanelPlayer({ player: false })}>
         <ExpandMore />
       </MenuItem>
-      <div className="flex flex-col p-4 items-center justify-around h-full bg-white">
+      <div className="flex flex-col p-4 items-center justify-around h-[inherit] bg-white">
         <YoutubePlayer width="200px" height="200px" />
         {track && (
           <div className="flex flex-col items-center">
