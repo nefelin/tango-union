@@ -38,12 +38,12 @@ const MobileDashBody = ({
 
   return (
     <>
-      <TopBar height={asVh(layout.topbar)} fixed />
+      <TopBar height={asVh(layout.topBar)} fixed />
       <div
         className="flex flex-row relative w-[100vw] overflow-y-hidden"
         style={{
-          marginTop: asVh(layout.topbar),
-          height: asVh(100 - layout.topbar - layout.navbar - layout.playerBar),
+          marginTop: asVh(layout.topBar),
+          height: asVh(100 - layout.topBar - layout.navBar - layout.playerBar),
         }}
       >
         <div

@@ -18,7 +18,7 @@ const MobilePlayingPanel = () => {
 
   if (!track) {
     return (
-      <div className="flex flex-col justify-center items-center text-lg font-bold w-full h-full">
+      <div className="flex flex-col justify-center items-center text-lg font-bold w-full h-full bg-white">
         <CircularProgress />
       </div>
     );
