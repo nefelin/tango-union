@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import MobileMoreMenu from '../../components/MobileMoreMenu/MobileMoreMenu';
@@ -27,12 +27,13 @@ const MobileDashBody = ({
   initSearchState,
 }: Props) => {
   const { snackStack } = useSnackbars();
-  const { setPanel, panel, player, setPlayer } = useRoutedState();
+  const { setPanelPlayer, panel, player } = useRoutedState();
 
   const handleNav = (newLoc: PanelOption) => {
-    setPanel(newLoc);
     if (player) {
-      setPlayer(false);
+      setPanelPlayer({ panel: newLoc, player: false });
+    } else {
+      setPanelPlayer({ panel: newLoc });
     }
   };
 
@@ -93,7 +94,9 @@ const MobileDashBody = ({
           </DashPanel>
         </div>
       </div>
-      {!player && <MobilePlayerBar onClick={() => setPlayer(true)} />}
+      {!player && (
+        <MobilePlayerBar onClick={() => setPanelPlayer({ player: true })} />
+      )}
       <MobileNavbar current={panel} onNav={handleNav} />
       <MobileMoreMenu />
       {snackStack}

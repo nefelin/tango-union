@@ -45,12 +45,14 @@ export const useRoutedState = () => {
     replaceRoute({ ...paramObj, search: newSearch });
   };
 
-  const setPanel = (newPanel: PanelOption) => {
-    replaceRoute({ ...paramObj, panel: newPanel });
-  };
-
-  const setPlayer = (newPlayer: boolean) => {
-    replaceRoute({ ...paramObj, player: newPlayer });
+  const setPanelPlayer = ({
+    panel = paramObj.panel,
+    player = paramObj.player,
+  }: {
+    panel?: PanelOption;
+    player?: boolean;
+  }) => {
+    replaceRoute({ ...paramObj, panel, player });
   };
 
   return {
@@ -60,7 +62,6 @@ export const useRoutedState = () => {
     player: paramObj.player,
     setTracks,
     setSearch,
-    setPanel,
-    setPlayer,
+    setPanelPlayer,
   };
 };

@@ -11,7 +11,7 @@ import YoutubePlayer from './YoutubePlayer';
 
 const MobilePlayingPanel = () => {
   const { currentTrack } = useYoutubePlayerState();
-  const { setPlayer } = useRoutedState();
+  const { setPanelPlayer } = useRoutedState();
 
   const [tracks] = useCacheStitchedIdFetch(currentTrack ? [currentTrack] : []);
   const track = tracks?.[0];
@@ -25,8 +25,8 @@ const MobilePlayingPanel = () => {
   }
 
   return (
-    <div className='bg-white h-full'>
-      <MenuItem onClick={() => setPlayer(false)}>
+    <div className="bg-white h-full">
+      <MenuItem onClick={() => setPanelPlayer({ player: false })}>
         <ExpandMore />
       </MenuItem>
       <div className="flex flex-col p-4 items-center justify-around h-full bg-white">
