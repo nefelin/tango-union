@@ -5,6 +5,7 @@ on:
     branches:
       - master
     paths:
+      - '/yarn.lock'
       - 'projects/frontend/**'
       - '.github/workflows/frontend.yml'
 
