@@ -15,6 +15,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
+      - name: Root yarn install
+        run: yarn install
+
       - name: Install dependencies
         run: yarn front install
 
