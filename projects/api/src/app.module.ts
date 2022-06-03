@@ -10,9 +10,9 @@ import fs from 'fs';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TerminusModule } from '@nestjs/terminus';
 import { HealthController } from './modules/health/health.controller';
-import { AuthModule } from './auth/auth.module';
-import { UsersService } from './users/users.service';
-import { UsersModule } from './users/users.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { UsersService } from './modules/users/users.service';
+import { UsersModule } from './modules/users/users.module';
 
 const TABS_PATH = path.resolve(__dirname, '../generated/tabs.json'); // fixme should be in config
 const tabEndpointHost = process.env.NODE_ENV === 'dev' ? 'http://localhost' : 'https://api.tangounion.net';

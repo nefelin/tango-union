@@ -4,6 +4,7 @@ import { ExpressAdapter, NestExpressApplication } from '@nestjs/platform-express
 import * as http from 'http';
 import express from 'express';
 import path from 'path';
+import { ValidationPipe } from '@nestjs/common';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const compression = require('compression');
@@ -41,6 +42,8 @@ async function bootstrap() {
     methods: 'GET,PUT,POST,DELETE,UPDATE,OPTIONS',
     credentials: true,
   });
+
+  app.useGlobalPipes(new ValidationPipe());
 
   await app.init();
   http.createServer(server).listen(HTTP_PORT, () => console.log(`Listening on port ${HTTP_PORT}...`));
