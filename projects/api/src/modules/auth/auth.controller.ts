@@ -2,14 +2,14 @@ import { Controller, Request, Post, UseGuards, Res, Body } from '@nestjs/common'
 import { JwtGuard, LocalGuard } from './guard-strategies';
 import { AuthService } from './auth.service';
 import { Response } from 'express';
-import { CreateUser } from '../users/users.service';
+import { CreateUserInput } from '../users/dto/createUser.input';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('register')
-  async register(@Body() createUserDTO: CreateUser, @Res({ passthrough: true }) res: Response) {
+  async register(@Body() createUserDTO: CreateUserInput, @Res({ passthrough: true }) res: Response) {
     return this.authService.register(createUserDTO, res);
   }
 

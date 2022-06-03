@@ -1,5 +1,7 @@
-import { Prop } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 
+@Schema({ timestamps: true })
 export class User {
   @Prop({ required: true })
   firstName: string;
@@ -13,8 +15,11 @@ export class User {
   @Prop({ required: true })
   hash: string;
 
+  @Prop({ required: false })
+  lastLogin: Date | null;
+
   @Prop({ required: true })
-  rtHash: string | null;
+  refreshHash: string | null;
 
   @Prop({ required: true })
   roles: Array<UserRole>;
@@ -25,3 +30,6 @@ export enum UserRole {
   USER = 'USER',
   CONTRIBUTOR = 'CONTRIBUTOR',
 }
+
+export type UserDocument = User & Document;
+export const UserSchema = SchemaFactory.createForClass(User);

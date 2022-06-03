@@ -11,8 +11,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TerminusModule } from '@nestjs/terminus';
 import { HealthController } from './modules/health/health.controller';
 import { AuthModule } from './modules/auth/auth.module';
-import { UsersService } from './modules/users/users.service';
-import { UsersModule } from './modules/users/users.module';
 
 const TABS_PATH = path.resolve(__dirname, '../generated/tabs.json'); // fixme should be in config
 const tabEndpointHost = process.env.NODE_ENV === 'dev' ? 'http://localhost' : 'https://api.tangounion.net';
@@ -50,9 +48,8 @@ const tabEndpointHost = process.env.NODE_ENV === 'dev' ? 'http://localhost' : 'h
     TracksModule,
     HydrateModule,
     AuthModule,
-    UsersModule,
   ],
   controllers: [HealthController],
-  providers: [YoutubeSearchService, UsersService],
+  providers: [YoutubeSearchService],
 })
 export class AppModule {}

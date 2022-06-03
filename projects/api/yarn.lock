@@ -2228,15 +2228,15 @@ __metadata:
   linkType: hard
 
 "@nestjs/mongoose@npm:^7.2.0":
-  version: 7.2.0
-  resolution: "@nestjs/mongoose@npm:7.2.0"
+  version: 7.2.4
+  resolution: "@nestjs/mongoose@npm:7.2.4"
   peerDependencies:
     "@nestjs/common": ^6.0.0 || ^7.0.0
     "@nestjs/core": ^6.0.0 || ^7.0.0
-    mongoose: ^5.11.3
+    mongoose: ^5.11.15
     reflect-metadata: ^0.1.12
     rxjs: ^6.0.0
-  checksum: 435e4cf50900730c70c8df443dda1ec7056f79e9317e4385507bb0860bee0590852d6a7409566f6c040553c7dbaf2a8201daade0f61f2ccd5cb271c33ea56208
+  checksum: 713682ab1e2d626dcf6bb1de7fb7af27a4c27c0b9095757451cf3e0ef2f9de8d2cd93903462f5b8532506ce92960c0416fee8df7df5b803174790c8e64fa68d1
   languageName: node
   linkType: hard
 
@@ -14476,7 +14476,7 @@ __metadata:
 
 "typescript@patch:typescript@4.0.5#~builtin<compat/typescript>":
   version: 4.0.5
-  resolution: "typescript@patch:typescript@npm%3A4.0.5#~builtin<compat/typescript>::version=4.0.5&hash=bda367"
+  resolution: "typescript@patch:typescript@npm%3A4.0.5#~builtin<compat/typescript>::version=4.0.5&hash=7ad353"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
@@ -14486,7 +14486,7 @@ __metadata:
 
 "typescript@patch:typescript@^4.0.5#~builtin<compat/typescript>":
   version: 4.1.3
-  resolution: "typescript@patch:typescript@npm%3A4.1.3#~builtin<compat/typescript>::version=4.1.3&hash=bda367"
+  resolution: "typescript@patch:typescript@npm%3A4.1.3#~builtin<compat/typescript>::version=4.1.3&hash=7ad353"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver

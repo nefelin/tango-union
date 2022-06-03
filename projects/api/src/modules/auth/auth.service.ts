@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
 import bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
-import { CreateUser } from '../users/dto/createUser.input';
+import { CreateUserInput } from '../users/dto/createUser.input';
 import { User } from '../../schemas/user.entity';
 import jwtPayload from './util/jwtPayload';
 import { ConfigService } from '@nestjs/config';
@@ -16,30 +16,29 @@ export class AuthService {
     private configService: ConfigService,
   ) {}
 
-  async register(user: CreateUser, res: Response) {
+  async register(user: CreateUserInput, res: Response) {
     const created = await this.usersService.create(user);
 
     const { token, refresh } = jwtPayload(created, this.jwtService, this.configService);
     res.cookie('user', token);
     res.cookie('refresh', refresh);
 
-    const { hash, rtHash, ...stripped } = created;
-    return stripped;
+    return created;
   }
 
   async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOne(username);
+    const user = await this.usersService.findOne(username).then((doc) => doc.toObject({ useProjection: true }));
     if (user && bcrypt.compareSync(pass, user.hash)) {
-      const { hash, ...result } = user;
+      const { hash, refreshHash, ...result } = user;
       return result;
     }
     return null;
   }
 
   async login(user: User, res: Response) {
-    const payload = { email: user.email, first: user.firstName, last: user.lastName };
-    const token = this.jwtService.sign(payload);
-    const refresh = this.jwtService.sign({}, { expiresIn: '15d' });
+    const { token, refresh } = jwtPayload(user, this.jwtService, this.configService);
+    await this.usersService.login(user.email);
+
     res.cookie('user', token);
     res.cookie('refresh', refresh);
     return token;

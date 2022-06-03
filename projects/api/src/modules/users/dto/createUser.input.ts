@@ -1,7 +1,7 @@
 import { IsEmail, IsEnum, IsNotEmpty, IsString, Length } from 'class-validator';
 import { UserRole } from '../../../schemas/user.entity';
 
-export class CreateUser {
+export class CreateUserInput {
   @IsString()
   @IsNotEmpty()
   firstName: string;
