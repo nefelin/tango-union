@@ -19,7 +19,6 @@ lerna-debug.log*
 /.nyc_output
 
 # IDEs and editors
-.yarn/
 .idea/
 .project
 .classpath
@@ -39,3 +38,12 @@ lerna-debug.log*
 tsBuildInfo
 
 .env
+
+#yarn
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
