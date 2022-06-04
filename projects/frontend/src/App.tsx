@@ -9,18 +9,17 @@ import { Route } from 'react-router';
 import { BrowserRouter, Routes } from 'react-router-dom';
 
 import Sandbox from './components/Sandbox/Sandbox';
+import Login from './features/Login';
 import MobileDashContainer from './features/MobileDash/MobileDashContainer';
 import MusicDash from './features/MusicDash';
 import RootRedirect from './features/RootRedirect';
 import StandalonePlaylist from './features/StandalonePlaylist';
 import useViewport from './hooks/useViewport';
-const isProd = process.env['REACT_APP_ENV'] === 'prod';
-const host = isProd ? 'https://api.tangounion.net' : 'http://localhost';
-const port = isProd ? 443 : 4000;
+import { getApiUrl } from './util/getApiUrl';
 
 const apolloClient = new ApolloClient({
   cache: new InMemoryCache(),
-  link: createHttpLink({ uri: `${host}:${port}/graphql` }),
+  link: createHttpLink({ uri: `${getApiUrl()}/graphql` }),
   connectToDevTools: true,
 });
 
@@ -41,6 +40,7 @@ const App = () => {
             <Route path="/player/:saved" element={<MusicDash />} />
             {/* <Route path="/dndtester" element={<DnDTester/>} /> */}
             <Route path="/sandbox" element={<Sandbox />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/playlist/:saved" element={<StandalonePlaylist />} />
             <Route path="/notFound" element={() => <div>Not Found</div>} />
             {/* <Route path="*" element={() => <Navigate to="/notFound" />} /> */}
