@@ -27,7 +27,7 @@ export class AuthService {
   }
 
   async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOne(username).then((doc) => doc.toObject({ useProjection: true }));
+    const user = await this.usersService.findOne(username).then((doc) => doc?.toObject());
     if (user && bcrypt.compareSync(pass, user.hash)) {
       const { hash, refreshHash, ...result } = user;
       return result;
@@ -37,10 +37,23 @@ export class AuthService {
 
   async login(user: User, res: Response) {
     const { token, refresh } = jwtPayload(user, this.jwtService, this.configService);
-    await this.usersService.login(user.email);
+    await this.usersService.login(user.email, refresh);
 
     res.cookie('user', token);
     res.cookie('refresh', refresh);
     return token;
+  }
+
+  async logout(user: User, res: Response) {
+    await this.usersService.logout(user.email);
+    res.clearCookie('user');
+    res.clearCookie('refresh');
+  }
+
+  async refresh(user: User, res: Response) {
+    const { token, refresh } = jwtPayload(user, this.jwtService, this.configService);
+    await this.usersService.refresh(user.email, refresh);
+    res.cookie('user', token);
+    res.cookie('refresh', refresh);
   }
 }

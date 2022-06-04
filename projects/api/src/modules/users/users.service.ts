@@ -32,12 +32,31 @@ export class UsersService {
     return lean;
   }
 
-  async login(email: string) {
+  async login(email: string, refreshHash: string) {
     const user = await this.userModel.findOne({ email });
     if (!user) {
-      throw new Error('User not found in login attempt');
+      throw new Error('User does not exist');
     }
     user.lastLogin = new Date();
+    user.refreshHash = refreshHash;
+    return user.save();
+  }
+
+  async logout(email: string) {
+    const user = await this.userModel.findOne({ email });
+    if (!user) {
+      throw new Error('User does not exist');
+    }
+    user.refreshHash = null;
+    return user.save();
+  }
+
+  async refresh(email: string, refresh: string) {
+    const user = await this.userModel.findOne({ email });
+    if (!user) {
+      throw new Error('User does not exist');
+    }
+    user.refreshHash = refresh;
     return user.save();
   }
 }

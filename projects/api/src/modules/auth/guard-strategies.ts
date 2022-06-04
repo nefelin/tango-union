@@ -6,3 +6,6 @@ export class LocalGuard extends AuthGuard('local') {}
 
 @Injectable()
 export class JwtGuard extends AuthGuard('jwt') {}
+
+@Injectable()
+export class JwtRefreshGuard extends AuthGuard('jwt-refresh') {}

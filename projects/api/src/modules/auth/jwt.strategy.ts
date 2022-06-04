@@ -2,6 +2,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { TokenContent } from './util/jwtPayload';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -9,12 +10,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: configService.get('JWT_KEY'),
+      secretOrKey: configService.get('ACCESS_TOKEN_SECRET'),
     });
   }
 
-  async validate(payload: any) {
+  async validate(payload: TokenContent) {
     // other logic like checking against list of revoked tokens might go here
-    return { userId: payload.sub, username: payload.username };
+    const { firstName, lastName, email } = payload;
+    return { firstName, lastName, email };
   }
 }

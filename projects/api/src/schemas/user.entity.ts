@@ -18,7 +18,7 @@ export class User {
   @Prop({ required: false })
   lastLogin: Date | null;
 
-  @Prop({ required: true })
+  @Prop({ required: false })
   refreshHash: string | null;
 
   @Prop({ required: true })
