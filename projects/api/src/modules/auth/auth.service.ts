@@ -16,14 +16,9 @@ export class AuthService {
     private configService: ConfigService,
   ) {}
 
-  async register(user: CreateUserInput, res: Response) {
+  async register(user: CreateUserInput) {
     const created = await this.usersService.create(user);
-
-    const { token, refresh } = jwtPayload(created, this.jwtService, this.configService);
-    res.cookie('user', token);
-    res.cookie('refresh', refresh);
-
-    return created;
+    return jwtPayload(created, this.jwtService, this.configService);
   }
 
   async validateUser(email: string, pass: string): Promise<any> {
@@ -35,25 +30,20 @@ export class AuthService {
     return null;
   }
 
-  async login(user: User, res: Response) {
+  async login(user: User) {
     const { token, refresh } = jwtPayload(user, this.jwtService, this.configService);
     await this.usersService.login(user.email, refresh);
 
-    res.cookie('user', token, { secure: false, sameSite: 'lax' });
-    res.cookie('refresh', refresh, { secure: false, sameSite: 'lax' });
-    return token;
+    return { token, refresh };
   }
 
-  async logout(user: User, res: Response) {
-    await this.usersService.logout(user.email);
-    res.clearCookie('user');
-    res.clearCookie('refresh');
+  async logout(user: User) {
+    return this.usersService.logout(user.email);
   }
 
-  async refresh(user: User, res: Response) {
+  async refresh(user: User) {
     const { token, refresh } = jwtPayload(user, this.jwtService, this.configService);
     await this.usersService.refresh(user.email, refresh);
-    res.cookie('user', token);
-    res.cookie('refresh', refresh);
+    return { refresh, token };
   }
 }
