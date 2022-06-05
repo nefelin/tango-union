@@ -1,6 +1,6 @@
 import React, { FormEventHandler, useState } from 'react';
 
-import { getApiUrl } from '../util/getApiUrl';
+import { handleLogin } from '../auth';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -12,25 +12,10 @@ const Login = () => {
     e.preventDefault();
     setSubmitting(true);
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-
-    const body = JSON.stringify({
-      email,
-      password,
-    });
-
-    const requestOptions: RequestInit = {
-      credentials: 'include',
-      method: 'POST',
-      headers,
-      body,
-    };
-
-    const res = await fetch('http://localhost:4000/auth/login', requestOptions);
-
-    if (res.ok) {
-      window.location.replace('/');
+    const login = await handleLogin(email, password);
+    setSubmitting(false);
+    if (login) {
+      // window.location.replace('/');
     } else {
       setError('Something went wrong. Please refresh the page and try again');
       setSubmitting(false);

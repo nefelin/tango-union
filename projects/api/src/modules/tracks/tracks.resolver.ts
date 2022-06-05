@@ -4,13 +4,15 @@ import { RatedYoutube } from '../../schemas/tracks.entity';
 import { SimpleTrack } from './dto/simpletrack.entity';
 import { CompoundQueryInput } from './dto/compoundQuery.input';
 import { CompoundResults } from './dto/compoundResult.entity';
+import { UseGuards } from '@nestjs/common';
+import { GqlAuthGuard } from '../auth/gqlAuthGuard';
 
 @Resolver('track')
 export class TracksResolver {
   constructor(readonly tracksService: TracksService) {}
 
   @Query(() => [RatedYoutube], { name: 'linksForTracks' })
-  linksForTracks(@Args('ids', {type: () => [String]}) ids: Array<string>) {
+  linksForTracks(@Args('ids', { type: () => [String] }) ids: Array<string>) {
     return this.tracksService.linksForTracks(ids);
   }
 
@@ -25,6 +27,7 @@ export class TracksResolver {
   }
 
   @Query(() => CompoundResults)
+  @UseGuards(GqlAuthGuard)
   compoundQuery(@Args('query') query: CompoundQueryInput) {
     return this.tracksService.compoundSearch(query);
   }

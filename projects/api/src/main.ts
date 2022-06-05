@@ -27,7 +27,13 @@ async function bootstrap() {
   app.use(compression());
 
   // cors stuff
-  const whitelist = ['https://www.tangounion.net', 'https://tangounion.net', 'http://localhost:3000', undefined];
+  const whitelist = [
+    'https://www.tangounion.net',
+    'https://tangounion.net',
+    'http://localhost:3000',
+    'http://localhost:4000',
+    undefined,
+  ];
   app.enableCors({
     origin: function (origin, callback) {
       if (whitelist.indexOf(origin) !== -1) {

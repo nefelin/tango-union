@@ -1,13 +1,9 @@
-import {
-  ApolloClient,
-  ApolloProvider,
-  createHttpLink,
-  InMemoryCache,
-} from '@apollo/client';
+import { ApolloProvider } from '@apollo/client';
 import * as React from 'react';
 import { Route } from 'react-router';
 import { BrowserRouter, Routes } from 'react-router-dom';
 
+import apolloClient from './apolloClient';
 import Sandbox from './components/Sandbox/Sandbox';
 import Login from './features/Login';
 import MobileDashContainer from './features/MobileDash/MobileDashContainer';
@@ -15,13 +11,6 @@ import MusicDash from './features/MusicDash';
 import RootRedirect from './features/RootRedirect';
 import StandalonePlaylist from './features/StandalonePlaylist';
 import useViewport from './hooks/useViewport';
-import { getApiUrl } from './util/getApiUrl';
-
-const apolloClient = new ApolloClient({
-  cache: new InMemoryCache(),
-  link: createHttpLink({ uri: `${getApiUrl()}/graphql` }),
-  connectToDevTools: true,
-});
 
 const App = () => {
   useViewport(); // for real mobile viewport vh sizing
@@ -49,7 +38,7 @@ const App = () => {
       </BrowserRouter>
     </ApolloProvider>
   );
-}
+};
 
 const Loading = () => <div>Loading</div>;
 

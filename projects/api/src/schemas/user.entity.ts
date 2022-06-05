@@ -1,7 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { ObjectType, registerEnumType } from '@nestjs/graphql';
 
 @Schema({ timestamps: true })
+@ObjectType()
 export class User {
   @Prop({ required: true })
   firstName: string;
@@ -31,5 +33,8 @@ export enum UserRole {
   CONTRIBUTOR = 'CONTRIBUTOR',
 }
 
+registerEnumType(UserRole, {
+  name: 'UserRole',
+});
 export type UserDocument = User & Document;
 export const UserSchema = SchemaFactory.createForClass(User);
