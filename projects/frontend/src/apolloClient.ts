@@ -1,29 +1,48 @@
 import {
   ApolloClient,
-  ApolloLink,
   concat,
   createHttpLink,
   InMemoryCache,
 } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 
-import { ACCESS_KEY } from './auth';
+import {
+  fetchRefreshToken,
+  getAccessToken,
+  isTokenValidOrUndefined,
+  setAccessToken,
+  setRefreshToken,
+} from './auth';
 import { getApiUrl } from './util/getApiUrl';
 
-const authMiddleware = new ApolloLink((operation, forward) => {
+const authMiddleware = setContext(async (req) => {
+  let token = getAccessToken();
+  const needsRefresh = !isTokenValidOrUndefined(token);
+  if (needsRefresh) {
+    const tokensFromRefresh = await fetchRefreshToken();
+    console.log(tokensFromRefresh)
+    if (tokensFromRefresh) {
+      const {token: newToken, refresh: newRefresh} = tokensFromRefresh;
+      token = newToken;
+      console.log({token, newToken, newRefresh})
+      setAccessToken(newToken);
+      setRefreshToken(newRefresh);
+    }
+  }
+
   // add the authorization to the headers
-  operation.setContext((_, { headers = {} }) => ({
+  return {
     headers: {
-      ...headers,
-      authorization: `Bearer: ${localStorage.getItem(ACCESS_KEY)}` || null,
+      authorization: `Bearer ${token}` || null,
     },
-  }));
-  return forward(operation);
+  };
 });
 
 const httpLink = createHttpLink({ uri: `${getApiUrl()}/graphql` });
 const apolloClient = new ApolloClient({
   cache: new InMemoryCache(),
   link: concat(authMiddleware, httpLink),
+  // link: httpLink,
   connectToDevTools: true,
 });
 

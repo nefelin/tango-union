@@ -9,9 +9,12 @@ export default (user: TokenContent, jwt: JwtService, config: ConfigService) => {
     expiresIn: config.get('ACCESS_TOKEN_TTL'),
     secret: config.get('ACCESS_TOKEN_SECRET'),
   });
-  const refresh = jwt.sign(payload, {
-    expiresIn: config.get('REFRESH_TOKEN_TTL'),
-    secret: config.get('REFRESH_TOKEN_SECRET'),
-  });
+  const refresh = jwt.sign(
+    { email: user.email },
+    {
+      expiresIn: config.get('REFRESH_TOKEN_TTL'),
+      secret: config.get('REFRESH_TOKEN_SECRET'),
+    },
+  );
   return { token, refresh };
 };

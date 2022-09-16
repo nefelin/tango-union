@@ -102,7 +102,7 @@
     "webpack-merge": "^5.7.3"
   },
   "dependencies": {
-    "@apollo/client": "^3.3.19",
+    "@apollo/client": "^3.6.8",
     "@dnd-kit/core": "^5.0.3",
     "@dnd-kit/sortable": "^6.0.1",
     "@faker-js/faker": "^6.0.0",

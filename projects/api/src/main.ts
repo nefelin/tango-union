@@ -40,11 +40,11 @@ async function bootstrap() {
         // console.log('allowed cors for:', origin);
         callback(null, true);
       } else {
-        console.error('blocked cors for:', origin);
+        // console.error('blocked cors for:', origin);
         callback(null, false);
       }
     },
-    allowedHeaders: 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe',
+    allowedHeaders: 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe, Authorization',
     methods: 'GET,PUT,POST,DELETE,UPDATE,OPTIONS',
     credentials: true,
   });
