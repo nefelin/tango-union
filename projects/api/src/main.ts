@@ -12,7 +12,7 @@ const HTTP_PORT = 4000;
 async function bootstrap() {
   const schemaGenerationMode = process.env.GENERATE_ONLY;
   if (schemaGenerationMode) {
-    console.info('Starting nest app to generate schema...');
+    console.info('Starting nest app to generate schema....');
     const app = await NestFactory.create(AppModule);
     await app.listen(HTTP_PORT);
     console.info('Schema generated, exiting...');
