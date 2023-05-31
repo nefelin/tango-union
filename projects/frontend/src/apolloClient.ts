@@ -18,13 +18,12 @@ import { getApiUrl } from './util/getApiUrl';
 const authMiddleware = setContext(async (req) => {
   let token = getAccessToken();
   const needsRefresh = !isTokenValidOrUndefined(token);
+
   if (needsRefresh) {
     const tokensFromRefresh = await fetchRefreshToken();
-    console.log(tokensFromRefresh)
     if (tokensFromRefresh) {
       const {token: newToken, refresh: newRefresh} = tokensFromRefresh;
       token = newToken;
-      console.log({token, newToken, newRefresh})
       setAccessToken(newToken);
       setRefreshToken(newRefresh);
     }

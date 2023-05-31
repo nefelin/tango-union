@@ -63,10 +63,9 @@ export const fetchRefreshToken = async () => {
     credentials: 'include',
     method: 'POST',
     headers,
-  }).then((res) => res.json());
+  })
 
-  console.log('REFRESH', tokenRes);
-  return tokenRes.ok ? tokenRes : null;
+  return tokenRes.ok ? await tokenRes.json() : null;
 };
 
 export const isTokenValidOrUndefined = (token: string | null) => {
