@@ -47,7 +47,16 @@ const DynamicPlayButton = ({
     ? activeRowIcon(hovered, playing)
     : inactiveRowIcon(hovered);
 
-  return <StyledFakeButton onClick={action}>{icon}</StyledFakeButton>;
+  return (
+    <StyledFakeButton
+      onMouseDown={
+        (e) => e.stopPropagation() // to prevent confusing interactions with drag n drop behaviors
+      }
+      onClick={action}
+    >
+      {icon}
+    </StyledFakeButton>
+  );
 };
 
 const inactiveRowIcon = (hovered: boolean) =>
