@@ -12,6 +12,8 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
+  DateTime: any;
 };
 
 export type CompoundQueryInput = {
@@ -51,6 +53,7 @@ export type CountTuple = {
   count: Scalars['Float'];
 };
 
+
 export type PaginationInput = {
   limit: Scalars['Float'];
   offset: Scalars['Float'];
@@ -63,6 +66,7 @@ export type Query = {
   trackById: SimpleTrack;
   compoundQuery: CompoundResults;
   allTracks: Array<SimpleTrack>;
+  whoAmI: User;
 };
 
 
@@ -119,6 +123,23 @@ export type SimpleTrack = {
   linkScore: Scalars['Float'];
 };
 
+export type User = {
+  __typename?: 'User';
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  email: Scalars['String'];
+  hash: Scalars['String'];
+  lastLogin: Scalars['DateTime'];
+  refreshHash: Scalars['String'];
+  roles: Array<UserRole>;
+};
+
+export enum UserRole {
+  ADMIN = 'ADMIN',
+  USER = 'USER',
+  CONTRIBUTOR = 'CONTRIBUTOR'
+}
+
 export type TrackDetailsBatchQueryVariables = Exact<{
   ids: Array<Scalars['String']> | Scalars['String'];
 }>;
@@ -139,6 +160,22 @@ export type TrackDetailFragmentFragment = (
     { __typename?: 'RatedYoutube' }
     & Pick<RatedYoutube, 'description' | 'title' | 'videoId'>
   )> }
+);
+
+export type WhoAmIQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type WhoAmIQuery = (
+  { __typename?: 'Query' }
+  & { whoAmI: (
+    { __typename?: 'User' }
+    & UserDetailFragmentFragment
+  ) }
+);
+
+export type UserDetailFragmentFragment = (
+  { __typename?: 'User' }
+  & Pick<User, 'firstName' | 'lastName' | 'lastLogin' | 'email' | 'roles'>
 );
 
 export type CompoundQueryQueryVariables = Exact<{
@@ -190,6 +227,15 @@ export const TrackDetailFragmentFragmentDoc = gql`
     title
     videoId
   }
+}
+    `;
+export const UserDetailFragmentFragmentDoc = gql`
+    fragment UserDetailFragment on User {
+  firstName
+  lastName
+  lastLogin
+  email
+  roles
 }
     `;
 export const FullCountFragmentFragmentDoc = gql`
@@ -249,6 +295,40 @@ export function useTrackDetailsBatchLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type TrackDetailsBatchQueryHookResult = ReturnType<typeof useTrackDetailsBatchQuery>;
 export type TrackDetailsBatchLazyQueryHookResult = ReturnType<typeof useTrackDetailsBatchLazyQuery>;
 export type TrackDetailsBatchQueryResult = Apollo.QueryResult<TrackDetailsBatchQuery, TrackDetailsBatchQueryVariables>;
+export const WhoAmIDocument = gql`
+    query WhoAmI {
+  whoAmI {
+    ...UserDetailFragment
+  }
+}
+    ${UserDetailFragmentFragmentDoc}`;
+
+/**
+ * __useWhoAmIQuery__
+ *
+ * To run a query within a React component, call `useWhoAmIQuery` and pass it any options that fit your needs.
+ * When your component renders, `useWhoAmIQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useWhoAmIQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useWhoAmIQuery(baseOptions?: Apollo.QueryHookOptions<WhoAmIQuery, WhoAmIQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<WhoAmIQuery, WhoAmIQueryVariables>(WhoAmIDocument, options);
+      }
+export function useWhoAmILazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<WhoAmIQuery, WhoAmIQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<WhoAmIQuery, WhoAmIQueryVariables>(WhoAmIDocument, options);
+        }
+export type WhoAmIQueryHookResult = ReturnType<typeof useWhoAmIQuery>;
+export type WhoAmILazyQueryHookResult = ReturnType<typeof useWhoAmILazyQuery>;
+export type WhoAmIQueryResult = Apollo.QueryResult<WhoAmIQuery, WhoAmIQueryVariables>;
 export const CompoundQueryDocument = gql`
     query CompoundQuery($criteria: CompoundQueryInput!) {
   compoundQuery(query: $criteria) {

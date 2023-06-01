@@ -27,7 +27,6 @@ export class TracksResolver {
   }
 
   @Query(() => CompoundResults)
-  @UseGuards(GqlAuthGuard)
   compoundQuery(@Args('query') query: CompoundQueryInput) {
     return this.tracksService.compoundSearch(query);
   }

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 import CloudLogo from '../../assets/CloudLogo';
+import { useWhoAmIQuery } from '../../generated/graphql';
 
 interface Props {
   height?: string;
@@ -11,6 +12,8 @@ interface Props {
 
 const TopBar = ({ height = '55px', fixed = false }: Props) => {
   const navigate = useNavigate();
+  const {data, loading} = useWhoAmIQuery();
+
   return (
     <TopBarContainer
       style={{ height, position: fixed ? 'fixed' : 'inherit' }}
@@ -19,6 +22,7 @@ const TopBar = ({ height = '55px', fixed = false }: Props) => {
         <CloudLogo size="40px" />
         <TitleSpan>Tango Union</TitleSpan>
       </LogoContainer>
+      {data && <div className="flex bold text-white">Hi {data.whoAmI.firstName}</div>}
     </TopBarContainer>
   );
 };
@@ -42,9 +46,10 @@ const LogoContainer = styled.div`
 const TopBarContainer = styled.div`
   width: 100%;
   display: flex;
-  padding-left: 20px;
+  padding: 0 20px;
   background-color: #0606b9;
   align-items: center;
+  justify-content: space-between;
   top: 0;
   z-index: 100;
 `;

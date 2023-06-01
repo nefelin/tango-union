@@ -1,0 +1,13 @@
+query WhoAmI {
+  whoAmI {
+    ...UserDetailFragment
+  }
+}
+
+fragment UserDetailFragment on User {
+  firstName
+  lastName
+  lastLogin
+  email
+  roles
+}
