@@ -1,3 +1,4 @@
+import { useWhoAmIQuery } from '../generated/graphql';
 import decodeJWT from './util/decodeJwt';
 import { getApiUrl } from './util/getApiUrl';
 
@@ -13,6 +14,11 @@ export const getRefreshToken = () => localStorage.getItem(REFRESH_KEY);
 
 export const setRefreshToken = (newJwt: string) =>
   localStorage.setItem(REFRESH_KEY, newJwt);
+
+export const clearAuthTokens = () => {
+  localStorage.removeItem(ACCESS_KEY);
+  localStorage.removeItem(REFRESH_KEY);
+};
 
 export const handleLogin = async (email: string, password: string) => {
   const res = await login(email, password);
@@ -53,6 +59,27 @@ const login = async (email: string, password: string) => {
   return null;
 };
 
+export const logout = async () => {
+  const headers = new Headers();
+  const access = getAccessToken();
+
+  headers.append('Authorization', `Bearer ${access}`);
+
+  const requestOptions: RequestInit = {
+    credentials: 'include',
+    method: 'POST',
+    headers,
+  };
+
+  const res = await fetch('http://localhost:4000/auth/logout', requestOptions);
+
+  if (res.ok) {
+    clearAuthTokens();
+  }
+
+  return res
+};
+
 export const fetchRefreshToken = async () => {
   const refresh = getRefreshToken();
   const headers = new Headers();
@@ -63,7 +90,7 @@ export const fetchRefreshToken = async () => {
     credentials: 'include',
     method: 'POST',
     headers,
-  })
+  });
 
   return tokenRes.ok ? await tokenRes.json() : null;
 };

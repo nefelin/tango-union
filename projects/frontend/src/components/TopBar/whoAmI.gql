@@ -10,4 +10,5 @@ fragment UserDetailFragment on User {
   lastLogin
   email
   roles
+  hash
 }

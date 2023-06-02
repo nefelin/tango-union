@@ -15,9 +15,8 @@ const Login = () => {
     const login = await handleLogin(email, password);
     setSubmitting(false);
     if (login) {
-      // window.location.replace('/');
     } else {
-      setError('Something went wrong. Please refresh the page and try again');
+      setError('Incorrect email or password');
       setSubmitting(false);
     }
   };
@@ -46,12 +45,14 @@ const Login = () => {
               onInput={(e) => setPassword(e.currentTarget.value)}
             />
           </label>
-          {error && <div>{error}</div>}
+          {error && <div className="bg-red-400 text-white font-bold rounded-lg py-2 px-6">{error}</div>}
           <div className="flex w-full justify-between">
-            <button className="p-2 rounded-sm bg-gold-500">Register</button>
+            <button type="button" className="p-2 rounded-sm bg-gold-500">
+              Register
+            </button>
             <button
-              disabled={submitting}
-              className="p-2 rounded-sm bg-green-500"
+              disabled={submitting || !password || !email}
+              className="p-2 rounded-lg bg-blue-500 disabled:bg-blue-300"
               type="submit"
             >
               {submitting ? 'spinner' : 'Login'}

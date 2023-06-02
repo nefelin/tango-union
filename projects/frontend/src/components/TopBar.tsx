@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 import CloudLogo from '../../assets/CloudLogo';
-import { useWhoAmIQuery } from '../../generated/graphql';
+import UserMenu from './UserMenu';
 
 interface Props {
   height?: string;
@@ -12,17 +12,14 @@ interface Props {
 
 const TopBar = ({ height = '55px', fixed = false }: Props) => {
   const navigate = useNavigate();
-  const {data, loading} = useWhoAmIQuery();
 
   return (
-    <TopBarContainer
-      style={{ height, position: fixed ? 'fixed' : 'inherit' }}
-    >
+    <TopBarContainer style={{ height, position: fixed ? 'fixed' : 'inherit' }}>
       <LogoContainer onClick={() => navigate('/')}>
         <CloudLogo size="40px" />
         <TitleSpan>Tango Union</TitleSpan>
       </LogoContainer>
-      {data && <div className="flex bold text-white">Hi {data.whoAmI.firstName}</div>}
+      <UserMenu />
     </TopBarContainer>
   );
 };

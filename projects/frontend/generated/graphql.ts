@@ -175,7 +175,7 @@ export type WhoAmIQuery = (
 
 export type UserDetailFragmentFragment = (
   { __typename?: 'User' }
-  & Pick<User, 'firstName' | 'lastName' | 'lastLogin' | 'email' | 'roles'>
+  & Pick<User, 'firstName' | 'lastName' | 'lastLogin' | 'email' | 'roles' | 'hash'>
 );
 
 export type CompoundQueryQueryVariables = Exact<{
@@ -236,6 +236,7 @@ export const UserDetailFragmentFragmentDoc = gql`
   lastLogin
   email
   roles
+  hash
 }
     `;
 export const FullCountFragmentFragmentDoc = gql`
