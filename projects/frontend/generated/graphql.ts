@@ -25,6 +25,7 @@ export type CompoundQueryInput = {
   singers?: Maybe<Array<Scalars['String']>>;
   titles?: Maybe<Array<Scalars['String']>>;
   genres?: Maybe<Array<Scalars['String']>>;
+  limitIds?: Maybe<Array<Scalars['Float']>>;
 };
 
 export type CompoundResults = {

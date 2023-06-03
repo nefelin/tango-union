@@ -6,7 +6,9 @@ import { useEffect } from 'react';
 import { SelectIndexCount } from '../../generated/graphql';
 import { usePaginationState } from '../hooks/state/usePaginationState';
 import { asVh } from '../hooks/useViewport';
+import useWhoAmiI from '../hooks/useWhoAmiI';
 import { Unary } from '../types/utility/unary';
+import LikeFilterSwitch from './LikeFilterSwitch';
 import MobileBarGraph from './MobileBarGraph';
 import decadeCountFromYears from './MobileSearch/decadeCountFromYears';
 import MobileSearchFooter from './MobileSearch/MobileSearchFooter';
@@ -36,6 +38,9 @@ const MobileSearch = ({
     enableReinitialize: true,
     onSubmit: () => {},
   });
+
+  const user = useWhoAmiI();
+  const filteringLiked = !!formik.values.limitIds?.length;
 
   const { values } = formik;
 
@@ -115,7 +120,15 @@ const MobileSearch = ({
           (formik.values.year || '').split(', ').filter((s) => s.length > 0),
         )}
       />
-      <div className="mt-4 mb-2" style={{height: asVh(23)}}>
+      {user && (
+        <LikeFilterSwitch
+          checked={filteringLiked}
+          onChange={() =>
+            formik.setFieldValue('limitIds', filteringLiked ? null : user.likedTracks, false)
+          }
+        />
+      )}
+      <div className="mt-4 mb-2" style={{ height: asVh(23) }}>
         <MobileBarGraph data={decadeData} onSelect={handleGraphYearSelect} />
       </div>
       <MobileSearchFooter count={totalResults} onClear={resetSearch} />

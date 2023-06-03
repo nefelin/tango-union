@@ -10,6 +10,7 @@ export class CompoundQueryInput {
   singers?: string[];
   titles?: string[];
   genres?: string[];
+  limitIds?: Array<number>;
 }
 
 @InputType()

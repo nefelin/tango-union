@@ -48,7 +48,7 @@ export class TracksService {
   }
 
   async compoundSearch(input: CompoundQueryInput) {
-    const { orchestras, singers, genres, text, sort: dirtySort = {}, pagination, year } = input;
+    const { orchestras, singers, genres, text, sort: dirtySort = {}, pagination, year, limitIds } = input;
     const sort = cleanSort(dirtySort);
     // do year business on text input
     const yearParser = new YearParser(null);
@@ -56,6 +56,8 @@ export class TracksService {
     const textWithoutYear = text ? yearParser.stripYearTerms(text) : text; // fixme stripping not needed if we stick with split year term, maybe good for cleaning still?
 
     const preppedText = andifyMongoTextSearch(textWithoutYear);
+
+    const limitIdsMatch = limitIds ? { id: { $in: limitIds } } : null
 
     const textMatch = preppedText?.length
       ? {
@@ -77,11 +79,11 @@ export class TracksService {
 
     const stripNil = r.reject(r.isNil);
 
-    const singerCountMatches = stripNil([orchestraMatch, genreMatch, yearMatch]);
-    const yearCountMatches = stripNil([orchestraMatch, genreMatch, singerMatch]);
-    const orchestraCountMatches = stripNil([singerMatch, genreMatch, yearMatch]);
-    const genreCountMatches = stripNil([orchestraMatch, singerMatch, yearMatch]);
-    const allMatches = stripNil([orchestraMatch, singerMatch, genreMatch, yearMatch]);
+    const singerCountMatches = stripNil([orchestraMatch, genreMatch, yearMatch, limitIdsMatch]);
+    const yearCountMatches = stripNil([orchestraMatch, genreMatch, singerMatch, limitIdsMatch]);
+    const orchestraCountMatches = stripNil([singerMatch, genreMatch, yearMatch, limitIdsMatch]);
+    const genreCountMatches = stripNil([orchestraMatch, singerMatch, yearMatch, limitIdsMatch]);
+    const allMatches = stripNil([orchestraMatch, singerMatch, genreMatch, yearMatch, limitIdsMatch]);
 
     const { singer, orchestra, ...rest } = sort;
     const sortFixedArrays = {
