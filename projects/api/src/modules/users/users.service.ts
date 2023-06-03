@@ -23,8 +23,8 @@ export class UsersService {
       ...partialUser,
       hash: bcrypt.hashSync(password, 10),
       refreshHash: bcrypt.hashSync(password, 10),
-      roles: [...user.roles, UserRole.USER],
-      lastLogin: null,
+      roles: [UserRole.USER],
+      lastLogin: new Date(),
     });
 
     const saved = await newUser.save();

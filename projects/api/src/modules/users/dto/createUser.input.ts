@@ -19,6 +19,4 @@ export class CreateUserInput {
   @Length(10, 1000)
   password: string;
 
-  @IsEnum(UserRole, { each: true })
-  roles?: Array<UserRole>;
 }

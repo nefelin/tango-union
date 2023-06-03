@@ -12,9 +12,12 @@ import React, { useState } from 'react';
 import useLogout from '../hooks/useLogout';
 import useWhoAmiI from '../hooks/useWhoAmiI';
 import MenuLogin from './MenuLogin';
+import MenuRegister from './MenuRegister';
 
 const UserMenu = () => {
-  const [loginModal, setLoginModal] = useState(false);
+  const [authModal, setAuthModal] = useState(false);
+  const [loginOrRegister, setLoginOrRegister] =
+    useState<'login' | 'register'>('login');
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -22,9 +25,14 @@ const UserMenu = () => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleCloseMenu = () => {
     setAnchorEl(null);
   };
+
+  const handleCloseModal = () => {
+    setAuthModal(false)
+    setLoginOrRegister('login')
+  }
 
   const user = useWhoAmiI();
 
@@ -32,7 +40,7 @@ const UserMenu = () => {
 
   const handleLogout = async () => {
     await logout();
-    handleClose();
+    handleCloseMenu();
   };
 
   return user ? (
@@ -47,8 +55,12 @@ const UserMenu = () => {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            Hello {user.firstName}
-            <Avatar sx={{ width: 24, height: 24 }}>M</Avatar>
+            <div className="text-white font-bold mr-4 hidden sm:inline">
+              Hello {user.firstName}
+            </div>
+            <Avatar sx={{ width: 32, height: 32 }}>
+              {user.firstName.split('')[0]}
+            </Avatar>
           </IconButton>
         </Tooltip>
       </Box>
@@ -56,8 +68,8 @@ const UserMenu = () => {
         anchorEl={anchorEl}
         id="account-menu"
         open={open}
-        onClose={handleClose}
-        onClick={handleClose}
+        onClose={handleCloseMenu}
+        onClick={handleCloseMenu}
         PaperProps={{
           elevation: 0,
           sx: {
@@ -99,13 +111,30 @@ const UserMenu = () => {
     <>
       <button
         className="text-white font-bold !cursor-pointer"
-        onClick={() => setLoginModal(true)}
+        onClick={() => setAuthModal(true)}
       >
         Login
       </button>
-      <Modal open={loginModal} onClose={() => setLoginModal(false)}>
-        <div className="w-1/3 h-1/2 bg-blue-200 absolute m-auto inset-0 bg-white rounded-2xl p-20">
-          <MenuLogin onLogin={() => setLoginModal(false)} />
+      <Modal
+        open={authModal}
+        onClose={handleCloseModal}
+      >
+        <div className="flex w-screen h-screen justify-center items-center">
+          <div className="w-full h-full sm:w-fit sm:h-fit bg-blue-200 bg-white sm:rounded-2xl px-16 py-12">
+            {loginOrRegister === 'login' ? (
+              <MenuLogin
+                onCancel={handleCloseModal}
+                onLogin={handleCloseModal}
+                onRegister={() => setLoginOrRegister('register')}
+              />
+            ) : (
+              <MenuRegister
+                onCancel={handleCloseModal}
+                onLogin={() => setLoginOrRegister('login')}
+                onRegister={handleCloseModal}
+              />
+            )}
+          </div>
         </div>
       </Modal>
     </>

@@ -34,6 +34,25 @@ export const handleLogin = async (email: string, password: string) => {
   return true;
 };
 
+export const handleRegister = async (
+  firstName: string,
+  lastName: string,
+  email: string,
+  password: string,
+) => {
+  const res = await register(firstName, lastName, email, password);
+
+  if (!res) {
+    return false;
+  }
+
+  const { token, refresh } = res;
+  setAccessToken(token);
+  setRefreshToken(refresh);
+
+  return true;
+};
+
 const login = async (email: string, password: string) => {
   const headers = new Headers();
   headers.append('Content-Type', 'application/json');
@@ -51,6 +70,41 @@ const login = async (email: string, password: string) => {
   };
 
   const res = await fetch('http://localhost:4000/auth/login', requestOptions);
+
+  if (res.ok) {
+    return await res.json();
+  }
+
+  return null;
+};
+
+const register = async (
+  firstName: string,
+  lastName: string,
+  email: string,
+  password: string,
+) => {
+  const headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+
+  const body = JSON.stringify({
+    firstName,
+    lastName,
+    email,
+    password,
+  });
+
+  const requestOptions: RequestInit = {
+    credentials: 'include',
+    method: 'POST',
+    headers,
+    body,
+  };
+
+  const res = await fetch(
+    'http://localhost:4000/auth/register',
+    requestOptions,
+  );
 
   if (res.ok) {
     return await res.json();
@@ -77,7 +131,7 @@ export const logout = async () => {
     clearAuthTokens();
   }
 
-  return res
+  return res;
 };
 
 export const fetchRefreshToken = async () => {
