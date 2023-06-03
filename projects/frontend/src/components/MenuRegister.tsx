@@ -5,7 +5,7 @@ import { useWhoAmIQuery } from '../../generated/graphql';
 import { handleRegister } from '../auth';
 
 export const emailRegex = /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i;
-export const passwordValid = (password: string) => password.length >= 16
+export const passwordValid = (password: string) => password.length >= 16;
 
 const MenuRegister = ({
   onLogin,
@@ -22,7 +22,9 @@ const MenuRegister = ({
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<string>();
+  const [errors, setErrors] = useState<
+    Partial<Record<'request' | 'password' | 'email', string>>
+  >({});
   const { refetch } = useWhoAmIQuery();
 
   const emailValid = emailRegex.test(email);
@@ -48,7 +50,7 @@ const MenuRegister = ({
       await refetch();
       onRegister();
     } else {
-      setError('Problem creating account!');
+      setErrors((prev) => ({ ...prev, request: 'Problem creating account!' }));
       setSubmitting(false);
     }
   };
@@ -82,7 +84,14 @@ const MenuRegister = ({
             className="p-2 rounded-md w-full"
             placeholder="Email"
             value={email}
-            onInput={(e) => setEmail(e.currentTarget.value)}
+            onInput={(e) => {
+              setErrors((prev) => ({ ...prev, email: '' }));
+              setEmail(e.currentTarget.value);
+            }}
+            onBlur={() =>
+              email.length && !emailRegex.test(email) &&
+              setErrors((prev) => ({ ...prev, email: 'Email is invalid' }))
+            }
           />
         </label>
         <label>
@@ -92,7 +101,18 @@ const MenuRegister = ({
             placeholder="Password"
             type="password"
             value={password}
-            onInput={(e) => setPassword(e.currentTarget.value)}
+            onInput={(e) => {
+              setErrors((prev) => ({ ...prev, password: '' }));
+              setPassword(e.currentTarget.value);
+            }}
+            onBlur={() =>
+              password.length &&
+              !passwordValid(password) &&
+              setErrors((prev) => ({
+                ...prev,
+                password: 'Password must be at least 16 characters',
+              }))
+            }
           />
         </label>
         <label>
@@ -105,13 +125,18 @@ const MenuRegister = ({
             onInput={(e) => setPasswordConfirm(e.currentTarget.value)}
           />
         </label>
-        {error && (
-          <div className="bg-red-400 text-white font-bold rounded-lg py-2 px-6">
-            {error}
-          </div>
+        {Object.values(errors).map(
+          (errorText) =>
+            errorText && (
+              <div
+                key={errorText}
+                className="bg-red-400 text-white font-bold rounded-lg py-2 px-6"
+              >
+                {errorText}
+              </div>
+            ),
         )}
         <div className="flex w-full justify-between mt-4">
-
           <Button
             variant="outlined"
             className="p-2 sm:hidden rounded-lg border border-black"
