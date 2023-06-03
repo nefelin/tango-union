@@ -1,7 +1,9 @@
+import { Button, CircularProgress } from '@mui/material';
 import React, { FormEventHandler, useState } from 'react';
 
 import { useWhoAmIQuery } from '../../generated/graphql';
 import { handleLogin } from '../auth';
+import { emailRegex, passwordValid } from './MenuRegister';
 
 const MenuLogin = ({
   onLogin,
@@ -43,7 +45,15 @@ const MenuLogin = ({
             className="p-2 rounded-md w-full"
             placeholder="Email"
             value={email}
-            onInput={(e) => setEmail(e.currentTarget.value)}
+            onInput={(e) => {
+              setError('');
+              setEmail(e.currentTarget.value);
+            }}
+            onBlur={() => {
+              if (!emailRegex.test(email)) {
+                setError('Email address is invalid');
+              }
+            }}
           />
         </label>
         <label>
@@ -61,29 +71,26 @@ const MenuLogin = ({
             {error}
           </div>
         )}
-        <div className="flex w-full justify-between">
-          <button
+        <div className="flex w-full justify-between mt-4">
+          <Button
+            className="py-2 px-6 rounded-lg border border-black"
             type="button"
-            className="p-2 text-blue-500"
-            onClick={onRegister}
-          >
-            Create New Account
-          </button>
-          <button
-            className="p-2 sm:hidden rounded-lg border border-black"
-            type="button"
+            variant="outlined"
             onClick={onCancel}
           >
             Cancel
-          </button>
-          <button
+          </Button>
+          <Button
             disabled={submitting || !password || !email}
-            className="p-2 rounded-lg bg-blue-500 disabled:bg-blue-300"
+            variant="contained"
             type="submit"
           >
-            {submitting ? 'spinner' : 'Login'}
-          </button>
+            {submitting ? <CircularProgress /> : 'Login'}
+          </Button>
         </div>
+        <Button type="button" color="secondary" onClick={onRegister}>
+          or Create New Account
+        </Button>
       </div>
     </form>
   );

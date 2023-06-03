@@ -1,9 +1,11 @@
+import { Button } from '@mui/material';
 import React, { FormEventHandler, useState } from 'react';
 
 import { useWhoAmIQuery } from '../../generated/graphql';
 import { handleRegister } from '../auth';
 
-const emailRegex = /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i;
+export const emailRegex = /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i;
+export const passwordValid = (password: string) => password.length >= 16
 
 const MenuRegister = ({
   onLogin,
@@ -28,7 +30,7 @@ const MenuRegister = ({
     emailValid &&
     password &&
     passwordConfirm &&
-    password.length >= 16 &&
+    passwordValid(password) &&
     !submitting;
 
   const onSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
@@ -108,25 +110,28 @@ const MenuRegister = ({
             {error}
           </div>
         )}
-        <div className="flex w-full justify-between">
-          <button type="button" className="p-2 text-blue-500" onClick={onLogin}>
-            Login
-          </button>
-          <button
+        <div className="flex w-full justify-between mt-4">
+
+          <Button
+            variant="outlined"
             className="p-2 sm:hidden rounded-lg border border-black"
             type="button"
             onClick={onCancel}
           >
             Cancel
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="contained"
             disabled={!canSubmit}
             className="p-2 rounded-lg bg-blue-500 disabled:bg-blue-300"
             type="submit"
           >
             {submitting ? 'spinner' : 'Create Account'}
-          </button>
+          </Button>
         </div>
+        <Button color="secondary" type="button" onClick={onLogin}>
+          Login instead
+        </Button>
       </div>
     </form>
   );

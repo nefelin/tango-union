@@ -120,7 +120,7 @@ const UserMenu = () => {
         onClose={handleCloseModal}
       >
         <div className="flex w-screen h-screen justify-center items-center">
-          <div className="w-full h-full sm:w-fit sm:h-fit bg-blue-200 bg-white sm:rounded-2xl px-16 py-12">
+          <div className="w-full h-full sm:w-1/3 sm:h-fit bg-blue-200 bg-white sm:rounded-2xl px-12 py-8">
             {loginOrRegister === 'login' ? (
               <MenuLogin
                 onCancel={handleCloseModal}
