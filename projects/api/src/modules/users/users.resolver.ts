@@ -4,7 +4,6 @@ import { GqlAuthGuard } from '../auth/gqlAuthGuard';
 import { User } from '../../schemas/user.entity';
 import { CurrentUser } from '../auth/currentUser';
 import { UsersService } from './users.service';
-import { TrackId } from '../../types';
 
 @Resolver('user')
 export class UsersResolver {
@@ -18,7 +17,13 @@ export class UsersResolver {
 
   @Mutation(() => User)
   @UseGuards(GqlAuthGuard)
-  likeTrack(@CurrentUser() user: User, @Args('trackId', { type: () => String }) trackId: TrackId) {
+  likeTrack(@CurrentUser() user: User, @Args('trackId', { type: () => Number }) trackId: number) {
     return this.userService.likeTrack(user.email, trackId);
+  }
+
+  @Mutation(() => User)
+  @UseGuards(GqlAuthGuard)
+  unlikeTrack(@CurrentUser() user: User, @Args('trackId', { type: () => Number }) trackId: number) {
+    return this.userService.unlikeTrack(user.email, trackId);
   }
 }

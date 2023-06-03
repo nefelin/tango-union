@@ -61,13 +61,27 @@ export class UsersService {
     return user.save();
   }
 
-  async likeTrack(email: string, trackId: TrackId) {
+  async likeTrack(email: string, trackId: number) {
     const user = await this.userModel.findOne({ email });
     if (!user) {
       throw new Error('User does not exist');
     }
 
-    user.likedTracks.push(trackId);
+    if (!user.likedTracks.includes(trackId)) {
+      user.likedTracks.push(trackId);
+    }
+
+    return user.save();
+  }
+
+  async unlikeTrack(email: string, trackId: number) {
+    const user = await this.userModel.findOne({ email });
+    if (!user) {
+      throw new Error('User does not exist');
+    }
+
+    user.likedTracks = user.likedTracks.filter((id) => id !== trackId);
+
     return user.save();
   }
 }
