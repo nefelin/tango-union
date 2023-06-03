@@ -11,4 +11,4 @@ export interface TangoTrack {
   year: Maybe<number>;
 }
 
-export type TrackId = string;
+export type TrackId = string; // wtf is this a string?

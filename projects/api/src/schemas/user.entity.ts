@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { ObjectType, registerEnumType } from '@nestjs/graphql';
+import { TrackId } from '../types';
 
 @Schema({ timestamps: true })
 @ObjectType()
@@ -25,6 +26,9 @@ export class User {
 
   @Prop({ required: true })
   roles: Array<UserRole>;
+
+  @Prop({ required: false })
+  likedTracks: Array<TrackId>;
 }
 
 export enum UserRole {
