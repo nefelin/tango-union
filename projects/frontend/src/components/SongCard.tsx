@@ -118,7 +118,7 @@ export const SongCard = ({
               {active && <AnimatedEq playing={playing} />}
               {title}
               {liked && (
-                <div className="text-[12px]">
+                <div className="ml-1 text-[14px]">
                   <Favorite fontSize="inherit" />
                 </div>
               )}
