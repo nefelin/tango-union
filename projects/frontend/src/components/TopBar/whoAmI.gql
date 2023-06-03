@@ -11,4 +11,5 @@ fragment UserDetailFragment on User {
   email
   roles
   hash
+  likedTracks
 }

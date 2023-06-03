@@ -54,6 +54,22 @@ export type CountTuple = {
 };
 
 
+export type Mutation = {
+  __typename?: 'Mutation';
+  likeTrack: User;
+  unlikeTrack: User;
+};
+
+
+export type MutationLikeTrackArgs = {
+  trackId: Scalars['Float'];
+};
+
+
+export type MutationUnlikeTrackArgs = {
+  trackId: Scalars['Float'];
+};
+
 export type PaginationInput = {
   limit: Scalars['Float'];
   offset: Scalars['Float'];
@@ -132,6 +148,7 @@ export type User = {
   lastLogin: Scalars['DateTime'];
   refreshHash: Scalars['String'];
   roles: Array<UserRole>;
+  likedTracks: Array<Scalars['Float']>;
 };
 
 export enum UserRole {
@@ -139,6 +156,32 @@ export enum UserRole {
   USER = 'USER',
   CONTRIBUTOR = 'CONTRIBUTOR'
 }
+
+export type LikeTrackMutationVariables = Exact<{
+  trackId: Scalars['Float'];
+}>;
+
+
+export type LikeTrackMutation = (
+  { __typename?: 'Mutation' }
+  & { likeTrack: (
+    { __typename?: 'User' }
+    & UserDetailFragmentFragment
+  ) }
+);
+
+export type UnlikeTrackMutationVariables = Exact<{
+  trackId: Scalars['Float'];
+}>;
+
+
+export type UnlikeTrackMutation = (
+  { __typename?: 'Mutation' }
+  & { unlikeTrack: (
+    { __typename?: 'User' }
+    & UserDetailFragmentFragment
+  ) }
+);
 
 export type TrackDetailsBatchQueryVariables = Exact<{
   ids: Array<Scalars['String']> | Scalars['String'];
@@ -175,7 +218,7 @@ export type WhoAmIQuery = (
 
 export type UserDetailFragmentFragment = (
   { __typename?: 'User' }
-  & Pick<User, 'firstName' | 'lastName' | 'lastLogin' | 'email' | 'roles' | 'hash'>
+  & Pick<User, 'firstName' | 'lastName' | 'lastLogin' | 'email' | 'roles' | 'hash' | 'likedTracks'>
 );
 
 export type CompoundQueryQueryVariables = Exact<{
@@ -237,6 +280,7 @@ export const UserDetailFragmentFragmentDoc = gql`
   email
   roles
   hash
+  likedTracks
 }
     `;
 export const FullCountFragmentFragmentDoc = gql`
@@ -261,6 +305,72 @@ export const FullCountFragmentFragmentDoc = gql`
   }
 }
     `;
+export const LikeTrackDocument = gql`
+    mutation LikeTrack($trackId: Float!) {
+  likeTrack(trackId: $trackId) {
+    ...UserDetailFragment
+  }
+}
+    ${UserDetailFragmentFragmentDoc}`;
+export type LikeTrackMutationFn = Apollo.MutationFunction<LikeTrackMutation, LikeTrackMutationVariables>;
+
+/**
+ * __useLikeTrackMutation__
+ *
+ * To run a mutation, you first call `useLikeTrackMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLikeTrackMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [likeTrackMutation, { data, loading, error }] = useLikeTrackMutation({
+ *   variables: {
+ *      trackId: // value for 'trackId'
+ *   },
+ * });
+ */
+export function useLikeTrackMutation(baseOptions?: Apollo.MutationHookOptions<LikeTrackMutation, LikeTrackMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LikeTrackMutation, LikeTrackMutationVariables>(LikeTrackDocument, options);
+      }
+export type LikeTrackMutationHookResult = ReturnType<typeof useLikeTrackMutation>;
+export type LikeTrackMutationResult = Apollo.MutationResult<LikeTrackMutation>;
+export type LikeTrackMutationOptions = Apollo.BaseMutationOptions<LikeTrackMutation, LikeTrackMutationVariables>;
+export const UnlikeTrackDocument = gql`
+    mutation UnlikeTrack($trackId: Float!) {
+  unlikeTrack(trackId: $trackId) {
+    ...UserDetailFragment
+  }
+}
+    ${UserDetailFragmentFragmentDoc}`;
+export type UnlikeTrackMutationFn = Apollo.MutationFunction<UnlikeTrackMutation, UnlikeTrackMutationVariables>;
+
+/**
+ * __useUnlikeTrackMutation__
+ *
+ * To run a mutation, you first call `useUnlikeTrackMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnlikeTrackMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [unlikeTrackMutation, { data, loading, error }] = useUnlikeTrackMutation({
+ *   variables: {
+ *      trackId: // value for 'trackId'
+ *   },
+ * });
+ */
+export function useUnlikeTrackMutation(baseOptions?: Apollo.MutationHookOptions<UnlikeTrackMutation, UnlikeTrackMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UnlikeTrackMutation, UnlikeTrackMutationVariables>(UnlikeTrackDocument, options);
+      }
+export type UnlikeTrackMutationHookResult = ReturnType<typeof useUnlikeTrackMutation>;
+export type UnlikeTrackMutationResult = Apollo.MutationResult<UnlikeTrackMutation>;
+export type UnlikeTrackMutationOptions = Apollo.BaseMutationOptions<UnlikeTrackMutation, UnlikeTrackMutationVariables>;
 export const TrackDetailsBatchDocument = gql`
     query TrackDetailsBatch($ids: [String!]!) {
   tracksByIds(ids: $ids) {

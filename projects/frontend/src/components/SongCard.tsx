@@ -1,11 +1,17 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { DragIndicator, Link, MoreHorizOutlined } from '@mui/icons-material';
+import {
+  DragIndicator,
+  Favorite,
+  Link,
+  MoreHorizOutlined,
+} from '@mui/icons-material';
 import { Tooltip } from '@mui/material';
 import classNames from 'classnames';
 import React, { KeyboardEventHandler, MouseEventHandler } from 'react';
 
 import { PlaylistTrack } from '../hooks/state/usePlaylistsState/types';
+import useWhoAmiI from '../hooks/useWhoAmiI';
 import { CompactTrack, TrackId } from '../types/compactTrack/types';
 import { Unary } from '../types/utility/unary';
 import { capitalizeFirstLetter } from '../util/capitalizeFirst';
@@ -34,6 +40,7 @@ export const SongCard = ({
 }: Props) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: track.listId });
+  const user = useWhoAmiI();
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -90,6 +97,7 @@ export const SongCard = ({
     },
   );
 
+  const liked = (user?.likedTracks ?? []).includes(parseInt(track.trackId));
   return (
     <div ref={setNodeRef} style={style} {...attributes}>
       <div className="flex h-full items-center bg-gray-100 my-0.5">
@@ -109,6 +117,7 @@ export const SongCard = ({
             <div className={titleClasses}>
               {active && <AnimatedEq playing={playing} />}
               {title}
+              {liked && <Favorite className="ml-2" fontSize="10px"/>}
             </div>
             <div className="text-xs truncate">{yearGenreText}</div>
             <div className="text-xs truncate">{orchSingerText}</div>

@@ -1,24 +1,30 @@
-import { MissingFieldError } from '@apollo/client';
 import {
   ExpandMore,
+  Favorite,
+  HeartBroken,
   ManageSearch,
   PlaylistAdd,
   ReplyAllOutlined,
   ReplyOutlined,
   Sort,
 } from '@mui/icons-material';
-import {  MenuItem, Slide, Typography } from '@mui/material';
+import { MenuItem, Slide, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
+import {
+  useLikeTrackMutation,
+  useUnlikeTrackMutation,
+  WhoAmIDocument,
+} from '../../../generated/graphql';
 import { reactiveMoreState } from '../../features/MobileDash/reactiveMoreState';
 import { QUICKLIST_PLAYLIST_ID } from '../../hooks/state/useGlobalPlaylistState/songLists.state';
 import { usePlaylistState } from '../../hooks/state/usePlaylistState';
 import { useSearchbarState } from '../../hooks/state/useSearchbarState';
 import useSnackbars from '../../hooks/useSnackbars';
+import useWhoAmiI from '../../hooks/useWhoAmiI';
 import { CompactTrack } from '../../types/compactTrack/types';
 import { urlSearchParams, urlTrackParams } from '../../util/urlParams';
 import SortPanel from '../MobileSort/SortPanel';
-import SortRow from '../MobileSort/SortRow';
 import IconSpacer from './IconSpacer';
 import { composeShareSongParams, handleShare } from './sharedHandlers';
 const ResultsMenu = ({ track }: { track: CompactTrack }) => {
@@ -26,6 +32,15 @@ const ResultsMenu = ({ track }: { track: CompactTrack }) => {
   const { searchbarState, searchFromIds } = useSearchbarState();
   const { addSnack } = useSnackbars();
   const [sortOpen, setSortOpen] = useState(false);
+  const user = useWhoAmiI();
+
+  // todo handle errors
+  const [likeTrack] = useLikeTrackMutation({
+    refetchQueries: [WhoAmIDocument],
+  });
+  const [unlikeTrack] = useUnlikeTrackMutation({
+    refetchQueries: [WhoAmIDocument],
+  });
 
   const closeMore = () => reactiveMoreState(null);
 
@@ -41,11 +56,28 @@ const ResultsMenu = ({ track }: { track: CompactTrack }) => {
     closeMore();
   };
 
+  const liked = (user?.likedTracks ?? []).includes(parseInt(track.trackId));
+  const handleToggleLike = () => {
+    const trackId = parseInt(track.trackId);
+    if (liked) {
+      unlikeTrack({ variables: { trackId } });
+    } else {
+      likeTrack({ variables: { trackId } });
+    }
+    closeMore()
+  };
+
   return (
     <>
       <MenuItem onClick={closeMore}>
         <ExpandMore />
       </MenuItem>
+      {user && (
+        <MenuItem onClick={handleToggleLike}>
+          <IconSpacer>{liked ? <HeartBroken /> : <Favorite />}</IconSpacer>
+          {liked ? 'Unlike' : 'Like'} Song
+        </MenuItem>
+      )}
       <MenuItem onClick={handleAddToPlaylist}>
         <IconSpacer>
           <PlaylistAdd />

@@ -1,0 +1,11 @@
+mutation LikeTrack($trackId: Float!) {
+  likeTrack(trackId: $trackId) {
+    ...UserDetailFragment
+  }
+}
+
+mutation UnlikeTrack($trackId: Float!) {
+  unlikeTrack(trackId: $trackId) {
+    ...UserDetailFragment
+  }
+}
