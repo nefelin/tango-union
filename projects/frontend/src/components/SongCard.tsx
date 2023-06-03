@@ -117,7 +117,11 @@ export const SongCard = ({
             <div className={titleClasses}>
               {active && <AnimatedEq playing={playing} />}
               {title}
-              {liked && <Favorite className="ml-2" fontSize="10px"/>}
+              {liked && (
+                <div className="text-[12px]">
+                  <Favorite fontSize="inherit" />
+                </div>
+              )}
             </div>
             <div className="text-xs truncate">{yearGenreText}</div>
             <div className="text-xs truncate">{orchSingerText}</div>
