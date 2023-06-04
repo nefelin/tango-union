@@ -18,14 +18,14 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh'
 
   async validate(request: Request, payload: TokenContent) {
     const refresh = request.headers['authorization'].split(' ')[1];
-    console.log({ refresh });
+    // console.log({ refresh });
     if (!refresh) {
       throw new UnauthorizedException();
     }
 
     const { email } = payload;
     const user = await this.userService.findOne(email);
-    console.log({ email, user, refresh: user.refreshHash, obj: user.toObject().refreshHash });
+    // console.log({ email, user, refresh: user.refreshHash, obj: user.toObject().refreshHash });
     if (!user) {
       throw new UnauthorizedException();
     }
@@ -34,7 +34,7 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh'
       throw new UnauthorizedException();
     }
 
-    console.log('passed');
+    // console.log('passed');
     return { email };
   }
 }

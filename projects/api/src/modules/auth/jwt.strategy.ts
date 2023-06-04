@@ -16,7 +16,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: TokenContent) {
     // other logic like checking against list of revoked tokens might go here
-    console.log(payload)
+    // console.log(payload)
     const { firstName, lastName, email } = payload;
     return { firstName, lastName, email };
   }
