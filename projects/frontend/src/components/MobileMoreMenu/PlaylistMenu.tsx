@@ -2,7 +2,7 @@ import {
   DeleteOutline,
   DeleteOutlined,
   DeleteSweepOutlined,
-  ExpandMore,
+  ExpandMore, Favorite, HeartBroken,
   ManageSearch,
   ReplyAllOutlined,
   ReplyOutlined, VolunteerActivismOutlined,
@@ -10,13 +10,14 @@ import {
 import { MenuItem } from '@mui/material';
 import React from 'react';
 
+import { useLikeTrackMutation, useUnlikeTrackMutation, WhoAmIDocument } from '../../../generated/graphql';
 import { reactiveMoreState } from '../../features/MobileDash/reactiveMoreState';
 import { QUICKLIST_PLAYLIST_ID } from '../../hooks/state/useGlobalPlaylistState/songLists.state';
 import { usePlaylistState } from '../../hooks/state/usePlaylistState';
 import { useSearchbarState } from '../../hooks/state/useSearchbarState';
 import useSnackbars from '../../hooks/useSnackbars';
+import useWhoAmiI from '../../hooks/useWhoAmiI';
 import { CompactTrack } from '../../types/compactTrack/types';
-import { urlTrackParams } from '../../util/urlParams';
 import IconSpacer from './IconSpacer';
 import {
   composeSharePlaylistParams,
@@ -33,6 +34,27 @@ const PlaylistMenu = ({ track }: { track: CompactTrack }) => {
 
   const closeMore = () => reactiveMoreState(null);
 
+  const user = useWhoAmiI();
+
+  // todo handle errors
+  const [likeTrack] = useLikeTrackMutation({
+    refetchQueries: [WhoAmIDocument],
+  });
+  const [unlikeTrack] = useUnlikeTrackMutation({
+    refetchQueries: [WhoAmIDocument],
+  });
+  const liked = (user?.likedTracks ?? []).includes(parseInt(track.trackId));
+
+  const handleToggleLike = () => {
+    const trackId = parseInt(track.trackId);
+    if (liked) {
+      unlikeTrack({ variables: { trackId } });
+    } else {
+      likeTrack({ variables: { trackId } });
+    }
+    closeMore()
+  };
+
   const handleClearPlaylist = () => {
     replaceTracks([]);
     closeMore();
@@ -48,6 +70,12 @@ const PlaylistMenu = ({ track }: { track: CompactTrack }) => {
       <MenuItem onClick={closeMore}>
         <ExpandMore />
       </MenuItem>
+      {user && (
+        <MenuItem onClick={handleToggleLike}>
+          <IconSpacer>{liked ? <HeartBroken /> : <Favorite />}</IconSpacer>
+          {liked ? 'Unlike' : 'Like'} Song
+        </MenuItem>
+      )}
       <MenuItem onClick={handleClearPlaylist}>
         <IconSpacer>
           <DeleteOutlined />
