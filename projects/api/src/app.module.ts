@@ -12,9 +12,6 @@ import { TerminusModule } from '@nestjs/terminus';
 import { HealthController } from './modules/health/health.controller';
 import { AuthModule } from './modules/auth/auth.module';
 
-const TABS_PATH = path.resolve(__dirname, '../generated/tabs.json'); // fixme should be in config
-const tabEndpointHost = process.env.NODE_ENV === 'dev' ? 'http://localhost' : 'https://api.tangounion.net';
-
 @Module({
   imports: [
     TerminusModule,
@@ -24,18 +21,7 @@ const tabEndpointHost = process.env.NODE_ENV === 'dev' ? 'http://localhost' : 'h
     }),
     GraphQLModule.forRootAsync({
       useFactory: async () => {
-        const tabs = fs.existsSync(TABS_PATH) ? require(TABS_PATH) : [];
-        const endpoint = `${tabEndpointHost}:${process.env.PORT}/graphql`;
-
         return {
-          ...(tabs.length
-            ? {
-                playground: {
-                  endpoint,
-                  ...(tabs ? { tabs } : {}),
-                },
-              }
-            : {}),
           autoSchemaFile: path.join(process.cwd(), 'generated/schema.gql'),
         };
       },
