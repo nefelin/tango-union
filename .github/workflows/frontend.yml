@@ -16,6 +16,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
+      - name: Install NodeJS
+          uses: actions/setup-node@v3
+          with:
+            node-version: '16.16.0'
+            cache: 'yarn'
+            
       - name: Root yarn install
         run: yarn install
 
