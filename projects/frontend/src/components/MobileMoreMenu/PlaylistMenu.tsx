@@ -2,15 +2,22 @@ import {
   DeleteOutline,
   DeleteOutlined,
   DeleteSweepOutlined,
-  ExpandMore, Favorite, HeartBroken,
+  ExpandMore,
+  Favorite,
+  HeartBroken,
   ManageSearch,
   ReplyAllOutlined,
-  ReplyOutlined, VolunteerActivismOutlined,
+  ReplyOutlined,
+  VolunteerActivismOutlined,
 } from '@mui/icons-material';
 import { MenuItem } from '@mui/material';
 import React from 'react';
 
-import { useLikeTrackMutation, useUnlikeTrackMutation, WhoAmIDocument } from '../../../generated/graphql';
+import {
+  useLikeTrackMutation,
+  useUnlikeTrackMutation,
+  WhoAmIDocument,
+} from '../../../generated/graphql';
 import { reactiveMoreState } from '../../features/MobileDash/reactiveMoreState';
 import { QUICKLIST_PLAYLIST_ID } from '../../hooks/state/useGlobalPlaylistState/songLists.state';
 import { usePlaylistState } from '../../hooks/state/usePlaylistState';
@@ -52,7 +59,18 @@ const PlaylistMenu = ({ track }: { track: CompactTrack }) => {
     } else {
       likeTrack({ variables: { trackId } });
     }
-    closeMore()
+    closeMore();
+  };
+
+  const trackIds = playlist.tracks.map((t) => parseInt(t.trackId));
+  const allLiked =
+    user?.likedTracks &&
+    trackIds.length &&
+    trackIds.every((id) => user.likedTracks.includes(id));
+
+  const handleLikeAll = () => {
+    trackIds.forEach((t) => likeTrack({ variables: { trackId: t } }));
+    closeMore();
   };
 
   const handleClearPlaylist = () => {
@@ -74,6 +92,14 @@ const PlaylistMenu = ({ track }: { track: CompactTrack }) => {
         <MenuItem onClick={handleToggleLike}>
           <IconSpacer>{liked ? <HeartBroken /> : <Favorite />}</IconSpacer>
           {liked ? 'Unlike' : 'Like'} Song
+        </MenuItem>
+      )}
+      {user && (
+        <MenuItem onClick={handleLikeAll}>
+          <IconSpacer>
+            <Favorite />
+          </IconSpacer>
+          Like Whole Playlist
         </MenuItem>
       )}
       <MenuItem onClick={handleClearPlaylist}>
