@@ -1,19 +1,14 @@
 import * as r from 'ramda';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import BaseTable, {
   AutoResizer,
   BaseTableProps,
-  SortOrder,
   TableComponents,
 } from 'react-base-table';
 import styled from 'styled-components';
 
-import { reactiveSongLists } from '../../hooks/state/useGlobalPlaylistState/songLists.state';
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
-import { usePlaylistState } from '../../hooks/state/usePlaylistState';
-import { useSelectionState } from '../../hooks/state/useSelectionState';
-import { FocusContext, useFocusable } from '../../hooks/useFocusable';
-import { useSelectAllShortcut } from '../../hooks/useKeyboardShortcut';
+import useWhoAmiI from '../../hooks/useWhoAmiI';
 import { Maybe } from '../../types/utility/maybe';
 import BaseTableStyleOverrides from '../BaseTableStyleOverrides/BaseTableStyleOverrides';
 import { DndMonitorContext } from '../DragNDrop/store/context';
@@ -54,6 +49,7 @@ const ResultsTableBody = ({
   const [loadedTracks, setLoadedTracks] = useState<Array<PlaylistTrack>>([]);
   const tableRef = React.createRef<BaseTable<unknown>>();
   const { sort, setSort } = useSortState();
+  const user = useWhoAmiI();
 
   useEffect(() => {
     if (tracks) {
@@ -104,7 +100,7 @@ const ResultsTableBody = ({
                 onEndReached={handleLoadMore}
                 onEndReachedThreshold={30}
                 components={{ TableHeaderCell }}
-                columns={searchResultColumns(width)}
+                columns={searchResultColumns(width, user)}
                 sortState={sanitizeSort(sort)}
                 onColumnSort={handleColumnSort}
                 overlayRenderer={overlayRenderer(loading, loadingMore)}

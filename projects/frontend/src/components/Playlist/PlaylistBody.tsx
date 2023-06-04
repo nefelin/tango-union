@@ -1,7 +1,12 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import * as React from 'react';
 import BaseTable, { AutoResizer } from 'react-base-table';
 
+import {
+  useLikeTrackMutation,
+  useUnlikeTrackMutation,
+  WhoAmIDocument,
+} from '../../../generated/graphql';
 import { PlaylistConfigContext } from '../../context/playlistConfig.context';
 import { reactiveSongLists } from '../../hooks/state/useGlobalPlaylistState/songLists.state';
 import { PlaylistTrack } from '../../hooks/state/usePlaylistsState/types';
@@ -12,6 +17,7 @@ import {
   useDeleteShortcut,
   useSelectAllShortcut,
 } from '../../hooks/useKeyboardShortcut';
+import useWhoAmiI from '../../hooks/useWhoAmiI';
 import { Maybe } from '../../types/utility/maybe';
 import BaseTableStyleOverrides from '../BaseTableStyleOverrides/BaseTableStyleOverrides';
 import { DndMonitorContext } from '../DragNDrop/store/context';
@@ -25,12 +31,12 @@ const PlaylistBody = ({ tracks }: { tracks: Maybe<Array<PlaylistTrack>> }) => {
     state: { dragMode },
   } = useContext(DndMonitorContext);
   const { name: playlistId } = useContext(PlaylistConfigContext);
-  const [orderedTracks, setOrderedTracks] = useState(tracks ?? []);
   const playlistRef = useRef<HTMLDivElement>(null);
   const { focused } = useContext(FocusContext);
   const { removeSelected } = useSelectionState();
   const { removeTracks } = usePlaylistState(playlistId);
   useFocusable(playlistRef, playlistId);
+  const user = useWhoAmiI();
 
   const handleKeyDown = (e: KeyboardEvent) => {
     const { key } = e;
@@ -51,8 +57,6 @@ const PlaylistBody = ({ tracks }: { tracks: Maybe<Array<PlaylistTrack>> }) => {
     };
   });
 
-  useEffect(() => setOrderedTracks(tracks ?? []), [tracks]);
-
   return (
     <PlaylistContainer ref={playlistRef}>
       <TableContainer>
@@ -68,7 +72,7 @@ const PlaylistBody = ({ tracks }: { tracks: Maybe<Array<PlaylistTrack>> }) => {
                     ...track,
                     fakeId: `${track.id}_${index}`, // gnarly way to allow duplicate rows
                   }))}
-                  columns={playlistColumns}
+                  columns={playlistColumns(user)}
                   width={width}
                   height={height}
                   headerHeight={40}

@@ -1,22 +1,29 @@
+import { FavoriteBorder } from '@mui/icons-material';
+import { Tooltip } from '@mui/material';
+import React from 'react';
 import { ColumnShape } from 'react-base-table';
 
+import { UserDetailFragmentFragment } from '../../../generated/graphql';
 import { LengthCell } from '../ResultsTable/ResultsTableBody/cellRenderers/lengthCell';
+import { LikeActionCell } from '../ResultsTable/ResultsTableBody/cellRenderers/likeActionCell';
 import { ListCell } from '../ResultsTable/ResultsTableBody/cellRenderers/listCell';
 import PlayCell from '../ResultsTable/ResultsTableBody/cellRenderers/playCell';
 import { cellRenderComponent } from '../ResultsTable/ResultsTableBody/cellRenderers/types';
 import ShareHeader from './ShareHeader';
 import TrashHeader from './TrashHeader';
 
-const playlistColumns: Array<ColumnShape> = [
+const playlistColumns = (
+  user: UserDetailFragmentFragment | null,
+): Array<ColumnShape> => [
   {
     key: 'play',
     dataKey: '',
     title: '',
-    width:  53,
+    width: 53,
     cellRenderer: cellRenderComponent(PlayCell),
     sortable: false,
     style: { padding: '0 0 0 3px' },
-    headerRenderer: TrashHeader
+    headerRenderer: TrashHeader,
   },
   {
     key: 'title',
@@ -64,13 +71,31 @@ const playlistColumns: Array<ColumnShape> = [
     resizable: true,
   },
   {
+    hidden: !user,
+    key: 'userLiked',
+    dataKey: 'userLiked',
+    title: '',
+    headerRenderer: () => (
+      // <Tooltip title="Like all tracks in list" className="text-md">
+      //   <button onClick={handleLikeAll}>
+          <FavoriteBorder fontSize={'inherit'} />
+        // </button>
+      // </Tooltip>
+    ),
+    width: 45,
+    resizable: true,
+    sortable: false, // not possible with current data model
+    align: 'center',
+    cellRenderer: cellRenderComponent(LikeActionCell),
+  },
+  {
     key: 'share',
     dataKey: '',
     title: '',
-    width:  53,
+    width: 53,
     sortable: false,
     style: { padding: '0 0 0 3px' },
-    headerRenderer: ShareHeader
+    headerRenderer: ShareHeader,
   },
 ];
 

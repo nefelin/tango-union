@@ -1,7 +1,13 @@
+import { FavoriteBorder } from '@mui/icons-material';
+import React from 'react';
 import { ColumnShape } from 'react-base-table';
 
-import { ActionCell } from './cellRenderers/actionCell';
+import {
+  User,
+  UserDetailFragmentFragment,
+} from '../../../../generated/graphql';
 import { LengthCell } from './cellRenderers/lengthCell';
+import { LikeActionCell } from './cellRenderers/likeActionCell';
 import { ListCell } from './cellRenderers/listCell';
 import PlayCell from './cellRenderers/playCell';
 import playHeaderRenderer from './cellRenderers/playHeader';
@@ -9,7 +15,10 @@ import { cellRenderComponent } from './cellRenderers/types';
 
 const idealWidth = 950;
 
-const searchResultColumns = (width: number): Array<ColumnShape> => {
+const searchResultColumns = (
+  width: number,
+  user: UserDetailFragmentFragment | null,
+): Array<ColumnShape> => {
   const widthRatio = width / idealWidth;
   return [
     {
@@ -54,7 +63,7 @@ const searchResultColumns = (width: number): Array<ColumnShape> => {
       width: widthRatio * 50,
       resizable: true,
       sortable: true,
-      align: 'center'
+      align: 'center',
     },
     {
       key: 'genre',
@@ -63,7 +72,7 @@ const searchResultColumns = (width: number): Array<ColumnShape> => {
       width: widthRatio * 75,
       resizable: true,
       sortable: true,
-      align: 'center'
+      align: 'center',
     },
     {
       key: 'linkScore',
@@ -72,7 +81,7 @@ const searchResultColumns = (width: number): Array<ColumnShape> => {
       width: widthRatio * 125,
       resizable: true,
       sortable: true,
-      align: 'center'
+      align: 'center',
     },
     {
       key: 'secondsLong',
@@ -82,7 +91,23 @@ const searchResultColumns = (width: number): Array<ColumnShape> => {
       resizable: true,
       sortable: true,
       cellRenderer: cellRenderComponent(LengthCell),
-      align: 'center'
+      align: 'center',
+    },
+    {
+      hidden: !user,
+      key: 'userLiked',
+      dataKey: 'userLiked',
+      title: '',
+      headerRenderer: () => (
+        <div className="text-md">
+          <FavoriteBorder fontSize={'inherit'} />
+        </div>
+      ),
+      width: widthRatio * 75,
+      resizable: true,
+      sortable: false, // not possible with current data model
+      align: 'center',
+      cellRenderer: cellRenderComponent(LikeActionCell),
     },
   ];
 };

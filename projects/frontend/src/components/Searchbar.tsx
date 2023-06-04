@@ -5,9 +5,11 @@ import { useEffect } from 'react';
 
 import { FullCountFragmentFragment } from '../../generated/graphql';
 import { useSearchbarState } from '../hooks/state/useSearchbarState';
+import useWhoAmiI from '../hooks/useWhoAmiI';
 import BarGraph from './BarGraph/BarGraph';
 import yearsQueryFromYearsList from './BarGraph/yearsQueryFromYearsList';
 import { useDroppable } from './DragNDrop/hooks/useDroppable';
+import LikeFilterSwitch from './LikeFilterSwitch';
 import { optionsFromStrings } from './ResultsTable/ResultsTableBody/util';
 import CustomInput from './Searchbar/CustomInput';
 import CustomSelect from './Searchbar/CustomSelect';
@@ -33,6 +35,9 @@ const Searchbar = ({ selectOptions }: Props) => {
     onSubmit: () => {},
   });
 
+  const user = useWhoAmiI();
+  const filteringLiked = !!formik.values.limitIds?.length;
+
   const { values } = formik;
 
   const handleClearTextSearch = () => {
@@ -50,21 +55,33 @@ const Searchbar = ({ selectOptions }: Props) => {
   return (
     <StyledCol {...listeners}>
       <StyledRow>
-        <div className='w-1/3 flex flex-row gap-4'>
-        <CustomInput
-          onChange={formik.handleChange}
-          value={formik.values.text || ''}
-          onClear={handleClearTextSearch}
-        />
-        <Button
-          size="small"
-          variant="outlined"
-          color="primary"
-          type="button"
-          onClick={resetSearchbar}
-        >
-        Reset
-        </Button>
+        <div className="w-1/3 flex flex-row gap-4">
+          <CustomInput
+            onChange={formik.handleChange}
+            value={formik.values.text || ''}
+            onClear={handleClearTextSearch}
+          />
+          {user && (
+            <LikeFilterSwitch
+              checked={filteringLiked}
+              onChange={() =>
+                formik.setFieldValue(
+                  'limitIds',
+                  filteringLiked ? null : user.likedTracks,
+                  false,
+                )
+              }
+            />
+          )}
+          <Button
+            size="small"
+            variant="outlined"
+            color="primary"
+            type="button"
+            onClick={resetSearchbar}
+          >
+            Reset
+          </Button>
         </div>
         <BarGraph
           selected={
@@ -77,7 +94,9 @@ const Searchbar = ({ selectOptions }: Props) => {
           onSelect={(years) =>
             setSearchbarState({
               ...searchbarState,
-              year: yearsQueryFromYearsList(years.map(str => parseInt(str,10))),
+              year: yearsQueryFromYearsList(
+                years.map((str) => parseInt(str, 10)),
+              ),
             })
           }
           data={yearTableDataFromCompoundQueryCounts(selectOptions.year)}

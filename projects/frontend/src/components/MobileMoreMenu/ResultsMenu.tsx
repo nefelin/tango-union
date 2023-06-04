@@ -41,6 +41,17 @@ const ResultsMenu = ({ track }: { track: CompactTrack }) => {
   const [unlikeTrack] = useUnlikeTrackMutation({
     refetchQueries: [WhoAmIDocument],
   });
+  const liked = (user?.likedTracks ?? []).includes(parseInt(track.trackId));
+
+  const handleToggleLike = () => {
+    const trackId = parseInt(track.trackId);
+    if (liked) {
+      unlikeTrack({ variables: { trackId } });
+    } else {
+      likeTrack({ variables: { trackId } });
+    }
+    closeMore()
+  };
 
   const closeMore = () => reactiveMoreState(null);
 
@@ -56,16 +67,6 @@ const ResultsMenu = ({ track }: { track: CompactTrack }) => {
     closeMore();
   };
 
-  const liked = (user?.likedTracks ?? []).includes(parseInt(track.trackId));
-  const handleToggleLike = () => {
-    const trackId = parseInt(track.trackId);
-    if (liked) {
-      unlikeTrack({ variables: { trackId } });
-    } else {
-      likeTrack({ variables: { trackId } });
-    }
-    closeMore()
-  };
 
   return (
     <>

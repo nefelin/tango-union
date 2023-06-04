@@ -53,6 +53,7 @@ const SortableTrack = ({ rowData: track, cells, rowIndex }: Props) => {
   return (
     <>
       <PlayableRow
+        className="group"
         style={readOnlyStyles}
         status={status}
         selectionStatus={selectionStatus(track.listId)}
