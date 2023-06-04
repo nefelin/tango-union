@@ -69,7 +69,7 @@ const login = async (email: string, password: string) => {
     body,
   };
 
-  const res = await fetch('http://localhost:4000/auth/login', requestOptions);
+  const res = await fetch(`${getApiUrl()}/auth/login`, requestOptions);
 
   if (res.ok) {
     return await res.json();
@@ -102,7 +102,7 @@ const register = async (
   };
 
   const res = await fetch(
-    'http://localhost:4000/auth/register',
+    `${getApiUrl()}/auth/register`,
     requestOptions,
   );
 
@@ -125,7 +125,7 @@ export const logout = async () => {
     headers,
   };
 
-  const res = await fetch('http://localhost:4000/auth/logout', requestOptions);
+  const res = await fetch(`${getApiUrl()}/auth/logout`, requestOptions);
 
   if (res.ok) {
     clearAuthTokens();
