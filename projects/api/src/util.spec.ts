@@ -29,7 +29,6 @@ describe('queryFromString should flatten object to an appropriate youtube search
 
   const res = queryStringFromSong(song);
 
-  console.log(res);
   it('should contain all expected fields', () => {
     const expectToBePresent = ['1931', 'besos de miel', 'francisco canaro', 'ada falcón', 'charlo'];
 

@@ -8,5 +8,6 @@ it('should test', () => {
   const term = '20s, 47-49, banans 34bfgfg ?';
   const years = parser.yearsFromSearch(term);
   const cleaned = parser.stripYearTerms(term);
-  console.log({ years, cleaned });
+  console.log('does nothing')
+  // console.log({ years, cleaned });
 });
