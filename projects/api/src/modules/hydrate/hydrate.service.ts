@@ -103,7 +103,7 @@ export class HydrateService {
   private async scoreTracks(tracks: Array<TrackDocument>) {
     console.info(`Updating link scores for ${tracks.length} tracks.`);
     await tracks.forEach((track) => {
-      const score = scoreTrack(track, 0);
+      const score = scoreTrack(track.toObject(), 0); // we are assuming first scraped result is best (this index 0)
       if (score === null) {
         console.error(`Track, '${track.id}', has no links and cannot be scored.`);
       } else {

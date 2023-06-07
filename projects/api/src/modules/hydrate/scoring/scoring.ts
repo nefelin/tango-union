@@ -2,7 +2,7 @@ import * as r from 'ramda';
 
 import { flagFields, flagWeights, TrackFlags } from './types';
 import { cleanSlop } from '../../../util/slop';
-import { TrackDocument } from '../../../schemas/tracks.entity';
+import { Track } from '../../../schemas/tracks.entity';
 import { ensureSingleString, signifiesBlankValue } from './util';
 import { Maybe } from '../../../types';
 
@@ -17,8 +17,7 @@ const scoreTrackMatch = (flags: TrackFlags): number => {
   return Object.values<number>(scored).reduce((prev, curr) => prev + curr, 0);
 };
 
-const flagMissing = (trackDoc: TrackDocument, index: number): TrackFlags => {
-  const track = trackDoc.toObject();
+const flagMissing = (track: Track, index: number): TrackFlags => {
   const { title = '', description = '' } = track.youtube.links[index];
   const textFields = [title, description];
   const corpus = cleanSlop(textFields.join(' '));
@@ -39,7 +38,7 @@ const flagMissing = (trackDoc: TrackDocument, index: number): TrackFlags => {
     } else if (typeof value === 'string' && signifiesBlankValue(value)) {
       checkerObj[key] = null;
     } else if (Array.isArray(value)) {
-      let found = false;
+      let found = false; // could be value.some()
       value.forEach((term) => {
         if (corpus.includes(cleanSlop(ensureSingleString(term)))) {
           found = true;
@@ -56,9 +55,11 @@ const flagMissing = (trackDoc: TrackDocument, index: number): TrackFlags => {
   return checkerObj;
 };
 
-export const scoreTrack = (track: TrackDocument, index: number): Maybe<number> => {
+export const scoreTrack = (track: Track, index: number): Maybe<number> => {
   if (!track.youtube.links[index]) {
     return null;
   }
+
+  // todo handle titles w "|"'s
   return scoreTrackMatch(flagMissing(track, index));
 };
