@@ -51,6 +51,7 @@ export const simpleTrackFromTrackDoc = (track: TrackDocument): SimpleTrack => ({
   secondsLong: track.secondsLong,
   link: track.youtube.links[0],
   linkScore: track.youtube.linkScore,
+  flaggedForRescrape: track.youtube.flaggedForRescrape,
 });
 
 export const cleanSort = (dirtySort: CompoundSortInput) => ({

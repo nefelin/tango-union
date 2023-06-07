@@ -1,11 +1,10 @@
 import { TracksService } from './tracks.service';
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { RatedYoutube } from '../../schemas/tracks.entity';
 import { SimpleTrack } from './dto/simpletrack.entity';
 import { CompoundQueryInput } from './dto/compoundQuery.input';
 import { CompoundResults } from './dto/compoundResult.entity';
-import { UseGuards } from '@nestjs/common';
-import { GqlAuthGuard } from '../auth/gqlAuthGuard';
+import { TrackId } from '../../types';
 
 @Resolver('track')
 export class TracksResolver {
@@ -43,5 +42,15 @@ export class TracksResolver {
       secondsLong,
       genre,
     }));
+  }
+
+  @Mutation(() => SimpleTrack)
+  flagForRescrape(@Args('trackId') trackId: TrackId) {
+    return this.tracksService.flagForRescrape(trackId);
+  }
+
+  @Mutation(() => SimpleTrack)
+  unflagForRescrape(@Args('trackId') trackId: TrackId) {
+    return this.tracksService.unflagForRescrape(trackId);
   }
 }

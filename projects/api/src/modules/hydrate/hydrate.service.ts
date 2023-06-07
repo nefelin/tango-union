@@ -66,9 +66,10 @@ export class HydrateService {
       .updateOne({
         $set: {
           youtube: {
+            flaggedForRescrape: false,
             scrapedAt: new Date(),
             links: res,
-            linkScore: 0 // initial value before scoring links
+            linkScore: 0, // initial value before scoring links
           },
         },
       })

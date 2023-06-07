@@ -34,6 +34,9 @@ export class RatedYoutube {
 
 @ObjectType()
 export class YoutubeLinks {
+  @Prop({ required: false })
+  flaggedForRescrape: boolean;
+
   @Prop({ required: true })
   scrapedAt: Date;
 

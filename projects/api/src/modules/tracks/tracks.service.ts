@@ -37,6 +37,22 @@ export class TracksService {
     return this.trackModel.find().limit(500).exec();
   }
 
+  async flagForRescrape(id: TrackId): Promise<SimpleTrack> {
+    const trackDoc = await this.trackModel.findOne({ id }).exec();
+    trackDoc.youtube.flaggedForRescrape = true;
+    trackDoc.markModified('youtube');
+    await trackDoc.save();
+    return simpleTrackFromTrackDoc(trackDoc);
+  }
+
+  async unflagForRescrape(id: TrackId): Promise<SimpleTrack> {
+    const trackDoc = await this.trackModel.findOne({ id }).exec();
+    trackDoc.youtube.flaggedForRescrape = false;
+    trackDoc.markModified('youtube');
+    await trackDoc.save();
+    return simpleTrackFromTrackDoc(trackDoc);
+  }
+
   async specificTracks(ids: TrackId[]): Promise<SimpleTrack[]> {
     const trackDocs = await this.trackModel.find({ id: { $in: ids } }).exec();
     return trackDocs.map(simpleTrackFromTrackDoc);
@@ -57,7 +73,7 @@ export class TracksService {
 
     const preppedText = andifyMongoTextSearch(textWithoutYear);
 
-    const limitIdsMatch = limitIds ? { id: { $in: limitIds } } : null
+    const limitIdsMatch = limitIds ? { id: { $in: limitIds } } : null;
 
     const textMatch = preppedText?.length
       ? {
