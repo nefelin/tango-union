@@ -4,7 +4,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
   tracksByIds: [
     {
       id: '10688',
-      title: 'A Belisario Roldán',
+      flaggedForRescrape: true,
+title: 'A Belisario Roldán',
       genre: 'tango',
       singer: ['Instrumental'],
       orchestra: ['Pedro Laurenz'],
@@ -14,7 +15,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
       link: {
         description:
           'Composed by Enrique Forte: A Tribute to Belisario Roldán Belisario Roldán (Buenos Aires, 1873 - Alta Gracia, 1922) Poet, ...',
-        title: 'A Belisario Roldán: 1953 Pedro Laurenz',
+        flaggedForRescrape: true,
+title: 'A Belisario Roldán: 1953 Pedro Laurenz',
         videoId: 'D7KHcBIf-og',
         __typename: 'RatedYoutube',
       },
@@ -22,7 +24,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
     },
     {
       id: '10696',
-      title: 'A Don Antonio',
+      flaggedForRescrape: true,
+title: 'A Don Antonio',
       genre: 'tango',
       singer: ['Instrumental'],
       orchestra: ['Héctor Varela'],
@@ -32,7 +35,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
       link: {
         description:
           'Provided to YouTube by The Orchard Enterprises A Don Antonio · Orquesta de Héctor Varela · Héctor Varela Vareleando ℗ 2015 ...',
-        title: 'A Don Antonio',
+        flaggedForRescrape: true,
+title: 'A Don Antonio',
         videoId: 'M8WktSxqX_Q',
         __typename: 'RatedYoutube',
       },
@@ -40,7 +44,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
     },
     {
       id: '10698',
-      title: 'A Don Héctor María',
+      flaggedForRescrape: true,
+title: 'A Don Héctor María',
       genre: 'tango',
       singer: ['Instrumental'],
       orchestra: ['Héctor Varela'],
@@ -49,7 +54,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
       linkScore: 4,
       link: {
         description: '',
-        title: 'Don Goyo-- Héctor Varela',
+        flaggedForRescrape: true,
+title: 'Don Goyo-- Héctor Varela',
         videoId: 'towG9esdSO0',
         __typename: 'RatedYoutube',
       },
@@ -57,7 +63,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
     },
     {
       id: '10699',
-      title: 'A Don Agustín Bardi',
+      flaggedForRescrape: true,
+title: 'A Don Agustín Bardi',
       genre: 'tango',
       singer: ['Instrumental'],
       orchestra: ['Ensemble Hyperion'],
@@ -67,7 +74,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
       link: {
         description:
           'Provided to YouTube by Zebralution GmbH A Don Agustin Bardi · Hyperion Ensemble Buenos Aires hora cero ℗ 2007 Viamas ...',
-        title: 'A Don Agustin Bardi',
+        flaggedForRescrape: true,
+title: 'A Don Agustin Bardi',
         videoId: 'iVRGOkIqrDU',
         __typename: 'RatedYoutube',
       },
@@ -75,7 +83,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
     },
     {
       id: '10700',
-      title: 'A Don Horacio',
+      flaggedForRescrape: true,
+title: 'A Don Horacio',
       genre: 'tango',
       singer: ['Instrumental'],
       orchestra: ['Alberto Oscar Gentile'],
@@ -94,7 +103,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
     },
     {
       id: '10701',
-      title: 'A Don Claudio',
+      flaggedForRescrape: true,
+title: 'A Don Claudio',
       genre: 'tango',
       singer: ['Instrumental'],
       orchestra: ['Miguel Villasboas'],
@@ -104,7 +114,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
       link: {
         description:
           'Provided to YouTube by The Orchard Enterprises A Don Claudio · Miguel Villasboas y Su Orquesta Típica En Japón ℗ 2002 ...',
-        title: 'A Don Claudio',
+        flaggedForRescrape: true,
+title: 'A Don Claudio',
         videoId: 'LC_daDyDIb4',
         __typename: 'RatedYoutube',
       },
@@ -112,7 +123,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
     },
     {
       id: '10702',
-      title: 'A Don Pedro Maffia | A Pedro Maffia',
+      flaggedForRescrape: true,
+title: 'A Don Pedro Maffia | A Pedro Maffia',
       genre: 'tango',
       singer: ['Instrumental'],
       orchestra: ['Aníbal Troilo'],
@@ -121,7 +133,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
       linkScore: 9,
       link: {
         description: 'https://www.facebook.com/djtorotango.',
-        title: 'Anibal Troilo - 1968 - Cuarteto - A Pedro Maffia',
+        flaggedForRescrape: true,
+title: 'Anibal Troilo - 1968 - Cuarteto - A Pedro Maffia',
         videoId: 'w8320CMlPpc',
         __typename: 'RatedYoutube',
       },
@@ -129,7 +142,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
     },
     {
       id: '10703',
-      title: 'A Don Pedro Maffia | A Pedro Maffia',
+      flaggedForRescrape: true,
+title: 'A Don Pedro Maffia | A Pedro Maffia',
       genre: 'tango',
       singer: ['Instrumental'],
       orchestra: ['Cuarteto Troilo-Grela'],
@@ -138,7 +152,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
       linkScore: 5,
       link: {
         description: '',
-        title: 'Troilo y Grela - A Pedro Maffia',
+        flaggedForRescrape: true,
+title: 'Troilo y Grela - A Pedro Maffia',
         videoId: '75OJ13PoIC8',
         __typename: 'RatedYoutube',
       },
@@ -146,7 +161,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
     },
     {
       id: '10707',
-      title: 'A España',
+      flaggedForRescrape: true,
+title: 'A España',
       genre: 'paso doble',
       singer: ['Alberto Castillo'],
       orchestra: ['Ángel F. Condercuri'],
@@ -156,7 +172,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
       link: {
         description:
           'Alberto Castillo (7 de diciembre de 1914 -- 23 de julio de 2002) fue un prominente cantor de tango y actor argentino. Nació como ...',
-        title: 'Alberto Castillo -- A España Pasodoble',
+        flaggedForRescrape: true,
+title: 'Alberto Castillo -- A España Pasodoble',
         videoId: 'xMSAleSAlFo',
         __typename: 'RatedYoutube',
       },
@@ -164,7 +181,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
     },
     {
       id: '10708',
-      title: 'A Don Horacio Salgán',
+      flaggedForRescrape: true,
+title: 'A Don Horacio Salgán',
       genre: 'tango',
       singer: ['Instrumental'],
       orchestra: ['Orquesta Puglia-Pedroza'],
@@ -174,7 +192,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
       link: {
         description:
           'Tanda di tango Orquesta Puglia Pedroza 1952 A Don Horacio Salgán Mosquita Viejo Parque Patricios Nueve puntos.',
-        title: 'Tanda di tango Orquesta Puglia Pedroza  1952',
+        flaggedForRescrape: true,
+title: 'Tanda di tango Orquesta Puglia Pedroza  1952',
         videoId: '0E_v8Nz-4g0',
         __typename: 'RatedYoutube',
       },
@@ -182,7 +201,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
     },
     {
       id: '10710',
-      title: 'A Evaristo Carriego',
+      flaggedForRescrape: true,
+title: 'A Evaristo Carriego',
       genre: 'tango',
       singer: ['Instrumental'],
       orchestra: ['Osvaldo Pugliese'],
@@ -192,7 +212,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
       link: {
         description:
           'A Evaristo Carriego Compositor: Eduardo Rovira Año de grabación: 1966 https://www.youtube.com/watch?v=665X8YCF-Hc.',
-        title: 'A Evaristo Carriego - Orquesta Osvaldo Pugliese 1969',
+        flaggedForRescrape: true,
+title: 'A Evaristo Carriego - Orquesta Osvaldo Pugliese 1969',
         videoId: '3N7MhkhlWBs',
         __typename: 'RatedYoutube',
       },
@@ -200,7 +221,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
     },
     {
       id: '10711',
-      title: 'A Evaristo Carriego',
+      flaggedForRescrape: true,
+title: 'A Evaristo Carriego',
       genre: 'tango',
       singer: ['Instrumental'],
       orchestra: ['Osvaldo Pugliese'],
@@ -210,7 +232,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
       link: {
         description:
           'Pugliese y su orquesta ejecutan "A Evaristo Carriego" de Eduardo Rovira en el Teatro Colón del 26 de diciembre de 1985.',
-        title: 'A Evaristo Carriego - Osvaldo Pugliese (Teatro Colón 1985)',
+        flaggedForRescrape: true,
+title: 'A Evaristo Carriego - Osvaldo Pugliese (Teatro Colón 1985)',
         videoId: 'imlf-BR7J9w',
         __typename: 'RatedYoutube',
       },
@@ -218,7 +241,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
     },
     {
       id: '10712',
-      title: 'A Evaristo Carriego',
+      flaggedForRescrape: true,
+title: 'A Evaristo Carriego',
       genre: 'tango',
       singer: ['Instrumental'],
       orchestra: ['Osvaldo Pugliese'],
@@ -227,7 +251,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
       linkScore: 8,
       link: {
         description: 'OSVALDO PUGLIESE.',
-        title: 'A EVARISTO CARRIEGO - PUGLIESE',
+        flaggedForRescrape: true,
+title: 'A EVARISTO CARRIEGO - PUGLIESE',
         videoId: 'UTD3ntFNx0w',
         __typename: 'RatedYoutube',
       },
@@ -235,7 +260,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
     },
     {
       id: '10713',
-      title: 'A Evaristo Carriego',
+      flaggedForRescrape: true,
+title: 'A Evaristo Carriego',
       genre: 'tango',
       singer: ['Instrumental'],
       orchestra: ['Ensemble Hyperion'],
@@ -245,7 +271,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
       link: {
         description:
           'Provided to YouTube by Zebralution GmbH A Evaristo Carriego · Hyperion Ensemble Corso Buenos Aires ℗ 2005 Viamas GmbH ...',
-        title: 'A Evaristo Carriego',
+        flaggedForRescrape: true,
+title: 'A Evaristo Carriego',
         videoId: 'tPewckZIgFA',
         __typename: 'RatedYoutube',
       },
@@ -253,7 +280,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
     },
     {
       id: '10714',
-      title: 'A Evaristo Carriego',
+      flaggedForRescrape: true,
+title: 'A Evaristo Carriego',
       genre: 'tango',
       singer: ['Instrumental'],
       orchestra: ['QuinTango'],
@@ -263,7 +291,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
       link: {
         description:
           'Provided to YouTube by The Orchard Enterprises A Evaristo Carriego · QuinTango Triunfal ℗ 2008 Quintango Released on: ...',
-        title: 'A Evaristo Carriego',
+        flaggedForRescrape: true,
+title: 'A Evaristo Carriego',
         videoId: 'yc-H9b2c4ZE',
         __typename: 'RatedYoutube',
       },
@@ -271,7 +300,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
     },
     {
       id: '10715',
-      title: 'A Francini / Pontier',
+      flaggedForRescrape: true,
+title: 'A Francini / Pontier',
       genre: 'tango',
       singer: ['Instrumental'],
       orchestra: ['Orquesta Puglia-Pedroza'],
@@ -281,7 +311,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
       link: {
         description:
           'Provided to YouTube by The Orchard Enterprises A Francini / Pontier · Orquesta Puglia Pedroza Tangostalgía (Desde la Memoria.',
-        title: 'A Francini / Pontier',
+        flaggedForRescrape: true,
+title: 'A Francini / Pontier',
         videoId: '-u1UcrrU9Cc',
         __typename: 'RatedYoutube',
       },
@@ -289,7 +320,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
     },
     {
       id: '10727',
-      title: 'A Guaminí',
+      flaggedForRescrape: true,
+title: 'A Guaminí',
       genre: 'vals',
       singer: ['Nelly Omar'],
       orchestra: ['José Canet'],
@@ -299,7 +331,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
       link: {
         description:
           'Nelly Omar Nelly Omar con la Orquesta de José Canet Embassy (11) – 90.010 1977 TEMAS: 01 El Dia Que Me Quieras 02 Rosas ...',
-        title: 'Nelly Omar - Nelly Omar con la orquesta de José Canet   (1977)',
+        flaggedForRescrape: true,
+title: 'Nelly Omar - Nelly Omar con la orquesta de José Canet   (1977)',
         videoId: '5tpFlsNWkSA',
         __typename: 'RatedYoutube',
       },
@@ -307,7 +340,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
     },
     {
       id: '10729',
-      title: 'A Homero',
+      flaggedForRescrape: true,
+title: 'A Homero',
       genre: 'tango',
       singer: ['Roberto Goyeneche'],
       orchestra: ['Aníbal Troilo'],
@@ -316,7 +350,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
       linkScore: 8,
       link: {
         description: 'https://www.facebook.com/djtorotango.',
-        title: 'Anibal Troilo - 1961 - Goyeneche - A Homero',
+        flaggedForRescrape: true,
+title: 'Anibal Troilo - 1961 - Goyeneche - A Homero',
         videoId: 'Tcj0AnqpHLc',
         __typename: 'RatedYoutube',
       },
@@ -324,7 +359,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
     },
     {
       id: '10732',
-      title: 'A Jorge Páez Vilaró',
+      flaggedForRescrape: true,
+title: 'A Jorge Páez Vilaró',
       genre: 'tango',
       singer: ['Instrumental'],
       orchestra: ['Miguel Villasboas'],
@@ -334,7 +370,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
       link: {
         description:
           'Provided to YouTube by The Orchard Enterprises A Jorge Páez Vilaró · Miguel Villasboas y Su Orquesta Tìpica En Nueva York ...',
-        title: 'A Jorge Páez Vilaró',
+        flaggedForRescrape: true,
+title: 'A Jorge Páez Vilaró',
         videoId: 'IGeGUR9afvs',
         __typename: 'RatedYoutube',
       },
@@ -342,7 +379,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
     },
     {
       id: '10733',
-      title: 'A Homero',
+      flaggedForRescrape: true,
+title: 'A Homero',
       genre: 'tango',
       singer: ['Ricardo Olivera'],
       orchestra: ['Unknown'],
@@ -352,7 +390,8 @@ export const trackDetailsBatch: TrackDetailsBatchQuery = {
       link: {
         description:
           'Provided to YouTube by The Orchard Enterprises A Homero · Ricardo Olivera & Alvaro Hagopián Trío Aristocracia Arrabalera ...',
-        title: 'A Homero',
+        flaggedForRescrape: true,
+title: 'A Homero',
         videoId: 'm-N_WRLNx1I',
         __typename: 'RatedYoutube',
       },

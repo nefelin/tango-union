@@ -12,6 +12,6 @@ export class SimpleTrack {
   year?: number;
   link?: RatedYoutube;
   linkScore: number;
-  flaggedForRescrape: boolean;
+  flaggedForRescrape?: boolean;
 }
 

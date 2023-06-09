@@ -48,6 +48,7 @@ const BulkTemplate: ComponentStory<typeof SongCard> = (args) => {
 };
 
 const mockTrack = (): PlaylistTrack => ({
+  flaggedForRescrape: true,
   listId: 'abcde',
   id: nanoid(4),
   trackId: '10698',

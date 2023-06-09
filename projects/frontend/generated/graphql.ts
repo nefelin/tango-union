@@ -57,8 +57,20 @@ export type CountTuple = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  flagForRescrape: SimpleTrack;
+  unflagForRescrape: SimpleTrack;
   likeTrack: User;
   unlikeTrack: User;
+};
+
+
+export type MutationFlagForRescrapeArgs = {
+  trackId: Scalars['String'];
+};
+
+
+export type MutationUnflagForRescrapeArgs = {
+  trackId: Scalars['String'];
 };
 
 
@@ -138,6 +150,7 @@ export type SimpleTrack = {
   year?: Maybe<Scalars['Float']>;
   link?: Maybe<RatedYoutube>;
   linkScore: Scalars['Float'];
+  flaggedForRescrape?: Maybe<Scalars['Boolean']>;
 };
 
 export type User = {
@@ -199,7 +212,7 @@ export type TrackDetailsBatchQuery = (
 
 export type TrackDetailFragmentFragment = (
   { __typename?: 'SimpleTrack' }
-  & Pick<SimpleTrack, 'id' | 'title' | 'genre' | 'singer' | 'orchestra' | 'secondsLong' | 'year' | 'linkScore'>
+  & Pick<SimpleTrack, 'id' | 'title' | 'genre' | 'singer' | 'orchestra' | 'secondsLong' | 'year' | 'linkScore' | 'flaggedForRescrape'>
   & { link?: Maybe<(
     { __typename?: 'RatedYoutube' }
     & Pick<RatedYoutube, 'description' | 'title' | 'videoId'>
@@ -271,6 +284,7 @@ export const TrackDetailFragmentFragmentDoc = gql`
     title
     videoId
   }
+  flaggedForRescrape
 }
     `;
 export const UserDetailFragmentFragmentDoc = gql`

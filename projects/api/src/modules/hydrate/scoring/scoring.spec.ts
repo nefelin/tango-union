@@ -31,6 +31,7 @@ const noMatch: Track = {
   year: 1968,
   updatedAt: new Date(),
   youtube: {
+    flaggedForRescrape: false,
     linkScore: 0,
     scrapedAt: new Date(),
     links: [
@@ -62,6 +63,7 @@ const titleMatch: Track = {
   year: 1968,
   updatedAt: new Date(),
   youtube: {
+    flaggedForRescrape: false,
     linkScore: 4,
     scrapedAt: new Date(),
     links: [
@@ -92,6 +94,7 @@ const titleMatchWithOr: Track = {
   year: 1968,
   updatedAt: new Date(),
   youtube: {
+    flaggedForRescrape: false,
     linkScore: 4,
     scrapedAt: new Date(),
     links: [
@@ -122,6 +125,7 @@ const yearMatch: Track = {
   year: 1968,
   updatedAt: new Date(),
   youtube: {
+    flaggedForRescrape: false,
     linkScore: 4,
     scrapedAt: new Date(),
     links: [
@@ -152,6 +156,7 @@ const singerMatch: Track = {
   year: 1968,
   updatedAt: new Date(),
   youtube: {
+    flaggedForRescrape: false,
     linkScore: 4,
     scrapedAt: new Date(),
     links: [

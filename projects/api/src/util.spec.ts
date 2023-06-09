@@ -20,6 +20,7 @@ describe('queryFromString should flatten object to an appropriate youtube search
     year: 1931,
     secondsLong: 196,
     youtube: {
+      flaggedForRescrape: false,
       linkScore: 0,
       scrapedAt: new Date(),
       links: [],
