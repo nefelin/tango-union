@@ -21,7 +21,7 @@ export class TracksResolver {
   }
 
   @Query(() => SimpleTrack, { name: 'trackById' })
-  async trackByIds(@Args('id', { type: () => String }) id: string) {
+  async trackById(@Args('id', { type: () => String }) id: string) {
     return this.tracksService.specificTrack(id);
   }
 

@@ -1,0 +1,22 @@
+query TrackDetailById($id: String!) {
+  trackById(id: $id) {
+    ...TrackDetailFragment
+  }
+}
+
+fragment TrackDetailFragment on SimpleTrack {
+  id
+  title
+  genre
+  singer
+  orchestra
+  secondsLong
+  year
+  linkScore
+  link {
+    description
+    title
+    videoId
+  }
+  flaggedForRescrape
+}

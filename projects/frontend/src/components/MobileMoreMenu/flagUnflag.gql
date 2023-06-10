@@ -1,0 +1,16 @@
+mutation FlagRescrape($trackId: String!) {
+  flagForRescrape(trackId: $trackId) {
+    ...TrackFlagChangeFragment
+  }
+}
+
+mutation UnflagRescrape($trackId: String!) {
+  unflagForRescrape(trackId: $trackId) {
+    ...TrackFlagChangeFragment
+  }
+}
+
+fragment TrackFlagChangeFragment on SimpleTrack {
+  id
+  flaggedForRescrape
+}
