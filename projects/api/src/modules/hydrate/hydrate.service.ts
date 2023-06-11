@@ -77,6 +77,49 @@ export class HydrateService {
     this.handleHydrationSuccess();
   }
 
+  async rescrapeFlagged() {
+    const flagged = await this.trackModel.find({ 'youtube.flaggedForRescrape': true });
+
+    for (const track of flagged) {
+      // we want in series here to avoid spamming youtube api. May need randomized delay if we ever deal with any volume
+      await this.rescrapeTrack(track);
+    }
+  }
+
+  async rescrapeStale(batchSize: number) {
+    const stale = await this.trackModel.find({}).sort(['youtube.scrapedAt', 1]).limit(batchSize);
+
+    for (const track of stale) {
+      // we want in series here to avoid spamming youtube api. May need randomized delay if we ever deal with any volume
+      await this.rescrapeTrack(track);
+    }
+  }
+
+
+  private async rescrapeTrack(track: TrackDocument) {
+    console.log(`scraping youtube for track: ${track.id}`);
+    const query = queryStringFromSong(track);
+    const res = await this.youtubeSearchService.keylessSearch(query);
+
+    if (res.length) {
+      track.youtube = {
+        flaggedForRescrape: false,
+        scrapedAt: new Date(),
+        links: res,
+        linkScore: 0, // initial value before scoring links
+      };
+      track.youtube.linkScore = scoreTrack(track, 0); // separate from previous assignation because scoreTracks uses the links for scoring
+
+      track.markModified('youtube');
+      track.save((err) => {
+        if (err) {
+          throw new Error(`Error scoring track ${track.id}: ${err}`);
+        }
+      });
+      console.log('done.');
+    }
+  }
+
   private async hydrateNext() {
     const next = await this.trackModel.findOne({ youtube: { $exists: false } }).exec();
     if (!next) {
@@ -117,7 +160,6 @@ export class HydrateService {
         });
       }
     });
-    console.info('Done.');
   }
 
   stopHydrating() {

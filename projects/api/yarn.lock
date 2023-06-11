@@ -3115,6 +3115,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/passport-http@npm:^0.3.9":
+  version: 0.3.9
+  resolution: "@types/passport-http@npm:0.3.9"
+  dependencies:
+    "@types/express": "*"
+    "@types/passport": "*"
+  checksum: 67fff948deb337a7d6efef289309307bf79b9aad6867bf5f2d0c1e8e3bab14612b803727f2ebacdeb5d2e200aaa99d3b703fe4575b83a1737d931bbacea3a472
+  languageName: node
+  linkType: hard
+
 "@types/passport-jwt@npm:^3.0.6":
   version: 3.0.6
   resolution: "@types/passport-jwt@npm:3.0.6"
@@ -3956,6 +3966,7 @@ __metadata:
     "@types/express": ^4.17.13
     "@types/jest": ^26.0.15
     "@types/node": ^14.14.6
+    "@types/passport-http": ^0.3.9
     "@types/passport-jwt": ^3.0.6
     "@types/ramda": ^0.27.34
     "@types/supertest": ^2.0.10
@@ -3978,6 +3989,7 @@ __metadata:
     mongoose: ^5.11.9
     object-hash: ^2.2.0
     passport: ^0.5.2
+    passport-http: ^0.3.0
     passport-jwt: ^4.0.0
     passport-local: ^1.0.0
     pm2: ^5.1.0
@@ -11770,6 +11782,15 @@ __metadata:
   version: 0.1.1
   resolution: "pascalcase@npm:0.1.1"
   checksum: f83681c3c8ff75fa473a2bb2b113289952f802ff895d435edd717e7cb898b0408cbdb247117a938edcbc5d141020909846cc2b92c47213d764e2a94d2ad2b925
+  languageName: node
+  linkType: hard
+
+"passport-http@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "passport-http@npm:0.3.0"
+  dependencies:
+    passport-strategy: 1.x.x
+  checksum: 5ab3e45af37ffa26e28fbff49775eff4d41b4029e33c9680aa145867ff0f8080d2a3abc1cafa4e0176c69700da604ac5814f47a06720b57e816c2a3000974a35
   languageName: node
   linkType: hard
 
