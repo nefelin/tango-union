@@ -1,11 +1,9 @@
-import { FavoriteBorder } from '@mui/icons-material';
+import { EmojiFlags, FavoriteBorder, Flag } from '@mui/icons-material';
 import React from 'react';
 import { ColumnShape } from 'react-base-table';
 
-import {
-  User,
-  UserDetailFragmentFragment,
-} from '../../../../generated/graphql';
+import { UserDetailFragmentFragment, UserRole } from '../../../../generated/graphql';
+import { FlagRescrapeActionCell } from './cellRenderers/flagRescrapeActionCell';
 import { LengthCell } from './cellRenderers/lengthCell';
 import { LikeActionCell } from './cellRenderers/likeActionCell';
 import { ListCell } from './cellRenderers/listCell';
@@ -51,7 +49,7 @@ const searchResultColumns = (
       key: 'singer',
       dataKey: 'singer',
       title: 'Singer',
-      width: widthRatio * 150,
+      width: widthRatio * 125,
       resizable: true,
       sortable: true,
       cellRenderer: cellRenderComponent(ListCell),
@@ -60,7 +58,7 @@ const searchResultColumns = (
       key: 'year',
       dataKey: 'year',
       title: 'Year',
-      width: widthRatio * 50,
+      width: widthRatio * 75,
       resizable: true,
       sortable: true,
       align: 'center',
@@ -69,7 +67,7 @@ const searchResultColumns = (
       key: 'genre',
       dataKey: 'genre',
       title: 'Genre',
-      width: widthRatio * 75,
+      width: widthRatio * 65,
       resizable: true,
       sortable: true,
       align: 'center',
@@ -78,7 +76,7 @@ const searchResultColumns = (
       key: 'linkScore',
       dataKey: 'linkScore',
       title: 'Link Confidence',
-      width: widthRatio * 125,
+      width: widthRatio * 50,
       resizable: true,
       sortable: true,
       align: 'center',
@@ -108,6 +106,22 @@ const searchResultColumns = (
       sortable: false, // not possible with current data model
       align: 'center',
       cellRenderer: cellRenderComponent(LikeActionCell),
+    },
+    {
+      hidden: !user || !user.roles.includes(UserRole.ADMIN),
+      key: 'flaggedForRescrape',
+      dataKey: 'flaggedForRescrape',
+      title: '',
+      headerRenderer: () => (
+        <div className="text-md">
+          <EmojiFlags fontSize={'inherit'} />
+        </div>
+      ),
+      width: widthRatio * 75,
+      resizable: true,
+      sortable: false, // todo support this
+      align: 'center',
+      cellRenderer: cellRenderComponent(FlagRescrapeActionCell),
     },
   ];
 };
