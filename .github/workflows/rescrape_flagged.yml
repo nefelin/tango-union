@@ -2,7 +2,7 @@ name: Rescrape Flagged Tracks
 
 on:
   schedule:
-    - cron: '*/1 * * * *'
+    - cron: '*/5 * * * *'
 
 jobs:
   deployment:
