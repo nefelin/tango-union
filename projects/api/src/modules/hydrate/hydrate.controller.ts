@@ -1,8 +1,8 @@
-import { Controller, Post, UseGuards } from '@nestjs/common';
+import { Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
 import { HydrateService } from './hydrate.service';
 import { BasicGuard } from '../auth/guard-strategies';
 
-const RESCRAPE_STALE_BATCH_SIZE = 3; // this should cover the entire library approx once a month (slightly faster)
+const RESCRAPE_STALE_BATCH_SIZE = 3; // this should cover the entire library approx once a month (slightly faster) if run every five minutes
 @Controller('hydrate')
 export class HydrateController {
   constructor(private readonly hydrateService: HydrateService) {}
@@ -39,6 +39,7 @@ export class HydrateController {
 
   @UseGuards(BasicGuard)
   @Post('rescrapeFlagged')
+  @HttpCode(200)
   rescrapeFlagged() {
     console.log('RESCRAPE Flagged');
     this.hydrateService.rescrapeFlagged();
@@ -46,6 +47,7 @@ export class HydrateController {
 
   @UseGuards(BasicGuard)
   @Post('rescrapeStale')
+  @HttpCode(200)
   rescrapeStale() {
     console.log('RESCRAPE Stale');
     this.hydrateService.rescrapeStale(RESCRAPE_STALE_BATCH_SIZE);
