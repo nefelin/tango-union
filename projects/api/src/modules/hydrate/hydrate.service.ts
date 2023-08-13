@@ -7,6 +7,7 @@ import { queryStringFromSong } from '../../util';
 import { Interval } from '@nestjs/schedule';
 import { scoreTrack } from './scoring/scoring';
 import fs from 'fs';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class HydrateService {
@@ -19,6 +20,7 @@ export class HydrateService {
   constructor(
     @InjectModel(Track.name) private trackModel: Model<TrackDocument>,
     private readonly youtubeSearchService: YoutubeSearchService,
+    private configService: ConfigService
   ) {}
 
   private hydratedCount(): Promise<number> {
@@ -163,7 +165,7 @@ export class HydrateService {
   }
 
   getLogs() {
-    return fs.readFileSync('./logs').toString();
+    return fs.readFileSync(this.configService.get('LOG_FILE_PATH')).toString();
   }
 
   stopHydrating() {
