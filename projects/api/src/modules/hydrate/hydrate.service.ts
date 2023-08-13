@@ -6,6 +6,7 @@ import { YoutubeSearchService } from '../youtube-search/youtube-search.service';
 import { queryStringFromSong } from '../../util';
 import { Interval } from '@nestjs/schedule';
 import { scoreTrack } from './scoring/scoring';
+import fs from 'fs';
 
 @Injectable()
 export class HydrateService {
@@ -159,6 +160,10 @@ export class HydrateService {
         });
       }
     });
+  }
+
+  getLogs() {
+    return fs.readFileSync('./logs').toString();
   }
 
   stopHydrating() {

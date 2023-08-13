@@ -1,4 +1,4 @@
-import { Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
+import { Controller, Get, HttpCode, Post, UseGuards } from '@nestjs/common';
 import { HydrateService } from './hydrate.service';
 import { BasicGuard } from '../auth/guard-strategies';
 
@@ -36,7 +36,6 @@ export class HydrateController {
   //   this.hydrateService.scoreUnscoredTracks();
   // }
 
-
   @UseGuards(BasicGuard)
   @Post('rescrapeFlagged')
   @HttpCode(200)
@@ -51,5 +50,13 @@ export class HydrateController {
   rescrapeStale() {
     console.log('Async rescraping stale...');
     this.hydrateService.rescrapeStale(RESCRAPE_STALE_BATCH_SIZE);
+  }
+
+  // totally the wrong place for this controller but don't really have a good admin spot at the moment
+  @UseGuards(BasicGuard)
+  @Get('logs')
+  @HttpCode(200)
+  getLogs() {
+    return this.hydrateService.getLogs();
   }
 }
