@@ -87,7 +87,7 @@ export class HydrateService {
   }
 
   async rescrapeStale(batchSize: number) {
-    const stale = await this.trackModel.find({}).sort(['youtube.scrapedAt', 1]).limit(batchSize);
+    const stale = await this.trackModel.find({}).sort('youtube.scrapedAt').limit(batchSize);
 
     for (const track of stale) {
       // we want in series here to avoid spamming youtube api. May need randomized delay if we ever deal with any volume
@@ -95,8 +95,8 @@ export class HydrateService {
     }
   }
 
-
   private async rescrapeTrack(track: TrackDocument) {
+    console.log(`Scraping Track: ${track.id}, ${track.title}`);
     const query = queryStringFromSong(track);
     const res = await this.youtubeSearchService.keylessSearch(query);
 

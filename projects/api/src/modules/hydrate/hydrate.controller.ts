@@ -41,7 +41,7 @@ export class HydrateController {
   @Post('rescrapeFlagged')
   @HttpCode(200)
   rescrapeFlagged() {
-    console.log('RESCRAPE Flagged');
+    console.log('Async rescraping flagged...');
     this.hydrateService.rescrapeFlagged();
   }
 
@@ -49,7 +49,7 @@ export class HydrateController {
   @Post('rescrapeStale')
   @HttpCode(200)
   rescrapeStale() {
-    console.log('RESCRAPE Stale');
+    console.log('Async rescraping stale...');
     this.hydrateService.rescrapeStale(RESCRAPE_STALE_BATCH_SIZE);
   }
 }

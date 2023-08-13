@@ -2,7 +2,7 @@ name: Rescrape Flagged Tracks
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '*/6 * * * *'
 
 jobs:
   trigger-rescrape:
