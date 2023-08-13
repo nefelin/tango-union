@@ -1,0 +1,15 @@
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Rescrape Flagged
+        uses: fjogeleit/http-request-action@v1.14.1
+        with:
+          url: 'https://api.tangounion.net:443/hydrate/rescrapeFlagged'
+          method: 'POST'
+          username: ${{ secrets.SERVICE_USER_USERNAME }}
+          password: ${{ secrets.SERVICE_USER_PASSWORD }}

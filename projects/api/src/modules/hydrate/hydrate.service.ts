@@ -97,7 +97,6 @@ export class HydrateService {
 
 
   private async rescrapeTrack(track: TrackDocument) {
-    console.log(`scraping youtube for track: ${track.id}`);
     const query = queryStringFromSong(track);
     const res = await this.youtubeSearchService.keylessSearch(query);
 
@@ -108,7 +107,7 @@ export class HydrateService {
         links: res,
         linkScore: 0, // initial value before scoring links
       };
-      track.youtube.linkScore = scoreTrack(track, 0); // separate from previous assignation because scoreTracks uses the links for scoring
+      track.youtube.linkScore = scoreTrack(track.toObject(), 0); // separate from previous assignation because scoreTracks uses the links for scoring
 
       track.markModified('youtube');
       track.save((err) => {
