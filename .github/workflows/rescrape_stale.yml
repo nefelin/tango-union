@@ -5,11 +5,11 @@ on:
     - cron: '*/5 * * * *'
 
 jobs:
-  deployment:
+  trigger-rescrape:
     runs-on: ubuntu-latest
     steps:
       - name: Rescrape Flagged
-        uses: fjogeleit/http-request-action@v1.14.1
+        uses: fjogeleit/http-request-action@v1
         with:
           url: 'https://api.tangounion.net:443/hydrate/rescrapeStale'
           method: 'POST'
