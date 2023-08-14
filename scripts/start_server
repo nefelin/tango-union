@@ -2,6 +2,6 @@
 source /home/ec2-user/bash_profile_generic
 chown -R ec2-user /home/ec2-user/app
 npm install -g pm2
-cp /home/ec2-user/app_env /home/ec2-user/app/projects/api/.env
+/bin/cp -rf /home/ec2-user/app_env /home/ec2-user/app/projects/api/.env
 cd /home/ec2-user/app/projects/api
 pm2 start /home/ec2-user/app/projects/api/ecosystem.config.js
