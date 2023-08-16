@@ -8,6 +8,7 @@ const colors = require('colors/safe');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const webpack = require('webpack');
 const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = (mode, env) => {
   const isProduction = mode === 'production';
@@ -77,6 +78,9 @@ module.exports = (mode, env) => {
       new ForkTsCheckerWebpackPlugin({}),
       new webpack.DefinePlugin({
         'process.env.REACT_APP_ENV': JSON.stringify(process.env.REACT_APP_ENV),
+      }),
+      new CopyPlugin({
+        patterns: [path.resolve(__dirname, 'src', 'robots.txt')],
       }),
     ],
   });
