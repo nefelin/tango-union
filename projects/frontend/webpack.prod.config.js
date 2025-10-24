@@ -1,6 +1,6 @@
 module.exports = () => ({
     mode: 'production',
-    devtool: 'hidden-source-map',
+    devtool: 'inline-source-map',
     optimization: {
       splitChunks: {
         cacheGroups: {

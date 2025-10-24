@@ -86,7 +86,9 @@ const YoutubePlayer = ({ width, height }: Props) => {
       pause();
     }
   };
-  // || '-pHhb4biR9k'}
+
+  const placeHolderId = 'D7KHcBIf-og';
+
   return (
     <YoutubeContainer>
       <YouTube
@@ -97,7 +99,7 @@ const YoutubePlayer = ({ width, height }: Props) => {
         onPause={handlePause}
         onEnd={handleEnd}
         onPlay={handlePlay}
-        videoId={videoId}
+        videoId={videoId ?? placeHolderId}
         opts={optsWithProps}
       />
     </YoutubeContainer>
