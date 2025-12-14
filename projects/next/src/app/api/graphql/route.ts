@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { graphql } from 'graphql';
+import mongoose from 'mongoose';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import { connectToDatabase } from '@/lib/db';
 import { resolvers } from '@/lib/graphql/resolvers';
@@ -199,14 +200,11 @@ export async function POST(request: NextRequest) {
 
   try {
     console.log('=== GraphQL POST request received ===');
-    // Don't fail the request if DB connection fails - let resolvers handle it
-    try {
-      await connectToDatabase();
-      console.log('Database connected');
-    } catch (dbError: any) {
-      console.error('MongoDB connection error:', dbError);
-      // Continue anyway - resolvers will handle connection errors
-    }
+    // Connect to database early and ensure it's ready
+    const startTime = Date.now();
+    await connectToDatabase();
+    const connectTime = Date.now() - startTime;
+    console.log(`Database connected in ${connectTime}ms, readyState: ${mongoose.connection.readyState}`);
 
     const body = await request.json();
     const { query, variables } = body;
