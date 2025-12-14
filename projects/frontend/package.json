@@ -6,7 +6,7 @@
   "scripts": {
     "cy": "./node_modules/.bin/cypress run",
     "build": "REACT_APP_ENV=prod webpack --mode production --progress",
-    "start:dev": "webpack serve --mode development --env ESLINT_CACHE",
+    "start:dev": "NODE_OPTIONS=--openssl-legacy-provider webpack serve --mode development --env ESLINT_CACHE",
     "start:prod": "REACT_APP_ENV=prod webpack serve --mode development --env ESLINT_CACHE",
     "build:analyze": "npm run build -- --env MEASURE_SPEED --json ./.internal/bundleStats.json && webpack-bundle-analyzer ./.internal/bundleStats.json",
     "dev:analyze": "webpack  --env MEASURE_SPEED --json ./dist/bundleStats.json && webpack-bundle-analyzer ./dist/bundleStats.json",

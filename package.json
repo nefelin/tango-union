@@ -11,7 +11,7 @@
     "front": "yarn workspace frontend",
     "union_index": "yarn workspace union_index",
     "typecheck": "concurrently --kill-others-on-fail \"yarn workspace api typecheck\" \"yarn workspace frontend typecheck\"",
-    "start:dev": "concurrently --kill-others-on-fail \"yarn workspace api start:dev\" \"yarn workspace frontend start:dev\"",
+    "start:dev": "concurrently --kill-others-on-fail \"yarn workspace next dev\" \"yarn workspace frontend start:dev\"",
     "generate:codegen": "yarn --workspaces generate:codegen"
   },
   "workspaces": [
