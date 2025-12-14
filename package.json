@@ -10,15 +10,17 @@
     "back": "yarn workspace api",
     "front": "yarn workspace frontend",
     "union_index": "yarn workspace union_index",
-    "typecheck": "concurrently --kill-others-on-fail \"yarn workspace api typecheck\" \"yarn workspace frontend typecheck\"",
+    "typecheck": "concurrently --kill-others-on-fail \"yarn workspace api typecheck\" \"yarn workspace frontend typecheck\" \"yarn workspace next typecheck\"",
     "start:dev": "concurrently --kill-others-on-fail \"yarn workspace next dev\" \"yarn workspace frontend start:dev\"",
-    "generate:codegen": "yarn --workspaces generate:codegen"
+    "generate:codegen": "yarn --workspaces generate:codegen",
+    "prepare": "husky install"
   },
   "workspaces": [
     "./projects/*"
   ],
   "devDependencies": {
-    "concurrently": "^6.1.0"
+    "concurrently": "^6.1.0",
+    "husky": "^8.0.3"
   },
   "packageManager": "yarn@3.2.1"
 }
