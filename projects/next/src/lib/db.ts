@@ -31,7 +31,6 @@ export async function connectToDatabase() {
         connectTimeoutMS: 5000, // Connection timeout - fail fast
         heartbeatFrequencyMS: 10000, // Check connection health
         bufferCommands: false, // Disable mongoose buffering - fail fast if not connected
-        bufferMaxEntries: 0, // Disable mongoose buffering
         // Optimize for speed
         directConnection: false, // Use connection string's connection method
         retryWrites: true,
