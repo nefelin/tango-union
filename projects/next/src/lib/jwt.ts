@@ -1,10 +1,26 @@
-import jwt from 'jsonwebtoken';
+import jwt, { SignOptions } from 'jsonwebtoken';
+import type { StringValue } from 'ms';
 import { IUser } from './models/user';
 
-const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET || '';
-const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET || '';
-const ACCESS_TOKEN_TTL = process.env.ACCESS_TOKEN_TTL || '15m';
-const REFRESH_TOKEN_TTL = process.env.REFRESH_TOKEN_TTL || '7d';
+// Type predicate to validate StringValue format (e.g., "15m", "7d", "30s")
+function isValidStringValue(value: string): value is StringValue {
+  // Matches patterns like: "15", "15m", "15 m", "7d", "30s", etc.
+  const stringValuePattern = /^\d+\s*[a-zA-Z]*$/;
+  return stringValuePattern.test(value);
+}
+
+function getStringValue(envVar: string | undefined, defaultValue: StringValue): StringValue {
+  const value = envVar || defaultValue;
+  if (!isValidStringValue(value)) {
+    throw new Error(`Invalid time format: "${value}". Expected format like "15m", "7d", "30s"`);
+  }
+  return value;
+}
+
+const ACCESS_TOKEN_SECRET: string = process.env.ACCESS_TOKEN_SECRET || '';
+const REFRESH_TOKEN_SECRET: string = process.env.REFRESH_TOKEN_SECRET || '';
+const ACCESS_TOKEN_TTL = getStringValue(process.env.ACCESS_TOKEN_TTL, '15m');
+const REFRESH_TOKEN_TTL = getStringValue(process.env.REFRESH_TOKEN_TTL, '7d');
 
 export interface TokenPayload {
   email: string;
@@ -25,13 +41,15 @@ export function generateTokens(user: Pick<IUser, 'email' | 'firstName' | 'lastNa
     roles: user.roles,
   };
 
-  const token = jwt.sign(payload, ACCESS_TOKEN_SECRET, {
+  const accessTokenOptions: SignOptions = {
     expiresIn: ACCESS_TOKEN_TTL,
-  });
+  };
+  const token = jwt.sign(payload, ACCESS_TOKEN_SECRET, accessTokenOptions);
 
-  const refresh = jwt.sign({ email: user.email }, REFRESH_TOKEN_SECRET, {
+  const refreshTokenOptions: SignOptions = {
     expiresIn: REFRESH_TOKEN_TTL,
-  });
+  };
+  const refresh = jwt.sign({ email: user.email }, REFRESH_TOKEN_SECRET, refreshTokenOptions);
 
   return { token, refresh };
 }
