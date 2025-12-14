@@ -5,8 +5,7 @@ const allowedOrigins = [
   'http://localhost:3000', // Next.js dev server
   'https://www.tangounion.net', // Production frontend
   'https://tangounion.net', // Production frontend
-  // Add your Vercel deployment URL here when deployed
-  // Example: 'https://your-project-name.vercel.app',
+  'https://tango-union.vercel.app', // Vercel deployment
 ];
 
 export function corsHeaders(origin: string | null) {
